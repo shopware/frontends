@@ -1,6 +1,5 @@
+import { ChevronLeftIcon } from "@/components/icons";
 import { LocaleLink } from "@/components/LocaleLink";
-
-import { ChevronLeftIcon } from "./OrderIcons";
 
 export const ORDERS_PATH = "/account/order";
 

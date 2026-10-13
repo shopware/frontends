@@ -140,7 +140,6 @@ export function checkoutSession({
     customerName: isLoggedIn
       ? `${customer?.firstName} ${customer?.lastName}`
       : null,
-    wishlistCount: 0,
     context: {
       customer,
       currency: { isoCode: "EUR" },

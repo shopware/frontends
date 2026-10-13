@@ -10,9 +10,20 @@ import type { ReactNode } from "react";
 
 import { CloseIcon } from "@/components/icons";
 import { LocaleLink } from "@/components/LocaleLink";
+import {
+  LoginModal,
+  LoginModalProvider,
+  useRequestLogin,
+} from "@/features/account/components/LoginModal";
 import { CartProvider } from "@/features/cart/components/CartProvider";
 import { useCart } from "@/features/cart/useCart";
+import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { ShopwareSessionProvider } from "@/features/session/components/ShopwareSessionProvider";
+import {
+  WishlistProvider,
+  useWishlistStore,
+} from "@/features/wishlist/components/WishlistProvider";
+import { useWishlist } from "@/features/wishlist/useWishlist";
 import { useLocale, useTranslations } from "@/i18n/I18nProvider";
 
 import { NOT_WIRED_MESSAGE_KEYS } from "../notWired";
@@ -50,6 +61,10 @@ function StorefrontCmsActions({
   children: ReactNode;
 }) {
   const { addProduct } = useCart();
+  const { has: isInWishlist } = useWishlist();
+  const wishlistStore = useWishlistStore();
+  const { retrySession, refreshSession } = useSessionActions();
+  const requestLogin = useRequestLogin();
   const t = useTranslations();
 
   const actions = useMemo<Partial<CmsActions>>(() => {
@@ -63,7 +78,22 @@ function StorefrontCmsActions({
       notify,
       addToCart: ({ productId, quantity }) =>
         addProduct({ id: productId, quantity }),
-      toggleWishlist: notWired,
+      isInWishlist,
+      toggleWishlist: async (productId) => {
+        const adding = !isInWishlist(productId);
+        const write = () =>
+          adding
+            ? wishlistStore.add(productId)
+            : wishlistStore.remove(productId);
+        if ((await retrySession()).isLoggedIn) {
+          const result = await write();
+          if (!result.loggedOut) return result;
+          await refreshSession();
+        }
+        if (!(await requestLogin())) return { ok: false, cancelled: true };
+        wishlistStore.syncSession(await retrySession());
+        return write();
+      },
       submitContactForm: notWired,
       subscribeNewsletter: notWired,
       submitProductReview: notWired,
@@ -72,7 +102,16 @@ function StorefrontCmsActions({
         return null;
       },
     };
-  }, [notify, addProduct, t]);
+  }, [
+    notify,
+    addProduct,
+    isInWishlist,
+    wishlistStore,
+    retrySession,
+    refreshSession,
+    requestLogin,
+    t,
+  ]);
 
   return <CmsActionsProvider actions={actions}>{children}</CmsActionsProvider>;
 }
@@ -162,17 +201,26 @@ export function StorefrontProviders({ children }: { children: ReactNode }) {
   return (
     <ShopwareSessionProvider locale={locale} notify={notify}>
       <CartProvider>
-        <StorefrontCmsActions notify={notify}>
-          {children}
-          <div
-            aria-live="polite"
-            className="pointer-events-none fixed right-4 bottom-4 z-50 flex max-w-sm flex-col gap-2"
-          >
-            {toasts.map((toast) => (
-              <ToastMessage key={toast.id} toast={toast} onDismiss={dismiss} />
-            ))}
-          </div>
-        </StorefrontCmsActions>
+        <WishlistProvider>
+          <LoginModalProvider>
+            <StorefrontCmsActions notify={notify}>
+              {children}
+              <LoginModal />
+              <div
+                aria-live="polite"
+                className="pointer-events-none fixed right-4 bottom-4 z-60 flex max-w-sm flex-col gap-2"
+              >
+                {toasts.map((toast) => (
+                  <ToastMessage
+                    key={toast.id}
+                    toast={toast}
+                    onDismiss={dismiss}
+                  />
+                ))}
+              </div>
+            </StorefrontCmsActions>
+          </LoginModalProvider>
+        </WishlistProvider>
       </CartProvider>
     </ShopwareSessionProvider>
   );

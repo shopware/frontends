@@ -49,7 +49,6 @@ export function loggedInSession(
     isLoggedIn: true,
     isGuestSession: false,
     customerName: `${current.firstName} ${current.lastName}`,
-    wishlistCount: 0,
     context: salesChannelContext(current),
   };
 }

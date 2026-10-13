@@ -201,7 +201,7 @@ describe("HeaderBar in the browser", () => {
     ).toBe(false);
   });
 
-  it("sends a guest to the Polish login page and reports the wishlist stub in Polish under the pl-PL provider", async () => {
+  it("sends a guest to the Polish login page and links the wishlist under the pl-PL prefix", async () => {
     const { account, container, notify } = await setup(undefined, {}, "pl-PL");
     window.history.replaceState(null, "", "/pl-PL/Furniture/");
 
@@ -210,18 +210,13 @@ describe("HeaderBar in the browser", () => {
     expect(push).toHaveBeenCalledWith(
       "/pl-PL/account/login?redirect=%2Fpl-PL%2FFurniture%2F",
     );
-
-    await interact(() =>
-      query<HTMLButtonElement>(
+    expect(
+      query<HTMLAnchorElement>(
         container,
         '[data-testid="header-wishlist-button"]',
-      ).click(),
-    );
-
-    expect(notify).toHaveBeenCalledWith({
-      type: "info",
-      message: "Lista życzeń nie jest jeszcze połączona z sesją.",
-    });
+      ).getAttribute("href"),
+    ).toBe("/pl-PL/wishlist");
+    expect(notify).not.toHaveBeenCalled();
   });
 
   it("sends a guest to the login page with the current path as redirect", async () => {

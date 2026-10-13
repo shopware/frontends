@@ -181,7 +181,6 @@ describe("ShopwareSessionProvider session state", () => {
       isLoggedIn: false,
       isGuestSession: false,
       customerName: null,
-      wishlistCount: 0,
       context: null,
     });
 
@@ -193,7 +192,6 @@ describe("ShopwareSessionProvider session state", () => {
       isLoggedIn: false,
       isGuestSession: false,
       customerName: null,
-      wishlistCount: 0,
       context: salesChannelContext(null),
     });
     expect(browser.createBrowserClient).toHaveBeenCalledWith(config);

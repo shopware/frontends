@@ -7,6 +7,9 @@
       "form": {
         "emailFieldName": "e-mail"
       }
+    },
+    "loginModal": {
+      "close": "Zamknij"
     }
   }
 }

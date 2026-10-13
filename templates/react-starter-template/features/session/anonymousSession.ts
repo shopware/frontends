@@ -5,6 +5,5 @@ export const anonymousSession: StorefrontSession = {
   isLoggedIn: false,
   isGuestSession: false,
   customerName: null,
-  wishlistCount: 0,
   context: null,
 };

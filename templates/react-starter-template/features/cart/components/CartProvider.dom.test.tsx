@@ -217,7 +217,7 @@ describe("CartProvider", () => {
     await vi.waitFor(() => expect(view().status).toBe("ready"));
 
     await interact(() =>
-      sessionControl.set?.({ ...readySession(), wishlistCount: 2 }),
+      sessionControl.set?.({ ...readySession(), customerName: "Jane Doe" }),
     );
 
     expect(backend.invocations).toHaveLength(1);

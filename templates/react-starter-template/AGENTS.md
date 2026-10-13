@@ -4,9 +4,9 @@ Next.js App Router storefront template for Shopware 6, the React counterpart of
 `vue-starter-template`. State: anonymous Store API reads, SEO URL routing, CMS
 rendering, the header/footer layout, a browser session with login,
 registration and logout, the cart, the checkout with the order confirmation,
-the customer account area (`/account/**`) and the three UI locales of the
-Vue starter (`en-GB`, `/pl-PL/…`, `/de-DE/…`) work; wishlist, search, variant
-switching and forms are stubs.
+the customer account area (`/account/**`), the wishlist and the three UI
+locales of the Vue starter (`en-GB`, `/pl-PL/…`, `/de-DE/…`) work; search,
+variant switching and forms are stubs.
 `supportLevel` in `templates/manifest.json` is authoritative.
 
 ## Next.js docs
@@ -266,7 +266,8 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   which can trigger both, still lands on one URL.
 - The cart button reads `useCart().count` and is a disclosure for `MiniCart`
   (see Cart) that opens only while the count is above 0. The wishlist button
-  and the search input only call `notify()` with the message keys in
+  is a `LocaleLink` to `/wishlist` (see Wishlist). The search input only
+  calls `notify()` with the message keys in
   `features/storefront/notWired.ts` (`layout.notWired.*`); the newsletter form
   goes through `subscribeNewsletter` of the actions port, so wiring it later
   needs no form change.
@@ -487,7 +488,8 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   it runs. While the status is `"error"` the provider re-reads on `online`
   and on `visibilitychange` to a visible tab, and `retrySession()` on the
   actions port re-reads and resolves the new session (it never rejects).
-  The wishlist count stays 0; the cart has its own store (see Cart).
+  The session carries no wishlist data; the cart and the wishlist have their
+  own stores (see Cart and Wishlist).
 - The store applies the page locale like the Vue `app.vue`
   (`ShopwareSessionProvider` gets it from `StorefrontProviders` through
   `useLocale()`). After the first `/context` read it reads `GET /language`
@@ -553,8 +555,9 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   notify `{ ok: false }` again. Anything that is not an `ApiClientError`
   resolves to `errors.message-default`.
 - `StorefrontProviders` is also the app side of the CMS actions port
-  (`CmsActionsProvider`). `addToCart` goes to the cart (see Cart); wishlist,
-  variant lookup and forms are still stubs there that show a "not connected"
+  (`CmsActionsProvider`). `addToCart` goes to the cart (see Cart),
+  `toggleWishlist` and `isInWishlist` to the wishlist (see Wishlist); variant
+  lookup and forms are still stubs there that show a "not connected"
   notification (`features/storefront/notWired.ts`) and return `{ ok: false }`.
   Wire them there, not in the CMS components.
 - `StorefrontProviders` renders the toasts of `notify()`. A toast's
@@ -936,3 +939,63 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
     `order-item-{promotion,credit,custom}-*` ids. They belong to Vue's
     `order/Details.vue`, which only the checkout success page renders.
   - The Vue `TransitionGroup` animations of the address tiles.
+
+## Wishlist
+
+- `features/wishlist/wishlistStore.ts` (`createWishlistStore`) holds the
+  product ids and the count; `WishlistProvider` (mounted by
+  `StorefrontProviders` under `CartProvider`) creates it and `useWishlist()`
+  binds it. Every wishlist route needs a logged-in customer (403
+  `FRAMEWORK__ROUTING_CUSTOMER_NOT_LOGGED_IN` otherwise), so the store never
+  calls the API for a guest. `wishlistSessionKey` is the customer id; a
+  new key bumps a generation, so a read or write that settles after a logout
+  or a customer switch is dropped.
+- The store reads `readCustomerWishlist` with `limit: 100`,
+  `includes: { product: ["id"] }` and `"total-count-mode": "exact"`. The
+  count is `products.total`; the ids are only for `isInWishlist`, so a
+  wishlist above 100 products counts right but shows the heart empty on the
+  rest. Without `"exact"`, `total` is only the page size. There is no
+  wishlist count anywhere else: the context and the customer have none.
+- Backend answers that are not failures (`wishlistApi.ts`): a read 404
+  `CHECKOUT__WISHLIST_NOT_FOUND` is an empty wishlist (a customer has no
+  wishlist row until the first add); an add 400
+  `CHECKOUT__DUPLICATE_WISHLIST_PRODUCT` and a delete 404
+  `CHECKOUT__WISHLIST_PRODUCT_NOT_FOUND` or `CHECKOUT__WISHLIST_NOT_FOUND`
+  leave the wishlist as wanted, and the store re-reads the ids to correct the
+  count. `core.cart.wishlistEnabled` is off on a fresh install; then every
+  route answers 403 `CHECKOUT__WISHLIST_IS_NOT_ACTIVATED` and the card shows
+  its "cannot be added" toast with that reason.
+- The read response is typed as a `ProductListingResult`, but the backend
+  sends a plain entity search result: only `elements`, `total`, `page` and
+  `limit` exist. Only `sw-include-search-info` and `sw-language-id` are
+  allowed as headers, so the page asks for `associations: { seoUrls: {} }`
+  in the body. The read is POST: the backend accepts GET too, but the route
+  is personal and not HTTP-cacheable, and the spec documents only POST.
+- `toggleWishlist` decides from what the card showed (`!isInWishlist(id)`
+  at click time) whether to add or remove, so a click before the ids loaded
+  still adds. It first awaits `retrySession()`, because the e2e suite clicks
+  the toggle right after a page load and a loading session must not count as
+  logged out. A guest gets the login modal (`LoginModal.tsx`,
+  `useRequestLogin()`); after a login the port syncs the store with the new
+  session and adds the product, so the read of the server ids runs first. A
+  closed modal (close button, Escape, the backdrop or any route change)
+  resolves `{ ok: false, cancelled: true }`, which the card ignores. The Vue
+  starter toggles after the modal login instead, against ids it never read,
+  and gets a 400 for a product already on the wishlist.
+- `/wishlist` (`WishlistPageContent`) renders in the browser only: a skeleton
+  while the session loads, the logged-out links (`/account/login?redirect=`
+  with the prefixed `/wishlist`, the same with `#registration`, and `/`)
+  for a guest, and otherwise the pages of `readWishlistPage` through
+  `usePagedList`. `features/paging/` holds what the order list and the
+  wishlist share: `usePagedList`, `Pagination`, `PageSizeSelector`,
+  `scrollToList` and the page sizes 1/15/30/45 (page and size are not in the
+  URL); the dialog both modals use is `components/Modal.tsx`. Removing a
+  tile deletes through the store, announces it in a toast, moves focus to
+  the page heading and reads the page again; `wishlist-empty-container`
+  shows once `total` is 0. The e2e ids are
+  `wishlist-product-box`, `wishlist-product-box-toggle-button`,
+  `wishlist-add-to-cart-button` and `wishlist-empty-container`; skeleton
+  tiles carry none, because the specs count `wishlist-product-box`.
+- Not ported: the Vue `useLocalWishlist` and the merge on login. The Vue
+  starter never fills the local list (its card opens the login modal for
+  guests too), so it stays empty and the merge only re-reads.

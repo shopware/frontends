@@ -290,7 +290,6 @@ describe("createSessionStore", () => {
       isLoggedIn: false,
       isGuestSession: true,
       customerName: null,
-      wishlistCount: 0,
       context,
     });
   });

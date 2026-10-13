@@ -5,9 +5,8 @@ import { getTranslatedProperty } from "@shopware/helpers";
 import { useId, useState } from "react";
 
 import type { Schemas } from "#shopware";
+import { Modal } from "@/components/Modal";
 import { useTranslations } from "@/i18n/I18nProvider";
-
-import { Modal } from "./Modal";
 
 const SKELETON_ROWS = [0, 1, 2];
 

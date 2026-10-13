@@ -2,10 +2,10 @@
 
 import { cx } from "@shopware/cms-base-layer-react/client";
 
+import { ChevronLeftIcon, ChevronRightIcon } from "@/components/icons";
 import { useTranslations } from "@/i18n/I18nProvider";
 
 import { ELLIPSIS, paginationCells } from "../pagination";
-import { ChevronLeftIcon, ChevronRightIcon } from "./OrderIcons";
 
 const CELL_CLASS =
   "relative inline-flex min-w-12 items-center justify-center border px-4 py-2 text-sm";

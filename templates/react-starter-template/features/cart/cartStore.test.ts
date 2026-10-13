@@ -151,7 +151,7 @@ describe("createCartStore session sync", () => {
     store.syncSession(readySession(customer({ firstName: "Janet" })));
     store.syncSession({
       ...readySession(customer()),
-      wishlistCount: 3,
+      customerName: "Janet Doe",
     });
     await flush();
 

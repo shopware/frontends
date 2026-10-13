@@ -7,7 +7,6 @@ export type StorefrontSession = {
   isLoggedIn: boolean;
   isGuestSession: boolean;
   customerName: string | null;
-  wishlistCount: number;
   context: Schemas["SalesChannelContext"] | null;
 };
 

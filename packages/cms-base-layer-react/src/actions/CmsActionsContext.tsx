@@ -47,7 +47,7 @@ export type CmsActions = {
   }): Promise<CmsActionResult>;
   toggleWishlist(
     productId: string,
-  ): Promise<CmsActionResult & { inWishlist?: boolean }>;
+  ): Promise<CmsActionResult & { inWishlist?: boolean; cancelled?: boolean }>;
   isInWishlist(productId: string): boolean;
   findVariant(input: {
     productId: string;

@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { fakeClient } from "@/features/checkout/checkout.fixture";
 import { orderAssociations } from "@/features/checkout/checkoutApi";
 import { apiError } from "@/features/checkout/checkoutTestDoubles";
+import { DEFAULT_PAGE_SIZE } from "@/features/paging/pagination";
 import { ORDER_TIMEOUT_MS } from "@/features/session/readTimeout";
 import { testTranslator } from "@/test/i18n";
 
@@ -15,7 +16,6 @@ import {
   orderRouteResponse,
 } from "./orders.fixture";
 import {
-  ORDERS_DEFAULT_LIMIT,
   classifyDeepLinkError,
   documentFileName,
   handleOrderPayment,
@@ -23,7 +23,6 @@ import {
   isOrderPaymentChangeable,
   lineItemDownloads,
   orderPaymentReturnUrls,
-  pageCount,
   readDeepLinkOrder,
   readOrderDetails,
   readOrderDocument,
@@ -65,17 +64,8 @@ describe("readOrders", () => {
     const shopware = fakeClient(() => ({ orders: {} }));
 
     await expect(
-      readOrders(shopware.client, { page: 1, limit: ORDERS_DEFAULT_LIMIT }),
+      readOrders(shopware.client, { page: 1, limit: DEFAULT_PAGE_SIZE }),
     ).resolves.toEqual({ elements: [], total: 0 });
-  });
-});
-
-describe("pageCount", () => {
-  it("rounds up and never goes below one page", () => {
-    expect(pageCount(31, 15)).toBe(3);
-    expect(pageCount(30, 15)).toBe(2);
-    expect(pageCount(0, 15)).toBe(1);
-    expect(pageCount(5, 0)).toBe(5);
   });
 });
 

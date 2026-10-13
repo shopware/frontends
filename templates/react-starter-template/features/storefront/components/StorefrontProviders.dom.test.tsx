@@ -13,19 +13,32 @@ import { useSession } from "@/features/session/components/SessionProvider";
 import { READ_TIMEOUT_MS } from "@/features/session/readTimeout";
 import {
   apiClientError,
+  customer,
   salesChannelContext,
 } from "@/features/session/session.fixture";
 import type { SessionActionResult } from "@/features/session/types";
 import type { Locale } from "@/i18n/config";
 import type { PublicShopwareConfig } from "@/platform/shopware/publicConfig";
 import { testTranslator, withI18n } from "@/test/i18n";
-import { interact, mount, query, queryAll } from "@/test/mount";
+import {
+  interact,
+  mount,
+  query,
+  queryAll,
+  setInputValue,
+  submitForm,
+} from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
 import { StorefrontProviders, TOAST_TIMEOUT_MS } from "./StorefrontProviders";
 
 const browser = vi.hoisted(() => ({
   invoke: vi.fn<(operation: string, params?: unknown) => Promise<unknown>>(),
+}));
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ push: vi.fn() }),
+  usePathname: () => "/",
 }));
 
 vi.mock("@/features/session/browserClient", () => ({
@@ -43,23 +56,48 @@ const READ_CONTEXT = "readContext get /context";
 const READ_CART = "readCart get /checkout/cart";
 const READ_LANGUAGES = "readLanguagesGet get /language";
 const ADD_LINE_ITEM = "addLineItem post /checkout/cart/line-item";
+const LOGIN = "loginCustomer post /account/login";
+const READ_WISHLIST = "readCustomerWishlist post /customer/wishlist";
+const ADD_WISHLIST =
+  "addProductOnWishlist post /customer/wishlist/add/{productId}";
+const DELETE_WISHLIST =
+  "deleteProductOnWishlist delete /customer/wishlist/delete/{productId}";
 const MESSAGE = '[data-testid="notification-element-message"]';
 
-const backend: { cart: Schemas["Cart"]; afterAdd: Schemas["Cart"] } = {
+const backend: {
+  cart: Schemas["Cart"];
+  afterAdd: Schemas["Cart"];
+  signedIn: boolean;
+  acceptLogin: boolean;
+  wishlist: string[];
+} = {
   cart: cart(),
   afterAdd: cart(),
+  signedIn: false,
+  acceptLogin: false,
+  wishlist: [],
 };
+
+function wishlistProductId(params: unknown): string {
+  return (params as { pathParams: { productId: string } }).pathParams.productId;
+}
 
 let mounted: Mounted | undefined;
 
 beforeEach(() => {
   backend.cart = cart();
   backend.afterAdd = cart({ lineItems: [lineItem({ quantity: 2 })] });
+  backend.signedIn = false;
+  backend.acceptLogin = false;
+  backend.wishlist = [];
   browser.invoke.mockReset();
-  browser.invoke.mockImplementation(async (operation) => {
+  browser.invoke.mockImplementation(async (operation, params) => {
     switch (operation) {
       case READ_CONTEXT:
-        return { data: salesChannelContext(null), status: 200 };
+        return {
+          data: salesChannelContext(backend.signedIn ? customer() : null),
+          status: 200,
+        };
       case READ_LANGUAGES:
         return {
           data: {
@@ -74,6 +112,33 @@ beforeEach(() => {
       case ADD_LINE_ITEM:
         backend.cart = backend.afterAdd;
         return { data: backend.cart, status: 200 };
+      case READ_WISHLIST:
+        return {
+          data: {
+            products: {
+              elements: backend.wishlist.map((id) => ({ id })),
+              total: backend.wishlist.length,
+            },
+          },
+          status: 200,
+        };
+      case ADD_WISHLIST:
+        backend.wishlist = [wishlistProductId(params), ...backend.wishlist];
+        return { data: { success: true }, status: 200 };
+      case DELETE_WISHLIST:
+        backend.wishlist = backend.wishlist.filter(
+          (id) => id !== wishlistProductId(params),
+        );
+        return { data: { success: true }, status: 200 };
+      case LOGIN:
+        if (backend.acceptLogin) {
+          backend.signedIn = true;
+          return { data: { contextToken: "customer-token" }, status: 200 };
+        }
+        throw apiClientError(
+          [{ code: "0", detail: "No matching customer for the email found." }],
+          401,
+        );
       default:
         throw apiClientError(
           [{ code: "0", detail: "No matching customer for the email found." }],
@@ -519,5 +584,227 @@ describe("StorefrontProviders CMS stubs", () => {
     expect(toastOf(toasts[0] as HTMLParagraphElement).className).toContain(
       "bg-states-warning-container",
     );
+  });
+});
+
+type WishlistResult = CmsActionResult & {
+  inWishlist?: boolean;
+  cancelled?: boolean;
+};
+
+function WishlistIsland({
+  onResult,
+}: {
+  onResult: (result: WishlistResult) => void;
+}) {
+  const actions = useCmsActions();
+  return (
+    <>
+      <output data-testid="in-wishlist">
+        {String(actions.isInWishlist("product-1"))}
+      </output>
+      <button
+        type="button"
+        data-testid="toggle-wishlist"
+        onClick={() => {
+          void actions.toggleWishlist("product-1").then(onResult);
+        }}
+      >
+        toggle
+      </button>
+    </>
+  );
+}
+
+async function mountWishlistShop() {
+  const results: WishlistResult[] = [];
+  mounted = await mount(
+    <StorefrontProviders>
+      <WishlistIsland onResult={(result) => results.push(result)} />
+    </StorefrontProviders>,
+  );
+  const { container } = mounted;
+  const inWishlist = () =>
+    query(container, '[data-testid="in-wishlist"]').textContent;
+  const toggle = () =>
+    interact(() =>
+      query<HTMLButtonElement>(
+        container,
+        '[data-testid="toggle-wishlist"]',
+      ).click(),
+    );
+  return { results, inWishlist, toggle };
+}
+
+function invoked(operation: string): unknown[] {
+  return browser.invoke.mock.calls
+    .filter(([name]) => name === operation)
+    .map(([, params]) => params);
+}
+
+function loginDialog(): HTMLDialogElement {
+  const dialog = document.body.querySelector<HTMLDialogElement>("dialog");
+  if (!dialog) throw new Error("The login modal is not open");
+  return dialog;
+}
+
+describe("StorefrontProviders wishlist", () => {
+  it("adds and removes a product of a signed-in customer through the CMS port", async () => {
+    backend.signedIn = true;
+    const { results, inWishlist, toggle } = await mountWishlistShop();
+    await vi.waitFor(() => expect(invoked(READ_WISHLIST)).toHaveLength(1));
+
+    await toggle();
+    await vi.waitFor(() => expect(results).toHaveLength(1));
+
+    expect(results[0]).toEqual({ ok: true, inWishlist: true });
+    expect(invoked(ADD_WISHLIST)).toEqual([
+      { pathParams: { productId: "product-1" } },
+    ]);
+    expect(inWishlist()).toBe("true");
+
+    await toggle();
+    await vi.waitFor(() => expect(results).toHaveLength(2));
+
+    expect(results[1]).toEqual({ ok: true, inWishlist: false });
+    expect(invoked(DELETE_WISHLIST)).toHaveLength(1);
+    expect(inWishlist()).toBe("false");
+    expect(document.body.querySelector("dialog")).toBeNull();
+  });
+
+  it("waits for a loading session before it decides that a customer is logged in", async () => {
+    backend.signedIn = true;
+    const answer = browser.invoke.getMockImplementation();
+    let openContext: () => void = () => {};
+    const contextGate = new Promise<void>((resolve) => {
+      openContext = resolve;
+    });
+    browser.invoke.mockImplementation(async (operation, params) => {
+      if (operation === READ_CONTEXT) await contextGate;
+      return answer?.(operation, params);
+    });
+    const { results, toggle } = await mountWishlistShop();
+
+    await toggle();
+    await interact(() => openContext());
+    await vi.waitFor(() => expect(results).toHaveLength(1));
+
+    expect(results[0]).toEqual({ ok: true, inWishlist: true });
+    expect(invoked(ADD_WISHLIST)).toHaveLength(1);
+    expect(document.body.querySelector("dialog")).toBeNull();
+  });
+
+  it("re-reads the session and asks for a login when the backend says the customer is gone", async () => {
+    backend.signedIn = true;
+    const answer = browser.invoke.getMockImplementation();
+    browser.invoke.mockImplementation(async (operation, params) => {
+      if (operation === ADD_WISHLIST) {
+        backend.signedIn = false;
+        throw apiClientError(
+          [
+            {
+              code: "FRAMEWORK__ROUTING_CUSTOMER_NOT_LOGGED_IN",
+              status: "403",
+              detail: "Customer is not logged in.",
+            },
+          ],
+          403,
+        );
+      }
+      return answer?.(operation, params);
+    });
+    const { results, toggle } = await mountWishlistShop();
+    await vi.waitFor(() => expect(invoked(READ_WISHLIST)).toHaveLength(1));
+
+    await toggle();
+    await vi.waitFor(() => expect(loginDialog()).toBeTruthy());
+
+    expect(invoked(READ_CONTEXT).length).toBeGreaterThanOrEqual(2);
+    const close = queryAll<HTMLButtonElement>(loginDialog(), "button").find(
+      (button) => button.textContent === "Close",
+    );
+    await interact(() => close?.click());
+    await vi.waitFor(() => expect(results).toHaveLength(1));
+    expect(results[0]).toEqual({ ok: false, cancelled: true });
+  });
+
+  it("reads the wishlist again when the tab becomes visible after a failed read", async () => {
+    backend.signedIn = true;
+    backend.wishlist = ["product-1"];
+    const answer = browser.invoke.getMockImplementation();
+    let failRead = true;
+    browser.invoke.mockImplementation(async (operation, params) => {
+      if (operation === READ_WISHLIST && failRead) {
+        failRead = false;
+        throw new Error("offline");
+      }
+      return answer?.(operation, params);
+    });
+    const { inWishlist } = await mountWishlistShop();
+    await vi.waitFor(() => expect(invoked(READ_WISHLIST)).toHaveLength(1));
+    expect(inWishlist()).toBe("false");
+
+    await interact(() => {
+      document.dispatchEvent(new Event("visibilitychange"));
+    });
+
+    await vi.waitFor(() => expect(inWishlist()).toBe("true"));
+    expect(invoked(READ_WISHLIST)).toHaveLength(2);
+  });
+
+  it("asks a guest to log in and reports a cancelled toggle when the modal is closed", async () => {
+    const { results, toggle } = await mountWishlistShop();
+
+    await toggle();
+    await vi.waitFor(() => expect(loginDialog()).toBeTruthy());
+    const close = queryAll<HTMLButtonElement>(loginDialog(), "button").find(
+      (button) => button.textContent === "Close",
+    );
+    await interact(() => close?.click());
+    await vi.waitFor(() => expect(results).toHaveLength(1));
+
+    expect(results[0]).toEqual({ ok: false, cancelled: true });
+    expect(invoked(ADD_WISHLIST)).toEqual([]);
+    expect(invoked(READ_WISHLIST)).toEqual([]);
+  });
+
+  it("adds the product once a guest logged in through the modal", async () => {
+    backend.acceptLogin = true;
+    backend.wishlist = ["product-9"];
+    const { results, inWishlist, toggle } = await mountWishlistShop();
+
+    await toggle();
+    await vi.waitFor(() => expect(loginDialog()).toBeTruthy());
+    await interact(() => {
+      setInputValue(
+        query<HTMLInputElement>(
+          loginDialog(),
+          '[data-testid="login-email-input"]',
+        ),
+        "jane@example.com",
+      );
+      setInputValue(
+        query<HTMLInputElement>(
+          loginDialog(),
+          '[data-testid="login-password-input"]',
+        ),
+        "secret-password",
+      );
+    });
+    await interact(() =>
+      submitForm(
+        query<HTMLFormElement>(loginDialog(), '[data-testid="login-form"]'),
+      ),
+    );
+    await vi.waitFor(() => expect(results).toHaveLength(1));
+
+    expect(results[0]).toEqual({ ok: true, inWishlist: true });
+    const order = browser.invoke.mock.calls
+      .map(([name]) => name)
+      .filter((name) => name === READ_WISHLIST || name === ADD_WISHLIST);
+    expect(order).toEqual([READ_WISHLIST, ADD_WISHLIST]);
+    expect(backend.wishlist).toEqual(["product-1", "product-9"]);
+    await vi.waitFor(() => expect(inWishlist()).toBe("true"));
+    expect(document.body.querySelector("dialog")).toBeNull();
   });
 });

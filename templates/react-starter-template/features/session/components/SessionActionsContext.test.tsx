@@ -90,7 +90,6 @@ describe("notImplementedSessionActions", () => {
       isLoggedIn: false,
       isGuestSession: false,
       customerName: null,
-      wishlistCount: 0,
       context: null,
     });
     expect(warn).toHaveBeenCalledTimes(1);

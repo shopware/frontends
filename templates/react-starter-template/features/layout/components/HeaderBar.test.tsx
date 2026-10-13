@@ -14,6 +14,10 @@ import {
 import { anonymousSession } from "@/features/session/anonymousSession";
 import { SessionProvider } from "@/features/session/components/SessionProvider";
 import type { StorefrontSession } from "@/features/session/types";
+import {
+  fakeWishlist,
+  wishlistView,
+} from "@/features/wishlist/wishlist.fixture";
 import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
@@ -31,10 +35,16 @@ vi.mock("@/features/cart/useCart", async () => ({
     .useFakeCart,
 }));
 
+vi.mock("@/features/wishlist/useWishlist", async () => ({
+  useWishlist: (await import("@/features/wishlist/wishlist.fixture"))
+    .useFakeWishlist,
+}));
+
 const actions = { notify: vi.fn() };
 
 beforeEach(() => {
   fakeCart.set(cartView({ status: "loading" }));
+  fakeWishlist.set(wishlistView({ status: "loading" }));
 });
 
 function render(session?: StorefrontSession, menu: ReactNode = null) {
@@ -62,6 +72,12 @@ function buttonWithTestId(html: string, testId: string): string {
   return match?.[0] ?? "";
 }
 
+function linkWithTestId(html: string, testId: string): string {
+  const match = html.match(new RegExp(`<a[^>]*data-testid="${testId}"[^>]*>`));
+  expect(match).not.toBeNull();
+  return match?.[0] ?? "";
+}
+
 describe("HeaderBar", () => {
   it("renders the logo, the search input and the mocked controls", async () => {
     const html = await render();
@@ -77,8 +93,9 @@ describe("HeaderBar", () => {
     expect(account).not.toContain("aria-expanded");
     expect(account).not.toContain("aria-controls");
 
-    const wishlist = buttonWithTestId(html, "header-wishlist-button");
+    const wishlist = linkWithTestId(html, "header-wishlist-button");
     expect(wishlist).toContain('aria-label="Wishlist"');
+    expect(wishlist).toContain('href="/wishlist"');
 
     const cart = buttonWithTestId(html, "header-mini-cart-button");
     expect(cart).toContain('aria-label="Cart"');
@@ -113,7 +130,7 @@ describe("HeaderBar", () => {
     async (testId, label) => {
       const html = await render();
       const button = html.match(
-        new RegExp(`<button[^>]*data-testid="${testId}"[^>]*>.*?</button>`),
+        new RegExp(`<(button|a)[^>]*data-testid="${testId}"[^>]*>.*?</\\1>`),
       )?.[0];
 
       expect(button).toBeDefined();
@@ -162,9 +179,9 @@ describe("HeaderBar", () => {
     expect(buttonWithTestId(html, "header-account-button")).toContain(
       'aria-label="Moje konto"',
     );
-    expect(buttonWithTestId(html, "header-wishlist-button")).toContain(
-      'aria-label="Lista życzeń"',
-    );
+    const wishlist = linkWithTestId(html, "header-wishlist-button");
+    expect(wishlist).toContain('aria-label="Lista życzeń"');
+    expect(wishlist).toContain('href="/pl-PL/wishlist"');
     expect(buttonWithTestId(html, "header-mini-cart-button")).toContain(
       'aria-label="Koszyk"',
     );
@@ -180,12 +197,16 @@ describe("HeaderBar", () => {
     expect(actions.notify).not.toHaveBeenCalled();
   });
 
-  it("gives every action button the same hit area and ink focus ring", async () => {
+  it("gives every action control the same hit area and ink focus ring", async () => {
     const html = await render();
     const buttons = html.match(/<button[^>]*>/g) ?? [];
+    const controls = [
+      ...buttons,
+      linkWithTestId(html, "header-wishlist-button"),
+    ];
 
-    expect(buttons).toHaveLength(4);
-    for (const button of buttons) {
+    expect(buttons).toHaveLength(3);
+    for (const button of controls) {
       expect(button).toContain(HEADER_ACTION_CLASS);
       expect(button).toMatch(/\bp-2\b/);
       expect(button).toContain("rounded-full");
@@ -205,14 +226,14 @@ describe("HeaderBar", () => {
     );
   });
 
-  it("shows the wishlist counter from the session and the cart counter from the cart", async () => {
+  it("shows the wishlist counter from the wishlist and the cart counter from the cart", async () => {
     fakeCart.set(cartView({ lineItems: [lineItem({ quantity: 2 })] }));
+    fakeWishlist.set(wishlistView({ count: 3 }));
     const html = await render({
       ...anonymousSession,
       status: "ready",
       isLoggedIn: true,
       customerName: "Jane Doe",
-      wishlistCount: 3,
     });
 
     const account = buttonWithTestId(html, "header-account-button");
@@ -242,10 +263,10 @@ describe("HeaderBar", () => {
 
   it("hides the wishlist counter for guests", async () => {
     fakeCart.set(cartView({ lineItems: [lineItem({ quantity: 1 })] }));
+    fakeWishlist.set(wishlistView({ count: 4 }));
     const html = await render({
       ...anonymousSession,
       status: "ready",
-      wishlistCount: 4,
     });
 
     expect(counters(html)).toHaveLength(1);

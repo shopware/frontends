@@ -1,6 +1,6 @@
 "use client";
 
-import { cx, useCmsActions } from "@shopware/cms-base-layer-react/client";
+import { cx } from "@shopware/cms-base-layer-react/client";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { ReactNode } from "react";
@@ -24,16 +24,16 @@ import {
 import { HeaderSearch } from "@/features/search/components/HeaderSearch";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
-import { NOT_WIRED_MESSAGE_KEYS } from "@/features/storefront/notWired";
+import { useWishlist } from "@/features/wishlist/useWishlist";
 import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 
 const COUNTER_CLASS = "absolute -top-2 left-1/2";
 
 export function HeaderBar({ menu }: { menu: ReactNode }) {
-  const { status, isLoggedIn, customerName, wishlistCount } = useSession();
+  const { status, isLoggedIn, customerName } = useSession();
   const { count: cartQuantity } = useCart();
+  const { count: wishlistCount } = useWishlist();
   const { retrySession } = useSessionActions();
-  const { notify } = useCmsActions();
   const router = useRouter();
   const t = useTranslations();
   const localePath = useLocalePath();
@@ -53,9 +53,6 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
 
   if (accountMenuOpen && !isLoggedIn) setAccountMenuOpen(false);
   if (miniCartOpen && cartQuantity === 0) setMiniCartOpen(false);
-
-  const notWired = (key: string) => () =>
-    notify({ type: "info", message: t(key) });
 
   const closeAccountMenu = useCallback(() => setAccountMenuOpen(false), []);
   const closeMiniCart = useCallback(() => setMiniCartOpen(false), []);
@@ -205,12 +202,11 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
                 />
               ) : null}
             </div>
-            <button
-              type="button"
+            <LocaleLink
+              href="/wishlist"
               className={HEADER_ACTION_CLASS}
               data-testid="header-wishlist-button"
               aria-label={wishlistLabel}
-              onClick={notWired(NOT_WIRED_MESSAGE_KEYS.wishlist)}
             >
               <span className="relative flex">
                 <HeartIcon className={HEADER_ACTION_ICON_CLASS} />
@@ -222,7 +218,7 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
                 ) : null}
               </span>
               <span className={HEADER_ACTION_LABEL_CLASS}>{wishlistLabel}</span>
-            </button>
+            </LocaleLink>
             <button
               ref={cartButtonRef}
               type="button"

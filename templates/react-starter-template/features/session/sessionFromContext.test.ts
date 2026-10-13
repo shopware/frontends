@@ -31,7 +31,6 @@ describe("toStorefrontSession", () => {
       isLoggedIn: true,
       isGuestSession: false,
       customerName: "Jane Doe",
-      wishlistCount: 0,
       context,
     });
   });
@@ -56,7 +55,6 @@ describe("toStorefrontSession", () => {
       isLoggedIn: false,
       isGuestSession: true,
       customerName: null,
-      wishlistCount: 0,
       context,
     });
   });
@@ -72,7 +70,6 @@ describe("toStorefrontSession", () => {
       isLoggedIn: false,
       isGuestSession: false,
       customerName: null,
-      wishlistCount: 0,
       context,
     });
   });
@@ -95,7 +92,6 @@ describe("unavailableSession", () => {
       isLoggedIn: false,
       isGuestSession: false,
       customerName: null,
-      wishlistCount: 0,
       context: null,
     });
   });

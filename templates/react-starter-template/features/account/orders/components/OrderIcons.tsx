@@ -1,32 +1,4 @@
-import type { ComponentProps, ReactNode } from "react";
-
-type IconProps = Omit<ComponentProps<"svg">, "viewBox" | "children">;
-
-function outline(paths: ReactNode) {
-  return function OutlineIcon({ className, ...props }: IconProps) {
-    return (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-        focusable="false"
-        className={className}
-        {...props}
-      >
-        {paths}
-      </svg>
-    );
-  };
-}
-
-export const ChevronLeftIcon = outline(<path d="M15 6l-6 6 6 6" />);
-
-export const ChevronRightIcon = outline(<path d="M9 6l6 6-6 6" />);
+import { outline } from "@/components/icons";
 
 export const DownloadIcon = outline(
   <>

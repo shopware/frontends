@@ -1,6 +1,15 @@
 import { describe, expect, it } from "vitest";
 
-import { ELLIPSIS, paginationCells } from "./pagination";
+import { ELLIPSIS, pageCount, paginationCells } from "./pagination";
+
+describe("pageCount", () => {
+  it("rounds up and never goes below one page", () => {
+    expect(pageCount(31, 15)).toBe(3);
+    expect(pageCount(30, 15)).toBe(2);
+    expect(pageCount(0, 15)).toBe(1);
+    expect(pageCount(5, 0)).toBe(5);
+  });
+});
 
 describe("paginationCells", () => {
   it("shows every page when there are seven or fewer", () => {

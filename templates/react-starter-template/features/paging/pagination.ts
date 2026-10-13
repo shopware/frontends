@@ -1,3 +1,11 @@
+export const DEFAULT_PAGE_SIZE = 15;
+
+export const PAGE_SIZE_OPTIONS = [1, 15, 30, 45] as const;
+
+export function pageCount(total: number, limit: number): number {
+  return Math.max(1, Math.ceil(total / Math.max(1, limit)));
+}
+
 export const ELLIPSIS = "ellipsis";
 
 export type PaginationCell = number | typeof ELLIPSIS;

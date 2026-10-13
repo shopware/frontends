@@ -23,13 +23,19 @@ const SIGN_UP_PATH = "/account/login#registration";
 type Touched = Partial<Record<keyof LoginValues, boolean>>;
 
 export type LoginFormProps = {
+  idPrefix?: string;
   hideSignUp?: boolean;
+  hideHeading?: boolean;
   redirectUrl?: string | null;
+  onLoggedIn?: () => void;
 };
 
 export function LoginForm({
+  idPrefix = "login",
   hideSignUp = false,
+  hideHeading = false,
   redirectUrl = null,
+  onLoggedIn,
 }: LoginFormProps) {
   const router = useRouter();
   const { login } = useSessionActions();
@@ -40,6 +46,7 @@ export function LoginForm({
   const [touched, setTouched] = useState<Touched>({});
   const [submitted, setSubmitted] = useState(false);
   const [pending, setPending] = useState(false);
+  const [failure, setFailure] = useState<string | null>(null);
   const [navigating, startNavigation] = useTransition();
   const [focusRequest, setFocusRequest] = useState(0);
   const formRef = useRef<HTMLFormElement>(null);
@@ -72,13 +79,21 @@ export function LoginForm({
     }
 
     setPending(true);
+    setFailure(null);
     try {
       const result = await login(values);
-      if (!result.ok) return;
+      if (!result.ok) {
+        if (onLoggedIn) setFailure(result.message ?? t("messages.error"));
+        return;
+      }
       notify({
         type: "success",
         message: t("account.messages.loggedInSuccess"),
       });
+      if (onLoggedIn) {
+        onLoggedIn();
+        return;
+      }
       const target = resolveRedirectFromSearch(
         window.location.search,
         redirectUrl,
@@ -99,7 +114,9 @@ export function LoginForm({
   return (
     <div className="flex w-full flex-col gap-3">
       <div className="mb-4">
-        <h1 className="text-2xl font-bold">{t("loginForm.header")}</h1>
+        {hideHeading ? null : (
+          <h1 className="text-2xl font-bold">{t("loginForm.header")}</h1>
+        )}
         <p className="text-sm text-surface-on-surface-variant">
           {t("loginForm.subHeader")}
         </p>
@@ -117,7 +134,7 @@ export function LoginForm({
         }}
       >
         <InputField
-          id="login-username"
+          id={`${idPrefix}-username`}
           data-testid="login-email-input"
           type="email"
           label={t("loginForm.loginLabel")}
@@ -129,7 +146,7 @@ export function LoginForm({
           error={errorFor("username")}
         />
         <InputField
-          id="login-password"
+          id={`${idPrefix}-password`}
           data-testid="login-password-input"
           type="password"
           label={t("loginForm.passwordLabel")}
@@ -140,6 +157,11 @@ export function LoginForm({
           onBlur={touch("password")}
           error={errorFor("password")}
         />
+        {failure ? (
+          <p role="alert" className="text-sm text-states-error">
+            {failure}
+          </p>
+        ) : null}
         <BaseButton
           type="submit"
           data-testid="login-submit-button"

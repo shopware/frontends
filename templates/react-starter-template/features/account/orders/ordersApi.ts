@@ -11,10 +11,6 @@ import type { Translate } from "@/i18n/translate";
 
 export type OrdersClient = Pick<ApiClient, "invoke">;
 
-export const ORDERS_DEFAULT_LIMIT = 15;
-
-export const ORDERS_PAGE_SIZE_OPTIONS = [1, 15, 30, 45] as const;
-
 export const ORDER_LIST_SORT: Schemas["Sort"][] = [
   { field: "createdAt", order: "DESC" },
 ];
@@ -68,10 +64,6 @@ export type LineItemDownload = {
   id: string;
   fileName: string;
 };
-
-export function pageCount(total: number, limit: number): number {
-  return Math.max(1, Math.ceil(total / Math.max(1, limit)));
-}
 
 export async function readOrders(
   client: OrdersClient,

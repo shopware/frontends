@@ -4,29 +4,17 @@ import { cx } from "@shopware/cms-base-layer-react/client";
 import { useId, useRef } from "react";
 
 import { AccountPageHeader } from "@/features/account/components/AccountPageHeader";
+import { PageSizeSelector } from "@/features/paging/components/PageSizeSelector";
+import { Pagination } from "@/features/paging/components/Pagination";
+import { PAGE_SIZE_OPTIONS } from "@/features/paging/pagination";
+import { scrollToList } from "@/features/paging/scrollToList";
 import { useTranslations } from "@/i18n/I18nProvider";
 
-import { ORDERS_PAGE_SIZE_OPTIONS } from "../ordersApi";
 import { useOrderList } from "../useOrderList";
 import { OrderLine } from "./OrderLine";
 import { OrderLineSkeleton } from "./OrderLineSkeleton";
-import { PageSizeSelector } from "./PageSizeSelector";
-import { Pagination } from "./Pagination";
 
 const MAX_SKELETONS = 3;
-
-function scrollToList(target: HTMLElement | null): void {
-  if (!target) return;
-  const top = target.getBoundingClientRect().top;
-  if (top >= 0 && top <= document.documentElement.clientHeight) return;
-  const reducedMotion = window.matchMedia?.(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
-  target.scrollIntoView?.({
-    behavior: reducedMotion ? "auto" : "smooth",
-    block: "start",
-  });
-}
 
 export function OrdersPageContent() {
   const t = useTranslations();
@@ -109,7 +97,7 @@ export function OrdersPageContent() {
             id={pageSizeId}
             className="sm:col-start-3 sm:justify-self-end"
             value={limit}
-            options={ORDERS_PAGE_SIZE_OPTIONS}
+            options={PAGE_SIZE_OPTIONS}
             onChange={(size) => {
               void list.changeLimit(size);
             }}
