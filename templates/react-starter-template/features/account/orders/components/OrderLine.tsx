@@ -12,6 +12,7 @@ import { formatOrderDate } from "@/features/checkout/components/OrderConfirmatio
 import { OrderLineItems } from "@/features/checkout/components/OrderLineItems";
 import { OrderStatus } from "@/features/checkout/components/OrderStatus";
 import {
+  getOrderCurrencyCode,
   getOrderPaymentMethod,
   getOrderShippingMethod,
   getOrderTotals,
@@ -69,6 +70,7 @@ export function OrderLine({
   const paymentMethod = getOrderPaymentMethod(order);
   const shippingMethod = getOrderShippingMethod(order);
   const { subtotal, shippingCosts, total } = getOrderTotals(order);
+  const currencyCode = getOrderCurrencyCode(order);
   const orderDate = order.orderDate
     ? formatOrderDate(order.orderDate, locale)
     : "";
@@ -149,7 +151,9 @@ export function OrderLine({
         </div>
       ) : null}
       <div id={productsId} className="mt-4 overflow-hidden">
-        {expanded ? <OrderLineItems lineItems={products} /> : null}
+        {expanded ? (
+          <OrderLineItems lineItems={products} currencyCode={currencyCode} />
+        ) : null}
       </div>
 
       <dl className="mt-4">
@@ -160,6 +164,7 @@ export function OrderLine({
           <dd>
             <Price
               value={subtotal}
+              currencyCode={currencyCode}
               className="text-sm text-surface-on-surface"
             />
           </dd>
@@ -171,6 +176,7 @@ export function OrderLine({
           <dd>
             <Price
               value={shippingCosts}
+              currencyCode={currencyCode}
               className="text-sm text-surface-on-surface"
             />
           </dd>
@@ -180,7 +186,11 @@ export function OrderLine({
             {t("account.order.total")}
           </dt>
           <dd>
-            <Price value={total} className="text-surface-on-surface" />
+            <Price
+              value={total}
+              currencyCode={currencyCode}
+              className="text-surface-on-surface"
+            />
           </dd>
         </div>
       </dl>

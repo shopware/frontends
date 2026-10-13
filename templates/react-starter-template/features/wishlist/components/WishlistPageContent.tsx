@@ -240,6 +240,7 @@ function WishlistProducts() {
 export function WishlistPageContent() {
   const session = useSession();
   const customerId = session.context?.customer?.id;
+  const currencyId = session.context?.currency?.id;
 
   function renderBody() {
     if (session.status === "loading") {
@@ -251,7 +252,7 @@ export function WishlistPageContent() {
       );
     }
     if (!session.isLoggedIn) return <NotLoggedIn />;
-    return <WishlistProducts key={customerId} />;
+    return <WishlistProducts key={`${customerId}:${currencyId}`} />;
   }
 
   return (

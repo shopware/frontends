@@ -23,7 +23,11 @@
     "description": "Szablon sklepu Next.js dla Shopware 6."
   },
   "errors": {
-    "noDetailsProvided": "Brak szczegółów"
+    "noDetailsProvided": "Brak szczegółów",
+    "maintenance": {
+      "title": "Prace serwisowe",
+      "message": "W sklepie trwają prace serwisowe. Wróć wkrótce."
+    }
   },
   "product": {
     "previously": "Wcześniej",

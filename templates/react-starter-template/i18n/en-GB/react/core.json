@@ -23,7 +23,11 @@
     "description": "A Next.js storefront template for Shopware 6."
   },
   "errors": {
-    "noDetailsProvided": "No details provided"
+    "noDetailsProvided": "No details provided",
+    "maintenance": {
+      "title": "Maintenance",
+      "message": "The shop is currently undergoing maintenance. Please check back soon."
+    }
   },
   "product": {
     "previously": "Previously",

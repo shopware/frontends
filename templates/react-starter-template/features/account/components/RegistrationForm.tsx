@@ -34,6 +34,7 @@ export type RegistrationFormProps = {
   countries: CountryOption[];
   countriesUnavailable?: boolean;
   companyOnly?: boolean;
+  requestedGroupId?: string;
   redirectUrl?: string | null;
 };
 
@@ -52,6 +53,7 @@ export function RegistrationForm({
   countries,
   countriesUnavailable = false,
   companyOnly = false,
+  requestedGroupId,
   redirectUrl = null,
 }: RegistrationFormProps) {
   const router = useRouter();
@@ -145,7 +147,9 @@ export function RegistrationForm({
 
     setPending(true);
     try {
-      const result = await register(toRegistrationInput(values));
+      const result = await register(
+        toRegistrationInput(values, { requestedGroupId }),
+      );
       if (!result.ok) return;
       if (result.doubleOptIn) {
         setValues(initialValues(companyOnly));

@@ -5,6 +5,7 @@ import type { Schemas } from "#shopware";
 import { order, orderAddress, paymentMethod } from "./checkout.fixture";
 import {
   getOrderBillingAddress,
+  getOrderCurrencyCode,
   getOrderPaymentMethod,
   getOrderShippingAddress,
   getOrderShippingMethod,
@@ -47,5 +48,21 @@ describe("order details", () => {
     expect(getOrderShippingAddress(order({ deliveries: [] }))).toBeNull();
     expect(getOrderShippingMethod(order({ deliveries: [] }))).toBeNull();
     expect(getOrderPaymentMethod(order({ transactions: [] }))).toBeNull();
+  });
+
+  it("reads the ISO code of the currency the order was placed in", () => {
+    expect(
+      getOrderCurrencyCode(
+        order({ currency: { isoCode: "USD" } as Schemas["Currency"] }),
+      ),
+    ).toBe("USD");
+    expect(
+      getOrderCurrencyCode(order({ currency: undefined })),
+    ).toBeUndefined();
+    expect(
+      getOrderCurrencyCode(
+        order({ currency: { isoCode: "" } as Schemas["Currency"] }),
+      ),
+    ).toBeUndefined();
   });
 });

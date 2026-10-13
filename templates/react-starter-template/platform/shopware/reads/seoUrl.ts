@@ -5,6 +5,7 @@ import { getRouteFromPathInfo, isTechnicalPath } from "@shopware/helpers";
 import { cacheLife, cacheTag } from "next/cache";
 
 import { createShopwareClient } from "../client";
+import { isRenderedRouteName } from "../routeNames";
 import { languageCacheTags } from "./cacheTags";
 import { readSalesChannelContext } from "./context";
 
@@ -13,17 +14,6 @@ export type ResolvedRoute = {
   foreignKey: string;
   seoPathInfo?: string;
 };
-
-const CMS_ROUTE_NAMES: CmsRouteName[] = [
-  "frontend.navigation.page",
-  "frontend.detail.page",
-  "frontend.landing.page",
-  "frontend.account.customer-group-registration.page",
-];
-
-function isCmsRouteName(value: string | undefined): value is CmsRouteName {
-  return !!value && CMS_ROUTE_NAMES.includes(value as CmsRouteName);
-}
 
 async function readSeoUrl(
   path: string,
@@ -54,7 +44,7 @@ async function readSeoUrl(
   );
 
   const seoUrl = response.data.elements?.[0];
-  if (!seoUrl || !isCmsRouteName(seoUrl.routeName) || !seoUrl.foreignKey) {
+  if (!seoUrl || !isRenderedRouteName(seoUrl.routeName) || !seoUrl.foreignKey) {
     return null;
   }
 

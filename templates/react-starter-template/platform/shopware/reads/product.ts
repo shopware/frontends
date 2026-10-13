@@ -25,6 +25,7 @@ export async function readProductDetail(
         _criteria: encodeForQuery({
           associations: {
             ...cmsAssociations,
+            manufacturer: {},
             openGraphMedia: { associations: { thumbnails: {} } },
             seoUrls: {},
           },

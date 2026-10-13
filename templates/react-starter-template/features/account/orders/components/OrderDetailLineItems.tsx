@@ -48,11 +48,13 @@ function LineItemThumbnail({
 
 export type OrderDetailLineItemsProps = {
   lineItems: Schemas["OrderLineItem"][];
+  currencyCode?: string;
   onDownload: (downloadId: string, fileName: string) => void;
 };
 
 export function OrderDetailLineItems({
   lineItems,
+  currencyCode,
   onDownload,
 }: OrderDetailLineItemsProps) {
   const t = useTranslations();
@@ -99,6 +101,7 @@ export function OrderDetailLineItems({
                   <td className={CELL_CLASS}>
                     <Price
                       value={lineItem.unitPrice}
+                      currencyCode={currencyCode}
                       className="font-normal text-surface-on-surface"
                       data-testid="order-item-unitprice"
                     />
@@ -106,6 +109,7 @@ export function OrderDetailLineItems({
                   <td className={CELL_CLASS}>
                     <Price
                       value={lineItem.totalPrice}
+                      currencyCode={currencyCode}
                       className="font-normal text-surface-on-surface"
                       data-testid="order-item-totalprice"
                     />

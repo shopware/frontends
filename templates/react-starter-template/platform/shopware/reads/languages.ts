@@ -14,7 +14,7 @@ import type { LanguageOption } from "./languageOptions";
 
 export async function readLanguages(): Promise<LanguageOption[]> {
   "use cache";
-  cacheLife("reference");
+  cacheLife("hours");
   cacheTag("sw:languages");
 
   const { data } = await createShopwareClient().invoke(

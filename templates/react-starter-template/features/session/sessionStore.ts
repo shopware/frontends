@@ -14,14 +14,17 @@ import type {
 import { anonymousSession } from "./anonymousSession";
 import { createBrowserClient, loadPublicConfig } from "./browserClient";
 import type { SessionActions } from "./components/SessionActionsContext";
+import { readCurrencies } from "./currencyOptions";
+import type { CurrencyOption } from "./currencyOptions";
 import { READ_TIMEOUT_MS } from "./readTimeout";
 import { createSessionActions } from "./sessionActions";
-import type { SessionNotification } from "./sessionActions";
+import type {
+  SessionNotification,
+  SessionRefreshOptions,
+} from "./sessionActions";
 import { toStorefrontSession, unavailableSession } from "./sessionFromContext";
 import { getStorefrontUrl } from "./storefrontUrl";
 import type { StorefrontSession } from "./types";
-
-export type SessionRefreshOptions = { keepLastGood?: boolean };
 
 export type SessionStoreOptions = { locale?: Locale | null };
 
@@ -34,6 +37,7 @@ export type SessionStore = {
   getClient(): Promise<ApiClient>;
   getLanguages(): Promise<LanguageOption[]>;
   loadLanguages(): Promise<SalesChannelLanguages>;
+  loadCurrencies(): Promise<CurrencyOption[]>;
   setLocale(locale: Locale): void;
   createActions(
     notify: (notification: SessionNotification) => void,
@@ -61,6 +65,7 @@ export function createSessionStore({
   let context: Schemas["SalesChannelContext"] | null = null;
   let locale: Locale | null = initialLocale;
   let languages: Promise<LanguageOption[]> | null = null;
+  let currencies: Promise<CurrencyOption[]> | null = null;
   let localeTask: Promise<void> = Promise.resolve();
 
   function publish(next: StorefrontSession): void {
@@ -200,6 +205,17 @@ export function createSessionStore({
     };
   }
 
+  function loadCurrencies(): Promise<CurrencyOption[]> {
+    if (!currencies) {
+      const pending = getClient().then(readCurrencies);
+      currencies = pending;
+      pending.catch(() => {
+        if (currencies === pending) currencies = null;
+      });
+    }
+    return currencies;
+  }
+
   async function refreshSession(): Promise<void> {
     await start();
     await refresh({ keepLastGood: true }).catch(logReadFailure);
@@ -223,7 +239,7 @@ export function createSessionStore({
         invoke: async (operation, ...params) =>
           (await connect()).invoke(operation, ...params),
       },
-      refreshSession: () => refresh(),
+      refreshSession: (options) => refresh(options),
       getStorefrontUrl: resolveStorefrontUrl,
       notify,
       t,
@@ -240,6 +256,10 @@ export function createSessionStore({
       logout: async () => {
         await start();
         return actions.logout();
+      },
+      setCurrency: async (currencyId) => {
+        await start();
+        return actions.setCurrency(currencyId);
       },
       retrySession: retry,
       refreshSession,
@@ -260,6 +280,7 @@ export function createSessionStore({
     getClient,
     getLanguages,
     loadLanguages,
+    loadCurrencies,
     setLocale,
     createActions,
   };

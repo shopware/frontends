@@ -46,6 +46,7 @@ export const orderAssociations: NonNullable<
   Schemas["Criteria"]["associations"]
 > = {
   stateMachineState: {},
+  currency: {},
   lineItems: {
     associations: {
       cover: {},

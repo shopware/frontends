@@ -17,11 +17,13 @@ import { contentLanguageFor } from "@/platform/shopware/reads/languageOptions";
 import type { LanguageOption } from "@/platform/shopware/reads/languageOptions";
 
 import { anonymousSession } from "../anonymousSession";
+import type { CurrencyOption } from "../currencyOptions";
 import type { SessionNotification } from "../sessionActions";
 import { createSessionStore } from "../sessionStore";
 import type { StorefrontSession } from "../types";
 import { SessionActionsProvider } from "./SessionActionsContext";
 import { SessionProvider } from "./SessionProvider";
+import { ShopwareCurrenciesProvider } from "./ShopwareCurrenciesContext";
 import { ShopwareLanguagesProvider } from "./ShopwareLanguagesContext";
 
 export type ShopwareSessionProviderProps = {
@@ -74,6 +76,14 @@ export function ShopwareSessionProvider({
     return loaded;
   }, [store]);
 
+  const [currencies, setCurrencies] = useState<CurrencyOption[]>([]);
+
+  const loadCurrencies = useCallback(async () => {
+    const loaded = await store.loadCurrencies();
+    setCurrencies(loaded);
+    return loaded;
+  }, [store]);
+
   const contentLang = locale
     ? contentLanguageFor(
         locale,
@@ -107,9 +117,14 @@ export function ShopwareSessionProvider({
       <SessionProvider session={session}>
         <SessionActionsProvider actions={actions}>
           <ShopwareLanguagesProvider languages={languages} load={loadLanguages}>
-            <ContentLanguageProvider lang={contentLang}>
-              {children}
-            </ContentLanguageProvider>
+            <ShopwareCurrenciesProvider
+              currencies={currencies}
+              load={loadCurrencies}
+            >
+              <ContentLanguageProvider lang={contentLang}>
+                {children}
+              </ContentLanguageProvider>
+            </ShopwareCurrenciesProvider>
           </ShopwareLanguagesProvider>
         </SessionActionsProvider>
       </SessionProvider>

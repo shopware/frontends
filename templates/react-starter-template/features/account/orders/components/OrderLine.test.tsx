@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
 
+import type { Schemas } from "#shopware";
+import { checkoutSession } from "@/features/checkout/checkout.fixture";
+import { SessionProvider } from "@/features/session/components/SessionProvider";
 import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
@@ -74,6 +77,23 @@ describe("OrderLine", () => {
     );
 
     expect(html).not.toContain("See more");
+  });
+
+  it("formats the totals in the currency of the order, not the one of the session", async () => {
+    const html = await renderToHtml(
+      <SessionProvider session={checkoutSession()}>
+        <OrderLine
+          order={accountOrder({
+            currency: { isoCode: "USD" } as Schemas["Currency"],
+          })}
+        />
+      </SessionProvider>,
+    );
+
+    expect(html).toContain("US$59.98");
+    expect(html).toContain("US$4.99");
+    expect(html).toContain("US$64.97");
+    expect(html).not.toContain("€");
   });
 
   it("encodes the order id in the details link", () => {

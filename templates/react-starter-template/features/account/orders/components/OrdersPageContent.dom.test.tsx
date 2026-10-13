@@ -330,6 +330,33 @@ describe("OrdersPageContent", () => {
     ).toHaveLength(0);
   });
 
+  it("shows the expanded products and the totals in the currency of the order", async () => {
+    const { container } = await setup(() =>
+      orderRouteResponse([
+        accountOrder({
+          id: "order-1",
+          currency: { isoCode: "USD" } as Schemas["Currency"],
+        }),
+      ]),
+    );
+
+    await interact(() =>
+      query<HTMLButtonElement>(
+        container,
+        "article button[aria-expanded]",
+      ).click(),
+    );
+
+    expect(
+      query(container, '[data-testid="order-item-totalprice"]').textContent,
+    ).toBe("US$59.98");
+    expect(
+      query(container, '[data-testid="order-item-unitprice"]').textContent,
+    ).toBe("US$29.99");
+    expect(query(container, "article").textContent).toContain("US$64.97");
+    expect(query(container, "article").textContent).not.toContain("€");
+  });
+
   it("shows the empty state without pagination", async () => {
     const { container } = await setup(() => orderRouteResponse([]));
 

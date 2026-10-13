@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
 
+import type { Schemas } from "#shopware";
+import { SessionProvider } from "@/features/session/components/SessionProvider";
 import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
-import { order } from "../checkout.fixture";
+import { checkoutSession, order } from "../checkout.fixture";
 import { OrderConfirmation, formatOrderDate } from "./OrderConfirmation";
 
 function render(paymentUrl: string | null = null, showAccountLink = false) {
@@ -85,6 +87,29 @@ describe("OrderConfirmation", () => {
     expect(html).toContain(
       '<section class="sticky top-2 border border-outline-outline lg:top-[calc(var(--sticky-header-height)_+_0.5rem)]" aria-labelledby="order-summary-heading">',
     );
+  });
+
+  it("formats every amount in the currency of the order, not the one of the session", async () => {
+    const html = await renderToHtml(
+      <SessionProvider session={checkoutSession()}>
+        <OrderConfirmation
+          order={order({ currency: { isoCode: "USD" } as Schemas["Currency"] })}
+          paymentUrl={null}
+          onGoToPayment={() => {}}
+        />
+      </SessionProvider>,
+    );
+
+    expect(html).toContain(
+      'data-testid="order-item-totalprice">US$59.98</span>',
+    );
+    expect(html).toContain(
+      'data-testid="order-item-unitprice">US$29.99</span>',
+    );
+    expect(html).toContain('data-testid="order-subtotal">US$59.98</span>');
+    expect(html).toContain('data-testid="order-shipping">US$4.99</span>');
+    expect(html).toContain('data-testid="order-total">US$64.97</span>');
+    expect(html).not.toContain("€");
   });
 
   it("asks the customer to finish the payment when there is a payment URL", async () => {

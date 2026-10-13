@@ -9,12 +9,14 @@ export type OrderPriceSummaryProps = {
   subtotal?: number;
   shippingCosts?: number;
   total?: number;
+  currencyCode?: string;
 };
 
 export function OrderPriceSummary({
   subtotal,
   shippingCosts,
   total,
+  currencyCode,
 }: OrderPriceSummaryProps) {
   const headingId = useId();
   const t = useTranslations();
@@ -35,6 +37,7 @@ export function OrderPriceSummary({
             <dd className="text-sm text-surface-on-surface">
               <Price
                 value={subtotal}
+                currencyCode={currencyCode}
                 className="font-normal text-surface-on-surface"
                 data-testid="order-subtotal"
               />
@@ -47,6 +50,7 @@ export function OrderPriceSummary({
             <dd className="text-sm text-surface-on-surface">
               <Price
                 value={shippingCosts}
+                currencyCode={currencyCode}
                 className="font-normal text-surface-on-surface"
                 data-testid="order-shipping"
               />
@@ -59,6 +63,7 @@ export function OrderPriceSummary({
             <dd className="text-base font-semibold text-surface-on-surface">
               <Price
                 value={total}
+                currencyCode={currencyCode}
                 className="text-surface-on-surface"
                 data-testid="order-total"
               />

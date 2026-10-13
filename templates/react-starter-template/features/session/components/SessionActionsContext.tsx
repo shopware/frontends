@@ -15,6 +15,7 @@ export type SessionActions = {
   login(input: LoginInput): Promise<SessionActionResult>;
   register(input: RegistrationInput): Promise<SessionActionResult>;
   logout(): Promise<SessionActionResult>;
+  setCurrency(currencyId: string): Promise<SessionActionResult>;
   retrySession(): Promise<StorefrontSession>;
   refreshSession(): Promise<void>;
 };
@@ -34,6 +35,7 @@ export const notImplementedSessionActions: SessionActions = {
   login: async () => notImplemented("login"),
   register: async () => notImplemented("register"),
   logout: async () => notImplemented("logout"),
+  setCurrency: async () => notImplemented("setCurrency"),
   retrySession: async () => {
     warnNotImplemented("retrySession");
     return unavailableSession;

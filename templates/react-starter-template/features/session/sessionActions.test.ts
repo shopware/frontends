@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ApiClient } from "#shopware";
 import { testTranslator } from "@/test/i18n";
 
+import { READ_TIMEOUT_MS } from "./readTimeout";
 import {
   apiClientError,
   apiClientErrorWithBody,
@@ -291,6 +292,62 @@ describe("createSessionActions().logout", () => {
   });
 });
 
+describe("createSessionActions().setCurrency", () => {
+  it("patches the context currency, refreshes the session keeping the last good one and resolves ok", async () => {
+    const { actions, invocations, order, refreshSession, notifications } =
+      setup();
+
+    await expect(actions.setCurrency("currency-usd")).resolves.toEqual({
+      ok: true,
+    });
+
+    expect(invocations).toEqual([
+      {
+        operation: "updateContext patch /context",
+        params: {
+          body: { currencyId: "currency-usd" },
+          fetchOptions: { timeout: READ_TIMEOUT_MS },
+        },
+      },
+    ]);
+    expect(order).toEqual(["updateContext patch /context", "refreshSession"]);
+    expect(refreshSession).toHaveBeenCalledExactlyOnceWith({
+      keepLastGood: true,
+    });
+    expect(notifications).toEqual([]);
+  });
+
+  it("notifies the resolved error and resolves it without refreshing", async () => {
+    const { actions, refreshSession, notifications } = setup(
+      rejectWith(
+        apiClientError(
+          [{ code: "VIOLATION::CURRENCY_NOT_FOUND", detail: "No currency" }],
+          400,
+        ),
+      ),
+    );
+
+    await expect(actions.setCurrency("currency-xxx")).resolves.toEqual({
+      ok: false,
+      message: "No currency",
+    });
+
+    expect(notifications).toEqual([{ type: "error", message: "No currency" }]);
+    expect(refreshSession).not.toHaveBeenCalled();
+  });
+
+  it("stays ok when the refresh after a successful switch fails", async () => {
+    const { actions, refreshSession, notifications } = setup();
+    refreshSession.mockRejectedValueOnce(new Error("context down"));
+
+    await expect(actions.setCurrency("currency-usd")).resolves.toEqual({
+      ok: true,
+    });
+    expect(notifications).toEqual([]);
+    expect(consoleError).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe("createSessionActions", () => {
   it.each([
     ["nothing", undefined],
@@ -305,9 +362,11 @@ describe("createSessionActions", () => {
       actions.login({ username: "jane@example.com", password: "secret" }),
       actions.register(registrationInput),
       actions.logout(),
+      actions.setCurrency("currency-usd"),
     ]);
 
     expect(results).toEqual([
+      { status: "fulfilled", value: { ok: false, message: DEFAULT_MESSAGE } },
       { status: "fulfilled", value: { ok: false, message: DEFAULT_MESSAGE } },
       { status: "fulfilled", value: { ok: false, message: DEFAULT_MESSAGE } },
       { status: "fulfilled", value: { ok: false, message: DEFAULT_MESSAGE } },

@@ -26,6 +26,10 @@ import { useSessionActions } from "./SessionActionsContext";
 import type { SessionActions } from "./SessionActionsContext";
 import { useSession } from "./SessionProvider";
 import {
+  useLoadShopwareCurrencies,
+  useShopwareCurrencies,
+} from "./ShopwareCurrenciesContext";
+import {
   useLoadShopwareLanguages,
   useShopwareLanguages,
 } from "./ShopwareLanguagesContext";
@@ -985,5 +989,127 @@ describe("ShopwareSessionProvider content language", () => {
     );
     await new Promise((settle) => setTimeout(settle, 0));
     expect(contentLang()).toBe("none");
+  });
+});
+
+const READ_CURRENCIES = "readCurrencyGet get /currency";
+
+function createCurrencyBackend() {
+  const backend = {
+    currencyId: "currency-eur",
+    invocations: [] as Invocation[],
+  };
+  const invoke = async (operation: string, params?: unknown) => {
+    backend.invocations.push({ operation, params });
+    switch (operation) {
+      case READ_CONTEXT:
+        return {
+          data: {
+            ...salesChannelContext(null),
+            currency: { id: backend.currencyId },
+          },
+          status: 200,
+        };
+      case READ_CURRENCIES:
+        return {
+          data: [
+            { id: "currency-eur", isoCode: "EUR", symbol: "€" },
+            { id: "currency-usd", isoCode: "USD", symbol: "$" },
+          ],
+          status: 200,
+        };
+      case UPDATE_CONTEXT:
+        backend.currencyId = (
+          params as { body: { currencyId: string } }
+        ).body.currencyId;
+        return { data: {}, status: 200 };
+      default:
+        throw new Error(`Unexpected operation ${operation}`);
+    }
+  };
+  browser.createBrowserClient.mockImplementation(
+    () => ({ invoke }) as unknown as ApiClient,
+  );
+  return backend;
+}
+
+const currenciesHarness: {
+  load: ReturnType<typeof useLoadShopwareCurrencies> | null;
+} = { load: null };
+
+function CurrenciesProbe() {
+  const currencies = useShopwareCurrencies();
+  const load = useLoadShopwareCurrencies();
+  const session = useSession();
+  const actions = useSessionActions();
+  useEffect(() => {
+    currenciesHarness.load = load;
+    harness.actions = actions;
+  }, [load, actions]);
+  return (
+    <output data-testid="currencies">
+      {JSON.stringify({
+        status: session.status,
+        currencyId: session.context?.currency?.id ?? null,
+        currencies,
+      })}
+    </output>
+  );
+}
+
+describe("ShopwareSessionProvider currencies", () => {
+  it("reads the currencies only on request, hands them to its children and switches the session currency", async () => {
+    const backend = createCurrencyBackend();
+    mounted = await mount(
+      <ShopwareSessionProvider notify={() => {}}>
+        <CurrenciesProbe />
+      </ShopwareSessionProvider>,
+    );
+    const { container } = mounted;
+    const probe = () =>
+      JSON.parse(
+        query<HTMLOutputElement>(container, '[data-testid="currencies"]')
+          .textContent ?? "null",
+      );
+    await vi.waitFor(() =>
+      expect(probe()).toEqual({
+        status: "ready",
+        currencyId: "currency-eur",
+        currencies: [],
+      }),
+    );
+    expect(backend.invocations.map(({ operation }) => operation)).toEqual([
+      READ_CONTEXT,
+    ]);
+
+    await interact(() => {
+      void currenciesHarness.load?.();
+    });
+    await vi.waitFor(() =>
+      expect(probe().currencies).toEqual([
+        { id: "currency-eur", isoCode: "EUR", label: "EUR (€)" },
+        { id: "currency-usd", isoCode: "USD", label: "USD ($)" },
+      ]),
+    );
+
+    let result: SessionActionResult | undefined;
+    await interact(() => {
+      void harness.actions?.setCurrency("currency-usd").then((value) => {
+        result = value;
+      });
+    });
+
+    await vi.waitFor(() => expect(result).toEqual({ ok: true }));
+    expect(probe().currencyId).toBe("currency-usd");
+    expect(backend.invocations.map(({ operation }) => operation)).toEqual([
+      READ_CONTEXT,
+      READ_CURRENCIES,
+      UPDATE_CONTEXT,
+      READ_CONTEXT,
+    ]);
+    expect(backend.invocations[2]?.params).toEqual({
+      body: { currencyId: "currency-usd" },
+      fetchOptions: { timeout: READ_TIMEOUT_MS },
+    });
   });
 });

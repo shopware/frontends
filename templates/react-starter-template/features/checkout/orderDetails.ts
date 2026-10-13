@@ -43,3 +43,9 @@ export function getOrderTotals(order: Schemas["Order"]): {
     total: order.price?.totalPrice,
   };
 }
+
+export function getOrderCurrencyCode(
+  order: Schemas["Order"],
+): string | undefined {
+  return order.currency?.isoCode || undefined;
+}

@@ -61,6 +61,7 @@ export function cartSessionKey(session: StorefrontSession): string | null {
     !!customer?.guest,
     session.context?.token ?? null,
     session.context?.context?.languageIdChain?.[0] ?? null,
+    session.context?.currency?.id ?? null,
   ]);
 }
 

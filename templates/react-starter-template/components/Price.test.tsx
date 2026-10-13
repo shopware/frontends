@@ -76,6 +76,35 @@ describe("Price", () => {
     expect(html).toBe("<span>10,00\u00a0£</span>");
   });
 
+  it("formats in the given currency instead of the session one, like an order's own currency", async () => {
+    const html = await renderToHtml(
+      withI18n(
+        <SessionProvider session={withCurrency("GBP")}>
+          <Price value={10} currencyCode="USD" data-testid="order-total" />
+        </SessionProvider>,
+        "de-DE",
+      ),
+    );
+
+    expect(html).toBe('<span data-testid="order-total">10,00\u00a0$</span>');
+  });
+
+  it.each([
+    ["null", null],
+    ["undefined", undefined],
+  ])(
+    "falls back to the session currency for a %s currency code",
+    async (_, currencyCode) => {
+      const html = await renderToHtml(
+        <SessionProvider session={withCurrency("GBP")}>
+          <Price value={10} currencyCode={currencyCode} />
+        </SessionProvider>,
+      );
+
+      expect(html).toBe("<span>£10.00</span>");
+    },
+  );
+
   it.each([
     ["null", null],
     ["undefined", undefined],

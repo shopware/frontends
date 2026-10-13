@@ -12,6 +12,7 @@ import {
   toStorefrontSession,
   unavailableSession,
 } from "@/features/session/sessionFromContext";
+import type { StorefrontSession } from "@/features/session/types";
 import { testTranslator } from "@/test/i18n";
 
 import { cart, cartError, cartPrice, lineItem } from "./cart.fixture";
@@ -62,6 +63,16 @@ function readySession(
   token?: string,
 ) {
   return toStorefrontSession(salesChannelContext(currentCustomer, token));
+}
+
+function withCurrency(session: StorefrontSession, currencyId: string) {
+  return {
+    ...session,
+    context: {
+      ...session.context,
+      currency: { id: currencyId },
+    } as Schemas["SalesChannelContext"],
+  };
 }
 
 function operations(invocations: Invocation[]): string[] {
@@ -141,6 +152,22 @@ describe("createCartStore session sync", () => {
     store.syncSession(readySession(null, "anonymous-token"));
 
     await vi.waitFor(() => expect(invocations).toHaveLength(2));
+  });
+
+  it("reads the cart again after a currency switch on the same token, so the totals come converted", async () => {
+    const { store, invocations } = setup();
+    const euro = withCurrency(readySession(customer()), "currency-eur");
+    store.syncSession(euro);
+    await vi.waitFor(() => expect(invocations).toHaveLength(1));
+
+    store.syncSession(withCurrency(readySession(customer()), "currency-eur"));
+    await flush();
+    expect(invocations).toHaveLength(1);
+
+    store.syncSession(withCurrency(readySession(customer()), "currency-usd"));
+
+    await vi.waitFor(() => expect(invocations).toHaveLength(2));
+    expect(operations(invocations)).toEqual([READ_CART, READ_CART]);
   });
 
   it("does not read again for a session that keeps customer, guest flag and token", async () => {
@@ -563,7 +590,7 @@ describe("cartSessionKey", () => {
     expect(cartSessionKey(anonymousSession)).toBeNull();
   });
 
-  it("changes with the customer, the guest flag, the context token and the language only", () => {
+  it("changes with the customer, the guest flag, the context token, the language and the currency only", () => {
     const anonymous = cartSessionKey(readySession());
 
     expect(cartSessionKey(readySession())).toBe(anonymous);
@@ -580,5 +607,13 @@ describe("cartSessionKey", () => {
       context: { languageIdChain: ["language-de"] },
     } as Schemas["SalesChannelContext"]);
     expect(cartSessionKey(german)).not.toBe(anonymous);
+    const euro = cartSessionKey(withCurrency(readySession(), "currency-eur"));
+    expect(euro).not.toBe(anonymous);
+    expect(cartSessionKey(withCurrency(readySession(), "currency-eur"))).toBe(
+      euro,
+    );
+    expect(
+      cartSessionKey(withCurrency(readySession(), "currency-usd")),
+    ).not.toBe(euro);
   });
 });

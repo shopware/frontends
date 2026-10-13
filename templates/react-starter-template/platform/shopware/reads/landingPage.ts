@@ -25,7 +25,9 @@ export async function readLandingPage(
     {
       pathParams: { landingPageId },
       query: {
-        _criteria: encodeForQuery({ associations: cmsAssociations }),
+        _criteria: encodeForQuery({
+          associations: { ...cmsAssociations, seoUrls: {} },
+        }),
       } as ReadLandingPageGetQuery,
     },
   );

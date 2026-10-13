@@ -336,6 +336,7 @@ describe("readOrder", () => {
             checkPromotion: true,
             associations: {
               stateMachineState: {},
+              currency: {},
               lineItems: {
                 associations: {
                   cover: {},

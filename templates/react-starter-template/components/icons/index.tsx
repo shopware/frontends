@@ -122,3 +122,10 @@ export function GlobeIcon({ className, ...props }: IconProps) {
     </svg>
   );
 }
+
+export const CurrencyIcon = outline(
+  <>
+    <circle cx="12" cy="12" r="5" />
+    <path d="M5 5l3.5 3.5M19 5l-3.5 3.5M5 19l3.5-3.5M19 19l-3.5-3.5" />
+  </>,
+);

@@ -7,13 +7,16 @@ import type { Translate } from "@/i18n/translate";
 import { resolveApiErrorMessages } from "./apiErrors";
 import type { ApiErrorContext } from "./apiErrors";
 import type { SessionActions } from "./components/SessionActionsContext";
+import { READ_TIMEOUT_MS } from "./readTimeout";
 import type { SessionActionResult } from "./types";
 
 export type SessionNotification = { type: "error"; message: string };
 
+export type SessionRefreshOptions = { keepLastGood?: boolean };
+
 export type SessionActionDeps = {
   client: Pick<ApiClient, "invoke">;
-  refreshSession: () => Promise<void>;
+  refreshSession: (options?: SessionRefreshOptions) => Promise<void>;
   getStorefrontUrl: () => Promise<string>;
   notify: (notification: SessionNotification) => void;
   t: Translate;
@@ -48,9 +51,11 @@ export function createSessionActions({
     return { ok: false, message: messages[0] };
   }
 
-  async function refreshAfterMutation(): Promise<void> {
+  async function refreshAfterMutation(
+    options?: SessionRefreshOptions,
+  ): Promise<void> {
     try {
-      await refreshSession();
+      await refreshSession(options);
     } catch (error) {
       console.error("[Session] refreshing the session failed", error);
     }
@@ -98,6 +103,19 @@ export function createSessionActions({
         if (!isAlreadyLoggedOut(error)) return fail(error);
       }
       await refreshAfterMutation();
+      return { ok: true };
+    },
+
+    async setCurrency(currencyId) {
+      try {
+        await client.invoke("updateContext patch /context", {
+          body: { currencyId },
+          fetchOptions: { timeout: READ_TIMEOUT_MS },
+        });
+      } catch (error) {
+        return fail(error);
+      }
+      await refreshAfterMutation({ keepLastGood: true });
       return { ok: true };
     },
   };

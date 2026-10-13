@@ -18,6 +18,7 @@ import { OrderMethodCard } from "@/features/checkout/components/OrderMethodCard"
 import { OrderStatus } from "@/features/checkout/components/OrderStatus";
 import {
   getOrderBillingAddress,
+  getOrderCurrencyCode,
   getOrderPaymentMethod,
   getOrderShippingAddress,
   getOrderShippingMethod,
@@ -105,6 +106,7 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
   const shippingMethod = getOrderShippingMethod(order);
   const paymentMethod = getOrderPaymentMethod(order);
   const { subtotal, shippingCosts, total } = getOrderTotals(order);
+  const currencyCode = getOrderCurrencyCode(order);
   const deliveryTime = shippingMethod
     ? getShippingMethodDeliveryTime(shippingMethod)
     : undefined;
@@ -285,6 +287,7 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
 
       <OrderDetailLineItems
         lineItems={order.lineItems ?? []}
+        currencyCode={currencyCode}
         onDownload={(downloadId, fileName) => {
           void downloadFile(downloadId, fileName);
         }}
@@ -307,6 +310,7 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
           subtotal={subtotal}
           shippingCosts={shippingCosts}
           total={total}
+          currencyCode={currencyCode}
         />
       </div>
 

@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { Schemas } from "#shopware";
+import { readBreadcrumbOrNothing } from "@/platform/shopware/reads/breadcrumb";
 import { readCategory } from "@/platform/shopware/reads/category";
 import { readSalesChannelContext } from "@/platform/shopware/reads/context";
 import { readLandingPage } from "@/platform/shopware/reads/landingPage";
@@ -33,6 +34,40 @@ vi.mock("@/platform/shopware/reads/product", () => ({
 vi.mock("@/platform/shopware/reads/landingPage", () => ({
   readLandingPage: vi.fn(),
 }));
+vi.mock("@/platform/seo/clock", () => ({
+  catalogNow: async () => Date.parse("2026-10-13T12:00:00Z"),
+}));
+vi.mock("@/platform/shopware/reads/breadcrumb", () => ({
+  readBreadcrumbOrNothing: vi.fn(),
+}));
+vi.mock("@/platform/shopware/reads/languages", () => ({
+  resolveContentLanguage: async (locale: string) => ({
+    languageId: null,
+    contentLang: locale === "de-DE" ? "en-GB" : undefined,
+  }),
+}));
+
+function breadcrumb(name: string, path: string): Schemas["Breadcrumb"] {
+  return {
+    categoryId: `${name}-id`,
+    name,
+    path,
+    type: "page",
+    translated: { name },
+  } as unknown as Schemas["Breadcrumb"];
+}
+
+function anchor(html: string, text: string): string {
+  const match = html.match(new RegExp(`<a [^>]*>${text}</a>`));
+  expect(match).not.toBeNull();
+  return match?.[0] ?? "";
+}
+
+function jsonLdBlocks(html: string): unknown[] {
+  return [
+    ...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g),
+  ].map((match) => JSON.parse(match[1] ?? "null"));
+}
 
 function pageWithListing(listing: object): Schemas["CmsPage"] {
   return {
@@ -58,8 +93,11 @@ beforeEach(() => {
   );
   vi.mocked(readSalesChannelContext).mockResolvedValue({
     context: { taxState: "gross" },
+    currency: { isoCode: "EUR" },
     salesChannel: { navigationCategoryId: "root" },
   } as unknown as Schemas["SalesChannelContext"]);
+  vi.mocked(readBreadcrumbOrNothing).mockResolvedValue([]);
+  vi.unstubAllEnvs();
 });
 
 describe("NavigationPage", () => {
@@ -214,5 +252,118 @@ describe("LandingPage", () => {
       "language-de",
     );
     expect(html).toContain("Dieser Landingpage ist kein Layout zugewiesen.");
+  });
+});
+
+describe("catalog breadcrumbs", () => {
+  it("renders the category trail after a home link in the page locale", async () => {
+    vi.mocked(readBreadcrumbOrNothing).mockResolvedValue([
+      breadcrumb("Furniture", "Furniture/"),
+      breadcrumb("Chairs", "Furniture/Chairs/"),
+    ]);
+
+    const html = await renderToHtml(
+      await NavigationPage({
+        navigationId: "n",
+        searchParams: {},
+        locale: "de-DE",
+        languageId: "language-de",
+      }),
+    );
+
+    expect(readBreadcrumbOrNothing).toHaveBeenCalledExactlyOnceWith(
+      "n",
+      "category",
+      "language-de",
+    );
+    expect(html).toMatch(/<nav aria-label="[^"]+"[^>]*><ol/);
+    expect(anchor(html, "Startseite")).toContain('href="/de-DE"');
+    const furniture = anchor(html, "Furniture");
+    expect(furniture).toMatch(/href="\/de-DE\/Furniture\/?"/);
+    expect(furniture).toContain('lang="en-GB"');
+    expect(furniture).not.toContain("aria-current");
+    const chairs = anchor(html, "Chairs");
+    expect(chairs).toMatch(/href="\/de-DE\/Furniture\/Chairs\/?"/);
+    expect(chairs).toContain('aria-current="page"');
+  });
+
+  it("skips the trail on the home page", async () => {
+    const html = await renderToHtml(
+      await NavigationPage({
+        navigationId: "root",
+        searchParams: {},
+        locale: "en-GB",
+        languageId: null,
+        isHome: true,
+      }),
+    );
+
+    expect(readBreadcrumbOrNothing).not.toHaveBeenCalled();
+    expect(html).not.toContain("<nav");
+  });
+
+  it("adds the product to its trail and describes it as structured data", async () => {
+    vi.stubEnv("STOREFRONT_URL", "https://shop.test");
+    vi.mocked(readBreadcrumbOrNothing).mockResolvedValue([
+      breadcrumb("Chairs", "Chairs/"),
+    ]);
+    vi.mocked(readProductDetail).mockResolvedValue({
+      product: {
+        id: "variant-1",
+        productNumber: "SW-1",
+        name: "Oak Chair",
+        translated: { name: "Oak Chair" },
+        seoUrls: [{ seoPathInfo: "Oak-Chair/SW-1" }],
+        calculatedPrice: { unitPrice: 99.5 },
+        calculatedPrices: [],
+        stock: 5,
+        cmsPage: null,
+      },
+    } as unknown as Schemas["ProductDetailResponse"]);
+
+    const html = await renderToHtml(
+      await DetailPage({
+        productId: "parent-1",
+        locale: "en-GB",
+        languageId: null,
+      }),
+    );
+
+    expect(readBreadcrumbOrNothing).toHaveBeenCalledExactlyOnceWith(
+      "variant-1",
+      "product",
+      null,
+    );
+    const productCrumb = anchor(html, "Oak Chair");
+    expect(productCrumb).toContain('href="/Oak-Chair/SW-1"');
+    expect(productCrumb).toContain('aria-current="page"');
+    const [trail, product] = jsonLdBlocks(html) as Record<string, unknown>[];
+    expect(trail?.["@type"]).toBe("BreadcrumbList");
+    expect(product).toMatchObject({
+      "@type": "Product",
+      url: "https://shop.test/Oak-Chair/SW-1",
+      sku: "SW-1",
+      offers: { "@type": "Offer", price: 99.5, priceCurrency: "EUR" },
+    });
+  });
+
+  it("shows the landing page name as its only crumb", async () => {
+    vi.mocked(readLandingPage).mockResolvedValue({
+      id: "l",
+      name: "Summer",
+      translated: { name: "Summer" },
+      cmsPage: null,
+    } as unknown as Schemas["LandingPage"]);
+
+    const html = await renderToHtml(
+      await LandingPage({
+        landingPageId: "l",
+        locale: "en-GB",
+        languageId: null,
+      }),
+    );
+
+    expect(html).toMatch(/<span aria-current="page">Summer<\/span>/);
+    expect(readBreadcrumbOrNothing).not.toHaveBeenCalled();
   });
 });

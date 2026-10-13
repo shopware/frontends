@@ -23,7 +23,11 @@
     "description": "Eine Next.js-Storefront-Vorlage für Shopware 6."
   },
   "errors": {
-    "noDetailsProvided": "Keine Details angegeben"
+    "noDetailsProvided": "Keine Details angegeben",
+    "maintenance": {
+      "title": "Wartung",
+      "message": "Der Shop wird gerade gewartet. Bitte schau bald wieder vorbei."
+    }
   },
   "product": {
     "previously": "Vorher",

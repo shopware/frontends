@@ -98,11 +98,50 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   `/landingPage/{id}`) are parsed with `getRouteFromPathInfo`, everything
   else is looked up in `/seo-url` with both the plain path and the path with
   a trailing slash. The result is dispatched to
-  `features/cms/components/{NavigationPage,DetailPage,LandingPage}`.
-- A miss calls `notFound()` inside a `<Suspense>` boundary, which streams a
-  200 with `noindex`, not a real 404. Real 301/404/503 status codes need the
-  lookup in `proxy.ts`; that is a later stage, do not try to fix it in the
-  page.
+  `features/cms/components/{NavigationPage,DetailPage,LandingPage}` and
+  `features/account/customerGroup/CustomerGroupRegistrationPage`.
+- Status codes come from `proxy.ts`, not from the page: a `notFound()` inside
+  the page's `<Suspense>` can only stream a 200 with `noindex`. Before a
+  catalog path renders, the proxy asks `seoResolver` (`platform/routing/`,
+  an in-memory LRU per instance: hits 1 h, redirects 5 min (so a renamed
+  SEO URL cannot loop for long), misses 1 min, stale answers served while one
+  lookup refreshes them, maintenance and failures never cached; paths over
+  750 characters or with `//` are rejected before the cache):
+  - a stored SEO path renders as before (the page repeats its own cached
+    lookup);
+  - another case or slash spelling, a superseded URL (`isCanonical` is
+    `NULL`, not `false`, on old rows) and a technical path with an SEO URL
+    get a 301 to the stored canonical spelling, query kept, trailing slash
+    kept (unlike Vue's `getCanonicalPathForTechnicalPath`, which drops it and
+    then misses its own lookup);
+  - a miss or a route name without a page is rewritten to
+    `app/[locale]/(shop)/sw/not-found`, a static page that only calls
+    `notFound()`, so it answers a real 404 with the shop layout;
+  - `FRAMEWORK__API_SALES_CHANNEL_MAINTENANCE_MODE` answers a 503 page from
+    the proxy (`maintenancePage.ts`, `<h1>503</h1><h2>…</h2>`, `Retry-After`).
+    `maintenanceMonitor` probes `/context` once per 30 s per instance so `/`
+    and the account pages get it too. The Store API checks the IP allowlist
+    against the Next server's IP, not the visitor's.
+  - A timeout, 429 or 5xx with nothing cached lets the request render as it
+    did before (soft 404 at worst) instead of answering 503: every visible
+    `<Link>` prefetch runs the proxy, and the demo backend's per-IP limit
+    would otherwise turn prefetches into errors. After such a failure the
+    resolver skips lookups of uncached paths for 5 s. The same pass-through
+    applies while `GET /language` has never been read: a lookup without
+    `sw-language-id` runs in the default language and would 404 or redirect
+    translated paths.
+  - Only live lookups report to `maintenanceMonitor` (`onLookup` in
+    `shopwareRouting.ts`), so cached answers cannot keep clearing it. A 301
+    whose target would leave the request's origin, or whose stored path
+    holds a backslash or a control character, is never sent.
+  - `RENDERED_ROUTE_NAMES` (`platform/shopware/routeNames.ts`) is the one
+    list of route names the storefront renders, used by the proxy and the
+    page's own lookup. The proxy and `readLanguages` both keep the language
+    list for an hour, so they agree on the locale's language.
+- `/`, `/account/**`, `/checkout/**` and `/wishlist` (`APP_ROUTE_SEGMENTS` in
+  `platform/routing/paths.ts`, checked against the app folders by
+  `proxy.test.ts`) skip the lookup. Real statuses only show on `next start`;
+  `next dev` and unit tests cannot prove the 404 of the rewritten page.
 - `skipTrailingSlashRedirect` is on because Shopware category paths end with
   `/`. The catch-all receives the segments without that slash, which is why
   the SEO lookup tries both spellings.
@@ -134,6 +173,36 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
 - The home page (`app/[locale]/(shop)/page.tsx`) calls `connection()` before its
   reads so `next build` does not need the Store API. Prerendering at build
   time is a later decision.
+
+## HTTP cache headers
+
+- `next.config.ts` `headers()` returns `cacheHeaderRules()` from
+  `platform/routing/cacheHeaders.ts`, which has no `server-only` and only
+  relative imports because next.config loads it.
+- `PERSONAL_AREAS` (`account`, `checkout`, `wishlist`, unprefixed and under
+  `/pl-PL` and `/de-DE`) get `Surrogate-Control: no-store` and
+  `Cache-Control` set to `PERSONAL_CACHE_CONTROL`
+  (`private, no-cache, no-store, max-age=0, must-revalidate`).
+  `/<area>/:path*` also matches the bare path and a trailing slash, not
+  `/accountancy`. Without them `next start` sends `s-maxage=31536000` for the
+  fully static `/checkout/cart`. `/en-GB/*` is left out because the proxy
+  308-redirects it.
+- `PUBLIC_ASSETS` lists every file in `public/` (a test fails when they
+  drift apart) with `public, max-age=604800`: one week, not `immutable`, so a
+  brand swap does not stay stuck in browsers for a year.
+- Never add a rule that matches every path, `/_next/**`, `/api/**` or catalog
+  paths: a matching config header replaces the `immutable` on
+  `/_next/static`, a route handler's own `Cache-Control` and the `private`
+  Next sends for PPR pages. Headers set by the proxy win over config headers;
+  the proxy sets them only on the responses it answers itself (301, the
+  rewritten 404, 503).
+- Catalog HTML stays `private` while Header and Footer call `connection()`;
+  CDN-cacheable catalog HTML needs that changed (a prerender flag or params
+  passed into Header and Footer) and is a later decision.
+- Rules match the incoming path before the proxy rewrite, case-insensitively.
+  `next dev` always sends `no-store`, so check with `next build`,
+  `next start` and curl. Unit tests use `unstable_getResponseFromNextConfig`
+  from `next/experimental/testing/server`.
 
 ## Layout
 
@@ -232,10 +301,42 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   changed meanwhile. A Shopware
   language without a storefront locale cannot be chosen: add the locale
   and its messages to offer it.
-  There is no currency switch, unlike the Vue meta navigation: the catalog
-  renders anonymously on the server and is cached for every visitor, so a
-  context currency would change only the browser-side cart and checkout,
-  never the catalog prices next to them.
+- `MetaNavigation` also holds `CurrencySwitcher`, left of `LanguageSwitcher`
+  so the language button does not move when it appears after hydration. It
+  is a disclosure button (`data-testid="currency-switcher-button"`,
+  `CurrencyIcon`, the `layout.ariaLabels.currencySwitcher` label in
+  `sr-only` before the current label) with a list of `<button>`s
+  (`currency-switcher-option`, `aria-current="true"` on the current one),
+  not the Vue `<select>`, for the same WCAG 3.2.2 reason. Labels are
+  "ISO (symbol)", or the ISO code alone (`currencyLabel` in
+  `features/session/currencyOptions.ts`, a port of the Vue
+  `useCurrencySwitcher`). The list comes from `useShopwareCurrencies()`;
+  once the session status is not `"loading"` the switcher loads it through
+  the store's memoized `loadCurrencies` (`readCurrencyGet get /currency`
+  with `_criteria` sorted by `position` then `name`), retried on the next
+  call after a failure. Nothing renders on the server, before that read,
+  with fewer than two currencies or without a context currency. The list
+  closes like the language list.
+- Choosing another currency calls `useSessionActions().setCurrency(id)` and
+  never loads a page, unlike the Vue `window.location.reload()`. While it
+  runs, the button and the chosen option are `aria-busy`, every option is
+  `aria-disabled`, further choices are ignored and an `<output>` announces
+  `layout.currencySwitcher.pending`. On success the list closes, focus
+  returns to the button, the `<output>` says `layout.currencySwitcher.changed`
+  and `router.refresh()` re-renders the server components; on failure the
+  action has shown its toast and the list stays open. When the PATCH
+  succeeded but the session (read again through `retrySession()`) still holds
+  the old currency, the page reloads like Vue, otherwise the cart would keep
+  the old currency while the backend places the order in the new one. A
+  failed currency read is retried on `online` and on a visible tab.
+- Known divergence: the catalog keeps the sales channel's default currency.
+  CMS pages render anonymously on the server and are cached for every
+  visitor, and `ctx.currencyCode` comes from the anonymous `/context`, so
+  catalog prices and the listing price filter stay consistent with each
+  other but can differ from the cart, checkout, account and wishlist, even
+  after a reload. Converting the catalog needs the price-bearing
+  `'use cache'` reads to send `sw-currency-id` and take the currency as part
+  of their cache key; `router.refresh()` cannot do it alone.
 - Session data comes from `useSession()` in `features/session`, filled in the
   browser by `ShopwareSessionProvider` (see Session and actions). The account
   button sends a guest to `/account/login?redirect=<encoded path>` like the
@@ -263,7 +364,10 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   (`resolveRedirectFromSearch`, which returns the URL-normalized path and
   refuses any whose normalized pathname starts with `//`, such as
   `/.//evil.example`), so a login during the first session read,
-  which can trigger both, still lands on one URL.
+  which can trigger both, still lands on one URL. `LoggedInRedirect` takes
+  a `fallback` (default `/`) for a URL without a usable `redirect`; the
+  customer-group registration page passes `/account`, like the Vue
+  `RegistrationForm`.
 - The cart button reads `useCart().count` and is a disclosure for `MiniCart`
   (see Cart) that opens only while the count is above 0. The wishlist button
   is a `LocaleLink` to `/wishlist` (see Wishlist). The search input only
@@ -304,9 +408,10 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   `i18n/translate.ts` implements the part of vue-i18n the Vue messages use.
 - `proxy.ts` (Next 16's `middleware.ts`) rewrites an unprefixed path to
   `/en-GB/<path>` internally, redirects `/en-GB/<path>` to `/<path>` with a
-  308 and passes `/pl-PL/*` and `/de-DE/*` through. Any other first segment
-  is a page path of the default locale, so `/xx-XX/…` goes through the SEO
-  lookup and ends in the catch-all's not-found. It skips `/api`, `/_next`
+  308 and passes `/pl-PL/*` and `/de-DE/*` through, after the status checks
+  described under Routing and CMS. Any other first segment is a page path of
+  the default locale, so `/xx-XX/…` goes through the SEO lookup and gets
+  the 404 page. It skips `/api`, `/_next`
   and static files, a closed list of asset extensions (`STATIC_FILE`, kept
   as a literal copy in `config.matcher` because Next reads `config`
   statically). Shopware product SEO URLs end in the product number and
@@ -386,6 +491,28 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   `metadata` title. The root layout keeps the brand title
   (`%s | Shopware Frontends Demo Store`) in every locale and translates
   only `meta.description`.
+- Catalog metadata (`platform/seo/`, built by `buildRouteMetadata` and
+  `buildHomeMetadata`) follows the Shopware storefront, not Vue: title
+  `metaTitle || name`, description `metaDescription` or the stripped
+  description cut to 255 characters, `keywords`, a canonical from the
+  entity's canonical SEO URL (technical path as fallback) with only `?p=N`
+  for N > 1, and Open Graph (`ogTitle`/`ogDescription`/`openGraphMedia` for
+  products, the category media, no image for landing pages; `og:type` stays
+  `website` because Next has no `product` type). Absolute URLs need
+  `STOREFRONT_URL`; without it the canonical is relative and `og:url` and the
+  JSON-LD URLs are left out. The request host is never used, because the
+  catalog does not read `headers()`. The home title stays the brand unless
+  the root category has a `metaTitle`: `homeMetaTitle` is not exposed by the
+  Store API.
+- The product page renders `Product` JSON-LD and every catalog page with a
+  trail a `BreadcrumbList` (`components/JsonLd.tsx` escapes `<`, `>`, `&` and
+  the line separators). Prices are the anonymous default-currency prices the
+  page shows. Breadcrumbs come from `GET /breadcrumb/{id}` with an explicit
+  `type` (the default `product` tries the product first); 204 means no main
+  category and gives no trail, a failed read renders the page without one,
+  and the home page skips the read. The trail is hidden below `lg`, like Vue.
+- Account, checkout, cart, wishlist, login and the order success pages are
+  `noindex, follow` (`PRIVATE_PAGE_ROBOTS`), like the Shopware storefront.
 - The Shopware language follows the URL locale, like the Vue `app.vue`: a
   locale maps to the Shopware language whose `translationCode.code` equals
   it, otherwise the default language is used and only the UI labels change.
@@ -393,8 +520,8 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   browser session applies the same mapping to the context (see Session and
   actions). The demo backend has only English (US), so product, category,
   country, salutation and method names stay English under `/pl-PL` and
-  `/de-DE` there. The language switcher and the missing currency switch are
-  described under Layout.
+  `/de-DE` there. The language and currency switchers are described under
+  Layout.
 - `<html lang>` is the URL locale, so Shopware text in another language
   declares its own (WCAG 3.1.2): `contentLanguageFor` in
   `platform/shopware/reads/languageOptions.ts` returns the code of the
@@ -427,7 +554,9 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   package behaviour. The 404 is `app/[locale]/(shop)/not-found.tsx`, so every
   `notFound()` under `(shop)` renders `NotFoundContent` (translated
   `<title>`, heading from `errors.message-404` and a localized home link)
-  inside the shop layout and under the locale's `<html lang>`;
+  inside the shop layout and under the locale's `<html lang>`, as
+  `<h1>404</h1><h2>{message}</h2>`, the shape `apps/e2e-tests/fixtures.ts`
+  parses;
   `app/[locale]/not-found.tsx` is the fallback for other groups. A
   streamed 404 keeps the metadata `<title>` first in `<head>`, so the
   catch-all's `generateMetadata` titles an unresolved path with
@@ -569,6 +698,50 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   positive finite `timeout` is respected, and `0`, a negative or an infinite
   one keeps it until it is closed (the checkout's persistent errors).
 
+- `setCurrency(currencyId)` sends `updateContext patch /context
+{ currencyId }`, then re-reads `/context` with `keepLastGood`. The
+  identity does not change, so a failed re-read keeps the last session with
+  status `"error"`, as `refreshSession()` does. A failure resolves
+  `{ ok: false, message }` after its own toasts. It never touches the cart;
+  the new `context.currency.id` changes `cartSessionKey`. The currency
+  belongs to the context token, so it survives page loads; a login restores
+  the customer's stored context, currency included, and a logout starts in
+  the default currency.
+- `features/session/contextTokenCookie.ts` (no `server-only`) is the one
+  definition of the session cookie: `CONTEXT_TOKEN_COOKIE`,
+  `CONTEXT_TOKEN_LIFETIME_DAYS` (365), `contextTokenCookieAttributes(secure)`
+  (`path "/"`, `sameSite "lax"`) and `contextTokenExpiry()`, the same date as
+  js-cookie's `expires: 365`. `browserClient.ts` re-exports
+  `CONTEXT_TOKEN_COOKIE` because several tests mock that module.
+- The server writes the session cookie in one place only:
+  `app/[locale]/(shop)/account/login/imitate-customer/route.ts`, the
+  Administration's "Login as customer" (Vue
+  `server/routes/account/login/imitate-customer.post.ts`).
+  - It is a route handler, not a Server Action: the Administration posts a
+    cross-origin `<form method=POST>` with urlencoded `token`, `customerId`
+    and `userId`, and Server Actions abort when Origin ≠ Host. It exports
+    only `POST`, so the token never appears in a URL.
+  - It calls `imitateCustomer(createShopwareClient(), credentials)`
+    (`features/session/imitateCustomer.ts`, `imitateCustomerLogin post
+/account/login/imitate-customer`) on a fresh client without the
+    visitor's token, so a guest cart is not merged and a logged-in customer
+    is replaced. The new token comes from
+    `client.defaultHeaders["sw-context-token"]`.
+  - The cookie gets the browser client's attributes: `secure` when the
+    request is https (or the first `x-forwarded-proto` is `https`), never
+    `httpOnly`, because the browser client reads it. Success answers 303 to
+    `withLocale("/account", locale)` with a relative `Location` and
+    `no-store`; any failure answers 303 to the locale home without a
+    cookie, like Vue. The `redirectUrl` in the answer is ignored.
+  - Never log the error object or its message: the 400
+    `CHECKOUT__IMITATE_CUSTOMER_INVALID_TOKEN` carries the token in `detail`
+    and `meta.parameters`. Only the status and the codes are logged.
+  - Requirements: the sales channel must be storefront type, its domain URLs
+    must use exactly `/pl-PL` and `/de-DE`, and `SHOPWARE_ACCESS_TOKEN` must
+    belong to the token's sales channel. An already open storefront tab
+    keeps the old token in memory and writes it back on its next context
+    change.
+
 ## Cart
 
 - `features/cart/cartStore.ts` (`createCartStore`) holds the cart.
@@ -586,11 +759,16 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
 - The store reads `readCart get /checkout/cart` (with `READ_TIMEOUT_MS`)
   once the session's first `/context` read settled, ready or failed, and
   again whenever `cartSessionKey` changes: the customer id, the guest flag,
-  the context token or the context language, so after a login, a
-  registration (guest or not), a logout and a language switch. An order keeps the token (`CartOrderRoute` only deletes the
-  cart), and so does a context switch (shipping or payment method, currency,
-  country), so neither re-reads on its own: call `refresh()` after it, as the
-  checkout does. A failed read is logged, sets status `"error"` and keeps
+  the context token, the context language or the context currency
+  (`context.currency.id`), so after a login, a registration (guest or not),
+  a logout, a language switch and a currency switch; the backend
+  recalculates the cart in the new currency. An order keeps the token
+  (`CartOrderRoute` only deletes the cart), and so does any other context
+  switch (shipping or payment method, country), so neither re-reads on its
+  own: call `refresh()` after it, as the checkout does. Between a currency
+  switch and that re-read the mini cart shows the old amounts with the new
+  symbol, and the checkout does not re-read its shipping and payment
+  methods. A failed read is logged, sets status `"error"` and keeps
   the last cart.
 - Mutations: `addProduct` posts `addLineItem` with
   `{ items: [{ id, referencedId: id, quantity, type: "product" }] }`
@@ -625,9 +803,13 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   `SwProductCardAddToCartButton`) notify the success with the "View cart"
   action and the cart errors themselves, so the provider must not notify.
 - `components/Price.tsx` formats with `formatPrice` from the CMS package,
-  in the page locale (`useLocale()`) and the session context's currency
-  (`EUR` until it is read),
-  and renders nothing for `null` or `undefined`.
+  in the page locale (`useLocale()`). The currency is the `currencyCode`
+  prop, else the session context's currency (`EUR` until it is read). It
+  renders nothing for `null` or `undefined`. Order views pass the order's
+  own currency (`getOrderCurrencyCode` in `features/checkout/orderDetails.ts`,
+  from the `currency` association in `orderAssociations`), because an order
+  keeps the currency it was placed in. Cart, checkout and wishlist amounts
+  come in the session currency and pass none.
 - The cart UI sits in `features/cart/components/`. `CheckoutProductTile` ports
   the Vue `checkout/ProductTile.vue`: `data-product-id` is the line item's
   `referencedId`, the quantity select shows only for stackable products
@@ -713,7 +895,7 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   `setPaymentMethod` (`updateContext patch /context`); `createOrder`;
   `updateCustomerDetails`; `readOrder` (`readOrder post /order` with
   `checkPromotion` and `orderAssociations`, the `useDefaultOrderAssociations`
-  set plus the address countries); `handlePayment`
+  set plus the address countries and `currency`); `handlePayment`
   (`handlePaymentMethod post /handle-payment`). `updateCustomerDetails` sends
   every field of the existing default billing address with the patch,
   because the upsert route nulls the ones left out, then `changeProfile`.
@@ -940,6 +1122,27 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
     `order/Details.vue`, which only the checkout success page renders.
   - The Vue `TransitionGroup` animations of the address tiles.
 
+- Customer-group registration
+  (`frontend.account.customer-group-registration.page`). Shopware generates
+  its SEO URL from the group's registration title, only for storefront-type
+  sales channels; there is no technical path, because `TECHNICAL_ROUTE_MAP`
+  has no `/customer-group-registration/`.
+  `features/account/customerGroup/CustomerGroupRegistrationPage.tsx` reads
+  `readCustomerGroupRegistration` (`getCustomerGroupRegistrationInfo get
+/customer-group-registration/config/{customerGroupId}`, anonymous GET,
+  `cacheLife("seo")` so a registration switched on or off shows within an
+  hour) and the countries. A 404 `CUSTOMER_GROUP_REGISTRATION_NOT_FOUND`
+  (inactive, or not assigned to this sales channel) becomes `notFound()`,
+  which is why the Vue `registrationActive` branch has no counterpart. The h1
+  is the translated `registrationTitle`, else the group `name`; the
+  introduction is Administration HTML rendered sanitized through
+  `renderRichText`, unlike the raw `v-html` in Vue. `RegistrationForm` gets
+  `companyOnly` (a business account, the backend does not enforce it) and
+  `requestedGroupId`, which `toRegistrationInput(values, { requestedGroupId })`
+  adds to the register body; the customer stays in the default group until
+  an admin approves. Its metadata (title, SEO description, canonical from the
+  resolved SEO path) is built by `buildRouteMetadata` like the other routes.
+
 ## Wishlist
 
 - `features/wishlist/wishlistStore.ts` (`createWishlistStore`) holds the
@@ -996,6 +1199,9 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   `wishlist-product-box`, `wishlist-product-box-toggle-button`,
   `wishlist-add-to-cart-button` and `wishlist-empty-container`; skeleton
   tiles carry none, because the specs count `wishlist-product-box`.
+- `WishlistProducts` is keyed by the customer id and the context currency
+  id, so a currency switch reads the page again, from page 1, instead of
+  showing the old amounts with the new currency symbol.
 - Not ported: the Vue `useLocalWishlist` and the merge on login. The Vue
   starter never fills the local list (its card opens the login modal for
   guests too), so it stays empty and the merge only re-reads.

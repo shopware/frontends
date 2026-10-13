@@ -964,3 +964,136 @@ describe("createSessionStore getLanguages", () => {
     await expect(failed.getLanguages()).resolves.toEqual([]);
   });
 });
+
+const READ_CURRENCIES = "readCurrencyGet get /currency";
+
+const shopCurrencies = [
+  { id: "currency-eur", isoCode: "EUR", symbol: "€" },
+  { id: "currency-usd", isoCode: "USD", symbol: "$" },
+];
+
+function currencyBackend({
+  currencies = async () => shopCurrencies,
+  contextReadFailures = 0,
+}: {
+  currencies?: () => Promise<unknown>;
+  contextReadFailures?: number;
+} = {}) {
+  const backend = {
+    currencyId: "currency-eur",
+    currencyReads: 0,
+    contextReads: 0,
+    contextReadFailures,
+  };
+  const invoke = vi.fn(async (operation: string, params?: unknown) => {
+    switch (operation) {
+      case READ_CONTEXT:
+        backend.contextReads += 1;
+        if (backend.contextReads > 1 && backend.contextReadFailures > 0) {
+          backend.contextReadFailures -= 1;
+          throw new TypeError("Failed to fetch");
+        }
+        return {
+          data: {
+            ...salesChannelContext(null),
+            currency: { id: backend.currencyId },
+          },
+        };
+      case READ_CURRENCIES:
+        backend.currencyReads += 1;
+        return { data: await currencies() };
+      case UPDATE_CONTEXT:
+        backend.currencyId = (
+          params as { body: { currencyId: string } }
+        ).body.currencyId;
+        return { data: { contextToken: "context-token-1" } };
+      default:
+        throw new Error(`Unexpected operation ${operation}`);
+    }
+  });
+  browser.createBrowserClient.mockReturnValue({
+    invoke,
+  } as unknown as ApiClient);
+  return { backend, invoke };
+}
+
+describe("createSessionStore loadCurrencies", () => {
+  it("reads the currencies once, after the first context read", async () => {
+    const { backend, invoke } = currencyBackend();
+    const store = createSessionStore();
+
+    await expect(store.loadCurrencies()).resolves.toEqual([
+      { id: "currency-eur", isoCode: "EUR", label: "EUR (€)" },
+      { id: "currency-usd", isoCode: "USD", label: "USD ($)" },
+    ]);
+    await store.loadCurrencies();
+
+    expect(invoke.mock.calls.map(([operation]) => operation)).toEqual([
+      READ_CONTEXT,
+      READ_CURRENCIES,
+    ]);
+    expect(backend.currencyReads).toBe(1);
+  });
+
+  it("reads the currencies again after a failed read", async () => {
+    let fail = true;
+    const { backend } = currencyBackend({
+      currencies: async () => {
+        if (fail) throw new TypeError("Failed to fetch");
+        return shopCurrencies;
+      },
+    });
+    const store = createSessionStore();
+
+    await expect(store.loadCurrencies()).rejects.toThrow("Failed to fetch");
+    fail = false;
+
+    await expect(store.loadCurrencies()).resolves.toHaveLength(2);
+    expect(backend.currencyReads).toBe(2);
+  });
+});
+
+describe("createSessionStore setCurrency action", () => {
+  it("waits for the first read, patches the currency and publishes the re-read context", async () => {
+    const { invoke } = currencyBackend();
+    const store = createSessionStore();
+    const actions = store.createActions(() => {}, testTranslator());
+
+    await expect(actions.setCurrency("currency-usd")).resolves.toEqual({
+      ok: true,
+    });
+
+    expect(invoke.mock.calls).toEqual([
+      [READ_CONTEXT, READ_CONTEXT_PARAMS],
+      [
+        UPDATE_CONTEXT,
+        {
+          body: { currencyId: "currency-usd" },
+          fetchOptions: { timeout: READ_TIMEOUT_MS },
+        },
+      ],
+      [READ_CONTEXT, READ_CONTEXT_PARAMS],
+    ]);
+    expect(store.getSnapshot()).toMatchObject({
+      status: "ready",
+      context: { currency: { id: "currency-usd" } },
+    });
+  });
+
+  it("keeps the last session when the re-read after the switch fails", async () => {
+    const consoleError = silenceConsoleError();
+    currencyBackend({ contextReadFailures: 1 });
+    const store = createSessionStore();
+    await store.start();
+    const ready = store.getSnapshot();
+    const actions = store.createActions(() => {}, testTranslator());
+
+    await expect(actions.setCurrency("currency-usd")).resolves.toEqual({
+      ok: true,
+    });
+
+    expect(store.getSnapshot()).toEqual({ ...ready, status: "error" });
+    expect(store.getSnapshot().context?.currency?.id).toBe("currency-eur");
+    expect(consoleError).toHaveBeenCalledTimes(1);
+  });
+});

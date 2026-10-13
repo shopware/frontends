@@ -13,6 +13,7 @@ const ACTION_NAMES: (keyof SessionActions)[] = [
   "login",
   "register",
   "logout",
+  "setCurrency",
   "retrySession",
   "refreshSession",
 ];
@@ -80,6 +81,12 @@ describe("notImplementedSessionActions", () => {
     });
     expect(warn).toHaveBeenCalledTimes(2);
     expect(warn.mock.calls[1]?.[0]).toContain('"logout"');
+
+    await expect(
+      notImplementedSessionActions.setCurrency("currency-usd"),
+    ).resolves.toEqual({ ok: false });
+    expect(warn).toHaveBeenCalledTimes(3);
+    expect(warn.mock.calls[2]?.[0]).toContain('"setCurrency"');
   });
 
   it("resolves an unavailable session for retrySession and warns", async () => {

@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
 
+import type { Schemas } from "#shopware";
+import { checkoutSession } from "@/features/checkout/checkout.fixture";
+import { SessionProvider } from "@/features/session/components/SessionProvider";
 import { renderToHtml } from "@/test/render";
 
 import {
@@ -41,6 +44,30 @@ describe("OrderDetailView", () => {
     expect(html).toContain("Invoice");
     expect(html).toContain("Placed on ");
     expect(html).toContain('data-testid="order-status"');
+  });
+
+  it("formats the items and the summary in the currency of the order, not the one of the session", async () => {
+    const html = await renderToHtml(
+      <SessionProvider session={checkoutSession()}>
+        <OrderDetailView
+          details={orderDetails({
+            currency: { isoCode: "USD" } as Schemas["Currency"],
+          })}
+          onReload={async () => {}}
+        />
+      </SessionProvider>,
+    );
+
+    expect(html).toContain(
+      'data-testid="order-item-unitprice">US$29.99</span>',
+    );
+    expect(html).toContain(
+      'data-testid="order-item-totalprice">US$59.98</span>',
+    );
+    expect(html).toContain('data-testid="order-subtotal">US$59.98</span>');
+    expect(html).toContain('data-testid="order-shipping">US$4.99</span>');
+    expect(html).toContain('data-testid="order-total">US$64.97</span>');
+    expect(html).not.toContain("€");
   });
 
   it("offers the payment change only when the backend allows it for an open order", async () => {

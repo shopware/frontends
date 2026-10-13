@@ -65,8 +65,10 @@ function LineItemMedia({
 
 export function OrderLineItem({
   lineItem,
+  currencyCode,
 }: {
   lineItem: Schemas["OrderLineItem"];
+  currencyCode?: string;
 }) {
   const t = useTranslations();
   const contentLang = useContentLang();
@@ -111,6 +113,7 @@ export function OrderLineItem({
           {lineItem.totalPrice ? (
             <Price
               value={lineItem.totalPrice}
+              currencyCode={currencyCode}
               className="block text-surface-on-surface"
               data-testid={`${testIdPrefix}-totalprice`}
             />
@@ -118,6 +121,7 @@ export function OrderLineItem({
           {lineItem.unitPrice && lineItem.quantity > 1 ? (
             <Price
               value={lineItem.unitPrice}
+              currencyCode={currencyCode}
               className="block text-sm font-normal text-surface-on-surface-variant"
               data-testid={`${testIdPrefix}-unitprice`}
             />
@@ -130,8 +134,10 @@ export function OrderLineItem({
 
 export function OrderLineItems({
   lineItems,
+  currencyCode,
 }: {
   lineItems: Schemas["OrderLineItem"][];
+  currencyCode?: string;
 }) {
   if (lineItems.length === 0) return null;
   return (
@@ -140,6 +146,7 @@ export function OrderLineItems({
         <OrderLineItem
           key={lineItem.identifier || lineItem.id}
           lineItem={lineItem}
+          currencyCode={currencyCode}
         />
       ))}
     </ul>

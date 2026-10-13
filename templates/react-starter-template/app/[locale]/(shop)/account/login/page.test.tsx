@@ -28,16 +28,25 @@ beforeEach(() => {
 });
 
 describe("LoginPage", () => {
-  it("is titled like the Vue login page in the page locale", async () => {
+  it("is titled like the Vue login page in the page locale and kept out of the index", async () => {
     expect(
       await generateMetadata({ params: Promise.resolve({ locale: "en-GB" }) }),
-    ).toEqual({ title: "Login & Registration" });
+    ).toEqual({
+      title: "Login & Registration",
+      robots: { index: false, follow: true },
+    });
     expect(
       await generateMetadata({ params: Promise.resolve({ locale: "pl-PL" }) }),
-    ).toEqual({ title: "Logowanie i rejestracja" });
+    ).toEqual({
+      title: "Logowanie i rejestracja",
+      robots: { index: false, follow: true },
+    });
     expect(
       await generateMetadata({ params: Promise.resolve({ locale: "de-DE" }) }),
-    ).toEqual({ title: "Anmelden & Registrieren" });
+    ).toEqual({
+      title: "Anmelden & Registrieren",
+      robots: { index: false, follow: true },
+    });
   });
 
   it("loads the registration countries for the page locale", async () => {

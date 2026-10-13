@@ -117,6 +117,9 @@
         },
         "SHOPWARE_DEV_STOREFRONT_URL": {
           "description": "Optional. Storefront domain registered in your Sales Channel; without it customer registration fails in local development."
+        },
+        "STOREFRONT_URL": {
+          "description": "Optional. Public origin of this storefront, e.g. https://shop.example.com. Used for absolute canonical links, Open Graph URLs and structured data; without it canonical links are relative and structured data has no URLs. Read at request time."
         }
       },
       "node": "^22.19.0 || ^24.11.0 || >=26.0.0",

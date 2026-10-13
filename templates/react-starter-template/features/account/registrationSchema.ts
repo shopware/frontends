@@ -127,8 +127,11 @@ export function validateRegistration(
   return errors;
 }
 
+export type RegistrationInputOptions = { requestedGroupId?: string };
+
 export function toRegistrationInput(
   values: RegistrationValues,
+  { requestedGroupId }: RegistrationInputOptions = {},
 ): RegistrationInput {
   const business = values.accountType === "business";
 
@@ -153,6 +156,7 @@ export function toRegistrationInput(
     password: values.password,
     acceptedDataProtection: true,
     ...(business ? { vatIds: [values.vatId] } : {}),
+    ...(requestedGroupId ? { requestedGroupId } : {}),
     billingAddress,
   };
 }

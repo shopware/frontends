@@ -13,6 +13,7 @@ import { useLocale, useTranslations } from "@/i18n/I18nProvider";
 
 import {
   getOrderBillingAddress,
+  getOrderCurrencyCode,
   getOrderPaymentMethod,
   getOrderShippingAddress,
   getOrderShippingMethod,
@@ -86,6 +87,7 @@ export function OrderConfirmation({
   const shippingMethod = getOrderShippingMethod(order);
   const paymentMethod = getOrderPaymentMethod(order);
   const { subtotal, shippingCosts, total } = getOrderTotals(order);
+  const currencyCode = getOrderCurrencyCode(order);
   const deliveryTime = shippingMethod
     ? getShippingMethodDeliveryTime(shippingMethod)
     : undefined;
@@ -165,7 +167,10 @@ export function OrderConfirmation({
               title={t("checkout.success.items")}
             />
             <div className="mt-4">
-              <OrderLineItems lineItems={order.lineItems ?? []} />
+              <OrderLineItems
+                lineItems={order.lineItems ?? []}
+                currencyCode={currencyCode}
+              />
             </div>
           </section>
 
@@ -228,6 +233,7 @@ export function OrderConfirmation({
                   <dd>
                     <Price
                       value={subtotal}
+                      currencyCode={currencyCode}
                       className="font-normal text-surface-on-surface"
                       data-testid="order-subtotal"
                     />
@@ -240,6 +246,7 @@ export function OrderConfirmation({
                   <dd>
                     <Price
                       value={shippingCosts}
+                      currencyCode={currencyCode}
                       className="font-normal text-surface-on-surface"
                       data-testid="order-shipping"
                     />
@@ -253,6 +260,7 @@ export function OrderConfirmation({
                 <dd>
                   <Price
                     value={total}
+                    currencyCode={currencyCode}
                     className="text-base leading-normal text-surface-on-surface"
                     data-testid="order-total"
                   />

@@ -18,6 +18,10 @@
     "languageSwitcher": {
       "pending": "Otwieranie strony w wersji: {language}…"
     },
+    "currencySwitcher": {
+      "pending": "Zmiana waluty na {currency}…",
+      "changed": "Zmieniono walutę na {currency}."
+    },
     "footer": {
       "builtWith": "Zbudowane z Shopware Frontends i Next.js"
     },

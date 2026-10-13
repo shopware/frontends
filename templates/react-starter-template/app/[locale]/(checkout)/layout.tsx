@@ -1,7 +1,11 @@
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 import { CheckoutHeader } from "@/features/checkout/components/CheckoutHeader";
 import { getTranslator, localeFromParams } from "@/i18n/server";
+import { PRIVATE_PAGE_ROBOTS } from "@/platform/seo/robots";
+
+export const metadata: Metadata = { robots: PRIVATE_PAGE_ROBOTS };
 
 export default async function CheckoutLayout({
   children,

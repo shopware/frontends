@@ -1,9 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { Schemas } from "#shopware";
-import { readCategory } from "@/platform/shopware/reads/category";
+import { buildRouteMetadata } from "@/platform/seo/routeMetadata";
 import { resolveLanguageId } from "@/platform/shopware/reads/languages";
-import { readProductDetail } from "@/platform/shopware/reads/product";
 import { resolveSeoPath } from "@/platform/shopware/reads/seoUrl";
 
 import { generateMetadata } from "./page";
@@ -19,6 +17,13 @@ vi.mock("@/features/cms/components/DetailPage", () => ({
 vi.mock("@/features/cms/components/LandingPage", () => ({
   LandingPage: () => null,
 }));
+vi.mock(
+  "@/features/account/customerGroup/CustomerGroupRegistrationPage",
+  () => ({
+    CustomerGroupRegistrationPage: () => null,
+    customerGroupRegistrationMetadata: vi.fn(),
+  }),
+);
 
 vi.mock("@/platform/shopware/reads/languages", () => ({
   resolveLanguageId: vi.fn(),
@@ -26,20 +31,14 @@ vi.mock("@/platform/shopware/reads/languages", () => ({
 vi.mock("@/platform/shopware/reads/seoUrl", () => ({
   resolveSeoPath: vi.fn(),
 }));
-vi.mock("@/platform/shopware/reads/category", () => ({
-  readCategory: vi.fn(),
-}));
-vi.mock("@/platform/shopware/reads/product", () => ({
-  readProductDetail: vi.fn(),
-}));
-vi.mock("@/platform/shopware/reads/landingPage", () => ({
-  readLandingPage: vi.fn(),
+vi.mock("@/platform/seo/routeMetadata", () => ({
+  buildRouteMetadata: vi.fn(),
 }));
 
-function props(locale: string, path: string[]) {
+function props(locale: string, path: string[], query = {}) {
   return {
     params: Promise.resolve({ locale, path }),
-    searchParams: Promise.resolve({}),
+    searchParams: Promise.resolve(query),
   };
 }
 
@@ -49,47 +48,47 @@ beforeEach(() => {
 });
 
 describe("CatchAllPage generateMetadata", () => {
-  it("resolves the path and reads the category in the page language", async () => {
-    vi.mocked(resolveSeoPath).mockResolvedValue({
+  it("builds the metadata of the resolved route with the page language and listing page", async () => {
+    const route = {
       routeName: "frontend.navigation.page",
       foreignKey: "category-1",
-    });
-    vi.mocked(readCategory).mockResolvedValue({
-      name: "Clothing",
-      translated: { name: "Odzież", metaDescription: "Opis" },
-    } as unknown as Schemas["Category"]);
+    } as const;
+    vi.mocked(resolveSeoPath).mockResolvedValue(route);
+    vi.mocked(buildRouteMetadata).mockResolvedValue({ title: "Odzież" });
 
     await expect(
-      generateMetadata(props("pl-PL", ["Clothing"])),
-    ).resolves.toEqual({ title: "Odzież", description: "Opis" });
+      generateMetadata(props("pl-PL", ["Clothing"], { p: "2" })),
+    ).resolves.toEqual({ title: "Odzież" });
 
     expect(resolveLanguageId).toHaveBeenCalledExactlyOnceWith("pl-PL");
     expect(resolveSeoPath).toHaveBeenCalledExactlyOnceWith(
       "/Clothing",
       "language-pl",
     );
-    expect(readCategory).toHaveBeenCalledExactlyOnceWith(
-      "category-1",
-      "language-pl",
-    );
+    expect(buildRouteMetadata).toHaveBeenCalledExactlyOnceWith(route, {
+      locale: "pl-PL",
+      languageId: "language-pl",
+      page: "2",
+    });
   });
 
-  it("reads a product in the page language", async () => {
-    vi.mocked(resolveSeoPath).mockResolvedValue({
-      routeName: "frontend.detail.page",
-      foreignKey: "product-1",
+  it("passes the resolved SEO path of a customer group registration page on", async () => {
+    const route = {
+      routeName: "frontend.account.customer-group-registration.page",
+      foreignKey: "group-1",
+      seoPathInfo: "Wholesale",
+    } as const;
+    vi.mocked(resolveSeoPath).mockResolvedValue(route);
+    vi.mocked(buildRouteMetadata).mockResolvedValue({ title: "Hurt" });
+
+    await expect(
+      generateMetadata(props("pl-PL", ["Wholesale"])),
+    ).resolves.toEqual({ title: "Hurt" });
+    expect(buildRouteMetadata).toHaveBeenCalledExactlyOnceWith(route, {
+      locale: "pl-PL",
+      languageId: "language-pl",
+      page: undefined,
     });
-    vi.mocked(readProductDetail).mockResolvedValue({
-      product: { name: "Shirt", translated: { name: "Koszula" } },
-    } as unknown as Schemas["ProductDetailResponse"]);
-
-    const metadata = await generateMetadata(props("pl-PL", ["Shirt", "SW-1"]));
-
-    expect(metadata.title).toBe("Koszula");
-    expect(readProductDetail).toHaveBeenCalledExactlyOnceWith(
-      "product-1",
-      "language-pl",
-    );
   });
 
   it.each([
@@ -103,14 +102,27 @@ describe("CatchAllPage generateMetadata", () => {
     );
   });
 
-  it("titles a route the page does not render as not found", async () => {
+  it("titles a route without metadata as not found", async () => {
     vi.mocked(resolveSeoPath).mockResolvedValue({
-      routeName: "frontend.account.customer-group-registration.page",
-      foreignKey: "group-1",
+      routeName: "frontend.navigation.page",
+      foreignKey: "category-1",
     });
+    vi.mocked(buildRouteMetadata).mockResolvedValue(null);
 
     await expect(
-      generateMetadata(props("pl-PL", ["Wholesale"])),
+      generateMetadata(props("pl-PL", ["Clothing"])),
     ).resolves.toEqual({ title: "Nie można znaleźć żądanej strony." });
+  });
+
+  it("falls back to the layout metadata when a read fails", async () => {
+    vi.mocked(resolveSeoPath).mockResolvedValue({
+      routeName: "frontend.detail.page",
+      foreignKey: "product-1",
+    });
+    vi.mocked(buildRouteMetadata).mockRejectedValue(new Error("offline"));
+
+    await expect(generateMetadata(props("pl-PL", ["Shirt"]))).resolves.toEqual(
+      {},
+    );
   });
 });

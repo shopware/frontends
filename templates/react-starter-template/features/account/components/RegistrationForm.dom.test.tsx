@@ -459,6 +459,59 @@ describe("RegistrationForm in the browser", () => {
     expect(payload.billingAddress.countryId).toBe("country-pl");
   });
 
+  it("requests the customer group of the page with the registration", async () => {
+    const { container, actions, form, input } = await setup(undefined, {
+      requestedGroupId: "group-b2b",
+    });
+
+    await fill(input, { ...personalData, ...addressData });
+    await chooseCountry(container, "Poland");
+    await interact(() => submitForm(form));
+
+    expect(actions.register).toHaveBeenCalledTimes(1);
+    const payload = sentPayload(actions.register);
+    expect(payload.requestedGroupId).toBe("group-b2b");
+    expect(payload.accountType).toBe("private");
+  });
+
+  it("sends a business registration for a company-only group without an account type select", async () => {
+    const { container, actions, form, input } = await setup(undefined, {
+      companyOnly: true,
+      requestedGroupId: "group-b2b",
+    });
+
+    expect(
+      container.querySelector(
+        '[data-testid="registration-account-type-select"]',
+      ),
+    ).toBeNull();
+    await fill(input, {
+      ...personalData,
+      ...addressData,
+      "registration-vatid-input": "DE123456789",
+      "registration-company-input": "Acme GmbH",
+    });
+    await chooseCountry(container, "Poland");
+    await interact(() => submitForm(form));
+
+    expect(actions.register).toHaveBeenCalledTimes(1);
+    const payload = sentPayload(actions.register);
+    expect(payload.requestedGroupId).toBe("group-b2b");
+    expect(payload.accountType).toBe("business");
+    expect(payload.vatIds).toEqual(["DE123456789"]);
+    expect(payload.billingAddress.company).toBe("Acme GmbH");
+  });
+
+  it("requests no customer group on the login page", async () => {
+    const { container, actions, form, input } = await setup();
+
+    await fill(input, { ...personalData, ...addressData });
+    await chooseCountry(container, "Poland");
+    await interact(() => submitForm(form));
+
+    expect("requestedGroupId" in sentPayload(actions.register)).toBe(false);
+  });
+
   it("navigates to the redirect target after a completed registration", async () => {
     const { container, form, input } = await setup(
       registerMock(async () => ({ ok: true })),

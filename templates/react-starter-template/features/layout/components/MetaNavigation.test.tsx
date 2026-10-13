@@ -17,6 +17,13 @@ describe("MetaNavigation", () => {
     expect(html).not.toContain("<ul");
   });
 
+  it("renders no currency switcher on the server, before the browser read the currencies", async () => {
+    const html = await renderToHtml(withI18n(<MetaNavigation />));
+
+    expect(html).not.toContain("currency-switcher");
+    expect(html).not.toContain("Change currency");
+  });
+
   it("names the current language in English on the default locale", async () => {
     const html = await renderToHtml(withI18n(<MetaNavigation />));
 

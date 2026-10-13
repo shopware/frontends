@@ -5,6 +5,8 @@ import type { ApiClient, Schemas } from "#shopware";
 import { READ_TIMEOUT_MS } from "@/features/session/readTimeout";
 import { stripLocale, withLocale } from "@/i18n/config";
 import type { Locale } from "@/i18n/config";
+import { decodePathname, isAppRoute } from "@/platform/routing/paths";
+import { isTechnicalRouteName, technicalPath } from "@/platform/seo/urls";
 
 export type LocationParts = Pick<Location, "pathname" | "search" | "hash">;
 
@@ -22,14 +24,6 @@ type SeoUrlFilter =
   | { type: "equals"; field: string; value: string }
   | { type: "equalsAny"; field: string; value: string[] };
 
-const TECHNICAL_PREFIXES: Record<string, string> = {
-  "frontend.navigation.page": "/navigation/",
-  "frontend.detail.page": "/detail/",
-  "frontend.landing.page": "/landingPage/",
-};
-
-const APP_ROUTE = /^\/(?:account|checkout)(?:\/|$)/;
-
 export function pathForLocale(
   { pathname, search, hash }: LocationParts,
   locale: Locale,
@@ -39,21 +33,8 @@ export function pathForLocale(
 
 export function isCatalogPath(pathname: string): boolean {
   return (
-    pathname !== "/" && !APP_ROUTE.test(pathname) && !isTechnicalPath(pathname)
+    pathname !== "/" && !isAppRoute(pathname) && !isTechnicalPath(pathname)
   );
-}
-
-function decodePath(pathname: string): string {
-  return pathname
-    .split("/")
-    .map((segment) => {
-      try {
-        return decodeURIComponent(segment);
-      } catch {
-        return segment;
-      }
-    })
-    .join("/");
 }
 
 async function readSeoUrl(
@@ -76,7 +57,9 @@ async function readRoute(
   languageId: string,
   signal?: AbortSignal,
 ): Promise<SeoRoute | null> {
-  const seoPath = decodePath(pathname).replace(/^\/+/, "").replace(/\/+$/, "");
+  const seoPath = decodePathname(pathname)
+    .replace(/^\/+/, "")
+    .replace(/\/+$/, "");
   const seoUrl = await readSeoUrl(
     client,
     languageId,
@@ -110,8 +93,9 @@ async function targetPath(
     signal,
   );
   if (seoUrl?.seoPathInfo) return `/${seoUrl.seoPathInfo.replace(/^\/+/, "")}`;
-  const prefix = TECHNICAL_PREFIXES[route.routeName];
-  return prefix ? `${prefix}${route.foreignKey}` : null;
+  return isTechnicalRouteName(route.routeName)
+    ? technicalPath(route.routeName, route.foreignKey)
+    : null;
 }
 
 export async function resolveLocaleSwitchPath(

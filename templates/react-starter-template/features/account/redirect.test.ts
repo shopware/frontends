@@ -74,6 +74,20 @@ describe("resolveRedirectFromSearch", () => {
     ).toBe("/");
   });
 
+  it("uses the given fallback without a usable parameter", () => {
+    expect(resolveRedirectFromSearch("", null, "/account")).toBe("/account");
+    expect(
+      resolveRedirectFromSearch(
+        "?redirect=https%3A%2F%2Fexample.com",
+        null,
+        "/account",
+      ),
+    ).toBe("/account");
+    expect(
+      resolveRedirectFromSearch("?redirect=%2FClothing", null, "/account"),
+    ).toBe("/Clothing");
+  });
+
   it("prefers an explicit target over the query parameter", () => {
     expect(resolveRedirectFromSearch("?redirect=%2FClothing", "/account")).toBe(
       "/account",

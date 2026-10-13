@@ -1,4 +1,5 @@
 import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
+import { useEffect, useState } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { Schemas } from "#shopware";
@@ -141,6 +142,33 @@ async function setup(
     ),
   );
   return { container: mounted.container, shopware };
+}
+
+function inCurrency(currencyId: string, isoCode: string): StorefrontSession {
+  return toStorefrontSession({
+    ...salesChannelContext(customer()),
+    currency: { id: currencyId, isoCode },
+  } as Schemas["SalesChannelContext"]);
+}
+
+const sessionSwitch: {
+  set: ((session: StorefrontSession) => void) | null;
+} = { set: null };
+
+function SwitchableSession({ initial }: { initial: StorefrontSession }) {
+  const [session, setSession] = useState(initial);
+  useEffect(() => {
+    sessionSwitch.set = setSession;
+  }, []);
+  return (
+    <SessionProvider session={session}>
+      <SessionActionsProvider actions={{ refreshSession }}>
+        <CmsActionsProvider actions={{ notify }}>
+          <WishlistPageContent />
+        </CmsActionsProvider>
+      </SessionActionsProvider>
+    </SessionProvider>
+  );
 }
 
 function reads(shopware: ReturnType<typeof fakeClient>) {
@@ -422,6 +450,51 @@ describe("WishlistPageContent", () => {
     expect(query(tile, ADD_TO_CART).getAttribute("aria-describedby")).toBe(
       nameId,
     );
+  });
+
+  it("reads the products again in the new currency after a currency switch", async () => {
+    let totalPrice = 19.99;
+    const shopware = fakeClient((operation, params) => {
+      const answer = wishlistAnswer()(operation, params) as {
+        products: { elements: Schemas["Product"][] };
+      };
+      for (const element of answer.products.elements) {
+        element.calculatedPrice = {
+          totalPrice,
+        } as Schemas["Product"]["calculatedPrice"];
+      }
+      return answer;
+    });
+    mounted = await mount(
+      withI18n(
+        <ShopwareClientHarness client={shopware.client}>
+          <SwitchableSession initial={inCurrency("currency-eur", "EUR")} />
+        </ShopwareClientHarness>,
+      ),
+    );
+    const { container } = mounted;
+    await vi.waitFor(() =>
+      expect(queryAll(container, PRODUCT_BOX)).toHaveLength(2),
+    );
+    expect(queryAll(container, PRODUCT_BOX)[0]?.textContent).toContain(
+      "€19.99",
+    );
+
+    totalPrice = 21.5;
+    await interact(() =>
+      sessionSwitch.set?.(inCurrency("currency-usd", "USD")),
+    );
+
+    await vi.waitFor(() =>
+      expect(queryAll(container, PRODUCT_BOX)[0]?.textContent).toContain(
+        "US$21.50",
+      ),
+    );
+    expect(reads(shopware)).toEqual([
+      { page: 1, limit: 15 },
+      { page: 1, limit: 15 },
+    ]);
+    expect(container.textContent).not.toContain("US$19.99");
   });
 
   it("re-reads the session when the backend says the customer is no longer logged in", async () => {

@@ -28,7 +28,8 @@ describe("NotFoundContent", () => {
       const html = await renderToHtml(withI18n(<NotFoundContent />, locale));
 
       expect(html).toContain(`<title>${message}</title>`);
-      expect(html).toMatch(new RegExp(`<h1[^>]*>${message}</h1>`));
+      expect(html).toMatch(/<h1[^>]*>404<\/h1>/);
+      expect(html).toMatch(new RegExp(`<h2[^>]*>${message}</h2>`));
       expect(html).toMatch(
         new RegExp(`<a [^>]*href="${home}"[^>]*>${label}</a>`),
       );

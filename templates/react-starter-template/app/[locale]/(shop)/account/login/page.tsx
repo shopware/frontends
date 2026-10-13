@@ -7,6 +7,7 @@ import { LoginForm } from "@/features/account/components/LoginForm";
 import { RegistrationForm } from "@/features/account/components/RegistrationForm";
 import { RegistrationFormSkeleton } from "@/features/account/components/RegistrationFormSkeleton";
 import { getTranslator, localeFromParams } from "@/i18n/server";
+import { PRIVATE_PAGE_ROBOTS } from "@/platform/seo/robots";
 import { loadCountryOptions } from "@/platform/shopware/loadCountryOptions";
 
 type LoginPageProps = {
@@ -17,7 +18,7 @@ export async function generateMetadata({
   params,
 }: LoginPageProps): Promise<Metadata> {
   const t = getTranslator(await localeFromParams(params));
-  return { title: t("account.loginPageTitle") };
+  return { title: t("account.loginPageTitle"), robots: PRIVATE_PAGE_ROBOTS };
 }
 
 async function RegistrationSection({ params }: LoginPageProps) {

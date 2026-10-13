@@ -71,10 +71,14 @@ afterEach(async () => {
   mounted = undefined;
 });
 
-async function setup(initial: StorefrontSession, children: ReactNode = null) {
+async function setup(
+  initial: StorefrontSession,
+  children: ReactNode = null,
+  fallback?: string,
+) {
   mounted = await mount(
     <ControlledSession initial={initial}>
-      <LoggedInRedirect />
+      <LoggedInRedirect fallback={fallback} />
       {children}
     </ControlledSession>,
   );
@@ -118,6 +122,42 @@ describe("LoggedInRedirect", () => {
     await setup(customer);
     expect(replace).toHaveBeenCalledTimes(1);
     expect(replace).toHaveBeenCalledWith("/");
+  });
+
+  it("sends a logged-in customer to the given fallback without a usable redirect", async () => {
+    window.history.replaceState(null, "", "/Merchant-registration/");
+    await setup(customer, null, "/account");
+    expect(replace).toHaveBeenCalledExactlyOnceWith("/account");
+
+    await mounted?.unmount();
+    mounted = undefined;
+    replace.mockReset();
+    window.history.replaceState(
+      null,
+      "",
+      "/Merchant-registration/?redirect=%2F%2Fevil.example",
+    );
+
+    await setup(customer, null, "/account");
+    expect(replace).toHaveBeenCalledExactlyOnceWith("/account");
+  });
+
+  it("still follows a usable redirect when a fallback is given", async () => {
+    window.history.replaceState(
+      null,
+      "",
+      "/Merchant-registration/?redirect=%2Fcheckout",
+    );
+
+    await setup(customer, null, "/account");
+
+    expect(replace).toHaveBeenCalledExactlyOnceWith("/checkout");
+  });
+
+  it("leaves a guest on a page with a fallback", async () => {
+    await setup(guest, null, "/account");
+
+    expect(replace).not.toHaveBeenCalled();
   });
 
   it("waits for the session to load before deciding", async () => {
@@ -227,5 +267,19 @@ describe("LoggedInRedirect in Polish", () => {
       ),
     );
     expect(replace).toHaveBeenCalledExactlyOnceWith("/pl-PL/account/address");
+  });
+
+  it("prefixes the fallback with the Polish locale", async () => {
+    window.history.replaceState(null, "", "/pl-PL/Merchant-registration/");
+    mounted = await mount(
+      withI18n(
+        <ControlledSession initial={customer}>
+          <LoggedInRedirect fallback="/account" />
+        </ControlledSession>,
+        "pl-PL",
+      ),
+    );
+
+    expect(replace).toHaveBeenCalledExactlyOnceWith("/pl-PL/account");
   });
 });

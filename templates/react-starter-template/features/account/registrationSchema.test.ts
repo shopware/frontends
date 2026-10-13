@@ -193,6 +193,37 @@ describe("toRegistrationInput", () => {
       [""],
     );
   });
+
+  it("requests the customer group of a group registration page", () => {
+    expect(
+      toRegistrationInput(validPrivate, { requestedGroupId: "group-b2b" }),
+    ).toEqual({
+      ...toRegistrationInput(validPrivate),
+      requestedGroupId: "group-b2b",
+    });
+  });
+
+  it("leaves requestedGroupId out without a group", () => {
+    expect("requestedGroupId" in toRegistrationInput(validPrivate)).toBe(false);
+    expect("requestedGroupId" in toRegistrationInput(validPrivate, {})).toBe(
+      false,
+    );
+    expect(
+      "requestedGroupId" in
+        toRegistrationInput(validPrivate, { requestedGroupId: "" }),
+    ).toBe(false);
+  });
+
+  it("keeps company and VAT id in a business body that requests a group", () => {
+    const input = toRegistrationInput(validBusiness, {
+      requestedGroupId: "group-b2b",
+    });
+
+    expect(input.requestedGroupId).toBe("group-b2b");
+    expect(input.accountType).toBe("business");
+    expect(input.vatIds).toEqual(["DE123456789"]);
+    expect(input.billingAddress.company).toBe("Acme GmbH");
+  });
 });
 
 describe("validateRegistration in German", () => {
