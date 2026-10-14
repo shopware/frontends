@@ -21,9 +21,76 @@ recipe:
 ---
 
 <script setup>
-import LoginFlowDiagram from "../../components/LoginFlowDiagram.vue";
 import LoginVueFlowDiagram from "../../components/LoginVueFlowDiagram.vue";
+import RecipeFlowDiagram from "../../components/RecipeFlowDiagram.vue";
 import SchemaTypeTooltip from "../../components/SchemaTypeTooltip.vue";
+
+const steps = [
+  {
+    title: "UI",
+    action: "Submit credentials",
+    detail:
+      "The login form collects username and password, then calls the composable. The component owns loading and form error state only.",
+    code: "submit() -> login(credentials)",
+    state: "local form state",
+    typeKeys: ['operations["loginCustomer post /account/login"]["body"]'],
+  },
+  {
+    title: "Composable",
+    action: "Run login workflow",
+    detail:
+      "useUser owns the Shopware-specific workflow. It sends credentials first, then refreshes context and cart data.",
+    code: "useUser().login(credentials)",
+    state: "customer workflow",
+    typeKeys: [
+      'operations["loginCustomer post /account/login"]["body"]',
+      'operations["loginCustomer post /account/login"]["response"]',
+    ],
+  },
+  {
+    title: "Store API",
+    action: "Authenticate customer",
+    detail:
+      "The API client invokes the generated operation for POST /account/login. This step validates credentials. The client keeps sending the current sw-context-token and picks up a new one if the response changes it.",
+    code: 'apiClient.invoke("loginCustomer post /account/login")',
+    state: "sw-context-token",
+    typeKeys: [
+      'operations["loginCustomer post /account/login"]["body"]',
+      'operations["loginCustomer post /account/login"]["response"]',
+      'components["schemas"]["failure"]',
+    ],
+  },
+  {
+    title: "Context",
+    action: "Refresh session",
+    detail:
+      "useUser calls refreshSessionContext(), which fetches GET /context again so customer, customer group, currency, rules, and other context-dependent values are current.",
+    code: "refreshSessionContext()",
+    state: "user, isLoggedIn, sales channel context",
+    typeKeys: [
+      'operations["readContext get /context"]["response"]',
+      'Schemas["Customer"]',
+    ],
+  },
+  {
+    title: "Cart",
+    action: "Reload cart",
+    detail:
+      "The cart is refreshed because prices, promotions, and line items can depend on the authenticated customer context.",
+    code: "refreshCart()",
+    state: "cart, prices, promotions",
+    typeKeys: ['Schemas["Cart"]'],
+  },
+  {
+    title: "UI",
+    action: "Render new state",
+    detail:
+      "The UI reads user, isLoggedIn, and cart data from composables instead of keeping its own copy.",
+    code: "user + isLoggedIn + cart",
+    state: "reactive UI",
+    typeKeys: ['Schemas["Customer"]', 'Schemas["Cart"]'],
+  },
+];
 </script>
 
 # Login
@@ -37,10 +104,10 @@ Build a customer login flow and understand what happens after credentials are su
 Login is a small form action, but it changes the whole sales channel session. The important part is that `POST /account/login` only authenticates the customer. The UI becomes reliable after the session context and cart are refreshed.
 
 <ClientOnly>
-  <LoginVueFlowDiagram />
+  <LoginVueFlowDiagram :steps="steps" />
 </ClientOnly>
 
-<LoginFlowDiagram />
+<RecipeFlowDiagram label="Login flow diagram" :steps="steps" />
 
 You usually do not need to call `readContext get /context` manually after login, because `useUser` calls `refreshSessionContext()` internally.
 

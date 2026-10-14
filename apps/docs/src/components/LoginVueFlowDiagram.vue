@@ -6,135 +6,69 @@ import "@vue-flow/core/dist/style.css";
 import "@vue-flow/core/dist/theme-default.css";
 import { computed, nextTick, onBeforeUnmount, ref, watch } from "vue";
 
+import type { RecipeFlowStep } from "./recipeFlow";
 import SchemaTypeTooltip from "./SchemaTypeTooltip.vue";
 
-type FlowStepData = {
+// The step content comes from login.md, which passes the same array to the
+// stepper below the diagram. This component only owns the layout.
+const props = defineProps<{
+  steps: RecipeFlowStep[];
+}>();
+
+type FlowStepData = RecipeFlowStep & {
   kind: "ui" | "composable" | "api" | "context" | "cart";
   label: string;
-  action: string;
-  title: string;
-  description: string;
-  code: string;
-  state: string;
-  typeKeys: string[];
 };
 
-// Nodes are laid out left to right. The two Store API calls are stacked in
-// one column and connected top to bottom, so they need enough vertical gap
-// for the tallest node (three type chips) to never overlap the one below.
-const steps: { id: string; x: number; y: number; data: FlowStepData }[] = [
-  {
-    id: "ui-submit",
-    x: 0,
-    y: 110,
-    data: {
-      kind: "ui",
-      label: "Login form",
-      action: "Submit credentials",
-      title: "UI: submit credentials",
-      description:
-        "The component collects username and password, then calls the composable. Loading and form errors stay local to the UI.",
-      code: "submit() -> login(credentials)",
-      state: "local form state",
-      typeKeys: ['operations["loginCustomer post /account/login"]["body"]'],
-    },
-  },
+// One entry per step, in the same order as the steps prop. Nodes are laid out
+// left to right. The two Store API calls are stacked in one column and
+// connected top to bottom, so they need enough vertical gap for the tallest
+// node (three type chips) to never overlap the one below.
+const layout: {
+  id: string;
+  x: number;
+  y: number;
+  kind: FlowStepData["kind"];
+  label: string;
+}[] = [
+  { id: "ui-submit", x: 0, y: 110, kind: "ui", label: "Login form" },
   {
     id: "use-user",
     x: 250,
     y: 110,
-    data: {
-      kind: "composable",
-      label: "useUser().login()",
-      action: "Run login workflow",
-      title: "Composable: own the workflow",
-      description:
-        "useUser sends credentials to the Store API and then coordinates the context and cart refreshes.",
-      code: "useUser().login(credentials)",
-      state: "customer workflow",
-      typeKeys: [
-        'operations["loginCustomer post /account/login"]["body"]',
-        'operations["loginCustomer post /account/login"]["response"]',
-      ],
-    },
+    kind: "composable",
+    label: "useUser().login()",
   },
-  {
-    id: "login-api",
-    x: 520,
-    y: 0,
-    data: {
-      kind: "api",
-      label: "POST /account/login",
-      action: "Authenticate customer",
-      title: "Store API: authenticate",
-      description:
-        "The generated operation validates credentials and can affect the active sales channel session.",
-      code: "loginCustomer post /account/login",
-      state: "sw-context-token",
-      typeKeys: [
-        'operations["loginCustomer post /account/login"]["body"]',
-        'operations["loginCustomer post /account/login"]["response"]',
-        'components["schemas"]["failure"]',
-      ],
-    },
-  },
-  {
-    id: "context",
-    x: 520,
-    y: 290,
-    data: {
-      kind: "context",
-      label: "GET /context",
-      action: "Refresh session",
-      title: "Context: refresh session",
-      description:
-        "The refreshed context provides the current customer, customer group, currency, rules, and other context-dependent values.",
-      code: "refreshSessionContext()",
-      state: "user, isLoggedIn, sales channel context",
-      typeKeys: [
-        'operations["readContext get /context"]["response"]',
-        'Schemas["Customer"]',
-      ],
-    },
-  },
-  {
-    id: "cart",
-    x: 790,
-    y: 110,
-    data: {
-      kind: "cart",
-      label: "refreshCart()",
-      action: "Reload cart",
-      title: "Cart: reload customer-aware data",
-      description:
-        "Cart data is loaded again because prices, promotions, and line items can depend on the authenticated customer context.",
-      code: "refreshCart()",
-      state: "cart, prices, promotions",
-      typeKeys: ['Schemas["Cart"]'],
-    },
-  },
-  {
-    id: "ui-reactive",
-    x: 1040,
-    y: 110,
-    data: {
-      kind: "ui",
-      label: "Reactive UI",
-      action: "Render new state",
-      title: "UI: render new state",
-      description:
-        "The page reads user, isLoggedIn, and cart data from composables instead of keeping a separate copy.",
-      code: "user + isLoggedIn + cart",
-      state: "reactive UI",
-      typeKeys: ['Schemas["Customer"]', 'Schemas["Cart"]'],
-    },
-  },
+  { id: "login-api", x: 520, y: 0, kind: "api", label: "POST /account/login" },
+  { id: "context", x: 520, y: 290, kind: "context", label: "GET /context" },
+  { id: "cart", x: 790, y: 110, kind: "cart", label: "refreshCart()" },
+  { id: "ui-reactive", x: 1040, y: 110, kind: "ui", label: "Reactive UI" },
 ];
+
+if (props.steps.length !== layout.length) {
+  console.warn(
+    `LoginVueFlowDiagram: expected ${layout.length} steps, got ${props.steps.length}.`,
+  );
+}
+
+const steps = computed(() =>
+  layout.flatMap((position, index) => {
+    const step = props.steps[index];
+    return step
+      ? [
+          {
+            ...position,
+            data: { ...step, kind: position.kind, label: position.label },
+          },
+        ]
+      : [];
+  }),
+);
 
 // Each Vue Flow instance mutates its nodes (dimensions, selection), so the
 // inline and the expanded diagram each get their own copy.
 function createNodes(): Node<FlowStepData>[] {
-  return steps.map((step) => ({
+  return steps.value.map((step) => ({
     id: step.id,
     type: "flowStep",
     position: { x: step.x, y: step.y },
@@ -176,7 +110,7 @@ const expandedEdges = ref(createEdges());
 
 const isExpanded = ref(false);
 const selectedIndex = ref(0);
-const selectedStep = computed(() => steps[selectedIndex.value]);
+const selectedStep = computed(() => steps.value[selectedIndex.value]);
 
 const expandButton = ref<HTMLButtonElement>();
 const closeButton = ref<HTMLButtonElement>();
@@ -206,7 +140,7 @@ function releaseBackground() {
 let expandedFlow: VueFlowStore | undefined;
 
 function openExpanded(nodeId?: string) {
-  const index = steps.findIndex((step) => step.id === nodeId);
+  const index = steps.value.findIndex((step) => step.id === nodeId);
   selectedIndex.value = index >= 0 ? index : 0;
   isExpanded.value = true;
 }
@@ -216,11 +150,11 @@ function closeExpanded() {
 }
 
 function selectStep(index: number) {
-  selectedIndex.value = Math.min(Math.max(index, 0), steps.length - 1);
+  selectedIndex.value = Math.min(Math.max(index, 0), steps.value.length - 1);
 }
 
 function onExpandedNodeClick(event: { node: Node }) {
-  selectStep(steps.findIndex((step) => step.id === event.node.id));
+  selectStep(steps.value.findIndex((step) => step.id === event.node.id));
 }
 
 // Fit only once the pane is ready AND the nodes are measured. The two events
@@ -244,7 +178,8 @@ function onExpandedNodesInitialized() {
 }
 
 function onKeydown(event: KeyboardEvent) {
-  if (event.key === "Escape") {
+  // A tooltip or DocSearch that handled Escape itself marks it as handled.
+  if (event.key === "Escape" && !event.defaultPrevented) {
     closeExpanded();
   }
 }
@@ -306,6 +241,8 @@ onBeforeUnmount(() => {
         :nodes-draggable="false"
         :nodes-connectable="false"
         :elements-selectable="false"
+        :nodes-focusable="false"
+        :edges-focusable="false"
         :pan-on-drag="false"
         :zoom-on-scroll="false"
         :zoom-on-pinch="false"
@@ -395,6 +332,8 @@ onBeforeUnmount(() => {
                 :nodes-draggable="false"
                 :nodes-connectable="false"
                 :elements-selectable="false"
+                :nodes-focusable="false"
+                :edges-focusable="false"
                 :pan-on-drag="true"
                 :zoom-on-scroll="true"
                 :zoom-on-double-click="true"
@@ -444,10 +383,11 @@ onBeforeUnmount(() => {
 
             <aside class="login-vue-flow-dialog__detail" aria-live="polite">
               <p class="login-vue-flow-dialog__eyebrow">
-                Step {{ selectedIndex + 1 }} of {{ steps.length }}
+                Step {{ selectedIndex + 1 }} of {{ steps.length }} ·
+                {{ selectedStep.data.title }}
               </p>
-              <h3>{{ selectedStep.data.title }}</h3>
-              <p>{{ selectedStep.data.description }}</p>
+              <h3>{{ selectedStep.data.action }}</h3>
+              <p>{{ selectedStep.data.detail }}</p>
               <dl>
                 <dt>Code</dt>
                 <dd>
@@ -468,7 +408,7 @@ onBeforeUnmount(() => {
                 <button
                   type="button"
                   class="login-vue-flow__button"
-                  :disabled="selectedIndex === 0"
+                  :aria-disabled="selectedIndex === 0"
                   @click="selectStep(selectedIndex - 1)"
                 >
                   ← Previous
@@ -476,7 +416,7 @@ onBeforeUnmount(() => {
                 <button
                   type="button"
                   class="login-vue-flow__button"
-                  :disabled="selectedIndex === steps.length - 1"
+                  :aria-disabled="selectedIndex === steps.length - 1"
                   @click="selectStep(selectedIndex + 1)"
                 >
                   Next →
@@ -507,7 +447,7 @@ onBeforeUnmount(() => {
   gap: 8px;
   justify-items: center;
   padding: 12px;
-  border: 1px solid var(--vp-c-divider);
+  border: 1px solid var(--vp-c-border);
   border-top-width: 4px;
   border-radius: 8px;
   background: var(--vp-c-bg);
@@ -601,7 +541,7 @@ onBeforeUnmount(() => {
   height: 36px;
   justify-content: center;
   padding: 0 12px;
-  border: 1px solid var(--vp-c-divider);
+  border: 1px solid var(--vp-c-border);
   border-radius: 8px;
   background: var(--vp-c-bg);
   color: var(--vp-c-text-1);
@@ -610,7 +550,7 @@ onBeforeUnmount(() => {
   cursor: pointer;
 }
 
-.login-vue-flow__button:hover:not(:disabled) {
+.login-vue-flow__button:hover:not([aria-disabled="true"]) {
   border-color: var(--vp-c-brand-1);
   color: var(--vp-c-brand-1);
 }
@@ -620,7 +560,9 @@ onBeforeUnmount(() => {
   outline-offset: 2px;
 }
 
-.login-vue-flow__button:disabled {
+/* Previous and Next use aria-disabled instead of disabled: a disabled button
+   drops focus to <body> when the step it is on becomes the first or last. */
+.login-vue-flow__button[aria-disabled="true"] {
   opacity: 0.45;
   cursor: not-allowed;
 }
@@ -789,7 +731,7 @@ onBeforeUnmount(() => {
 
 .login-vue-flow__canvas {
   height: 380px;
-  border: 1px solid var(--vp-c-divider);
+  border: 1px solid var(--vp-c-border);
   border-radius: 8px;
   background: var(--vp-c-bg-soft);
 }

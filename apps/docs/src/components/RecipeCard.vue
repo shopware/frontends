@@ -55,7 +55,7 @@ const href = computed(() => {
   gap: 8px;
   height: 100%;
   padding: 18px 20px;
-  border: 1px solid var(--vp-c-divider);
+  border: 1px solid var(--vp-c-border);
   border-radius: 10px;
   background: var(--vp-c-bg);
   color: var(--vp-c-text-1);

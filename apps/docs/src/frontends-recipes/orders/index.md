@@ -14,7 +14,7 @@ import RecipeCardGrid from "../../components/RecipeCardGrid.vue";
 Recipes for reading one placed order — access without a customer session, and everything a detail page renders from it.
 
 <RecipeCardGrid>
-  <RecipeCard page="guest-order-lookup.html" title="Guest Order Lookup via Deep Link" summary="Open a guest order from the confirmation mail link, asking for credentials when the first lookup fails." :composables="['useOrderDetails', 'useUser']" />
+  <RecipeCard page="guest-order-lookup.html" title="Guest Order Lookup via Deep Link" summary="Open a guest order from the confirmation mail link, asking for the email and postal code only when the first lookup rejects the guest as not authenticated." :composables="['useOrderDetails', 'useUser']" />
   <RecipeCard page="details.html" title="Order Details" summary="Render one order with its state, items, documents and downloads, and let the customer cancel it." :composables="['useOrderDetails', 'useDefaultOrderAssociations']" />
 </RecipeCardGrid>
 

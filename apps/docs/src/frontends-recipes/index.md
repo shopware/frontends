@@ -58,8 +58,8 @@ New here? Start with **Login** or **Cart**. Most other recipes build on the sess
 ## Context
 
 <RecipeCardGrid>
-  <RecipeCard page="context/session-context.html" title="Session Context" summary="Read and patch the sales channel context, and read it back after every change." :composables="['useSessionContext', 'useContext']" />
-  <RecipeCard page="context/language-and-currency.html" title="Language and Currency Switch" summary="Switch language with a redirect and currency with a context patch." :composables="['useInternationalization', 'useSessionContext']" />
+  <RecipeCard page="context/session-context.html" title="Session Context" summary="Seed the sales channel context once at the root and patch it through setters that read it back for you." :composables="['useSessionContext', 'useContext']" />
+  <RecipeCard page="context/language-and-currency.html" title="Language and Currency Switch" summary="Switch language and currency with the same context patch, and see why only the language switch ends in a redirect." :composables="['useInternationalization', 'useSessionContext']" />
   <RecipeCard page="context/navigation.html" title="Navigation and Breadcrumbs" summary="Load main and footer navigation, resolve the current entity and render breadcrumbs." :composables="['useNavigation', 'useBreadcrumbs']" />
   <RecipeCard page="context/url-resolving.html" title="URL Resolving and SEO URLs" summary="Serve every shop URL from one catch-all route and redirect technical URLs to SEO URLs." :composables="['useNavigationSearch', 'useNavigationContext']" />
 </RecipeCardGrid>
@@ -67,6 +67,6 @@ New here? Start with **Login** or **Cart**. Most other recipes build on the sess
 ## Orders
 
 <RecipeCardGrid>
-  <RecipeCard page="orders/guest-order-lookup.html" title="Guest Order Lookup via Deep Link" summary="Open a guest order from the confirmation mail link, asking for credentials when the first lookup fails." :composables="['useOrderDetails', 'useUser']" />
+  <RecipeCard page="orders/guest-order-lookup.html" title="Guest Order Lookup via Deep Link" summary="Open a guest order from the confirmation mail link, asking for the email and postal code only when the first lookup rejects the guest as not authenticated." :composables="['useOrderDetails', 'useUser']" />
   <RecipeCard page="orders/details.html" title="Order Details" summary="Render one order with its state, items, documents and downloads, and let the customer cancel it." :composables="['useOrderDetails', 'useDefaultOrderAssociations']" />
 </RecipeCardGrid>
