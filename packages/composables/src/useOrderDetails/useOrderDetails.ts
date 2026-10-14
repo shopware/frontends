@@ -186,15 +186,31 @@ export function useOrderDetails(
     const params: operations["readOrder post /order"]["body"] = {
       ids: [orderId],
       associations: mergedAssociations,
-      checkPromotion: true,
     };
 
-    const orderDetailsResponse = await apiClient.invoke(
-      "readOrder post /order",
-      {
-        body: params,
+    // Shopware 6.7.7+ reads checkPromotion only from the query string, while 6.6
+    // and 6.7.0-6.7.6 read it from the request params. A query value is the string
+    // "true", which fails the strict check on older versions, so they ignore it
+    // and the request is retried with the body flag. Shopware returns a
+    // paymentChangeable entry for the order when the flag is honored.
+    const readOrderOptions = {
+      body: params,
+      query: {
+        checkPromotion: true,
       },
+    };
+    let orderDetailsResponse = await apiClient.invoke(
+      "readOrder post /order",
+      readOrderOptions,
     );
+    if (
+      orderDetailsResponse.data.orders?.elements?.length &&
+      !(orderId in (orderDetailsResponse.data.paymentChangeable ?? {}))
+    ) {
+      orderDetailsResponse = await apiClient.invoke("readOrder post /order", {
+        body: { ...params, checkPromotion: true },
+      });
+    }
     _sharedOrder.value =
       orderDetailsResponse.data.orders?.elements?.[0] ?? undefined;
     paymentChangeableList.value =
