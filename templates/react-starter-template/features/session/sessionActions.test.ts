@@ -217,6 +217,126 @@ describe("createSessionActions().register", () => {
   });
 });
 
+describe("createSessionActions().confirmRegistration", () => {
+  const REGISTER_CONFIRM = "registerConfirm post /account/register-confirm";
+  const HASH = "0f1e2d3c4b5a69788796a5b4c3d2e1f0";
+  const link = { em: "5d41402abc4b2a76b9719d911017c592", hash: HASH };
+
+  it("confirms the link, re-reads the session as a new identity and resolves confirmed", async () => {
+    const { actions, invocations, order, refreshSession, notifications } =
+      setup(() => customer({ guest: false }));
+
+    await expect(actions.confirmRegistration(link)).resolves.toEqual({
+      status: "confirmed",
+      guest: false,
+    });
+
+    expect(invocations).toEqual([
+      { operation: REGISTER_CONFIRM, params: { body: link } },
+    ]);
+    expect(order).toEqual([REGISTER_CONFIRM, "refreshSession"]);
+    expect(refreshSession).toHaveBeenCalledExactlyOnceWith(undefined);
+    expect(notifications).toEqual([]);
+  });
+
+  it("tells a guest order confirmation apart", async () => {
+    const { actions } = setup(() => customer({ guest: true }));
+
+    await expect(actions.confirmRegistration(link)).resolves.toEqual({
+      status: "confirmed",
+      guest: true,
+    });
+  });
+
+  it("stays confirmed when the re-read after the confirmation fails", async () => {
+    const { actions, refreshSession, notifications } = setup(() => customer());
+    refreshSession.mockRejectedValueOnce(new Error("context down"));
+
+    await expect(actions.confirmRegistration(link)).resolves.toEqual({
+      status: "confirmed",
+      guest: false,
+    });
+    expect(notifications).toEqual([]);
+  });
+
+  it.each([
+    [
+      "alreadyConfirmed",
+      apiClientError(
+        [{ code: "CHECKOUT__CUSTOMER_IS_ALREADY_CONFIRMED", detail: "Done" }],
+        412,
+      ),
+    ],
+    [
+      "invalidLink",
+      apiClientError(
+        [
+          {
+            code: "CHECKOUT__CUSTOMER_NOT_FOUND_BY_HASH",
+            detail: `No matching customer for the hash "${HASH}" was found.`,
+          },
+        ],
+        404,
+      ),
+    ],
+    ["failed", new TypeError("Failed to fetch")],
+  ])(
+    "resolves %s without a toast and without touching the session",
+    async (status, error) => {
+      const { actions, refreshSession, notifications } = setup(
+        rejectWith(error),
+      );
+
+      await expect(actions.confirmRegistration(link)).resolves.toEqual({
+        status,
+      });
+      expect(notifications).toEqual([]);
+      expect(refreshSession).not.toHaveBeenCalled();
+    },
+  );
+
+  it("logs only the status and the codes of a failure, never the hash", async () => {
+    const { actions } = setup(
+      rejectWith(
+        apiClientError(
+          [
+            {
+              code: "CHECKOUT__CUSTOMER_NOT_FOUND_BY_HASH",
+              detail: `No matching customer for the hash "${HASH}" was found.`,
+            },
+          ],
+          503,
+        ),
+      ),
+    );
+
+    await expect(actions.confirmRegistration(link)).resolves.toEqual({
+      status: "failed",
+    });
+    expect(consoleError).toHaveBeenCalledExactlyOnceWith(
+      "[Session] confirming the registration failed",
+      { status: 503, codes: ["CHECKOUT__CUSTOMER_NOT_FOUND_BY_HASH"] },
+    );
+    expect(JSON.stringify(consoleError.mock.calls)).not.toContain(HASH);
+    expect(JSON.stringify(consoleError.mock.calls)).not.toContain(link.em);
+  });
+
+  it("does not log an expected outcome", async () => {
+    const { actions } = setup(
+      rejectWith(
+        apiClientError(
+          [{ code: "CHECKOUT__CUSTOMER_IS_ALREADY_CONFIRMED" }],
+          412,
+        ),
+      ),
+    );
+
+    await actions.confirmRegistration(link);
+
+    expect(consoleError).not.toHaveBeenCalled();
+  });
+});
+
 describe("createSessionActions().logout", () => {
   it("logs out, refreshes the session and resolves ok", async () => {
     const { actions, invocations, order } = setup();
@@ -371,6 +491,9 @@ describe("createSessionActions", () => {
       { status: "fulfilled", value: { ok: false, message: DEFAULT_MESSAGE } },
       { status: "fulfilled", value: { ok: false, message: DEFAULT_MESSAGE } },
     ]);
+    await expect(
+      actions.confirmRegistration({ em: "em", hash: "hash" }),
+    ).resolves.toEqual({ status: "failed" });
   });
 
   it("resolves not ok when the storefront URL cannot be determined", async () => {

@@ -45,6 +45,9 @@ export { SwProductListingPagination } from "./components/shared/SwProductListing
 export type { SwProductListingPaginationProps } from "./components/shared/SwProductListingPagination";
 export { getProductPrice } from "./components/shared/productPrice";
 export type { ProductPrice } from "./components/shared/productPrice";
+export { CmsElementProductListingResults } from "./components/element/CmsElementProductListingResults";
+export type { CmsElementProductListingResultsProps } from "./components/element/CmsElementProductListingResults";
+export { getClientListingFilters } from "./components/element/clientListingFilters";
 
 export {
   createCmsRegistry,

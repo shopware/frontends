@@ -29,3 +29,13 @@ export async function selectFirstOptionIfPresent(field: Locator) {
     await field.selectOption({ index: 1 });
   }
 }
+
+export async function fillIfPresent(field: Locator, value: string) {
+  if ((await field.count()) === 0) return;
+  await field.fill(value);
+}
+
+export async function checkIfPresent(field: Locator) {
+  if ((await field.count()) === 0) return;
+  await field.check();
+}

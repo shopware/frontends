@@ -1,0 +1,38 @@
+{
+  "checkout": {
+    "signInPrompt": {
+      "text": "Masz już konto?",
+      "action": "Zaloguj się"
+    },
+    "addresses": {
+      "differentShipping": "Wyślij na inny adres",
+      "sameAsShipping": "Taki sam jak adres dostawy",
+      "changeShipping": "Zmień adres dostawy",
+      "changeBilling": "Zmień adres do faktur",
+      "chooseShipping": "Wybierz adres dostawy",
+      "chooseBilling": "Wybierz adres do faktur",
+      "loadError": "Nie udało się wczytać Twoich adresów.",
+      "useAddress": "Użyj tego adresu",
+      "shippingChanged": "Adres dostawy został zmieniony na {address}.",
+      "billingChanged": "Adres do faktur został zmieniony na {address}.",
+      "changeUnconfirmed": "Nie udało się potwierdzić zmiany adresu. Wybierz adres ponownie przed złożeniem zamówienia."
+    },
+    "terms": {
+      "heading": "Regulamin",
+      "tosLabel": "Przeczytałem(-am) i akceptuję {link}.",
+      "tosLink": "ogólne warunki handlowe",
+      "tosRequired": "Zaakceptuj ogólne warunki handlowe, aby złożyć zamówienie.",
+      "revocationNotice": "Zapoznaj się z {link}.",
+      "revocationLink": "informacją o prawie odstąpienia od umowy",
+      "revocationLabel": "Chcę uzyskać natychmiastowy dostęp do treści cyfrowych i przyjmuję do wiadomości, że tym samym tracę prawo do odstąpienia od umowy.",
+      "revocationRequired": "Potwierdź to, aby uzyskać natychmiastowy dostęp do treści cyfrowych.",
+      "dataProtectionRequired": "Potwierdź zapoznanie się z informacjami o ochronie danych.",
+      "opensInNewTab": "(otwiera się w nowej karcie)"
+    },
+    "customerComment": {
+      "label": "Komentarz do zamówienia",
+      "hint": "Opcjonalnie, na przykład wskazówki dotyczące dostawy.",
+      "summaryLabel": "Twój komentarz"
+    }
+  }
+}

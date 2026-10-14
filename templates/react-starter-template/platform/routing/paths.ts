@@ -1,4 +1,11 @@
-export const APP_ROUTE_SEGMENTS = ["account", "checkout", "wishlist"] as const;
+export const APP_ROUTE_SEGMENTS = [
+  "account",
+  "checkout",
+  "newsletter-subscribe",
+  "registration",
+  "search",
+  "wishlist",
+] as const;
 
 export const MAX_SEO_PATH_LENGTH = 750;
 

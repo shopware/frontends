@@ -73,6 +73,28 @@ describe("categoryMetadata", () => {
     expect(metadata.openGraph).not.toHaveProperty("url");
     expect(metadata).not.toHaveProperty("keywords");
   });
+
+  it("adds the language alternates next to the canonical", () => {
+    const category = {
+      name: "Clothing",
+      translated: { name: "Clothing" },
+    } as unknown as Schemas["Category"];
+    const languages = {
+      "en-GB": "https://shop.test/Clothing/",
+      "de-DE": "https://shop.test/de-DE/Bekleidung/",
+      "x-default": "https://shop.test/Clothing/",
+    };
+
+    const metadata = categoryMetadata(category, {
+      ...context("/Clothing/"),
+      languages,
+    });
+
+    expect(metadata.alternates).toEqual({
+      canonical: "https://shop.test/Clothing/",
+      languages,
+    });
+  });
 });
 
 describe("productMetadata", () => {

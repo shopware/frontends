@@ -77,6 +77,15 @@ describe("proxy rewrites unprefixed paths to the default locale", () => {
       `${ORIGIN}/en-GB/account/login?redirect=%2Fcheckout`,
     ],
     ["/wishlist", `${ORIGIN}/en-GB/wishlist`],
+    ["/search?search=shirt", `${ORIGIN}/en-GB/search?search=shirt`],
+    [
+      "/registration/confirm?em=abc&hash=def",
+      `${ORIGIN}/en-GB/registration/confirm?em=abc&hash=def`,
+    ],
+    [
+      "/newsletter-subscribe?em=abc&hash=def",
+      `${ORIGIN}/en-GB/newsletter-subscribe?em=abc&hash=def`,
+    ],
     ["/Clothing/", `${ORIGIN}/en-GB/Clothing/`],
     [
       "/Clothing/?p=2&order=price-asc",
@@ -88,6 +97,8 @@ describe("proxy rewrites unprefixed paths to the default locale", () => {
     ["/pl-pl/account", `${ORIGIN}/en-GB/pl-pl/account`],
     ["/en-GBX", `${ORIGIN}/en-GB/en-GBX`],
     ["/apiary", `${ORIGIN}/en-GB/apiary`],
+    ["/sitemap/", `${ORIGIN}/en-GB/sitemap/`],
+    ["/sitemap/a/b/c.xml.gz", `${ORIGIN}/en-GB/sitemap/a/b/c.xml.gz`],
   ])("%s", async (path, target) => {
     const response = await run(path);
 
@@ -135,6 +146,8 @@ describe("proxy passes other requests through", () => {
     "/logo.svg",
     "/robots.txt",
     "/fonts/inter.woff2",
+    "/sitemap.xml",
+    "/sitemap/salesChannel-a/b-sitemap-1.xml.gz",
   ])("the technical or file request %s", async (path) => {
     expect(passesThrough(await run(path))).toBe(true);
     expect(routing.isActive).not.toHaveBeenCalled();
@@ -161,14 +174,21 @@ describe("proxy SEO resolution", () => {
     expect(waitUntil).toHaveBeenCalledWith(pending);
   });
 
-  it.each(["/", "/pl-PL", "/account/login", "/checkout/cart", "/wishlist"])(
-    "does not look up %s",
-    async (path) => {
-      await run(path);
+  it.each([
+    "/",
+    "/pl-PL",
+    "/account/login",
+    "/checkout/cart",
+    "/wishlist",
+    "/search",
+    "/pl-PL/search",
+    "/registration/confirm",
+    "/de-DE/newsletter-subscribe",
+  ])("does not look up %s", async (path) => {
+    await run(path);
 
-      expect(routing.resolve).not.toHaveBeenCalled();
-    },
-  );
+    expect(routing.resolve).not.toHaveBeenCalled();
+  });
 
   it.each([
     [
@@ -330,6 +350,15 @@ describe("proxy matcher", () => {
     ["/logo.svg", false],
     ["/robots.txt", false],
     ["/fonts/inter.woff2", false],
+    ["/sitemap.xml", false],
+    ["/sitemap/salesChannel-a/b.xml.gz", false],
+    ["/sitemap", true],
+    ["/sitemap/", true],
+    ["/sitemap/foo", true],
+    ["/sitemap/a/b/c.xml.gz", true],
+    ["/sitemap/a/b.xml.gz/x", true],
+    ["/pl-PL/sitemap/a/b.xml.gz", true],
+    ["/Shirt/TS-100.xml.gz", true],
   ])("runs for %s: %s", (url, expected) => {
     expect(unstable_doesMiddlewareMatch({ config, nextConfig, url })).toBe(
       expected,

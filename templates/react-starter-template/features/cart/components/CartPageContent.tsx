@@ -4,8 +4,10 @@ import { BaseButton } from "@shopware/cms-base-layer-react/client";
 import { useState } from "react";
 
 import { LocaleLink } from "@/components/LocaleLink";
-import { Price } from "@/components/Price";
+import { CartTotals } from "@/features/cart/components/CartTotals";
 import { CheckoutProductTile } from "@/features/cart/components/CheckoutProductTile";
+import { PromotionCodeForm } from "@/features/cart/components/PromotionCodeForm";
+import { useCartLoadNotices } from "@/features/cart/components/useCartLoadNotices";
 import { useLineItemActions } from "@/features/cart/components/useLineItemActions";
 import { useCart } from "@/features/cart/useCart";
 import { useTranslations } from "@/i18n/I18nProvider";
@@ -14,8 +16,9 @@ const PRIMARY_LINK_CLASS =
   "rounded-md bg-brand-primary px-4 py-3 text-center leading-6 font-bold text-brand-on-primary hover:bg-brand-primary-hover";
 
 export function CartPageContent() {
-  const { status, cart, lineItems, isEmpty, subtotal, refresh } = useCart();
+  const { status, cart, lineItems, isEmpty, refresh } = useCart();
   const { remove, updateQuantity } = useLineItemActions();
+  useCartLoadNotices();
   const t = useTranslations();
   const [retrying, setRetrying] = useState(false);
 
@@ -83,26 +86,25 @@ export function CartPageContent() {
               </li>
             ))}
           </ul>
-          <div className="mb-20 ml-auto block w-fit">
-            <div className="mb-2 flex items-center justify-between gap-8">
-              <span className="text-surface-on-surface">
-                {t("cart.miniCart.subtotal")}
-              </span>
-              <Price
-                className="leading-6 font-bold text-surface-on-surface"
-                value={subtotal}
-              />
-            </div>
-            <p className="mb-6 text-right text-sm leading-6 text-surface-on-surface-variant">
-              {t("cart.miniCart.taxEstimation")}
-            </p>
+          <section
+            aria-labelledby="cart-summary-heading"
+            className="mb-20 ml-auto w-full max-w-md"
+          >
+            <h2
+              id="cart-summary-heading"
+              className="mb-4 text-xl font-semibold text-surface-on-surface"
+            >
+              {t("checkout.summary")}
+            </h2>
+            <CartTotals withShippingMethod withShippingEstimate />
+            <PromotionCodeForm id="cart-promotion-code" className="mt-6" />
             <LocaleLink
               href="/checkout"
-              className={`${PRIMARY_LINK_CLASS} mb-2 ml-auto block w-fit`}
+              className={`${PRIMARY_LINK_CLASS} mt-6 block`}
             >
               {t("cart.proceedToCheckout")}
             </LocaleLink>
-          </div>
+          </section>
         </>
       )}
     </div>

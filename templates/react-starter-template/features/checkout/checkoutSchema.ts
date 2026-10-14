@@ -21,14 +21,37 @@ export type CheckoutField = keyof CheckoutValues;
 
 export type CheckoutErrors = Partial<Record<CheckoutField, string>>;
 
-export type CheckoutSchemaOptions = {
-  createAccount: boolean;
+export type CheckoutAddressField =
+  | "firstName"
+  | "lastName"
+  | "street"
+  | "zipcode"
+  | "city"
+  | "countryId"
+  | "countryStateId";
+
+export type CheckoutAddressValues = Pick<CheckoutValues, CheckoutAddressField>;
+
+export type CheckoutAddressErrors = Partial<
+  Record<CheckoutAddressField, string>
+>;
+
+export type CheckoutAddressOptions = {
   countryHasStates: boolean;
 };
 
-export const emptyCheckoutValues: CheckoutValues = {
-  email: "",
-  password: "",
+export type CheckoutSchemaOptions = CheckoutAddressOptions & {
+  createAccount: boolean;
+  passwordMinLength: number;
+};
+
+export type CheckoutRegistrationOptions = {
+  createAccount: boolean;
+  acceptedDataProtection: boolean;
+  shippingAddress?: CheckoutAddressValues | null;
+};
+
+export const emptyCheckoutAddressValues: CheckoutAddressValues = {
   firstName: "",
   lastName: "",
   street: "",
@@ -38,44 +61,90 @@ export const emptyCheckoutValues: CheckoutValues = {
   countryStateId: "",
 };
 
+export const emptyCheckoutValues: CheckoutValues = {
+  email: "",
+  password: "",
+  ...emptyCheckoutAddressValues,
+};
+
 function isBlank(value: string): boolean {
   return value.trim().length === 0;
 }
 
-export function createCheckoutSchema(
-  { createAccount, countryHasStates }: CheckoutSchemaOptions,
-  t: Translate,
-) {
-  const requiredString = () =>
-    z.string().refine((value) => !isBlank(value), t("validations.required"));
-  const requiredMinLength = (min: number) =>
-    requiredString().min(min, t("validations.minLength", { min }));
-
+function requiredString(t: Translate) {
   return z
-    .object({
-      email: requiredString().pipe(z.email(t("validations.email"))),
-      password: createAccount ? requiredMinLength(8) : z.string(),
-      firstName: requiredMinLength(3),
-      lastName: requiredMinLength(3),
-      street: requiredMinLength(3),
-      zipcode: requiredString(),
-      city: requiredString(),
-      countryId: requiredString(),
-      countryStateId: z.string(),
-    })
-    .superRefine((values, ctx) => {
-      if (countryHasStates && isBlank(values.countryStateId)) {
-        ctx.addIssue({
-          code: "custom",
-          message: t("validations.requiredIf"),
-          path: ["countryStateId"],
-        });
-      }
-    });
+    .string()
+    .refine((value) => !isBlank(value), t("validations.required"));
 }
 
-function isCheckoutField(key: PropertyKey | undefined): key is CheckoutField {
-  return typeof key === "string" && Object.hasOwn(emptyCheckoutValues, key);
+function requiredMinLength(min: number, t: Translate) {
+  return requiredString(t).min(min, t("validations.minLength", { min }));
+}
+
+function addressShape(t: Translate) {
+  return {
+    firstName: requiredMinLength(3, t),
+    lastName: requiredMinLength(3, t),
+    street: requiredMinLength(3, t),
+    zipcode: requiredString(t),
+    city: requiredString(t),
+    countryId: requiredString(t),
+    countryStateId: z.string(),
+  };
+}
+
+function requireState(countryHasStates: boolean, t: Translate) {
+  return (values: { countryStateId: string }, ctx: z.RefinementCtx) => {
+    if (countryHasStates && isBlank(values.countryStateId)) {
+      ctx.addIssue({
+        code: "custom",
+        message: t("validations.requiredIf"),
+        path: ["countryStateId"],
+      });
+    }
+  };
+}
+
+export function createCheckoutSchema(
+  { createAccount, countryHasStates, passwordMinLength }: CheckoutSchemaOptions,
+  t: Translate,
+) {
+  return z
+    .object({
+      email: requiredString(t).pipe(z.email(t("validations.email"))),
+      password: createAccount
+        ? requiredMinLength(passwordMinLength, t)
+        : z.string(),
+      ...addressShape(t),
+    })
+    .superRefine(requireState(countryHasStates, t));
+}
+
+export function createCheckoutAddressSchema(
+  { countryHasStates }: CheckoutAddressOptions,
+  t: Translate,
+) {
+  return z
+    .object(addressShape(t))
+    .superRefine(requireState(countryHasStates, t));
+}
+
+function firstIssues<Field extends string>(
+  issues: readonly z.core.$ZodIssue[],
+  fields: Record<Field, string>,
+): Partial<Record<Field, string>> {
+  const errors: Partial<Record<Field, string>> = {};
+  for (const issue of issues) {
+    const field = issue.path[0];
+    if (
+      typeof field === "string" &&
+      Object.hasOwn(fields, field) &&
+      !errors[field as Field]
+    ) {
+      errors[field as Field] = issue.message;
+    }
+  }
+  return errors;
 }
 
 export function validateCheckout(
@@ -85,19 +154,21 @@ export function validateCheckout(
 ): CheckoutErrors {
   const result = createCheckoutSchema(options, t).safeParse(values);
   if (result.success) return {};
-
-  const errors: CheckoutErrors = {};
-  for (const issue of result.error.issues) {
-    const field = issue.path[0];
-    if (isCheckoutField(field) && !errors[field]) {
-      errors[field] = issue.message;
-    }
-  }
-  return errors;
+  return firstIssues(result.error.issues, emptyCheckoutValues);
 }
 
-export function toBillingAddressFields(
-  values: CheckoutValues,
+export function validateCheckoutAddress(
+  values: CheckoutAddressValues,
+  options: CheckoutAddressOptions,
+  t: Translate,
+): CheckoutAddressErrors {
+  const result = createCheckoutAddressSchema(options, t).safeParse(values);
+  if (result.success) return {};
+  return firstIssues(result.error.issues, emptyCheckoutAddressValues);
+}
+
+export function toCheckoutAddressFields(
+  values: CheckoutAddressValues,
 ): CheckoutAddressFields {
   return {
     firstName: values.firstName,
@@ -110,9 +181,19 @@ export function toBillingAddressFields(
   };
 }
 
+export function toBillingAddressFields(
+  values: CheckoutValues,
+): CheckoutAddressFields {
+  return toCheckoutAddressFields(values);
+}
+
 export function toCheckoutRegistration(
   values: CheckoutValues,
-  createAccount: boolean,
+  {
+    createAccount,
+    acceptedDataProtection,
+    shippingAddress = null,
+  }: CheckoutRegistrationOptions,
 ): RegistrationInput {
   return {
     accountType: "private",
@@ -124,8 +205,17 @@ export function toCheckoutRegistration(
     billingAddress: {
       customerId: "",
       id: "",
-      ...toBillingAddressFields(values),
+      ...toCheckoutAddressFields(values),
     },
-    acceptedDataProtection: true,
+    ...(shippingAddress
+      ? {
+          shippingAddress: {
+            customerId: "",
+            id: "",
+            ...toCheckoutAddressFields(shippingAddress),
+          },
+        }
+      : {}),
+    acceptedDataProtection,
   };
 }

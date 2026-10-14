@@ -127,8 +127,11 @@
         "SHOPWARE_PUBLIC_API_HEADERS": {
           "description": "Optional. JSON object of extra headers the browser sends with its Store API calls, served at runtime by /api/shopware/config, so the values are public. Limited by Shopware's CORS allowed headers. The server sends them too; SHOPWARE_API_HEADERS wins for a name set in both."
         },
+        "SHOPWARE_MEDIA_ORIGIN": {
+          "description": "Optional. Origin of the product images (Shopware's public filesystem URL or its CDN) for a preconnect hint; defaults to the public Store API origin, https://cdn.shopware.store for the demo. Read at request time."
+        },
         "STOREFRONT_URL": {
-          "description": "Optional. Public origin of this storefront, e.g. https://shop.example.com. Used for absolute canonical links, Open Graph URLs and structured data; without it canonical links are relative and structured data has no URLs. Read at request time."
+          "description": "Optional. Public origin of this storefront, e.g. https://shop.example.com. Used for absolute canonical links, hreflang alternates, Open Graph URLs, structured data, the robots.txt Sitemap line and /sitemap.xml; without it canonical links are relative, structured data has no URLs and there is no sitemap. Read at request time."
         }
       },
       "node": "^22.19.0 || ^24.11.0 || >=26.0.0",

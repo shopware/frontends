@@ -2,7 +2,10 @@ import { describe, expect, it } from "vitest";
 
 import { fakeClient } from "@/features/checkout/checkout.fixture";
 import { orderAssociations } from "@/features/checkout/checkoutApi";
-import { apiError } from "@/features/checkout/checkoutTestDoubles";
+import {
+  apiError,
+  timeoutError,
+} from "@/features/checkout/checkoutTestDoubles";
 import { DEFAULT_PAGE_SIZE } from "@/features/paging/pagination";
 import { ORDER_TIMEOUT_MS } from "@/features/session/readTimeout";
 import { testTranslator } from "@/test/i18n";
@@ -16,10 +19,14 @@ import {
   orderRouteResponse,
 } from "./orders.fixture";
 import {
+  cancelOrder,
+  cancelOrderErrorMessages,
   classifyDeepLinkError,
   documentFileName,
   handleOrderPayment,
+  isOrderCancellable,
   isOrderId,
+  isOrderNotCancellableError,
   isOrderPaymentChangeable,
   lineItemDownloads,
   orderPaymentReturnUrls,
@@ -518,5 +525,92 @@ describe("documentFileName", () => {
     expect(documentFileName(orderDocument({ fileType: "xml" }))).toBe(
       "invoice_10042.xml",
     );
+  });
+});
+
+describe("cancelOrder", () => {
+  it("posts the order id to /order/state/cancel with the order timeout and returns the new state", async () => {
+    const cancelled = { technicalName: "cancelled", name: "Cancelled" };
+    const shopware = fakeClient(() => cancelled);
+
+    await expect(cancelOrder(shopware.client, ORDER_ID)).resolves.toEqual(
+      cancelled,
+    );
+    expect(shopware.invocations).toEqual([
+      {
+        operation: "cancelOrder post /order/state/cancel",
+        params: {
+          body: { orderId: ORDER_ID },
+          fetchOptions: { timeout: ORDER_TIMEOUT_MS },
+        },
+      },
+    ]);
+  });
+});
+
+describe("isOrderCancellable", () => {
+  function inState(technicalName: string) {
+    return orderDetails({
+      stateMachineState: { technicalName, name: technicalName },
+    } as never);
+  }
+
+  it("offers cancellation only for an open order of a shop that allows it, like the Storefront", () => {
+    expect(isOrderCancellable(inState("open"), true)).toBe(true);
+    expect(isOrderCancellable(inState("open"), false)).toBe(false);
+    for (const state of ["in_progress", "completed", "cancelled"]) {
+      expect(isOrderCancellable(inState(state), true)).toBe(false);
+    }
+    expect(
+      isOrderCancellable(
+        orderDetails({ stateMachineState: undefined } as never),
+        true,
+      ),
+    ).toBe(false);
+  });
+});
+
+describe("cancelOrderErrorMessages", () => {
+  const t = testTranslator();
+
+  it("reads both refusals as an order that can no longer be cancelled", () => {
+    for (const [code, status] of [
+      ["CHECKOUT__ORDER_NOT_CANCELLABLE", 403],
+      ["SYSTEM__ILLEGAL_STATE_TRANSITION", 400],
+    ] as const) {
+      const error = apiError(
+        [{ code, status: String(status), detail: "backend detail" }],
+        status,
+      );
+      expect(isOrderNotCancellableError(error)).toBe(true);
+      expect(cancelOrderErrorMessages(error, t)).toEqual([
+        "This order can no longer be cancelled.",
+      ]);
+    }
+    expect(
+      cancelOrderErrorMessages(
+        apiError(
+          [{ code: "CHECKOUT__ORDER_NOT_CANCELLABLE", status: "403" }],
+          403,
+        ),
+        testTranslator("pl-PL"),
+      ),
+    ).toEqual(["Tego zamówienia nie można już anulować."]);
+  });
+
+  it("resolves every other error to its messages", () => {
+    const notFound = apiError(
+      [{ code: "CHECKOUT__ORDER_ORDER_NOT_FOUND", status: "404" }],
+      404,
+    );
+
+    expect(isOrderNotCancellableError(notFound)).toBe(false);
+    expect(cancelOrderErrorMessages(notFound, t)).toEqual([
+      "This order could not be found.",
+    ]);
+    expect(isOrderNotCancellableError(timeoutError())).toBe(false);
+    expect(cancelOrderErrorMessages(timeoutError(), t)).toEqual([
+      t("errors.message-default"),
+    ]);
   });
 });

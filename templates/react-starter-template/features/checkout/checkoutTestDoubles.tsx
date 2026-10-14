@@ -37,13 +37,17 @@ export function cartResult(
     (total, item) => total + (item.quantity ?? 0),
     0,
   );
+  const cart =
+    overrides.cart !== undefined
+      ? overrides.cart
+      : ({
+          apiAlias: "cart",
+          lineItems,
+          deliveries: [],
+        } as unknown as Schemas["Cart"]);
   return {
     status: "ready",
-    cart: {
-      apiAlias: "cart",
-      lineItems,
-      deliveries: [],
-    } as unknown as Schemas["Cart"],
+    cart,
     lineItems,
     count,
     isEmpty: count === 0,
@@ -55,8 +59,18 @@ export function cartResult(
         shippingCosts: { totalPrice: 4.99 },
       },
     ] as Schemas["CartDelivery"][],
+    appliedPromotionCodes: lineItems.filter(
+      (item) => item.type === "promotion",
+    ),
     refresh: vi.fn(async () => {}),
+    refreshWithResult: vi.fn(async () =>
+      cart
+        ? { ok: true as const, cart, errors: [], newErrors: [] }
+        : { ok: false as const },
+    ),
     addProduct: vi.fn(async () => ({ ok: true })),
+    addProducts: vi.fn(async () => ({ ok: true })),
+    addPromotionCode: vi.fn(async () => ({ ok: true, applied: true })),
     removeItem: vi.fn(async () => ({ ok: true })),
     changeQuantity: vi.fn(async () => ({ ok: true })),
     ...overrides,
@@ -126,12 +140,16 @@ export function deferred<T>() {
   return { promise, resolve, reject };
 }
 
+let latestSession: StorefrontSession | null = null;
+
 export const sessionControl: {
   set: (session: StorefrontSession) => void;
+  get: () => StorefrontSession | null;
 } = {
   set: () => {
     throw new Error("SessionHarness is not mounted");
   },
+  get: () => latestSession,
 };
 
 export function SessionHarness({
@@ -141,9 +159,15 @@ export function SessionHarness({
   initial: StorefrontSession;
   children: ReactNode;
 }) {
-  const [session, setSession] = useState(initial);
+  const [session, setSession] = useState(() => {
+    latestSession = initial;
+    return initial;
+  });
   useEffect(() => {
-    sessionControl.set = setSession;
+    sessionControl.set = (next) => {
+      latestSession = next;
+      setSession(next);
+    };
   }, []);
   return <SessionProvider session={session}>{children}</SessionProvider>;
 }

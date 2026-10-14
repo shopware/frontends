@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Mock } from "vitest";
 
+import type { RegistrationSettings } from "@/features/account/registrationSchema";
 import { anonymousSession } from "@/features/session/anonymousSession";
 import { SessionActionsProvider } from "@/features/session/components/SessionActionsContext";
 import type { SessionActions } from "@/features/session/components/SessionActionsContext";
@@ -15,6 +16,7 @@ import type {
 } from "@/features/session/types";
 import type { Locale } from "@/i18n/config";
 import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
+import { shopSettings } from "@/platform/shopware/shopSettings.fixture";
 import { withI18n } from "@/test/i18n";
 import {
   interact,
@@ -351,7 +353,7 @@ describe("RegistrationForm in the browser", () => {
       lastName: "Doe",
       email: "jane.doe@example.com",
       password: "password123",
-      acceptedDataProtection: true,
+      acceptedDataProtection: false,
       billingAddress: {
         id: "",
         customerId: "",
@@ -732,5 +734,395 @@ describe("RegistrationForm in Polish", () => {
     await interact(() => submitForm(form));
 
     expect(push).toHaveBeenCalledWith("/pl-PL/account");
+  });
+});
+
+function settingsWith(
+  overrides: Partial<RegistrationSettings> = {},
+): RegistrationSettings {
+  return shopSettings({ loginRegistration: overrides }).loginRegistration;
+}
+
+const everyField = settingsWith({
+  passwordMinLength: 12,
+  requireDataProtectionCheckbox: true,
+  showSalutation: true,
+  showTitleField: true,
+  showBirthdayField: true,
+  birthdayFieldRequired: true,
+  requireEmailConfirmation: true,
+  requirePasswordConfirmation: true,
+  showAdditionalAddressField1: true,
+  additionalAddressField1Required: true,
+  showAdditionalAddressField2: true,
+  additionalAddressField2Required: true,
+  showPhoneNumberField: true,
+  phoneNumberFieldRequired: true,
+});
+
+const salutations = [
+  { label: "Mr.", value: "salutation-mr" },
+  { label: "Mrs.", value: "salutation-mrs" },
+];
+
+const settingsControl: { apply: (settings: RegistrationSettings) => void } = {
+  apply: () => {
+    throw new Error("RefreshedRegistrationForm is not mounted");
+  },
+};
+
+function RefreshedRegistrationForm() {
+  const [settings, setSettings] = useState(settingsWith());
+  useEffect(() => {
+    settingsControl.apply = setSettings;
+  }, []);
+  return <RegistrationForm countries={countries} settings={settings} />;
+}
+
+async function chooseBirthday(
+  container: HTMLElement,
+  parts: { day?: string; month?: string; year?: string },
+) {
+  for (const [part, value] of Object.entries(parts)) {
+    const select = byTestId<HTMLSelectElement>(
+      container,
+      `registration-birthday-${part}-select`,
+    );
+    await interact(() => setSelectValue(select, value));
+    await interact(() =>
+      select.dispatchEvent(new FocusEvent("focusout", { bubbles: true })),
+    );
+  }
+}
+
+function checkbox(container: HTMLElement): HTMLInputElement {
+  return byTestId<HTMLInputElement>(
+    container,
+    "registration-data-protection-checkbox",
+  );
+}
+
+describe("RegistrationForm with the shop settings in the browser", () => {
+  it("reports every field the shop requires and focuses the first one in page order", async () => {
+    const { container, actions, form, input, error } = await setup(
+      registerMock(),
+      { settings: everyField, salutations, birthYearMax: 2026 },
+    );
+
+    await interact(() => submitForm(form));
+
+    expect(actions.register).not.toHaveBeenCalled();
+    expect(document.activeElement).toBe(input("registration-first-name-input"));
+    expect(error("salutation")).toBeNull();
+    expect(error("title")).toBeNull();
+    expect(error("birthday")?.textContent).toBe("Value is required");
+    for (const part of ["day", "month", "year"]) {
+      expect(
+        byTestId(
+          container,
+          `registration-birthday-${part}-select`,
+        ).getAttribute("aria-invalid"),
+      ).toBe("true");
+    }
+    expect(error("emailConfirmation")?.textContent).toBe("Value is required");
+    expect(error("passwordConfirmation")?.textContent).toBe(
+      "Value is required",
+    );
+    expect(error("additionalAddressLine1")?.textContent).toBe(
+      "Value is required",
+    );
+    expect(error("additionalAddressLine2")?.textContent).toBe(
+      "Value is required",
+    );
+    expect(error("phoneNumber")?.textContent).toBe("Value is required");
+    expect(error("acceptedDataProtection")?.textContent).toBe(
+      "Please confirm that you have read the data protection information.",
+    );
+    expect(checkbox(container).getAttribute("aria-describedby")).toBe(
+      "acceptedDataProtection-error",
+    );
+  });
+
+  it("clears the data protection error once the box is ticked", async () => {
+    const { container, form, error } = await setup(registerMock(), {
+      settings: settingsWith({ requireDataProtectionCheckbox: true }),
+    });
+
+    await interact(() => submitForm(form));
+    expect(error("acceptedDataProtection")).not.toBeNull();
+    expect(checkbox(container).getAttribute("aria-invalid")).toBe("true");
+
+    await interact(() => checkbox(container).click());
+
+    expect(checkbox(container).checked).toBe(true);
+    expect(error("acceptedDataProtection")).toBeNull();
+    expect(checkbox(container).hasAttribute("aria-invalid")).toBe(false);
+  });
+
+  it("asks for the rest of a started optional birthday", async () => {
+    const { container, actions, form, input, error } = await setup(
+      registerMock(),
+      { settings: settingsWith({ showBirthdayField: true }) },
+    );
+
+    await fill(input, { ...personalData, ...addressData });
+    await chooseCountry(container, "Poland");
+    await chooseBirthday(container, { day: "12" });
+    await interact(() => submitForm(form));
+
+    expect(actions.register).not.toHaveBeenCalled();
+    expect(error("birthday")?.textContent).toBe(
+      "Enter the full date of birth or leave all three fields empty.",
+    );
+    expect(document.activeElement).toBe(
+      byTestId(container, "registration-birthday-month-select"),
+    );
+  });
+
+  it("sends every field the shop asks for in the Store API body", async () => {
+    const { container, actions, form, input } = await setup(registerMock(), {
+      settings: everyField,
+      salutations,
+      birthYearMax: 2026,
+    });
+
+    await interact(() =>
+      setSelectValue(
+        byTestId<HTMLSelectElement>(
+          container,
+          "registration-salutation-select",
+        ),
+        "salutation-mrs",
+      ),
+    );
+    await fill(input, {
+      "registration-title-input": "Dr.",
+      ...personalData,
+      "registration-password-input": "password-12345",
+      "registration-email-confirmation-input": "jane.doe@example.com",
+      "registration-password-confirmation-input": "password-12345",
+      ...addressData,
+      "registration-additional-address-line1-input": "Building B",
+      "registration-additional-address-line2-input": "Floor 3",
+      "registration-phone-input": "+49 30 123456",
+    });
+    await chooseBirthday(container, { day: "5", month: "10", year: "1990" });
+    await chooseCountry(container, "Poland");
+    await interact(() => checkbox(container).click());
+    await interact(() => submitForm(form));
+
+    expect(actions.register).toHaveBeenCalledExactlyOnceWith({
+      accountType: "private",
+      salutationId: "salutation-mrs",
+      title: "Dr.",
+      firstName: "Jane",
+      lastName: "Doe",
+      birthdayDay: 5,
+      birthdayMonth: 10,
+      birthdayYear: 1990,
+      email: "jane.doe@example.com",
+      password: "password-12345",
+      acceptedDataProtection: true,
+      billingAddress: {
+        id: "",
+        customerId: "",
+        firstName: "Jane",
+        lastName: "Doe",
+        street: "Main Street 1",
+        additionalAddressLine1: "Building B",
+        additionalAddressLine2: "Floor 3",
+        zipcode: "12345",
+        city: "Munich",
+        countryId: "country-pl",
+        phoneNumber: "+49 30 123456",
+      },
+    });
+  });
+
+  it("registers a private customer when the shop hides the account type select", async () => {
+    const { container, actions, form, input } = await setup(registerMock(), {
+      settings: settingsWith({ showAccountTypeSelection: false }),
+    });
+
+    expect(
+      container.querySelector(
+        '[data-testid="registration-account-type-select"]',
+      ),
+    ).toBeNull();
+    await fill(input, { ...personalData, ...addressData });
+    await chooseCountry(container, "Poland");
+    await interact(() => submitForm(form));
+
+    const payload = sentPayload(actions.register);
+    expect(payload.accountType).toBe("private");
+    expect(payload).not.toHaveProperty("vatIds");
+  });
+
+  it("registers a private customer when a refresh hides the account type select after a company was chosen", async () => {
+    const register = registerMock();
+    mounted = await mount(
+      withI18n(
+        <CmsActionsProvider actions={{ notify: vi.fn() }}>
+          <SessionActionsProvider actions={{ register }}>
+            <RefreshedRegistrationForm />
+          </SessionActionsProvider>
+        </CmsActionsProvider>,
+      ),
+    );
+    const { container } = mounted;
+    const input = (testId: string) =>
+      byTestId<HTMLInputElement>(container, testId);
+    await interact(() =>
+      setSelectValue(
+        byTestId<HTMLSelectElement>(
+          container,
+          "registration-account-type-select",
+        ),
+        "business",
+      ),
+    );
+    byTestId(container, "registration-company-input");
+
+    await interact(() =>
+      settingsControl.apply(settingsWith({ showAccountTypeSelection: false })),
+    );
+
+    expect(
+      container.querySelector(
+        '[data-testid="registration-account-type-select"]',
+      ),
+    ).toBeNull();
+    expect(
+      container.querySelector('[data-testid="registration-company-input"]'),
+    ).toBeNull();
+    await fill(input, { ...personalData, ...addressData });
+    await chooseCountry(container, "Poland");
+    await interact(() =>
+      submitForm(byTestId<HTMLFormElement>(container, "registration-form")),
+    );
+
+    const payload = sentPayload(register);
+    expect(payload.accountType).toBe("private");
+    expect(payload).not.toHaveProperty("vatIds");
+    expect(payload.billingAddress).not.toHaveProperty("company");
+  });
+
+  it("still registers a business for a company-only group when the shop hides the account type select", async () => {
+    const { container, actions, form, input } = await setup(registerMock(), {
+      companyOnly: true,
+      requestedGroupId: "group-b2b",
+      settings: settingsWith({ showAccountTypeSelection: false }),
+    });
+
+    await fill(input, {
+      ...personalData,
+      ...addressData,
+      "registration-company-input": "Acme GmbH",
+    });
+    await chooseCountry(container, "Poland");
+    await interact(() => submitForm(form));
+
+    const payload = sentPayload(actions.register);
+    expect(payload.accountType).toBe("business");
+    expect(payload.billingAddress.company).toBe("Acme GmbH");
+    expect(payload.requestedGroupId).toBe("group-b2b");
+  });
+
+  it("skips the disabled salutation when it moves focus to the first invalid field and retries the read", async () => {
+    const { container, form, input } = await setup(registerMock(), {
+      settings: settingsWith({ showSalutation: true }),
+      salutationsUnavailable: true,
+    });
+    const salutation = byTestId<HTMLSelectElement>(
+      container,
+      "registration-salutation-select",
+    );
+    expect(salutation.disabled).toBe(true);
+    expect(salutation.getAttribute("aria-invalid")).toBe("true");
+
+    await interact(() => submitForm(form));
+    expect(document.activeElement).toBe(input("registration-first-name-input"));
+
+    const retry = queryAll<HTMLButtonElement>(container, "button").find(
+      (button) => button.textContent === "Try again",
+    );
+    await interact(() => retry?.click());
+    expect(refresh).toHaveBeenCalledTimes(1);
+  });
+
+  it("describes the salutation retry with the failure message the disabled select carries", async () => {
+    const { container } = await setup(registerMock(), {
+      settings: settingsWith({ showSalutation: true }),
+      salutationsUnavailable: true,
+    });
+
+    const retry = queryAll<HTMLButtonElement>(container, "button").find(
+      (button) => button.textContent === "Try again",
+    );
+    const describedBy = retry?.getAttribute("aria-describedby") ?? "";
+    const description = describedBy
+      ? container.querySelector(`[id="${describedBy}"]`)
+      : null;
+    expect(description?.textContent).toBe(
+      "Unfortunately, something went wrong. Please try again in a few moments. If the problem persists, you can return to the homepage or contact our support team for assistance.",
+    );
+    expect(
+      byTestId<HTMLSelectElement>(
+        container,
+        "registration-salutation-select",
+      ).getAttribute("aria-describedby"),
+    ).toBe(describedBy);
+  });
+
+  it("clears the data protection tick with the rest of the form after a double opt-in", async () => {
+    const { container, form, input } = await setup(
+      registerMock(async () => ({ ok: true, doubleOptIn: true })),
+      { settings: settingsWith({ requireDataProtectionCheckbox: true }) },
+    );
+
+    await fill(input, { ...personalData, ...addressData });
+    await chooseCountry(container, "Poland");
+    await interact(() => checkbox(container).click());
+    await interact(() => submitForm(form));
+
+    expect(container.querySelector("output")?.textContent).toContain(
+      "Thank you for signing up!",
+    );
+    expect(checkbox(container).checked).toBe(false);
+    expect(container.querySelector("#acceptedDataProtection-error")).toBeNull();
+  });
+
+  it("reports a confirmation mismatch in German", async () => {
+    window.history.replaceState(null, "", "/de-DE/account/login");
+    const { container, form, input, error } = await setup(
+      registerMock(),
+      {
+        settings: settingsWith({
+          requireEmailConfirmation: true,
+          requirePasswordConfirmation: true,
+        }),
+      },
+      null,
+      "de-DE",
+    );
+
+    await fill(input, {
+      ...personalData,
+      "registration-email-confirmation-input": "jane@example.com",
+      "registration-password-confirmation-input": "password124",
+      ...addressData,
+    });
+    await chooseCountry(container, "Poland");
+    await interact(() => submitForm(form));
+
+    expect(error("emailConfirmation")?.textContent).toBe(
+      "Der Wert muss dem Wert E-Mail entsprechen",
+    );
+    expect(error("passwordConfirmation")?.textContent).toBe(
+      "Die Passwörter stimmen nicht überein",
+    );
+    expect(document.activeElement).toBe(
+      input("registration-email-confirmation-input"),
+    );
   });
 });

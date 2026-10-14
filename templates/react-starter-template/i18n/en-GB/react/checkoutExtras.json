@@ -1,0 +1,38 @@
+{
+  "checkout": {
+    "signInPrompt": {
+      "text": "Already have an account?",
+      "action": "Sign in"
+    },
+    "addresses": {
+      "differentShipping": "Ship to a different address",
+      "sameAsShipping": "Same as the shipping address",
+      "changeShipping": "Change shipping address",
+      "changeBilling": "Change billing address",
+      "chooseShipping": "Choose a shipping address",
+      "chooseBilling": "Choose a billing address",
+      "loadError": "Your addresses could not be loaded.",
+      "useAddress": "Use this address",
+      "shippingChanged": "Shipping address changed to {address}.",
+      "billingChanged": "Billing address changed to {address}.",
+      "changeUnconfirmed": "Your address change could not be confirmed. Please choose the address again before placing your order."
+    },
+    "terms": {
+      "heading": "Terms and conditions",
+      "tosLabel": "I have read and accepted the {link}.",
+      "tosLink": "general terms and conditions",
+      "tosRequired": "Please accept the general terms and conditions to place your order.",
+      "revocationNotice": "Please note our {link}.",
+      "revocationLink": "cancellation policy",
+      "revocationLabel": "I want immediate access to the digital content and I acknowledge that thereby I waive my right to cancel.",
+      "revocationRequired": "Please confirm this to get immediate access to the digital content.",
+      "dataProtectionRequired": "Please confirm that you have read the data protection information.",
+      "opensInNewTab": "(opens in a new tab)"
+    },
+    "customerComment": {
+      "label": "Comment on your order",
+      "hint": "Optional, for example delivery instructions.",
+      "summaryLabel": "Your comment"
+    }
+  }
+}

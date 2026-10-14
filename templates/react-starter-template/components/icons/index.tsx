@@ -129,3 +129,10 @@ export const CurrencyIcon = outline(
     <path d="M5 5l3.5 3.5M19 5l-3.5 3.5M5 19l3.5-3.5M19 19l-3.5-3.5" />
   </>,
 );
+
+export const TagIcon = outline(
+  <>
+    <path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z" />
+    <circle cx="7.5" cy="7.5" r="1.5" />
+  </>,
+);

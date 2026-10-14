@@ -18,6 +18,11 @@ writing or changing the React one.
   navigation, translations and formatting helpers. A client component must
   never import from `.`, because that pulls server components into the
   client bundle.
+- `getProductPrice` is exported from `./client` too, for app islands that
+  show a product price outside a CMS element. `.` also exports
+  `CmsElementProductListingResults` (a client island) and
+  `getClientListingFilters`, for an app that renders a listing outside a CMS
+  page.
 - `./styles.css` carries the rich-text rules and the `.cms-element-image`
   rules. The consuming app imports it after `@import "tailwindcss"` and adds
   `@source` for this package's `src` so Tailwind sees the class names.
@@ -96,11 +101,41 @@ its config with `getConfigValue(content, "displayMode")`, which returns
 - A client island reaches the app through `useCmsActions()` from `./client`
   (add to cart, wishlist, variant lookup, forms, reviews, notifications).
   Without a provider it gets `notImplementedCmsActions`, which warns and
-  returns `{ ok: false }`. `findVariant` receives `parentId` next to the
-  product id so the app can query `/product/{parentId}/find-variant` the way
-  `useProductConfigurator` does; `CmsActionResult.errors` carries Store API
-  error codes (`messageKey` + `params`) that the islands translate through
-  the `errors.*` message tree, as the Vue cart notifications do.
+  returns `{ ok: false }`. `findVariant` receives the product id, `parentId`,
+  the selection as a `groupId → optionId` map in configurator group order,
+  the `switchedGroup` and an `AbortSignal`, so the app can call
+  `/product/{parentId}/find-variant` the way the Shopware storefront does
+  (`useProductConfigurator` searches `/product` instead and keys its
+  selection by group name). It resolves `CmsFindVariantResult`: `variant`
+  (`productId` plus an unprefixed internal `url`), `notFound`, `cancelled` or
+  `ok: false`. `CmsActionResult.errors` carries Store API error codes
+  (`messageKey` + `params`) that the islands translate through the `errors.*`
+  message tree, as the Vue cart notifications do.
+- Forms (`SwContactForm`, `SwNewsletterForm`, rendered by `CmsElementForm`)
+  submit through `submitContactForm` and `subscribeNewsletter` and get
+  results, never toasts: `CmsFormResult.violations` are
+  `{ field?, code?, message }`, with `field` the Store API body property and
+  `message` already translated by the app (reviews still get raw
+  `CmsApiViolation`s that the island maps). `splitFormViolations`
+  (`shared/formServerErrors.ts`) puts a violation of a field the form shows
+  under that field (`aria-invalid`, `aria-describedby`) and everything else,
+  deduplicated, or `message` when there are none, into the `role="alert"`
+  `cms-form-error` box; typing in a field clears its server error. Client and
+  server field errors focus the first `aria-invalid` control. A second submit
+  while one runs is ignored (a ref; the button is `disabled`, the form
+  `aria-busy`), and the button takes the focus back only when it was lost.
+  Only a rejected action toasts. `CmsElementForm` passes `slotId` (the
+  element id), `navigationId` (`ctx.foreignKey`) and `entityName` (from
+  `ctx.routeName`), because the backend reads the element's receiver and
+  confirmation text only with `slotId`. The contact form requires a
+  salutation whenever the slot lists any; the newsletter salutation is
+  optional and has no `*`. The confirmation is the result's
+  `successMessage`, else a non-empty `confirmationText`, else the default;
+  the Administration stores `""` by default, so never use `??` there. It
+  takes the focus when the focus was lost with the submit button. The
+  newsletter success copy follows the option and the returned `status`
+  (`notSet`: confirmation mail sent). Both forms are `noValidate` and show
+  `form.requiredFieldsNote`.
 - `getCustomerState()` on the port tells islands about the browser session
   (`loading` | `guest` | `customer` with an id); `null` (the default) means
   the app tracks none, and the island falls back to `ctx.isLoggedIn` for the
@@ -112,7 +147,27 @@ its config with `getConfigValue(content, "displayMode")`, which returns
   thank-you (after a save) or the login hint (after a logout) takes the focus,
   but only if the focus was lost.
   Never drop a read in an effect cleanup: Next keeps hidden segments in
-  `<Activity>`, which runs cleanups and keeps state.
+  `<Activity>`, which runs cleanups and keeps state. The exception is a
+  lookup whose late answer would navigate (`SwVariantConfiguratorOptions`
+  aborts it and resets its state in its layout-effect cleanup).
+- `SwVariantConfiguratorOptions` selects optimistically, asks `findVariant`
+  with an abort signal and lets only the latest answer act. A found variant
+  is opened with `router.replace(getVariantHref(variant, urlPrefix), { scroll: false })`
+  (`variantOptionGroups.ts`: `url` only when it is a single-slash internal
+  path without a backslash or control character, else `/detail/<id>`, then
+  `prefixUrl`); a miss or failure rolls the selection back and shows the
+  message in its persistent `<output data-testid="product-variant-status">`
+  (visible for `unavailable` and `failed`, `sr-only` while loading). The
+  radios stay enabled while it resolves: `aria-busy` sits on the block of
+  option groups, not on the root, so the `<output>` outside it is still
+  announced; the `loading` overlay blocks pointers only, arrow keys navigate
+  like clicks and the sr-only `product.variantConfigurator.hint`, linked by
+  `aria-describedby`, says so beforehand (WCAG 3.2.2). Focus returns to the
+  chosen radio after the page re-renders when it was in the configurator and
+  is now lost (`lastSwitch`, module scope, so it survives the new mount).
+  Its `[productId]` layout-effect cleanup aborts the lookup and resets the
+  state, because a late `replace` from a page hidden in `<Activity>` would
+  pull the customer back to the product.
 - Listing filters, sorting and pagination keep their state in the URL with
   `useListingNavigation()` from `./client`. The query contract is the one the
   Vue layer and the e2e suite use: `manufacturer`, `properties` and
@@ -124,7 +179,13 @@ its config with `getConfigValue(content, "displayMode")`, which returns
   (the app passes the embedded listing's `limit` and `sorting`), so the
   backend's own listing defaults apply otherwise; `LISTING_DEFAULTS` is a UI
   fallback, never a value to send. The page-size select adds the listing's
-  own `limit` to the standard sizes (`limitOptions`).
+  own `limit` to the standard sizes (`limitOptions`). Outside a CMS page (the
+  template's `/search`) the app renders `SwProductListingFilters`,
+  `CmsElementProductListingResults` and `SwProductCard` itself, with
+  `getClientListingFilters(listing.aggregations)` for the filters, and passes
+  `isProductSearch` to both islands; without it a filter, sort or page change
+  drops `search` and `categories` from the URL. The package never reads
+  `/search` itself.
 
 ## Images, links, prices, text
 
@@ -175,6 +236,10 @@ use `getCmsTranslate(text, { count })`.
   components, because `apps/e2e-tests` asserts them (for example
   `product-box-product-name-link`, `add-to-cart-button`, `product-variant`,
   `listing-filter-{code}`, `listing-pagination-limit-select`, `loading`).
+- The test ids this package adds beyond the Vue ones, which its own tests
+  use and no e2e spec asserts yet: `product-variant-status`,
+  `cms-contact-form`, `cms-contact-form-submit`, `cms-newsletter-form`,
+  `cms-newsletter-form-submit`, `cms-form-error` and `cms-form-success`.
 - `border-brand-primary` on the selected variant option.
 - Native `<select>` elements for the page-size and sort controls.
 
@@ -186,6 +251,8 @@ use `getCmsTranslate(text, { count })`.
   server components render through `react-dom/server` with
   `renderToReadableStream`; client islands render in `dom` tests with the
   helpers in `src/__fixtures__/dom.ts` and a `CmsActionsProvider` of mocks.
-  Islands that use `next/navigation` are not rendered in tests.
+  Islands that use `next/navigation` render in `dom` tests only with
+  `vi.mock("next/navigation")` (`SwVariantConfiguratorOptions.dom.test.tsx`,
+  which also wraps pages in `<Activity>` to reproduce Next's hidden segments).
 - Out of scope for now: 3D media (`SwMedia3D`, `CmsBlockSpatialViewer`
   renders a placeholder) and loading more reviews.

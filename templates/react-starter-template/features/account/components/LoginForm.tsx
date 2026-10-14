@@ -14,6 +14,7 @@ import {
   validateLogin,
 } from "@/features/account/loginSchema";
 import type { LoginValues } from "@/features/account/loginSchema";
+import { ForgotPasswordLink } from "@/features/account/recovery/components/RecoveryLinks";
 import { resolveRedirectFromSearch } from "@/features/account/redirect";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
@@ -157,6 +158,7 @@ export function LoginForm({
           onBlur={touch("password")}
           error={errorFor("password")}
         />
+        <ForgotPasswordLink />
         {failure ? (
           <p role="alert" className="text-sm text-states-error">
             {failure}

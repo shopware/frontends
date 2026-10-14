@@ -254,6 +254,55 @@ describe("SwVariantConfigurator", () => {
       /<input[^>]*type="radio"[^>]*checked=""[^>]*value="option-blue"/,
     );
     expect(html).not.toContain('data-testid="loading"');
+    expect(html).not.toContain("aria-busy");
+  });
+
+  it("describes the groups with the hint and renders an empty status", async () => {
+    const html = await renderToHtml(
+      <SwVariantConfigurator
+        product={product()}
+        optionGroups={optionGroups}
+        ctx={ctx}
+      />,
+    );
+
+    const hint = html.match(
+      /<p id="([^"]+)" class="sr-only">Selecting an option loads the matching variant\.<\/p>/,
+    );
+    expect(hint).not.toBeNull();
+    const describedBy = html.match(/<fieldset[^>]*aria-describedby="([^"]+)"/g);
+    expect(describedBy).toHaveLength(2);
+    for (const fieldset of describedBy ?? []) {
+      expect(fieldset).toContain(`aria-describedby="${hint?.[1]}"`);
+    }
+    expect(html).toContain(
+      '<output data-testid="product-variant-status" class="sr-only"></output>',
+    );
+  });
+
+  it("takes the hint from the context translations", async () => {
+    const translated = createCmsContext({
+      registry: createCmsRegistry(),
+      translations: {
+        product: {
+          variantConfigurator: {
+            hint: "Die Auswahl einer Option lädt die passende Variante.",
+          },
+        },
+      },
+    });
+    const html = await renderToHtml(
+      <SwVariantConfigurator
+        product={product()}
+        optionGroups={optionGroups}
+        ctx={translated}
+      />,
+    );
+
+    expect(html).toContain(
+      "Die Auswahl einer Option lädt die passende Variante.",
+    );
+    expect(html).toContain("Choose a");
   });
 
   it("renders the empty wrapper without configurator settings", async () => {

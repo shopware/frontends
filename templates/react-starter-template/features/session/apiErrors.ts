@@ -58,3 +58,21 @@ export function resolveApiErrorMessages(
   if (!Array.isArray(errors) || errors.length === 0) return fallback;
   return errors.map((apiError) => resolveApiError(apiError, t, context));
 }
+
+export function apiErrorCodes(error: unknown): string[] {
+  if (!(error instanceof ApiClientError)) return [];
+  const errors: ApiError[] | undefined = error.details?.errors;
+  if (!Array.isArray(errors)) return [];
+  return errors.flatMap(({ code }) => (code ? [code] : []));
+}
+
+export function apiFailureSummary(error: unknown): {
+  status?: number;
+  codes?: string[];
+  name?: string;
+} {
+  if (error instanceof ApiClientError) {
+    return { status: error.status, codes: apiErrorCodes(error) };
+  }
+  return { name: error instanceof Error ? error.name : typeof error };
+}

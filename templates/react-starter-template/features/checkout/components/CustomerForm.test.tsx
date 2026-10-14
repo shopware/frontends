@@ -136,6 +136,69 @@ describe("CustomerAddress", () => {
     expect(html).toContain('<option value="state-by">Bavaria</option>');
   });
 
+  it("prefixes ids, test ids and autocomplete hints for a second address", async () => {
+    const html = await renderToHtml(
+      <CustomerAddress
+        values={{ ...emptyCheckoutValues, countryId: "country-de" }}
+        errors={{ firstName: "Value is required" }}
+        countries={countries}
+        onFieldChange={() => {}}
+        onFieldBlur={() => {}}
+        onCountryChange={() => {}}
+        idPrefix="shipping-"
+        testIdPrefix="checkout-shipping"
+        countryTestId="checkout-shipping-country-select"
+        autoCompletePrefix="shipping "
+      />,
+    );
+
+    const fields: [string, string, string][] = [
+      [
+        "checkout-shipping-first-name-input",
+        "shipping-first-name",
+        "shipping given-name",
+      ],
+      [
+        "checkout-shipping-last-name-input",
+        "shipping-last-name",
+        "shipping family-name",
+      ],
+      [
+        "checkout-shipping-street-address-input",
+        "shipping-street",
+        "shipping street-address",
+      ],
+      [
+        "checkout-shipping-zip-code-input",
+        "shipping-zipcode",
+        "shipping postal-code",
+      ],
+      [
+        "checkout-shipping-city-input",
+        "shipping-city",
+        "shipping address-level2",
+      ],
+      [
+        "checkout-shipping-state-input",
+        "shipping-state",
+        "shipping address-level1",
+      ],
+    ];
+    for (const [testId, id, autoComplete] of fields) {
+      const input = inputWithTestId(html, testId);
+      expect(input).toContain(`id="${id}"`);
+      expect(input).toContain(`autoComplete="${autoComplete}"`);
+    }
+    expect(
+      inputWithTestId(html, "checkout-shipping-first-name-input"),
+    ).toContain('aria-describedby="shipping-first-name-error"');
+    expect(inputWithTestId(html, "checkout-shipping-country-select")).toContain(
+      'id="shipping-country"',
+    );
+    expect(html).not.toContain("checkout-pi-");
+    expect(html).not.toContain('data-testid="country-select"');
+  });
+
   it("offers a retry when the countries could not be read", async () => {
     const html = await renderToHtml(
       <CustomerAddress

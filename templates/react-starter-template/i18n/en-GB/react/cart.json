@@ -1,0 +1,27 @@
+{
+  "cart": {
+    "promotionCode": {
+      "label": "Promo code",
+      "apply": "Apply",
+      "added": "Promo code added successfully. Shopping cart updated.",
+      "alreadyApplied": "This promo code has already been applied.",
+      "notApplied": "The promo code could not be applied.",
+      "removed": "Promo code removed. Shopping cart updated."
+    },
+    "lineItemRemoved": "\"{name}\" has been removed from your shopping cart.",
+    "summary": {
+      "taxIncluded": "incl. {rate}% VAT",
+      "taxExcluded": "plus {rate}% VAT",
+      "shippingEstimate": "Shipping costs are calculated for delivery to {country}. The final costs are confirmed at checkout."
+    }
+  },
+  "errors": {
+    "promotion-not-eligible-not-logged-in": "Please log in to redeem this promo code.",
+    "promotion-not-eligible-specific-products": "This promo code is only valid for specific products not currently in your cart.",
+    "promotion-not-eligible-already-redeemed": "The promo code \"{name}\" has already been redeemed.",
+    "promotion-not-eligible-already-added": "The promotion for code \"{name}\" has already been added to your cart. A promotion can only be applied once per order.",
+    "promotion-discount-zero-value": "The promotion \"{name}\" was redeemed, but it does not reduce the price of your cart.",
+    "promotion-discount-deleted": "Discount \"{name}\" has been removed.",
+    "promotion-discount-unknown-condition": "The discount \"{name}\" was removed because one of its conditions is no longer met."
+  }
+}

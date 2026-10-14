@@ -11,7 +11,13 @@ export const PERSONAL_CACHE_CONTROL =
 
 export const PERSONAL_SURROGATE_CONTROL = "no-store";
 
-export const PERSONAL_AREAS = ["account", "checkout", "wishlist"] as const;
+export const PERSONAL_AREAS = [
+  "account",
+  "checkout",
+  "wishlist",
+  "registration/confirm",
+  "newsletter-subscribe",
+] as const;
 
 export const PUBLIC_ASSETS = ["/logo-white.svg", "/logo.svg"] as const;
 

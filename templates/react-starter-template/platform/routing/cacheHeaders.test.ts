@@ -48,6 +48,12 @@ const personalPaths = [
   "/de-DE/account/profile",
   "/de-DE/checkout",
   "/de-DE/wishlist/",
+  "/registration/confirm",
+  "/registration/confirm/",
+  "/pl-PL/registration/confirm",
+  "/newsletter-subscribe",
+  "/newsletter-subscribe/",
+  "/de-DE/newsletter-subscribe",
 ];
 
 const publicPaths = [
@@ -67,6 +73,12 @@ const publicPaths = [
   "/favicon.ico",
   "/pl-PL/logo.svg",
   "/logo.svg.map",
+  "/search?search=shirt",
+  "/pl-PL/search",
+  "/registration",
+  "/Registration",
+  "/registration-info/",
+  "/newsletter-subscribers",
 ];
 
 describe("cache headers of personal routes", () => {

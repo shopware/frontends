@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { Suspense } from "react";
 
 import { OrderDetailSkeleton } from "@/features/account/orders/components/OrderDetailSkeleton";
 import { OrderDetailsPageContent } from "@/features/account/orders/components/OrderDetailsPageContent";
 import { getTranslator, localeFromParams } from "@/i18n/server";
+import { loadShopSettings } from "@/platform/shopware/loadShopSettings";
 
 export const instant = false;
 
@@ -18,12 +20,23 @@ export async function generateMetadata({
   return { title: t("account.orderDetails.order") };
 }
 
+async function OrderDetailsSection({ params }: AccountOrderDetailsPageProps) {
+  await connection();
+  const { cart } = await loadShopSettings();
+  return (
+    <OrderDetailsPageContent
+      params={params}
+      orderRefundsEnabled={cart.enableOrderRefunds}
+    />
+  );
+}
+
 export default function AccountOrderDetailsPage({
   params,
 }: AccountOrderDetailsPageProps) {
   return (
     <Suspense fallback={<OrderDetailSkeleton />}>
-      <OrderDetailsPageContent params={params} />
+      <OrderDetailsSection params={params} />
     </Suspense>
   );
 }

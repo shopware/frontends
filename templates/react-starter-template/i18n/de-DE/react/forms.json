@@ -1,0 +1,14 @@
+{
+  "forms": {
+    "errors": {
+      "urlNotAllowed": "Dieses Feld darf keinen Link enthalten.",
+      "invalidChoice": "Bitte wählen Sie eine der Optionen."
+    }
+  },
+  "form": {
+    "messages": {
+      "newsletterConfirmationSent": "Vielen Dank! Bitte bestätigen Sie Ihr Abonnement über den Link in der E-Mail, die wir Ihnen gerade gesendet haben.",
+      "newsletterUnsubscribed": "Sie haben den Newsletter abbestellt."
+    }
+  }
+}

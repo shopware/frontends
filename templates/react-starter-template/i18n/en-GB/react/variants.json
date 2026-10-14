@@ -1,0 +1,10 @@
+{
+  "product": {
+    "variantConfigurator": {
+      "hint": "Selecting an option loads the matching variant.",
+      "loading": "Loading the selected variant…",
+      "unavailable": "This combination is not available. Your previous selection has been restored.",
+      "failed": "The selected variant could not be loaded. Please try again."
+    }
+  }
+}

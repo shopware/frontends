@@ -64,8 +64,17 @@ describe("CmsElementForm", () => {
     expect(html).toContain(
       '<div class="cms-element-form mt-2" style="margin-bottom:4px">',
     );
-    expect(html).toContain('<form class="w-full relative">');
+    expect(html).toContain(
+      '<form class="w-full relative" noValidate="" data-testid="cms-contact-form">',
+    );
     expect(html).toContain(">Contact</h3>");
+    expect(html).toContain(
+      ">Fields marked with asterisks (*) are required.</p>",
+    );
+    expect(html).toMatch(/<label for="[^"]*salutation">Salutation \*<\/label>/);
+    expect(html).toMatch(
+      /<select id="[^"]*salutation"[^>]*aria-required="true"/,
+    );
     expect(html).toMatch(fieldId("first-name"));
     expect(html).toMatch(fieldId("email-address"));
     expect(html).toMatch(fieldId("phone"));
@@ -74,6 +83,10 @@ describe("CmsElementForm", () => {
     expect(html).toMatch(fieldId("privacy"));
     expect(html).toContain("I have read the data protection information.");
     expect(html).toContain('type="submit"');
+    expect(html).toContain('data-testid="cms-contact-form-submit"');
+    expect(html).not.toContain("aria-invalid");
+    expect(html).not.toContain("aria-busy");
+    expect(html).not.toContain('data-testid="cms-form-error"');
   });
 
   it("lists the translated salutations and the disabled placeholder", async () => {
@@ -114,7 +127,12 @@ describe("CmsElementForm", () => {
       />,
     );
 
+    expect(html).toContain(
+      '<form class="w-full relative" noValidate="" data-testid="cms-newsletter-form">',
+    );
     expect(html).toContain(">Subscribe to newsletter</h3>");
+    expect(html).toMatch(/<label for="[^"]*salutation">Salutation<\/label>/);
+    expect(html).toContain('data-testid="cms-newsletter-form-submit"');
     expect(html).toMatch(fieldId("option"));
     expect(html).toContain(
       '<option value="subscribe" selected="">Subscribe to newsletter</option>',
@@ -134,6 +152,8 @@ describe("CmsElementForm", () => {
 
     expect(html).toMatch(fieldId("salutation"));
     expect(html).not.toContain("<option value=");
+    expect(html).toMatch(/<label for="[^"]*salutation">Salutation<\/label>/);
+    expect(html).not.toMatch(/<select id="[^"]*salutation"[^>]*aria-required/);
   });
 });
 

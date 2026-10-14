@@ -253,6 +253,10 @@ export function createSessionStore({
         await start();
         return actions.register(input);
       },
+      confirmRegistration: async (input) => {
+        await start();
+        return actions.confirmRegistration(input);
+      },
       logout: async () => {
         await start();
         return actions.logout();

@@ -30,6 +30,10 @@ const INVALID_UUID = "FRAMEWORK__INVALID_UUID";
 const DEEP_LINK_NOT_FOUND = "CHECKOUT__CART_ORDER_DEEP_LINK_NOT_FOUND";
 const GUEST_NOT_AUTHENTICATED = "CHECKOUT__GUEST_NOT_AUTHENTICATED";
 const GUEST_WRONG_CREDENTIALS = "CHECKOUT__GUEST_WRONG_CREDENTIALS";
+const NOT_CANCELLABLE_CODES = [
+  "CHECKOUT__ORDER_NOT_CANCELLABLE",
+  "SYSTEM__ILLEGAL_STATE_TRANSITION",
+];
 
 type ReadOrderBody = operations["readOrder post /order"]["body"];
 
@@ -190,6 +194,40 @@ export async function handleOrderPayment(
     },
   );
   return { redirectUrl: data?.redirectUrl ?? null };
+}
+
+export async function cancelOrder(
+  client: OrdersClient,
+  orderId: string,
+): Promise<Schemas["StateMachineState"]> {
+  const { data } = await client.invoke("cancelOrder post /order/state/cancel", {
+    body: { orderId },
+    fetchOptions: { timeout: ORDER_TIMEOUT_MS },
+  });
+  return data;
+}
+
+export function isOrderCancellable(
+  { order }: OrderDetails,
+  orderRefundsEnabled: boolean,
+): boolean {
+  return (
+    orderRefundsEnabled && order.stateMachineState?.technicalName === "open"
+  );
+}
+
+export function isOrderNotCancellableError(error: unknown): boolean {
+  const codes = errorCodes(error);
+  return NOT_CANCELLABLE_CODES.some((code) => codes.has(code));
+}
+
+export function cancelOrderErrorMessages(
+  error: unknown,
+  t: Translate,
+): string[] {
+  return isOrderNotCancellableError(error)
+    ? [t("account.messages.orderNotCancellable")]
+    : resolveApiErrorMessages(error, t);
 }
 
 export function isOrderId(value: unknown): value is string {

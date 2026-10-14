@@ -27,7 +27,20 @@ const VUE_FILE_ORDER = [
   "newsletter",
 ];
 
-const REACT_AREAS = ["core", "layout", "account", "checkout"];
+const REACT_AREAS = [
+  "core",
+  "layout",
+  "account",
+  "checkout",
+  "search",
+  "variants",
+  "forms",
+  "emailLinks",
+  "recovery",
+  "cart",
+  "checkoutExtras",
+  "accountExtras",
+];
 
 function readJson(...segments: string[]): Record<string, unknown> {
   return JSON.parse(readFileSync(join(I18N_DIR, ...segments), "utf8"));
@@ -98,7 +111,7 @@ describe("getMessages", () => {
     },
   );
 
-  it("ships exactly the 13 Vue files and the four react area files per locale", () => {
+  it("ships exactly the 13 Vue files and the react area files per locale", () => {
     for (const locale of locales) {
       expect(
         readdirSync(join(I18N_DIR, locale))

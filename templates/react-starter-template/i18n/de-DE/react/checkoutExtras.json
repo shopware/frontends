@@ -1,0 +1,38 @@
+{
+  "checkout": {
+    "signInPrompt": {
+      "text": "Sie haben bereits ein Konto?",
+      "action": "Anmelden"
+    },
+    "addresses": {
+      "differentShipping": "An eine andere Adresse liefern",
+      "sameAsShipping": "Entspricht der Versandadresse",
+      "changeShipping": "Versandadresse ändern",
+      "changeBilling": "Rechnungsadresse ändern",
+      "chooseShipping": "Versandadresse auswählen",
+      "chooseBilling": "Rechnungsadresse auswählen",
+      "loadError": "Ihre Adressen konnten nicht geladen werden.",
+      "useAddress": "Diese Adresse verwenden",
+      "shippingChanged": "Die Versandadresse lautet jetzt {address}.",
+      "billingChanged": "Die Rechnungsadresse lautet jetzt {address}.",
+      "changeUnconfirmed": "Ihre Adressänderung konnte nicht bestätigt werden. Bitte wählen Sie die Adresse erneut aus, bevor Sie Ihre Bestellung aufgeben."
+    },
+    "terms": {
+      "heading": "Allgemeine Geschäftsbedingungen",
+      "tosLabel": "Ich habe die {link} gelesen und akzeptiert.",
+      "tosLink": "Allgemeinen Geschäftsbedingungen",
+      "tosRequired": "Bitte akzeptieren Sie die Allgemeinen Geschäftsbedingungen, um Ihre Bestellung aufzugeben.",
+      "revocationNotice": "Bitte beachten Sie unsere {link}.",
+      "revocationLink": "Widerrufsbelehrung",
+      "revocationLabel": "Ich möchte sofort auf die digitalen Inhalte zugreifen und weiß, dass ich damit mein Widerrufsrecht verliere.",
+      "revocationRequired": "Bitte bestätigen Sie dies, um sofort auf die digitalen Inhalte zugreifen zu können.",
+      "dataProtectionRequired": "Bitte bestätigen Sie, dass Sie die Datenschutzinformationen gelesen haben.",
+      "opensInNewTab": "(öffnet in einem neuen Tab)"
+    },
+    "customerComment": {
+      "label": "Kommentar zu Ihrer Bestellung",
+      "hint": "Optional, zum Beispiel Hinweise zur Lieferung.",
+      "summaryLabel": "Ihr Kommentar"
+    }
+  }
+}

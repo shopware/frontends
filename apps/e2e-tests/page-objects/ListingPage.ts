@@ -21,8 +21,12 @@ export abstract class ListingPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.manufacturerFilter = page.getByTestId("listing-filter-manufacturer");
-    this.limitSelect = page.getByTestId("listing-pagination-limit-select");
+    this.manufacturerFilter = page
+      .getByTestId("listing-filter-manufacturer")
+      .filter({ visible: true });
+    this.limitSelect = page
+      .getByTestId("listing-pagination-limit-select")
+      .filter({ visible: true });
   }
 
   async selectRandomManufacturerCheckbox() {
@@ -44,7 +48,9 @@ export abstract class ListingPage {
     await this.limitSelect.selectOption({ value: "1" });
     await this.page.waitForURL(/limit=1/);
     await this.rendered();
-    await expect(this.page.getByTestId("product-box-img")).toHaveCount(1, {
+    await expect(
+      this.page.getByTestId("product-box-img").filter({ visible: true }),
+    ).toHaveCount(1, {
       timeout: LISTING_TIMEOUT,
     });
   }
@@ -52,6 +58,7 @@ export abstract class ListingPage {
   async goToPage(number: number) {
     const firstProduct = this.page
       .getByTestId("product-box-product-name-link")
+      .filter({ visible: true })
       .first();
     const before = await firstProduct.getAttribute("href");
 
@@ -97,7 +104,9 @@ export abstract class ListingPage {
     // The rail renders after the listing.
     await this.manufacturerFilter.waitFor({ state: "visible" });
 
-    const panels = this.page.locator('[data-testid^="listing-filter-"]');
+    const panels = this.page
+      .locator('[data-testid^="listing-filter-"]')
+      .filter({ visible: true });
     const codes = await panels.evaluateAll((elements) =>
       elements.map((element) =>
         (element.getAttribute("data-testid") ?? "").replace(
@@ -140,11 +149,14 @@ export abstract class ListingPage {
 
   /** The URL is pushed before the request starts, so wait for the result. */
   protected async rendered() {
-    await expect(this.page.getByTestId("loading")).toHaveCount(0, {
+    await expect(
+      this.page.getByTestId("loading").filter({ visible: true }),
+    ).toHaveCount(0, {
       timeout: LISTING_TIMEOUT,
     });
     await this.page
       .getByTestId("product-box-img")
+      .filter({ visible: true })
       .first()
       .waitFor({ state: "visible", timeout: LISTING_TIMEOUT });
   }

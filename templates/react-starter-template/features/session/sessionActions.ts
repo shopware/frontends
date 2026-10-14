@@ -8,6 +8,11 @@ import { resolveApiErrorMessages } from "./apiErrors";
 import type { ApiErrorContext } from "./apiErrors";
 import type { SessionActions } from "./components/SessionActionsContext";
 import { READ_TIMEOUT_MS } from "./readTimeout";
+import {
+  classifyRegistrationConfirmError,
+  isGuestCustomer,
+  logRegistrationConfirmFailure,
+} from "./registrationConfirm";
 import type { SessionActionResult } from "./types";
 
 export type SessionNotification = { type: "error"; message: string };
@@ -94,6 +99,23 @@ export function createSessionActions({
       await refreshAfterMutation();
       const doubleOptIn = Boolean(customer.doubleOptInRegistration);
       return { ok: Boolean(customer.active || doubleOptIn), doubleOptIn };
+    },
+
+    async confirmRegistration({ em, hash }) {
+      let customer: unknown;
+      try {
+        const { data } = await client.invoke(
+          "registerConfirm post /account/register-confirm",
+          { body: { em, hash } },
+        );
+        customer = data;
+      } catch (error) {
+        const status = classifyRegistrationConfirmError(error);
+        if (status === "failed") logRegistrationConfirmFailure(error);
+        return { status };
+      }
+      await refreshAfterMutation();
+      return { status: "confirmed", guest: isGuestCustomer(customer) };
     },
 
     async logout() {

@@ -1,6 +1,6 @@
 import type { Schemas } from "#shopware";
 
-import type { CartErrorEntry } from "./cartErrors";
+import type { CartErrorEntry, CartErrorLevel } from "./cartErrors";
 
 export function lineItem(
   overrides: Partial<Schemas["LineItem"]> = {},
@@ -21,11 +21,12 @@ export function cartError(
   messageKey: string,
   keySuffix = "",
   message = messageKey,
+  level: CartErrorLevel = 10,
 ): CartErrorEntry {
   return {
     code: 0,
     key: `${messageKey}${keySuffix}`,
-    level: 10,
+    level,
     message,
     messageKey,
   };

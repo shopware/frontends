@@ -14,8 +14,12 @@ export class ProductPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.addToCartButton = page.getByTestId("add-to-cart-button");
-    this.variant = page.getByTestId("product-variant");
+    this.addToCartButton = page
+      .getByTestId("add-to-cart-button")
+      .filter({ visible: true });
+    this.variant = page
+      .getByTestId("product-variant")
+      .filter({ visible: true });
     this.miniCartLink = page.getByTestId("header-mini-cart-button");
     this.productRemove = page.getByTestId(
       "checkout-product-tile-remove-button",
@@ -70,7 +74,9 @@ export class ProductPage {
       throw new Error("No variant option switched the product.");
     }
 
-    await expect(this.page.getByTestId("loading")).toHaveCount(0);
+    await expect(
+      this.page.getByTestId("loading").filter({ visible: true }),
+    ).toHaveCount(0);
 
     // The id the add-to-cart button will actually submit.
     const variantId =

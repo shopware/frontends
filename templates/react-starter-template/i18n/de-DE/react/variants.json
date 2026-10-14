@@ -1,0 +1,10 @@
+{
+  "product": {
+    "variantConfigurator": {
+      "hint": "Die Auswahl einer Option lädt die passende Variante.",
+      "loading": "Die gewählte Variante wird geladen…",
+      "unavailable": "Diese Kombination ist nicht verfügbar. Ihre vorherige Auswahl wurde wiederhergestellt.",
+      "failed": "Die gewählte Variante konnte nicht geladen werden. Bitte versuchen Sie es erneut."
+    }
+  }
+}

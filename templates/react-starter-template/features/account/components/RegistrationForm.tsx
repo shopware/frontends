@@ -8,11 +8,16 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 
+import type { BirthdayPart } from "@/components/form/birthday";
+import { BirthdayField } from "@/components/form/BirthdayField";
+import { CheckboxField } from "@/components/form/CheckboxField";
 import { CountrySelect } from "@/components/form/CountrySelect";
 import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
+import type { SelectOption } from "@/components/form/SelectField";
 import { resolveRedirectFromSearch } from "@/features/account/redirect";
 import {
+  REGISTRATION_MAX_LENGTHS,
   REGISTRATION_MIN_LENGTHS,
   emptyRegistrationValues,
   toRegistrationInput,
@@ -21,18 +26,37 @@ import {
 import type {
   AccountType,
   RegistrationField,
+  RegistrationSettings,
   RegistrationValues,
 } from "@/features/account/registrationSchema";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useContentLang } from "@/i18n/ContentLanguageProvider";
 import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
+import { TEMPLATE_SHOP_SETTINGS } from "@/site/shopSettings";
 
 type Touched = Partial<Record<RegistrationField, boolean>>;
+
+type TextField = Exclude<
+  RegistrationField,
+  "accountType" | "acceptedDataProtection"
+>;
+
+const BIRTHDAY_FIELDS = {
+  day: "birthdayDay",
+  month: "birthdayMonth",
+  year: "birthdayYear",
+} as const satisfies Record<BirthdayPart, TextField>;
+
+const FIRST_INVALID_FIELD = '[aria-invalid="true"]:not(:disabled)';
 
 export type RegistrationFormProps = {
   countries: CountryOption[];
   countriesUnavailable?: boolean;
+  settings?: RegistrationSettings;
+  salutations?: SelectOption[];
+  salutationsUnavailable?: boolean;
+  birthYearMax?: number;
   companyOnly?: boolean;
   requestedGroupId?: string;
   redirectUrl?: string | null;
@@ -52,6 +76,10 @@ function toAccountType(value: string): AccountType {
 export function RegistrationForm({
   countries,
   countriesUnavailable = false,
+  settings = TEMPLATE_SHOP_SETTINGS.loginRegistration,
+  salutations = [],
+  salutationsUnavailable = false,
+  birthYearMax = new Date().getFullYear(),
   companyOnly = false,
   requestedGroupId,
   redirectUrl = null,
@@ -78,18 +106,31 @@ export function RegistrationForm({
   const busy = pending || navigating;
   const doubleOptInPending = doubleOptInCount > 0;
 
-  const business = values.accountType === "business";
+  const showAccountTypeSelect =
+    !companyOnly && settings.showAccountTypeSelection;
+  const accountType: AccountType = companyOnly
+    ? "business"
+    : showAccountTypeSelect
+      ? values.accountType
+      : "private";
+  const formValues: RegistrationValues =
+    accountType === values.accountType ? values : { ...values, accountType };
+  const business = accountType === "business";
   const selectedCountry =
     countries.find((country) => country.id === values.countryId) ?? null;
   const states = selectedCountry?.states ?? [];
   const countryHasStates = states.length > 0;
-  const errors = validateRegistration(values, { countryHasStates }, t);
+  const schemaOptions = { countryHasStates, settings, birthYearMax };
+  const errors = validateRegistration(formValues, schemaOptions, t);
   const minLengthHint = (min: number) =>
     t("account.registration.minLengthHint", { min }, min);
   const accountTypeOptions = [
     { label: t("form.accountType.private"), value: "private" },
     { label: t("form.accountType.business"), value: "business" },
   ];
+  const showAdditionalAddressLine =
+    settings.showAdditionalAddressField1 ||
+    settings.showAdditionalAddressField2;
 
   const errorFor = (field: RegistrationField) =>
     submitted || touched[field] ? errors[field] : undefined;
@@ -103,7 +144,7 @@ export function RegistrationForm({
     setTouched((current) => ({ ...current, [field]: true }));
 
   const inputHandler =
-    (field: RegistrationField) =>
+    (field: TextField) =>
     (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
       setField(field, event.target.value);
 
@@ -122,12 +163,10 @@ export function RegistrationForm({
 
   useEffect(() => {
     if (focusRequest === 0) return;
-    formRef.current
-      ?.querySelector<HTMLElement>('[aria-invalid="true"]')
-      ?.focus();
+    formRef.current?.querySelector<HTMLElement>(FIRST_INVALID_FIELD)?.focus();
   }, [focusRequest]);
 
-  function retryCountries() {
+  function retryReferences() {
     if (refreshing) return;
     startRefresh(() => {
       router.refresh();
@@ -139,7 +178,7 @@ export function RegistrationForm({
     if (busy) return;
     setSubmitted(true);
     if (
-      Object.keys(validateRegistration(values, { countryHasStates }, t)).length
+      Object.keys(validateRegistration(formValues, schemaOptions, t)).length
     ) {
       setFocusRequest((count) => count + 1);
       return;
@@ -148,7 +187,7 @@ export function RegistrationForm({
     setPending(true);
     try {
       const result = await register(
-        toRegistrationInput(values, { requestedGroupId }),
+        toRegistrationInput(formValues, { settings, requestedGroupId }),
       );
       if (!result.ok) return;
       if (result.doubleOptIn) {
@@ -206,7 +245,7 @@ export function RegistrationForm({
         }}
       >
         <div className="mb-10 grid grid-cols-12 gap-5">
-          {companyOnly ? null : (
+          {showAccountTypeSelect ? (
             <SelectField
               className="col-span-12"
               id="accountType"
@@ -220,7 +259,59 @@ export function RegistrationForm({
               onBlur={touch("accountType")}
               error={errorFor("accountType")}
             />
-          )}
+          ) : null}
+          {settings.showSalutation || settings.showTitleField ? (
+            <div className="col-span-12 grid grid-cols-12 gap-5">
+              {settings.showSalutation ? (
+                <div className="col-span-12 md:col-span-4">
+                  <SelectField
+                    id="salutation"
+                    data-testid="registration-salutation-select"
+                    label={t("form.salutation")}
+                    placeholder={t("form.chooseSalutation")}
+                    autoComplete="honorific-prefix"
+                    optionsLang={contentLang}
+                    options={salutations}
+                    disabled={salutationsUnavailable}
+                    value={values.salutationId}
+                    onChange={inputHandler("salutationId")}
+                    onBlur={touch("salutationId")}
+                    error={
+                      salutationsUnavailable
+                        ? t("errors.message-default")
+                        : errorFor("salutationId")
+                    }
+                  />
+                  {salutationsUnavailable ? (
+                    <BaseButton
+                      variant="secondary"
+                      size="small"
+                      className="mt-2"
+                      aria-busy={refreshing}
+                      aria-describedby="salutation-error"
+                      onClick={retryReferences}
+                    >
+                      {t("listing.retry")}
+                    </BaseButton>
+                  ) : null}
+                </div>
+              ) : null}
+              {settings.showTitleField ? (
+                <InputField
+                  className="col-span-12 md:col-span-4"
+                  id="title"
+                  data-testid="registration-title-input"
+                  label={t("form.title")}
+                  autoComplete="honorific-prefix"
+                  maxLength={REGISTRATION_MAX_LENGTHS.title}
+                  value={values.title}
+                  onChange={inputHandler("title")}
+                  onBlur={touch("title")}
+                  error={errorFor("title")}
+                />
+              ) : null}
+            </div>
+          ) : null}
           <InputField
             className="col-span-12 md:col-span-4"
             id="firstName"
@@ -247,6 +338,26 @@ export function RegistrationForm({
             onBlur={touch("lastName")}
             error={errorFor("lastName")}
           />
+          {settings.showBirthdayField ? (
+            <BirthdayField
+              className="col-span-12 md:col-span-8"
+              testIdPrefix="registration-birthday"
+              required={settings.birthdayFieldRequired}
+              birthYearMax={birthYearMax}
+              value={{
+                day: values.birthdayDay,
+                month: values.birthdayMonth,
+                year: values.birthdayYear,
+              }}
+              errors={{
+                day: errorFor("birthdayDay"),
+                month: errorFor("birthdayMonth"),
+                year: errorFor("birthdayYear"),
+              }}
+              onChange={(part, value) => setField(BIRTHDAY_FIELDS[part], value)}
+              onBlur={(part) => touch(BIRTHDAY_FIELDS[part])()}
+            />
+          ) : null}
           <InputField
             className="col-span-12 md:col-span-6"
             id="emailAddress"
@@ -260,13 +371,32 @@ export function RegistrationForm({
             onBlur={touch("email")}
             error={errorFor("email")}
           />
+          {settings.requireEmailConfirmation ? (
+            <InputField
+              className="col-span-12 md:col-span-6"
+              id="emailConfirmation"
+              data-testid="registration-email-confirmation-input"
+              type="email"
+              label={t("form.confirmEmail")}
+              required
+              autoComplete="email"
+              value={values.emailConfirmation}
+              onChange={inputHandler("emailConfirmation")}
+              onBlur={touch("emailConfirmation")}
+              error={errorFor("emailConfirmation")}
+            />
+          ) : null}
           <InputField
             className="col-span-12 md:col-span-4"
             id="password"
             data-testid="registration-password-input"
             type="password"
             label={t("form.password")}
-            hint={minLengthHint(REGISTRATION_MIN_LENGTHS.password)}
+            hint={
+              settings.passwordMinLength > 0
+                ? minLengthHint(settings.passwordMinLength)
+                : undefined
+            }
             required
             autoComplete="new-password"
             value={values.password}
@@ -274,6 +404,21 @@ export function RegistrationForm({
             onBlur={touch("password")}
             error={errorFor("password")}
           />
+          {settings.requirePasswordConfirmation ? (
+            <InputField
+              className="col-span-12 md:col-span-4"
+              id="passwordConfirmation"
+              data-testid="registration-password-confirmation-input"
+              type="password"
+              label={t("account.registration.passwordConfirmation")}
+              required
+              autoComplete="new-password"
+              value={values.passwordConfirmation}
+              onChange={inputHandler("passwordConfirmation")}
+              onBlur={touch("passwordConfirmation")}
+              error={errorFor("passwordConfirmation")}
+            />
+          ) : null}
           {business ? (
             <InputField
               className="col-span-12 md:col-span-4"
@@ -319,12 +464,42 @@ export function RegistrationForm({
             label={t("form.streetAddress")}
             hint={minLengthHint(REGISTRATION_MIN_LENGTHS.street)}
             required
-            autoComplete="street-address"
+            autoComplete={
+              showAdditionalAddressLine ? "address-line1" : "street-address"
+            }
             value={values.street}
             onChange={inputHandler("street")}
             onBlur={touch("street")}
             error={errorFor("street")}
           />
+          {settings.showAdditionalAddressField1 ? (
+            <InputField
+              className="col-span-12 md:col-span-4"
+              id="additionalAddressLine1"
+              data-testid="registration-additional-address-line1-input"
+              label={t("form.additionalAddressLine1")}
+              required={settings.additionalAddressField1Required}
+              autoComplete="address-line2"
+              value={values.additionalAddressLine1}
+              onChange={inputHandler("additionalAddressLine1")}
+              onBlur={touch("additionalAddressLine1")}
+              error={errorFor("additionalAddressLine1")}
+            />
+          ) : null}
+          {settings.showAdditionalAddressField2 ? (
+            <InputField
+              className="col-span-12 md:col-span-4"
+              id="additionalAddressLine2"
+              data-testid="registration-additional-address-line2-input"
+              label={t("form.additionalAddressLine2")}
+              required={settings.additionalAddressField2Required}
+              autoComplete="address-line3"
+              value={values.additionalAddressLine2}
+              onChange={inputHandler("additionalAddressLine2")}
+              onBlur={touch("additionalAddressLine2")}
+              error={errorFor("additionalAddressLine2")}
+            />
+          ) : null}
           <InputField
             className="col-span-12 md:col-span-4"
             id="zipcode"
@@ -370,7 +545,7 @@ export function RegistrationForm({
                   size="small"
                   className="mt-2"
                   aria-busy={refreshing}
-                  onClick={retryCountries}
+                  onClick={retryReferences}
                 >
                   {t("listing.retry")}
                 </BaseButton>
@@ -397,7 +572,36 @@ export function RegistrationForm({
               />
             ) : null}
           </div>
+          {settings.showPhoneNumberField ? (
+            <InputField
+              className="col-span-12 md:col-span-4"
+              id="phoneNumber"
+              data-testid="registration-phone-input"
+              type="tel"
+              label={t("form.phone")}
+              required={settings.phoneNumberFieldRequired}
+              autoComplete="tel"
+              maxLength={REGISTRATION_MAX_LENGTHS.phoneNumber}
+              value={values.phoneNumber}
+              onChange={inputHandler("phoneNumber")}
+              onBlur={touch("phoneNumber")}
+              error={errorFor("phoneNumber")}
+            />
+          ) : null}
         </fieldset>
+        {settings.requireDataProtectionCheckbox ? (
+          <CheckboxField
+            className="mb-5"
+            id="acceptedDataProtection"
+            data-testid="registration-data-protection-checkbox"
+            label={t("form.privacyLabel")}
+            required
+            checked={values.acceptedDataProtection}
+            onChange={(checked) => setField("acceptedDataProtection", checked)}
+            onBlur={touch("acceptedDataProtection")}
+            error={errorFor("acceptedDataProtection")}
+          />
+        ) : null}
         <div className="mb-5 text-right">
           <BaseButton
             type="submit"

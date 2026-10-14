@@ -288,9 +288,369 @@ describe("createCartStore mutations", () => {
         {
           messageKey: "product-stock-reached",
           params: { name: "Bag", quantity: 4 },
+          key: stock.key,
+          level: 10,
         },
       ],
     });
+  });
+
+  it("leaves out the state errors the cart before the mutation already had", async () => {
+    const blocked = cartError("shipping-method-blocked", "-UPS");
+    const stock = cartError("product-stock-reached", "product-1");
+    const blockedCart = cart({ errors: { [blocked.key]: blocked } });
+    const { store } = setup((operation) =>
+      operation === READ_CART
+        ? blockedCart
+        : cart({ errors: { [blocked.key]: blocked, [stock.key]: stock } }),
+    );
+
+    await expect(store.addProduct({ id: "product-1" })).resolves.toMatchObject({
+      errors: [{ messageKey: "shipping-method-blocked" }, { key: stock.key }],
+    });
+
+    await store.refresh();
+
+    await expect(store.addProduct({ id: "product-1" })).resolves.toEqual({
+      ok: true,
+      errors: [
+        {
+          messageKey: "product-stock-reached-empty",
+          key: stock.key,
+          level: 10,
+        },
+      ],
+    });
+  });
+
+  it("adds several products in one request", async () => {
+    const updated = cart({ lineItems: [lineItem(), lineItem({ id: "b" })] });
+    const { store, invocations } = setup(() => updated);
+
+    await expect(
+      store.addProducts([
+        { id: "product-1", quantity: 3 },
+        { id: "product-2" },
+      ]),
+    ).resolves.toEqual({ ok: true, errors: [] });
+
+    expect(invocations).toEqual([
+      {
+        operation: ADD_LINE_ITEM,
+        params: {
+          body: {
+            items: [
+              {
+                id: "product-1",
+                referencedId: "product-1",
+                quantity: 3,
+                type: "product",
+              },
+              {
+                id: "product-2",
+                referencedId: "product-2",
+                quantity: 1,
+                type: "product",
+              },
+            ],
+          },
+        },
+      },
+    ]);
+    expect(store.getSnapshot()).toEqual({ status: "ready", cart: updated });
+  });
+
+  it("adds no products without a request", async () => {
+    const { store, invocations } = setup();
+
+    await expect(store.addProducts([])).resolves.toEqual({
+      ok: true,
+      errors: [],
+    });
+    expect(invocations).toEqual([]);
+  });
+
+  it("resolves a failed batch with the first API error message", async () => {
+    const { store } = setup(() => {
+      throw apiClientError([{ code: "product-not-found" }]);
+    });
+
+    await expect(store.addProducts([{ id: "product-1" }])).resolves.toEqual({
+      ok: false,
+      message: en("errors.product-not-found"),
+    });
+  });
+});
+
+describe("createCartStore promotion codes", () => {
+  const summer = lineItem({
+    id: "promotion-1",
+    referencedId: "summer",
+    type: "promotion",
+    good: false,
+  });
+
+  it("adds the trimmed code as a promotion line item without id and quantity", async () => {
+    const { store, invocations } = setup(() =>
+      cart({ lineItems: [lineItem(), summer] }),
+    );
+
+    await store.addPromotionCode("  SUMMER ");
+
+    expect(invocations).toEqual([
+      {
+        operation: ADD_LINE_ITEM,
+        params: {
+          body: { items: [{ type: "promotion", referencedId: "SUMMER" }] },
+        },
+      },
+    ]);
+  });
+
+  it("reports the code as applied when a promotion of the returned cart references it", async () => {
+    const added = cartError("promotion-discount-added", "-SUMMER", "", 0);
+    const updated = cart({
+      lineItems: [lineItem(), summer],
+      errors: { [added.key]: added },
+    });
+    const { store } = setup(() => updated);
+
+    await expect(store.addPromotionCode("SUMMER")).resolves.toEqual({
+      ok: true,
+      applied: true,
+      errors: [],
+    });
+    expect(store.getSnapshot().cart).toBe(updated);
+  });
+
+  it("reports an unknown code as not applied with its error", async () => {
+    const notFound = cartError("promotion-not-found", "", "", 20);
+    const { store } = setup(() =>
+      cart({
+        lineItems: [lineItem()],
+        errors: { [notFound.key]: notFound },
+      }),
+    );
+
+    await expect(store.addPromotionCode("NOPE")).resolves.toMatchObject({
+      ok: true,
+      applied: false,
+      errors: [{ messageKey: "promotion-not-found", level: 20 }],
+    });
+  });
+
+  it("does not count an automatic promotion as the applied code", async () => {
+    const automatic = lineItem({
+      id: "auto",
+      referencedId: "",
+      type: "promotion",
+      good: false,
+    });
+    const { store } = setup(() => cart({ lineItems: [automatic] }));
+
+    await expect(store.addPromotionCode("SUMMER")).resolves.toMatchObject({
+      ok: true,
+      applied: false,
+    });
+  });
+
+  it("reports a code that is not eligible while another stored code is not eligible either", async () => {
+    const promotionA = {
+      ...cartError("promotion-not-eligible", "", "", 0),
+      name: "A",
+      message: "Promotion A not eligible for cart!",
+    };
+    const promotionB = {
+      ...promotionA,
+      name: "B",
+      message: "Promotion B not eligible for cart!",
+    };
+    const { store } = setup((operation) =>
+      cart({
+        lineItems: [lineItem()],
+        errors: {
+          "promotion-not-eligible":
+            operation === READ_CART ? promotionA : promotionB,
+        },
+      }),
+    );
+    await store.refresh();
+
+    await expect(store.addPromotionCode("B")).resolves.toMatchObject({
+      ok: true,
+      applied: false,
+      errors: [
+        {
+          messageKey: "promotion-not-eligible",
+          key: "promotion-not-eligible",
+          level: 0,
+          params: { name: "B" },
+        },
+      ],
+    });
+  });
+
+  it("reports a stored code as not eligible when the notice of an earlier code replaced its own", async () => {
+    const promotionA = {
+      ...cartError("promotion-not-eligible", "", "", 0),
+      name: "A",
+      message: "Promotion A not eligible for cart!",
+    };
+    const { store } = setup(() =>
+      cart({
+        lineItems: [lineItem()],
+        errors: { "promotion-not-eligible": promotionA },
+      }),
+    );
+    await store.refresh();
+
+    await expect(store.addPromotionCode("B")).resolves.toMatchObject({
+      ok: true,
+      applied: false,
+      errors: [{ messageKey: "promotion-not-eligible", level: 0 }],
+    });
+    await expect(store.addProduct({ id: "product-1" })).resolves.toEqual({
+      ok: true,
+      errors: [],
+    });
+  });
+
+  it("refuses a blank code without a request", async () => {
+    const { store, invocations } = setup();
+
+    await expect(store.addPromotionCode("   ")).resolves.toEqual({
+      ok: false,
+      applied: false,
+      message: "Value is required",
+    });
+    expect(invocations).toEqual([]);
+  });
+
+  it("keeps the cart and resolves the API message of a failed request", async () => {
+    const current = cart({ lineItems: [lineItem()] });
+    let failing = false;
+    const { store } = setup(() => {
+      if (failing) throw new TypeError("Failed to fetch");
+      return current;
+    });
+    await store.refresh();
+    failing = true;
+
+    await expect(store.addPromotionCode("SUMMER")).resolves.toEqual({
+      ok: false,
+      applied: false,
+      message: DEFAULT_MESSAGE,
+    });
+    expect(store.getSnapshot()).toEqual({ status: "ready", cart: current });
+  });
+});
+
+describe("createCartStore read results", () => {
+  it("resolves the read cart with every one of its errors", async () => {
+    const blocked = cartError("shipping-method-blocked", "-UPS");
+    const read = cart({ errors: { [blocked.key]: blocked } });
+    const { store } = setup(() => read);
+
+    const blockedError = {
+      messageKey: "shipping-method-blocked",
+      params: { name: "shipping-method-blocked" },
+      key: blocked.key,
+      level: 10,
+    };
+
+    await expect(store.refreshWithResult()).resolves.toEqual({
+      ok: true,
+      cart: read,
+      errors: [blockedError],
+      newErrors: [blockedError],
+    });
+    await expect(store.refreshWithResult()).resolves.toMatchObject({
+      errors: [{ key: blocked.key }],
+    });
+  });
+
+  it("resolves as new errors only the state errors the cart before the read did not have", async () => {
+    const ups = cartError("shipping-method-blocked", "-UPS");
+    const dhl = cartError("shipping-method-blocked", "-DHL");
+    const stock = cartError("product-stock-reached", "product-1");
+    const reads = [
+      cart({ errors: { [ups.key]: ups } }),
+      cart({ errors: { [ups.key]: ups, [dhl.key]: dhl, [stock.key]: stock } }),
+    ];
+    const { store } = setup(() => reads.shift() ?? cart());
+    await store.refresh();
+
+    const read = await store.refreshWithResult();
+
+    expect(read.ok && read.errors.map(({ key }) => key)).toEqual([
+      ups.key,
+      dhl.key,
+      stock.key,
+    ]);
+    expect(read.ok && read.newErrors.map(({ key }) => key)).toEqual([
+      dhl.key,
+      stock.key,
+    ]);
+  });
+
+  it("compares a read with the cart a mutation queued before it published", async () => {
+    const blocked = cartError("shipping-method-blocked", "-UPS");
+    const blockedCart = cart({ errors: { [blocked.key]: blocked } });
+    const reads = [cart(), blockedCart];
+    const pendingAdd = deferred<Schemas["Cart"]>();
+    const { store } = setup((operation) =>
+      operation === ADD_LINE_ITEM
+        ? pendingAdd.promise
+        : (reads.shift() ?? blockedCart),
+    );
+    await store.refresh();
+
+    const added = store.addProduct({ id: "product-1" });
+    const read = store.refreshWithResult();
+    pendingAdd.resolve(blockedCart);
+
+    await expect(added).resolves.toMatchObject({
+      errors: [{ key: blocked.key }],
+    });
+    await expect(read).resolves.toMatchObject({
+      errors: [{ key: blocked.key }],
+      newErrors: [],
+    });
+  });
+
+  it("resolves { ok: false } after a failed read", async () => {
+    const { store } = setup(() => {
+      throw new TypeError("Failed to fetch");
+    });
+
+    await expect(store.refreshWithResult()).resolves.toEqual({ ok: false });
+    expect(store.getSnapshot()).toEqual({ status: "error", cart: null });
+  });
+
+  it("shares one queued read between refresh and refreshWithResult", async () => {
+    const pendingAdd = deferred<Schemas["Cart"]>();
+    const read = cart();
+    const { store, invocations } = setup((operation) =>
+      operation === ADD_LINE_ITEM ? pendingAdd.promise : read,
+    );
+
+    const added = store.addProduct({ id: "product-1" });
+    const first = store.refreshWithResult();
+    const plain = store.refresh();
+    const second = store.refreshWithResult();
+
+    expect(second).toBe(first);
+    pendingAdd.resolve(cart());
+    await Promise.all([added, plain]);
+
+    await expect(first).resolves.toEqual({
+      ok: true,
+      cart: read,
+      errors: [],
+      newErrors: [],
+    });
+    await expect(plain).resolves.toBeUndefined();
+    expect(operations(invocations)).toEqual([ADD_LINE_ITEM, READ_CART]);
   });
 });
 
@@ -576,12 +936,33 @@ describe("summarizeCart", () => {
       subtotal: 0,
       totalPrice: 0,
       shippingCosts: [],
+      appliedPromotionCodes: [],
     });
     expect(
       summarizeCart(
         cart({ lineItems: [lineItem({ type: "promotion", good: false })] }),
       ),
     ).toMatchObject({ count: 0, isEmpty: true });
+  });
+});
+
+describe("summarizeCart promotions", () => {
+  it("lists the promotion line items as the applied promotion codes", () => {
+    const promotion = lineItem({ id: "p", type: "promotion", good: false });
+
+    expect(
+      summarizeCart(cart({ lineItems: [lineItem(), promotion] }))
+        .appliedPromotionCodes,
+    ).toEqual([promotion]);
+  });
+
+  it("keeps one empty list for carts without promotions", () => {
+    expect(summarizeCart(cart()).appliedPromotionCodes).toBe(
+      summarizeCart(cart({ lineItems: [lineItem()] })).appliedPromotionCodes,
+    );
+    expect(summarizeCart(null).appliedPromotionCodes).toBe(
+      summarizeCart(cart()).appliedPromotionCodes,
+    );
   });
 });
 

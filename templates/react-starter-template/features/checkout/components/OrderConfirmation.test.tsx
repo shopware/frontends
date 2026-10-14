@@ -112,6 +112,30 @@ describe("OrderConfirmation", () => {
     expect(html).not.toContain("€");
   });
 
+  it("shows the customer's comment with its line breaks and nothing without one", async () => {
+    const html = await renderToHtml(
+      <OrderConfirmation
+        order={order({ customerComment: "Ring twice\n<b>Back door</b>" })}
+        paymentUrl={null}
+        onGoToPayment={() => {}}
+      />,
+    );
+
+    expect(html).toMatch(
+      /<div class="sm:col-span-2" data-testid="order-customer-comment"><h3[^>]*>Your comment<\/h3><p class="[^"]*whitespace-pre-line[^"]*">Ring twice\n&lt;b&gt;Back door&lt;\/b&gt;<\/p><\/div>/,
+    );
+    expect(await render()).not.toContain("order-customer-comment");
+    expect(
+      await renderToHtml(
+        <OrderConfirmation
+          order={order({ customerComment: "  " })}
+          paymentUrl={null}
+          onGoToPayment={() => {}}
+        />,
+      ),
+    ).not.toContain("order-customer-comment");
+  });
+
   it("asks the customer to finish the payment when there is a payment URL", async () => {
     const html = await render("https://psp.test/pay/1");
 

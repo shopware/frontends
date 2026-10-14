@@ -21,16 +21,30 @@ export function orderTitle(
 
 export type OrderDetailsPageContentProps = {
   params: Promise<{ id: string }>;
+  orderRefundsEnabled?: boolean;
 };
 
 export function OrderDetailsPageContent({
   params,
+  orderRefundsEnabled = false,
 }: OrderDetailsPageContentProps) {
   const { id } = use(params);
-  return <OrderDetails key={id} orderId={id} />;
+  return (
+    <OrderDetails
+      key={id}
+      orderId={id}
+      orderRefundsEnabled={orderRefundsEnabled}
+    />
+  );
 }
 
-function OrderDetails({ orderId }: { orderId: string }) {
+function OrderDetails({
+  orderId,
+  orderRefundsEnabled,
+}: {
+  orderId: string;
+  orderRefundsEnabled: boolean;
+}) {
   const t = useTranslations();
   const { state, reload } = useOrderDetails(orderId);
 
@@ -62,7 +76,13 @@ function OrderDetails({ orderId }: { orderId: string }) {
           </div>
         );
       case "ready":
-        return <OrderDetailView details={state.details} onReload={reload} />;
+        return (
+          <OrderDetailView
+            details={state.details}
+            onReload={reload}
+            orderRefundsEnabled={orderRefundsEnabled}
+          />
+        );
     }
   }
 

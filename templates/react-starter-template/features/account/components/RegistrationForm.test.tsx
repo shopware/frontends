@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 
+import type { RegistrationSettings } from "@/features/account/registrationSchema";
 import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
+import { shopSettings } from "@/platform/shopware/shopSettings.fixture";
 import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
@@ -51,6 +53,48 @@ function requiredLabel(text: string): string {
 }
 
 const REQUIRED_ATTRIBUTE = /\srequired(=""|\s|>)/;
+
+function settingsWith(
+  overrides: Partial<RegistrationSettings> = {},
+): RegistrationSettings {
+  return shopSettings({ loginRegistration: overrides }).loginRegistration;
+}
+
+const everyField = settingsWith({
+  passwordMinLength: 12,
+  requireDataProtectionCheckbox: true,
+  showSalutation: true,
+  showTitleField: true,
+  showBirthdayField: true,
+  birthdayFieldRequired: true,
+  requireEmailConfirmation: true,
+  requirePasswordConfirmation: true,
+  showAdditionalAddressField1: true,
+  additionalAddressField1Required: true,
+  showAdditionalAddressField2: true,
+  additionalAddressField2Required: true,
+  showPhoneNumberField: true,
+  phoneNumberFieldRequired: true,
+});
+
+const SETTINGS_TEST_IDS = [
+  "registration-salutation-select",
+  "registration-title-input",
+  "registration-birthday-day-select",
+  "registration-birthday-month-select",
+  "registration-birthday-year-select",
+  "registration-email-confirmation-input",
+  "registration-password-confirmation-input",
+  "registration-additional-address-line1-input",
+  "registration-additional-address-line2-input",
+  "registration-phone-input",
+  "registration-data-protection-checkbox",
+];
+
+const salutations = [
+  { label: "Mr.", value: "salutation-mr" },
+  { label: "Mrs.", value: "salutation-mrs" },
+];
 const DISABLED_ATTRIBUTE = /\sdisabled(=""|\s|>)/;
 
 describe("RegistrationForm", () => {
@@ -285,6 +329,250 @@ describe("RegistrationForm in Polish", () => {
 
     expect(tag(html, /<p id="password-hint"[^>]*>[^<]*<\/p>/)).toContain(
       ">Mindestens 8 Zeichen</p>",
+    );
+  });
+});
+
+describe("RegistrationForm with the shop settings", () => {
+  it("renders no field the template default settings leave out", async () => {
+    const html = await renderToHtml(<RegistrationForm countries={countries} />);
+
+    for (const testId of SETTINGS_TEST_IDS) {
+      expect(html).not.toContain(`data-testid="${testId}"`);
+    }
+    expect(html).not.toContain('<fieldset class="min-w-0');
+  });
+
+  it("renders every field the shop asks for with its label, rule and autocomplete", async () => {
+    const html = await renderToHtml(
+      <RegistrationForm
+        countries={countries}
+        settings={everyField}
+        salutations={salutations}
+        birthYearMax={2026}
+      />,
+    );
+
+    for (const testId of SETTINGS_TEST_IDS) {
+      expect(html).toContain(`data-testid="${testId}"`);
+    }
+
+    const salutation = elementWithTestId(
+      html,
+      "registration-salutation-select",
+    );
+    expect(salutation).toContain('id="salutation"');
+    expect(salutation.toLowerCase()).toContain(
+      'autocomplete="honorific-prefix"',
+    );
+    expect(salutation).not.toMatch(REQUIRED_ATTRIBUTE);
+    expect(html).toContain('<label for="salutation"');
+    expect(html).toContain(">Salutation</label>");
+    expect(html).toContain(">Choose salutation...</option>");
+    expect(html).toContain('<option value="salutation-mrs">Mrs.</option>');
+
+    const title = elementWithTestId(html, "registration-title-input");
+    expect(title.toLowerCase()).toContain('autocomplete="honorific-prefix"');
+    expect(title.toLowerCase()).toContain('maxlength="100"');
+    expect(title).not.toMatch(REQUIRED_ATTRIBUTE);
+    expect(html).toContain(">Title</label>");
+
+    expect(html).toContain(
+      'Date of birth<span aria-hidden="true" class="ml-0.5 text-states-error">*</span></legend>',
+    );
+    for (const part of ["day", "month", "year"]) {
+      expect(
+        elementWithTestId(html, `registration-birthday-${part}-select`),
+      ).toMatch(REQUIRED_ATTRIBUTE);
+    }
+    expect(html).toContain('<option value="2026">2026</option>');
+
+    const emailConfirmation = elementWithTestId(
+      html,
+      "registration-email-confirmation-input",
+    );
+    expect(emailConfirmation).toContain('type="email"');
+    expect(emailConfirmation.toLowerCase()).toContain('autocomplete="email"');
+    expect(emailConfirmation).toMatch(REQUIRED_ATTRIBUTE);
+    expect(html).toContain(requiredLabel("Confirm e-mail"));
+
+    const passwordConfirmation = elementWithTestId(
+      html,
+      "registration-password-confirmation-input",
+    );
+    expect(passwordConfirmation).toContain('type="password"');
+    expect(passwordConfirmation.toLowerCase()).toContain(
+      'autocomplete="new-password"',
+    );
+    expect(passwordConfirmation).toMatch(REQUIRED_ATTRIBUTE);
+    expect(html).toContain(requiredLabel("Password confirmation"));
+
+    expect(
+      elementWithTestId(html, "registration-street-input").toLowerCase(),
+    ).toContain('autocomplete="address-line1"');
+    const line1 = elementWithTestId(
+      html,
+      "registration-additional-address-line1-input",
+    );
+    expect(line1.toLowerCase()).toContain('autocomplete="address-line2"');
+    expect(line1).toMatch(REQUIRED_ATTRIBUTE);
+    expect(html).toContain(requiredLabel("Additional address line 1"));
+    const line2 = elementWithTestId(
+      html,
+      "registration-additional-address-line2-input",
+    );
+    expect(line2.toLowerCase()).toContain('autocomplete="address-line3"');
+    expect(html).toContain(requiredLabel("Additional address line 2"));
+
+    const phone = elementWithTestId(html, "registration-phone-input");
+    expect(phone).toContain('type="tel"');
+    expect(phone.toLowerCase()).toContain('autocomplete="tel"');
+    expect(phone.toLowerCase()).toContain('maxlength="40"');
+    expect(phone).toMatch(REQUIRED_ATTRIBUTE);
+    expect(html).toContain(requiredLabel("Phone number"));
+
+    const privacy = elementWithTestId(
+      html,
+      "registration-data-protection-checkbox",
+    );
+    expect(privacy).toContain('type="checkbox"');
+    expect(privacy).toMatch(REQUIRED_ATTRIBUTE);
+    expect(html).toContain(
+      'I have read the data protection information.<span aria-hidden="true" class="ml-0.5 text-states-error">*</span>',
+    );
+  });
+
+  it("puts the fields in the Storefront order", async () => {
+    const html = await renderToHtml(
+      <RegistrationForm
+        countries={countries}
+        settings={everyField}
+        salutations={salutations}
+      />,
+    );
+    const order = [
+      "registration-account-type-select",
+      "registration-salutation-select",
+      "registration-title-input",
+      "registration-first-name-input",
+      "registration-last-name-input",
+      "registration-birthday-day-select",
+      "registration-email-input",
+      "registration-email-confirmation-input",
+      "registration-password-input",
+      "registration-password-confirmation-input",
+      "registration-street-input",
+      "registration-additional-address-line1-input",
+      "registration-additional-address-line2-input",
+      "registration-zipcode-input",
+      "country-select",
+      "registration-phone-input",
+      "registration-data-protection-checkbox",
+      "registration-submit-button",
+    ].map((testId) => html.indexOf(`data-testid="${testId}"`));
+
+    expect(order).toEqual([...order].sort((a, b) => a - b));
+    expect(order).not.toContain(-1);
+  });
+
+  it("states the configured password minimum and none for 0", async () => {
+    const twelve = await renderToHtml(
+      <RegistrationForm
+        countries={countries}
+        settings={settingsWith({ passwordMinLength: 12 })}
+      />,
+    );
+    expect(tag(twelve, /<p id="password-hint"[^>]*>[^<]*<\/p>/)).toContain(
+      ">At least 12 characters</p>",
+    );
+
+    const none = await renderToHtml(
+      <RegistrationForm
+        countries={countries}
+        settings={settingsWith({ passwordMinLength: 0 })}
+      />,
+    );
+    expect(none).not.toContain('id="password-hint"');
+    expect(
+      elementWithTestId(none, "registration-password-input"),
+    ).not.toContain("aria-describedby");
+  });
+
+  it("hides the account type select when the shop does not offer it", async () => {
+    const html = await renderToHtml(
+      <RegistrationForm
+        countries={countries}
+        settings={settingsWith({ showAccountTypeSelection: false })}
+      />,
+    );
+
+    expect(html).not.toContain("registration-account-type-select");
+    expect(html).not.toContain("registration-company-input");
+    expect(html).not.toContain("registration-vatid-input");
+  });
+
+  it("keeps the business fields of a company-only group without the account type select", async () => {
+    const html = await renderToHtml(
+      <RegistrationForm
+        countries={countries}
+        companyOnly
+        settings={settingsWith({ showAccountTypeSelection: false })}
+      />,
+    );
+
+    expect(html).not.toContain("registration-account-type-select");
+    expect(html).toContain('data-testid="registration-company-input"');
+    expect(html).toContain('data-testid="registration-vatid-input"');
+  });
+
+  it("disables the salutation with an error and a retry when the salutations could not be read", async () => {
+    const html = await renderToHtml(
+      <RegistrationForm
+        countries={countries}
+        settings={settingsWith({ showSalutation: true })}
+        salutationsUnavailable
+      />,
+    );
+
+    const salutation = elementWithTestId(
+      html,
+      "registration-salutation-select",
+    );
+    expect(salutation).toMatch(DISABLED_ATTRIBUTE);
+    expect(salutation).toContain('aria-invalid="true"');
+    expect(salutation).toContain('aria-describedby="salutation-error"');
+    expect(html).toContain(
+      ">Unfortunately, something went wrong. Please try again in a few moments. If the problem persists, you can return to the homepage or contact our support team for assistance.</p>",
+    );
+    expect(html).toContain(">Try again</span>");
+  });
+
+  it("renders the new labels in Polish and German", async () => {
+    const polish = await renderToHtml(
+      withI18n(
+        <RegistrationForm countries={countries} settings={everyField} />,
+        "pl-PL",
+      ),
+    );
+    expect(polish).toContain(">Tytuł</label>");
+    expect(polish).toContain(">Data urodzenia");
+    expect(polish).toContain(requiredLabel("Potwierdzenie hasła"));
+    expect(polish).toContain(requiredLabel("Dodatkowa linia adresu 1"));
+    expect(tag(polish, /<p id="password-hint"[^>]*>[^<]*<\/p>/)).toContain(
+      ">Co najmniej 12 znaków</p>",
+    );
+
+    const german = await renderToHtml(
+      withI18n(
+        <RegistrationForm countries={countries} settings={everyField} />,
+        "de-DE",
+      ),
+    );
+    expect(german).toContain(">Titel</label>");
+    expect(german).toContain(requiredLabel("Passwort-Bestätigung"));
+    expect(german).toContain(requiredLabel("Adresszusatz 2"));
+    expect(german).toContain(
+      "Ich habe die Datenschutzinformationen gelesen.<span",
     );
   });
 });

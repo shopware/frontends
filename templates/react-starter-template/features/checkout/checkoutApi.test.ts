@@ -1,9 +1,13 @@
 import { gunzipSync } from "node:zlib";
 
 import { ApiClientError } from "@shopware/api-client";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-import { ORDER_TIMEOUT_MS } from "@/features/session/readTimeout";
+import { addressListCriteria } from "@/features/account/address/addressApi";
+import {
+  ORDER_TIMEOUT_MS,
+  READ_TIMEOUT_MS,
+} from "@/features/session/readTimeout";
 
 import {
   billingAddress,
@@ -11,6 +15,7 @@ import {
   fakeClient,
   order,
   paymentMethods,
+  shippingAddress,
   shippingMethod,
 } from "./checkout.fixture";
 import {
@@ -19,10 +24,13 @@ import {
   getShippingMethods,
   handlePayment,
   isAmbiguousOrderFailure,
+  listCheckoutAddresses,
   readOrder,
+  setContextAddress,
   setPaymentMethod,
   setShippingMethod,
   sortByPosition,
+  toOrderBody,
   updateCustomerDetails,
 } from "./checkoutApi";
 
@@ -42,6 +50,16 @@ const address = {
   zipcode: "54321",
   city: "Hamburg",
   countryId: "country-pl",
+  countryStateId: undefined,
+};
+
+const shipping = {
+  firstName: "Max",
+  lastName: "Mustermann",
+  street: "Harbour Road 7",
+  zipcode: "10115",
+  city: "Berlin",
+  countryId: "country-de",
   countryStateId: undefined,
 };
 
@@ -134,6 +152,65 @@ describe("setShippingMethod and setPaymentMethod", () => {
         params: { body: { paymentMethodId: "payment-cash" } },
       },
     ]);
+  });
+});
+
+describe("setContextAddress", () => {
+  it("switches only the active shipping or billing address of the context", async () => {
+    const { client, invocations } = fakeClient();
+
+    await setContextAddress(client, "shipping", "address-2");
+    await setContextAddress(client, "billing", "address-3");
+
+    expect(invocations).toEqual([
+      {
+        operation: "updateContext patch /context",
+        params: { body: { shippingAddressId: "address-2" } },
+      },
+      {
+        operation: "updateContext patch /context",
+        params: { body: { billingAddressId: "address-3" } },
+      },
+    ]);
+  });
+});
+
+describe("listCheckoutAddresses", () => {
+  it("reads the customer addresses with their associations and gives up after the read timeout", async () => {
+    const addresses = [billingAddress(), shippingAddress()];
+    const { client, invocations } = fakeClient(() => ({
+      elements: addresses,
+    }));
+
+    await expect(listCheckoutAddresses(client)).resolves.toEqual(addresses);
+    expect(invocations).toEqual([
+      {
+        operation: "listAddress post /account/list-address",
+        params: {
+          body: addressListCriteria(),
+          fetchOptions: { timeout: READ_TIMEOUT_MS },
+        },
+      },
+    ]);
+  });
+
+  it("resolves an empty list when the response has no elements", async () => {
+    const { client } = fakeClient(() => ({}));
+
+    await expect(listCheckoutAddresses(client)).resolves.toEqual([]);
+  });
+});
+
+describe("toOrderBody", () => {
+  it("sends the trimmed comment and nothing for a blank one", () => {
+    expect(toOrderBody("  Ring twice\n")).toEqual({
+      customerComment: "Ring twice",
+    });
+    expect(toOrderBody("Line one\nLine two")).toEqual({
+      customerComment: "Line one\nLine two",
+    });
+    expect(toOrderBody(" \n\t ")).toEqual({});
+    expect(toOrderBody("")).toEqual({});
   });
 });
 
@@ -298,6 +375,212 @@ describe("updateCustomerDetails", () => {
         params: { body: { firstName: "John", lastName: "Smith" } },
       },
     ]);
+  });
+
+  it("creates the shipping address and makes it the default when the customer has none of its own", async () => {
+    const { client, invocations } = fakeClient((operation) =>
+      operation === "createCustomerAddress post /account/address"
+        ? shippingAddress({ id: "address-new" })
+        : {},
+    );
+
+    await updateCustomerDetails(client, {
+      customer: checkoutCustomer({
+        defaultShippingAddress: billingAddress(),
+      }),
+      address,
+      shippingAddress: shipping,
+    });
+
+    expect(invocations.map(({ operation }) => operation)).toEqual([
+      "updateCustomerAddress patch /account/address/{addressId}",
+      "createCustomerAddress post /account/address",
+      "defaultShippingAddress patch /account/address/default-shipping/{addressId}",
+      "changeProfile post /account/change-profile",
+    ]);
+    expect(invocations[1]?.params).toEqual({ body: shipping });
+    expect(invocations[2]?.params).toEqual({
+      pathParams: { addressId: "address-new" },
+    });
+  });
+
+  it("updates the separate default shipping address with the stored fields kept", async () => {
+    const separate = shippingAddress({
+      company: "ACME",
+      countryStateId: "state-hh",
+    });
+    const { client, invocations } = fakeClient();
+
+    await updateCustomerDetails(client, {
+      customer: checkoutCustomer({ defaultShippingAddress: separate }),
+      address,
+      shippingAddress: { ...shipping, street: "Dock Lane 1" },
+    });
+
+    expect(invocations.map(({ operation }) => operation)).toEqual([
+      "updateCustomerAddress patch /account/address/{addressId}",
+      "updateCustomerAddress patch /account/address/{addressId}",
+      "changeProfile post /account/change-profile",
+    ]);
+    expect(invocations[1]?.params).toEqual({
+      pathParams: { addressId: "address-2" },
+      body: {
+        salutationId: "salutation-1",
+        title: undefined,
+        firstName: "Max",
+        lastName: "Mustermann",
+        company: "ACME",
+        department: undefined,
+        street: "Dock Lane 1",
+        additionalAddressLine1: undefined,
+        additionalAddressLine2: undefined,
+        zipcode: "10115",
+        city: "Berlin",
+        countryId: "country-de",
+        phoneNumber: undefined,
+      },
+    });
+  });
+
+  it("points the default shipping address back at the billing address when no separate one is wanted", async () => {
+    const { client, invocations } = fakeClient();
+
+    await updateCustomerDetails(client, {
+      customer: checkoutCustomer({ defaultShippingAddress: shippingAddress() }),
+      address,
+      shippingAddress: null,
+    });
+
+    expect(invocations.map(({ operation }) => operation)).toEqual([
+      "updateCustomerAddress patch /account/address/{addressId}",
+      "defaultShippingAddress patch /account/address/default-shipping/{addressId}",
+      "changeProfile post /account/change-profile",
+    ]);
+    expect(invocations[1]?.params).toEqual({
+      pathParams: { addressId: "address-1" },
+    });
+  });
+
+  it("leaves the shipping address alone when it is the billing address and no other is wanted", async () => {
+    const { client, operations } = fakeClient();
+
+    await updateCustomerDetails(client, {
+      customer: checkoutCustomer({ defaultShippingAddress: billingAddress() }),
+      address,
+    });
+
+    expect(operations()).toEqual([
+      "updateCustomerAddress patch /account/address/{addressId}",
+      "changeProfile post /account/change-profile",
+    ]);
+  });
+
+  it("stops before the profile change when the shipping address cannot be saved", async () => {
+    const failure = new Error("shipping address rejected");
+    const { client, operations } = fakeClient((operation) => {
+      if (operation.startsWith("createCustomerAddress")) throw failure;
+      return {};
+    });
+
+    await expect(
+      updateCustomerDetails(client, {
+        customer: checkoutCustomer(),
+        address,
+        shippingAddress: shipping,
+      }),
+    ).rejects.toBe(failure);
+    expect(operations()).toEqual([
+      "updateCustomerAddress patch /account/address/{addressId}",
+      "createCustomerAddress post /account/address",
+    ]);
+  });
+
+  it("hands over the shipping address it created before a later step fails", async () => {
+    const created = shippingAddress({ id: "address-new" });
+    const failure = new Error("default shipping address rejected");
+    const onShippingAddressCreated = vi.fn();
+    const { client } = fakeClient((operation) => {
+      if (operation.startsWith("createCustomerAddress")) return created;
+      if (operation.startsWith("defaultShippingAddress")) throw failure;
+      return {};
+    });
+
+    await expect(
+      updateCustomerDetails(client, {
+        customer: checkoutCustomer(),
+        address,
+        shippingAddress: shipping,
+        onShippingAddressCreated,
+      }),
+    ).rejects.toBe(failure);
+    expect(onShippingAddressCreated).toHaveBeenCalledExactlyOnceWith(created);
+  });
+
+  it("updates the shipping address an earlier attempt created and makes it the default instead of creating another", async () => {
+    const created = shippingAddress({ id: "address-new" });
+    const onShippingAddressCreated = vi.fn();
+    const { client, invocations } = fakeClient();
+
+    await updateCustomerDetails(client, {
+      customer: checkoutCustomer(),
+      address,
+      shippingAddress: { ...shipping, street: "Pier 4" },
+      createdShippingAddress: created,
+      onShippingAddressCreated,
+    });
+
+    expect(invocations.map(({ operation }) => operation)).toEqual([
+      "updateCustomerAddress patch /account/address/{addressId}",
+      "updateCustomerAddress patch /account/address/{addressId}",
+      "defaultShippingAddress patch /account/address/default-shipping/{addressId}",
+      "changeProfile post /account/change-profile",
+    ]);
+    expect(invocations[1]?.params).toMatchObject({
+      pathParams: { addressId: "address-new" },
+      body: { street: "Pier 4", firstName: "Max" },
+    });
+    expect(invocations[2]?.params).toEqual({
+      pathParams: { addressId: "address-new" },
+    });
+    expect(onShippingAddressCreated).not.toHaveBeenCalled();
+  });
+
+  it("skips the default switch when the created address already is the default shipping address", async () => {
+    const created = shippingAddress({ id: "address-new" });
+    const { client, operations } = fakeClient();
+
+    await updateCustomerDetails(client, {
+      customer: checkoutCustomer({ defaultShippingAddress: created }),
+      address,
+      shippingAddress: shipping,
+      createdShippingAddress: created,
+    });
+
+    expect(operations()).toEqual([
+      "updateCustomerAddress patch /account/address/{addressId}",
+      "updateCustomerAddress patch /account/address/{addressId}",
+      "changeProfile post /account/change-profile",
+    ]);
+  });
+
+  it("points the default shipping address back at the billing address when an earlier attempt created one and none is wanted now", async () => {
+    const { client, invocations } = fakeClient();
+
+    await updateCustomerDetails(client, {
+      customer: checkoutCustomer(),
+      address,
+      shippingAddress: null,
+      createdShippingAddress: shippingAddress({ id: "address-new" }),
+    });
+
+    expect(invocations.map(({ operation }) => operation)).toEqual([
+      "updateCustomerAddress patch /account/address/{addressId}",
+      "defaultShippingAddress patch /account/address/default-shipping/{addressId}",
+      "changeProfile post /account/change-profile",
+    ]);
+    expect(invocations[1]?.params).toEqual({
+      pathParams: { addressId: "address-1" },
+    });
   });
 
   it("stops before the profile change when the address patch fails", async () => {

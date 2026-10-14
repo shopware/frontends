@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 
 import type { Schemas } from "#shopware";
 
+import type { LanguageAlternates } from "./hreflang";
 import { toPlainText, truncate } from "./text";
 import { absoluteUrl } from "./urls";
 
@@ -12,6 +13,7 @@ export type SeoContext = {
   canonicalPath: string;
   siteUrl: URL | null;
   siteName: string;
+  languages?: LanguageAlternates;
 };
 
 type OpenGraphImage = {
@@ -58,7 +60,10 @@ function pageMetadata(
     ...(fields.title ? { title: fields.title } : {}),
     ...(description ? { description } : {}),
     ...(fields.keywords ? { keywords: fields.keywords } : {}),
-    alternates: { canonical: url ?? context.canonicalPath },
+    alternates: {
+      canonical: url ?? context.canonicalPath,
+      ...(context.languages ? { languages: context.languages } : {}),
+    },
     openGraph: {
       type: "website",
       siteName: context.siteName,

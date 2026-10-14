@@ -4,6 +4,7 @@ import { useCmsActions } from "@shopware/cms-base-layer-react/client";
 import { useRouter } from "next/navigation";
 import { useRef, useState, useTransition } from "react";
 
+import { resolveRedirectFromSearch } from "@/features/account/redirect";
 import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
 import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
@@ -46,8 +47,13 @@ export function NewAddressForm(props: NewAddressFormProps) {
       type: "success",
       message: t("account.address.new.successMessage"),
     });
+    const target = resolveRedirectFromSearch(
+      window.location.search,
+      null,
+      ADDRESS_LIST_PATH,
+    );
     startNavigation(() => {
-      router.push(localePath(ADDRESS_LIST_PATH));
+      router.push(localePath(target));
     });
   }
 

@@ -130,17 +130,44 @@ describe("CheckoutProductTile", () => {
     );
   });
 
-  it("renders a promotion without quantity and options", async () => {
+  it("renders a promotion as a promotion tile without image, quantity and options", async () => {
     const html = await render(promotionItem());
 
-    expect(tag(html, "checkout-product-tile-item")).toContain(
-      'data-product-id="SUMMER"',
+    const tile = tag(html, "checkout-product-tile-item");
+    expect(tile).toContain('data-product-id="SUMMER"');
+    expect(tile).toContain('data-line-item-type="promotion"');
+    expect(tile).toContain("w-full");
+    expect(html).toMatch(
+      /data-testid="cart-promotion-name"[^>]*><span>Summer sale<\/span><span[^>]*>Promotion<\/span><\/div>/,
     );
-    expect(html).toContain("Summer sale</div>");
+    expect(tag(html, "cart-promotion-price")).toMatch(/^<span/);
     expect(html).toContain("-€5.00");
+    expect(html).toContain('aria-hidden="true"');
+    expect(html).not.toContain("<img");
+    expect(html).not.toContain("checkout-product-tile-image");
     expect(html).not.toContain("product-quantity");
     expect(html).not.toContain("cart-product-options");
-    expect(html).toContain("checkout-product-tile-remove-button");
+    expect(html).not.toContain("checkout-product-tile-remove-button");
+  });
+
+  it("describes the promotion's remove button by the promotion name", async () => {
+    const html = await render(promotionItem());
+
+    const name = tag(html, "cart-promotion-name");
+    const nameId = name.match(/id="([^"]+)"/)?.[1];
+    expect(nameId).toBeTruthy();
+    const button = tag(html, "promotion-remove-button");
+    expect(button).toMatch(/^<button/);
+    expect(button).toContain('type="button"');
+    expect(button).toContain(`aria-describedby="${nameId}"`);
+    expect(html).toContain(">Remove</button>");
+  });
+
+  it("offers no remove button for a promotion that is not removable", async () => {
+    const html = await render(promotionItem({ removable: false }));
+
+    expect(html).not.toContain("promotion-remove-button");
+    expect(html).toContain("cart-promotion-name");
   });
 
   it("renders a product that is not stackable without the quantity select", async () => {
@@ -217,6 +244,26 @@ describe("CheckoutProductTile in other locales", () => {
       "lang=",
     );
     expect(html.match(/lang="/g)).toHaveLength(2);
+  });
+
+  it("declares the content language on the promotion name, not on its badge", async () => {
+    const html = await renderToHtml(
+      withI18n(
+        <ContentLanguageProvider lang="en-US">
+          <CheckoutProductTile
+            item={promotionItem()}
+            onRemove={vi.fn()}
+            onChangeQuantity={vi.fn()}
+          />
+        </ContentLanguageProvider>,
+        "de-DE",
+      ),
+    );
+
+    expect(html).toContain('<span lang="en-US">Summer sale</span>');
+    expect(html).toMatch(/<span class="[^"]*">Aktion<\/span>/);
+    expect(html).toContain(">Entfernen</button>");
+    expect(html.match(/lang="/g)).toHaveLength(1);
   });
 
   it("declares no language without a content language", async () => {

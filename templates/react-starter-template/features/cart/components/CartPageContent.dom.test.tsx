@@ -8,7 +8,12 @@ import { interact, mount, query, queryAll } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
 import { CartPageContent } from "./CartPageContent";
-import { cartView, fakeCart, lineItem } from "./cartView.fixture";
+import {
+  cartView,
+  fakeCart,
+  lineItem,
+  promotionItem,
+} from "./cartView.fixture";
 import type { CartView } from "./cartView.fixture";
 
 vi.mock("@/features/cart/useCart", async () => ({
@@ -17,6 +22,7 @@ vi.mock("@/features/cart/useCart", async () => ({
 
 const TILE = '[data-testid="checkout-product-tile-item"]';
 const SKELETON = '[data-testid="cart-page-skeleton"]';
+const PROMO_INPUT = '[data-testid="cart-promotion-code-input"]';
 
 let mounted: Mounted | undefined;
 
@@ -35,6 +41,26 @@ async function setup(cart: CartView, locale?: Locale) {
   );
   mounted = await mount(locale ? withI18n(page, locale) : page);
   return { container: mounted.container, notify };
+}
+
+function removableCart(items: Schemas["LineItem"][]) {
+  const removeItem = vi.fn<CartView["removeItem"]>(async (id) => {
+    fakeCart.set(
+      cartView({
+        lineItems: fakeCart.get().lineItems.filter((item) => item.id !== id),
+        removeItem,
+      }),
+    );
+    return { ok: true, errors: [] };
+  });
+  return cartView({ lineItems: items, removeItem });
+}
+
+function removeButton(container: HTMLElement, productId: string) {
+  return query<HTMLButtonElement>(
+    container,
+    `[data-product-id="${productId}"] button[data-line-item-remove]`,
+  );
 }
 
 function retryButton(container: HTMLElement) {
@@ -74,6 +100,7 @@ describe("CartPageContent", () => {
     expect(container.textContent).toContain("Your cart is empty");
     expect(links(container)).toEqual([["Continue Shopping", "/"]]);
     expect(container.querySelector('[role="alert"]')).toBeNull();
+    expect(container.querySelector(PROMO_INPUT)).toBeNull();
   });
 
   it("reports a cart that could not be read and reads it again on retry", async () => {
@@ -93,6 +120,8 @@ describe("CartPageContent", () => {
     expect(container.textContent).not.toContain("Your cart is empty");
     expect(links(container)).toEqual([["Continue Shopping", "/"]]);
 
+    expect(container.querySelector(PROMO_INPUT)).toBeNull();
+
     const retry = retryButton(container);
     expect(retry.disabled).toBe(false);
     expect(retry.hasAttribute("aria-busy")).toBe(false);
@@ -110,15 +139,29 @@ describe("CartPageContent", () => {
     expect(retryButton(container).hasAttribute("aria-busy")).toBe(false);
   });
 
-  it("lists the line items with the subtotal and the checkout link", async () => {
+  it("lists the line items with the summary, the promo code field and the checkout link", async () => {
     const { container } = await setup(
       cartView({
-        cart: { price: { positionPrice: 59.97 } } as Schemas["Cart"],
+        cart: {
+          price: {
+            positionPrice: 59.97,
+            totalPrice: 64.96,
+            taxStatus: "gross",
+          },
+        } as Schemas["Cart"],
         lineItems: [
           lineItem(),
           lineItem({ id: "line-2", referencedId: "product-2", label: "Lamp" }),
         ],
         subtotal: 59.97,
+        totalPrice: 64.96,
+        shippingCosts: [
+          {
+            shippingMethod: { id: "standard", name: "Standard" },
+            shippingCosts: { totalPrice: 4.99 },
+            location: { country: { name: "Germany" } },
+          } as Schemas["CartDelivery"],
+        ],
       }),
     );
 
@@ -130,12 +173,72 @@ describe("CartPageContent", () => {
     ]);
     expect(tiles[0]?.className).toContain("w-full");
 
-    expect(container.textContent).toContain("Subtotal€59.97");
-    expect(container.textContent).toContain(
+    const summary = query<HTMLElement>(
+      container,
+      'section[aria-labelledby="cart-summary-heading"]',
+    );
+    expect(
+      query<HTMLElement>(summary, "h2#cart-summary-heading").textContent,
+    ).toBe("Summary");
+    expect(
+      query<HTMLElement>(summary, '[data-testid="cart-subtotal"]').textContent,
+    ).toBe("€59.97");
+    expect(
+      query<HTMLElement>(summary, '[data-testid="cart-shipping-cost"]')
+        .textContent,
+    ).toBe("€4.99");
+    expect(
+      query<HTMLElement>(summary, '[data-testid="cart-total"]').textContent,
+    ).toBe("€64.96");
+    expect(summary.textContent).toContain("ShippingStandard");
+    expect(
+      query<HTMLElement>(summary, '[data-testid="cart-shipping-estimate"]')
+        .textContent,
+    ).toContain("delivery to Germany");
+    expect(summary.querySelector(PROMO_INPUT)).not.toBeNull();
+    expect(summary.textContent).not.toContain(
       "Taxes & shipping estimated at checkout.",
     );
     expect(links(container)).toEqual([["Check out", "/checkout"]]);
     expect(container.textContent).not.toContain("Your cart is empty");
+  });
+
+  it("reads the cart again on open and reports the errors of that read", async () => {
+    const current = { price: { positionPrice: 10 } } as Schemas["Cart"];
+    const refreshWithResult = vi.fn<CartView["refreshWithResult"]>(
+      async () => ({
+        ok: true,
+        cart: current,
+        errors: [
+          {
+            messageKey: "payment-method-blocked",
+            params: { name: "Invoice" },
+            key: "payment-method-blocked-Invoice",
+            level: 10,
+          },
+        ],
+        newErrors: [],
+      }),
+    );
+    const refresh = vi.fn<CartView["refresh"]>(async () => {});
+    const { notify } = await setup(
+      cartView({
+        cart: current,
+        lineItems: [lineItem()],
+        refresh,
+        refreshWithResult,
+      }),
+    );
+
+    await vi.waitFor(() =>
+      expect(notify).toHaveBeenCalledWith({
+        type: "warning",
+        message:
+          "The payment method Invoice is blocked for your current shopping cart.",
+      }),
+    );
+    expect(refreshWithResult).toHaveBeenCalledTimes(1);
+    expect(refresh).not.toHaveBeenCalled();
   });
 
   it("removes and changes line items through the cart", async () => {
@@ -172,6 +275,69 @@ describe("CartPageContent", () => {
     });
   });
 
+  it("keeps focus on the Remove button before a removed promotion and announces the removal", async () => {
+    const { container, notify } = await setup(
+      removableCart([lineItem(), promotionItem()]),
+    );
+    const remove = removeButton(container, "SUMMER");
+    remove.focus();
+
+    await interact(() => remove.click());
+
+    await vi.waitFor(() =>
+      expect(document.activeElement).toBe(removeButton(container, "product-1")),
+    );
+    expect(container.querySelector('[data-product-id="SUMMER"]')).toBeNull();
+    expect(notify.mock.calls).toEqual([
+      [
+        {
+          type: "success",
+          message: "Promo code removed. Shopping cart updated.",
+        },
+      ],
+    ]);
+  });
+
+  it("moves focus to the promo code field when no other line item can be removed", async () => {
+    const { container } = await setup(
+      removableCart([lineItem({ removable: false }), promotionItem()]),
+    );
+    const remove = removeButton(container, "SUMMER");
+    remove.focus();
+
+    await interact(() => remove.click());
+
+    await vi.waitFor(() =>
+      expect(document.activeElement).toBe(query(container, PROMO_INPUT)),
+    );
+  });
+
+  it("keeps focus on the next Remove button and names the removed product", async () => {
+    const { container, notify } = await setup(
+      removableCart([
+        lineItem(),
+        lineItem({ id: "line-2", referencedId: "product-2", label: "Lamp" }),
+      ]),
+    );
+    const remove = removeButton(container, "product-1");
+    remove.focus();
+
+    await interact(() => remove.click());
+
+    await vi.waitFor(() =>
+      expect(document.activeElement).toBe(removeButton(container, "product-2")),
+    );
+    expect(notify.mock.calls).toEqual([
+      [
+        {
+          type: "success",
+          message:
+            '"Aerodynamic Bronze Brandix" has been removed from your shopping cart.',
+        },
+      ],
+    ]);
+  });
+
   it("shows the empty state for a cart with only a promotion", async () => {
     const { container } = await setup(
       cartView({
@@ -192,9 +358,16 @@ describe("CartPageContent in other locales", () => {
     );
 
     expect(query<HTMLElement>(container, "h1").textContent).toBe("Mój koszyk");
-    expect(container.textContent).toContain(
-      "Podatki & koszty wysyłki będą obliczone przy płatności.",
+    expect(query<HTMLElement>(container, "h2").textContent).toBe(
+      "Podsumowanie",
     );
+    expect(container.textContent).toContain("Suma częściowa");
+    expect(
+      query<HTMLLabelElement>(
+        container,
+        'label[for="cart-promotion-code-input"]',
+      ).textContent,
+    ).toBe("Kod promocyjny");
     expect(links(container)).toEqual([["Przejdź do kasy", "/pl-PL/checkout"]]);
   });
 

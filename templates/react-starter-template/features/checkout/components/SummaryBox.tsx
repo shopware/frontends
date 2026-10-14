@@ -2,14 +2,15 @@
 
 import { cx } from "@shopware/cms-base-layer-react/client";
 
-import { Price } from "@/components/Price";
+import { CartTotals } from "@/features/cart/components/CartTotals";
 import { CheckoutProductTile } from "@/features/cart/components/CheckoutProductTile";
+import { PromotionCodeForm } from "@/features/cart/components/PromotionCodeForm";
 import { useLineItemActions } from "@/features/cart/components/useLineItemActions";
 import { useCart } from "@/features/cart/useCart";
 import { useTranslations } from "@/i18n/I18nProvider";
 
 export function SummaryBox({ className }: { className?: string }) {
-  const { lineItems, subtotal, totalPrice, shippingCosts } = useCart();
+  const { lineItems } = useCart();
   const { remove, updateQuantity } = useLineItemActions();
   const t = useTranslations();
 
@@ -44,48 +45,11 @@ export function SummaryBox({ className }: { className?: string }) {
           ))}
         </ul>
 
-        <dl className="flex flex-col gap-1 border-t border-outline-outline-variant py-4">
-          <div className="flex justify-between">
-            <dt className="text-sm font-normal text-surface-on-surface-variant">
-              {t("checkout.subtotal")}
-            </dt>
-            <dd>
-              <Price
-                value={subtotal}
-                className="text-sm font-normal text-surface-on-surface"
-                data-testid="cart-subtotal"
-              />
-            </dd>
-          </div>
-          {shippingCosts.map((delivery, index) => (
-            <div
-              key={delivery.shippingMethod?.id ?? index}
-              className="flex justify-between"
-            >
-              <dt className="text-sm font-normal text-surface-on-surface-variant">
-                {t("checkout.shippingCosts")}
-              </dt>
-              <dd>
-                <Price
-                  value={delivery.shippingCosts?.totalPrice}
-                  className="text-sm font-normal text-surface-on-surface"
-                />
-              </dd>
-            </div>
-          ))}
-        </dl>
-        <dl className="flex justify-between border-t border-outline-outline-variant pt-4">
-          <dt className="text-base leading-normal font-normal text-surface-on-surface">
-            {t("checkout.total")}
-          </dt>
-          <dd>
-            <Price
-              value={totalPrice}
-              className="text-right text-base leading-normal font-normal text-surface-on-surface"
-              data-testid="cart-total"
-            />
-          </dd>
-        </dl>
+        <CartTotals />
+        <PromotionCodeForm
+          id="checkout-promotion-code"
+          className="mt-6 border-t border-outline-outline-variant pt-4"
+        />
       </div>
     </section>
   );

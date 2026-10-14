@@ -27,16 +27,17 @@ Then open http://localhost:3000.
 The template runs against the public demo backend without any configuration.
 To use your own instance, copy `.env.template` to `.env` and set:
 
-| Variable                      | Value                                                                                                                                                                                                               |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `SHOPWARE_ENDPOINT`           | Store API endpoint, e.g. `https://your-shop.com/store-api/`                                                                                                                                                         |
-| `SHOPWARE_ACCESS_TOKEN`       | Sales Channel access key (Settings > Sales Channel > API access)                                                                                                                                                    |
-| `SHOPWARE_PUBLIC_ENDPOINT`    | Store API endpoint the browser calls, if it differs from `SHOPWARE_ENDPOINT` (the default)                                                                                                                          |
-| `SHOPWARE_DEV_STOREFRONT_URL` | `storefrontUrl` sent with a registration instead of the page origin, for local development only; leave it empty in production                                                                                       |
-| `SHOPWARE_API_TIMEOUT`        | Timeout in whole milliseconds for every Store API call the server makes, `10000` when empty; `0` turns it off. Calls with a timeout of their own keep it                                                            |
-| `SHOPWARE_API_HEADERS`        | JSON object of extra headers for the server's Store API calls, e.g. `{"Authorization":"Basic …"}` for HTTP basic auth or a WAF bypass header. Never sent to the browser                                             |
-| `SHOPWARE_PUBLIC_API_HEADERS` | JSON object of extra headers the browser sends with its Store API calls. Every visitor can read them, so never put a secret here. The server sends them too, and `SHOPWARE_API_HEADERS` wins for a name set in both |
-| `STOREFRONT_URL`              | Public origin of this storefront (e.g. `https://shop.example.com`) for absolute canonical links, Open Graph URLs and structured data; without it canonical links are relative                                       |
+| Variable                      | Value                                                                                                                                                                                                                                                                            |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SHOPWARE_ENDPOINT`           | Store API endpoint, e.g. `https://your-shop.com/store-api/`                                                                                                                                                                                                                      |
+| `SHOPWARE_ACCESS_TOKEN`       | Sales Channel access key (Settings > Sales Channel > API access)                                                                                                                                                                                                                 |
+| `SHOPWARE_PUBLIC_ENDPOINT`    | Store API endpoint the browser calls, if it differs from `SHOPWARE_ENDPOINT` (the default)                                                                                                                                                                                       |
+| `SHOPWARE_DEV_STOREFRONT_URL` | `storefrontUrl` sent with a registration instead of the page origin, for local development only; leave it empty in production                                                                                                                                                    |
+| `SHOPWARE_API_TIMEOUT`        | Timeout in whole milliseconds for every Store API call the server makes, `10000` when empty; `0` turns it off. Calls with a timeout of their own keep it                                                                                                                         |
+| `SHOPWARE_API_HEADERS`        | JSON object of extra headers for the server's Store API calls, e.g. `{"Authorization":"Basic …"}` for HTTP basic auth or a WAF bypass header. Never sent to the browser                                                                                                          |
+| `SHOPWARE_PUBLIC_API_HEADERS` | JSON object of extra headers the browser sends with its Store API calls. Every visitor can read them, so never put a secret here. The server sends them too, and `SHOPWARE_API_HEADERS` wins for a name set in both                                                              |
+| `SHOPWARE_MEDIA_ORIGIN`       | Origin your product images are served from (Shopware's public filesystem URL or its CDN, e.g. `https://cdn.example.com`), for a `preconnect` hint; defaults to the origin of the public Store API endpoint, and to `https://cdn.shopware.store` for the demo                     |
+| `STOREFRONT_URL`              | Public origin of this storefront (e.g. `https://shop.example.com`) for absolute canonical links, hreflang alternates, Open Graph URLs, structured data, the `Sitemap:` line of `/robots.txt` and `/sitemap.xml`; without it canonical links are relative and there is no sitemap |
 
 All of them are read on the server at request time, so one build can serve
 several environments. The browser gets only the public endpoint, the access
@@ -62,6 +63,19 @@ every browser call until Shopware allows it (a service implementing
 `OPTIONS` request with it. Server calls are not subject to CORS. Prefer
 `Authorization` for a secret in `SHOPWARE_API_HEADERS`: on a redirect to
 another origin it is dropped, while a custom header is sent along.
+
+## Search engines
+
+`/robots.txt` follows the Shopware storefront defaults and lists
+`/sitemap.xml` when `STOREFRONT_URL` is set. `/sitemap.xml` serves the
+sitemaps Shopware generates (the scheduled task, `bin/console
+sitemap:generate` or the live strategy) for the sales channel domains on
+`STOREFRONT_URL`: add `https://shop.example.com`,
+`https://shop.example.com/pl-PL` and `https://shop.example.com/de-DE` as
+domains of the sales channel, each with the language of its locale, or the
+sitemap answers 404. Pages link their translations with hreflang once at
+least two of the storefront locales have a Shopware language with that
+translation code.
 
 ## Languages
 

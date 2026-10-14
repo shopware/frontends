@@ -1,7 +1,9 @@
+import { Suspense } from "react";
 import type { ReactNode } from "react";
 
 import { Footer } from "@/features/layout/components/Footer";
 import { Header } from "@/features/layout/components/Header";
+import { ResourceHints } from "@/features/layout/components/ResourceHints";
 import { getTranslator, localeFromParams } from "@/i18n/server";
 
 export default async function ShopLayout({
@@ -12,6 +14,9 @@ export default async function ShopLayout({
 
   return (
     <div className="flex min-h-dvh flex-col">
+      <Suspense fallback={null}>
+        <ResourceHints />
+      </Suspense>
       <Header locale={locale} />
       <main
         className="flex-1"

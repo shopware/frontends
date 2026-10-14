@@ -1,9 +1,7 @@
 import "server-only";
-import { ApiClientError } from "@shopware/api-client";
-import type { ApiError } from "@shopware/api-client";
-
 import type { ApiClient } from "#shopware";
 
+import { apiFailureSummary } from "./apiErrors";
 import { READ_TIMEOUT_MS } from "./readTimeout";
 
 const CONTEXT_TOKEN_HEADER = "sw-context-token";
@@ -32,18 +30,6 @@ export function parseImitationForm(
   return { token, customerId, userId };
 }
 
-function failureSummary(error: unknown) {
-  if (error instanceof ApiClientError) {
-    return {
-      status: error.status,
-      codes: (error.details?.errors ?? []).flatMap(({ code }: ApiError) =>
-        code ? [code] : [],
-      ),
-    };
-  }
-  return { name: error instanceof Error ? error.name : typeof error };
-}
-
 export async function imitateCustomer(
   client: ImitationClient,
   credentials: ImitationCredentials,
@@ -59,7 +45,7 @@ export async function imitateCustomer(
   } catch (error) {
     console.error(
       "[Imitation] the Store API refused the customer imitation",
-      failureSummary(error),
+      apiFailureSummary(error),
     );
     return null;
   }

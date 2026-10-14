@@ -1,0 +1,29 @@
+{
+  "form": {
+    "title": "Titel",
+    "additionalAddressLine1": "Adresszusatz 1",
+    "additionalAddressLine2": "Adresszusatz 2",
+    "birthday": "Geburtsdatum",
+    "birthdayDay": "Tag",
+    "birthdayMonth": "Monat",
+    "birthdayYear": "Jahr"
+  },
+  "account": {
+    "registration": {
+      "passwordConfirmation": "Passwort-Bestätigung",
+      "birthdayIncomplete": "Geben Sie das vollständige Geburtsdatum an oder lassen Sie alle drei Felder leer.",
+      "birthdayInvalid": "Geben Sie ein gültiges Geburtsdatum an.",
+      "dataProtectionRequired": "Bitte bestätigen Sie, dass Sie die Datenschutzinformationen gelesen haben."
+    },
+    "orderDetails": {
+      "cancelOrder": "Bestellung stornieren",
+      "cancelOrderNotice": "Eine stornierte Bestellung kann nicht mehr bezahlt oder geändert werden. Enthaltene Rabatte und Aktionen entfallen, und ein eingelöster Gutscheincode funktioniert möglicherweise nicht erneut.",
+      "cancelOrderQuestion": "Möchten Sie diese Bestellung wirklich stornieren?",
+      "customerComment": "Ihr Kommentar"
+    },
+    "messages": {
+      "orderCancelled": "Die Bestellung wurde storniert.",
+      "orderNotCancellable": "Diese Bestellung kann nicht mehr storniert werden."
+    }
+  }
+}

@@ -11,10 +11,6 @@
       "showSubcategories": "Pokaż podkategorie",
       "hideSubcategories": "Ukryj podkategorie"
     },
-    "notWired": {
-      "search": "Wyszukiwanie nie jest jeszcze podłączone.",
-      "forms": "Formularze nie są jeszcze połączone z sesją."
-    },
     "languageSwitcher": {
       "pending": "Otwieranie strony w wersji: {language}…"
     },

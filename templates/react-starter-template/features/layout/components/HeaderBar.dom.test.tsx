@@ -18,7 +18,7 @@ import type {
 } from "@/features/session/types";
 import type { Locale } from "@/i18n/config";
 import { withI18n } from "@/test/i18n";
-import { interact, mount, pressKey, query } from "@/test/mount";
+import { interact, mount, pressKey, query, setInputValue } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
 import { HeaderBar } from "./HeaderBar";
@@ -726,4 +726,58 @@ describe("HeaderBar in the browser", () => {
 
     expect(miniCart()).toBeNull();
   });
+
+  it("keeps the typed text when the search moves between the desktop and the mobile field", async () => {
+    const { container } = await setup();
+    const searchInput = () =>
+      query<HTMLInputElement>(container, '[data-testid="header-search-input"]');
+
+    await interact(() => setInputValue(searchInput(), "sh"));
+    await interact(() =>
+      query<HTMLButtonElement>(
+        container,
+        'button[aria-label="Search"]',
+      ).click(),
+    );
+    expect(searchInput().value).toBe("sh");
+
+    await interact(() => setInputValue(searchInput(), "ab"));
+    const mobileField = searchInput();
+    const close = [...container.querySelectorAll("button")].find(
+      (button) => button.textContent === "Close",
+    );
+    expect(close).toBeDefined();
+    await interact(() => close?.click());
+
+    expect(
+      container.querySelector('button[aria-label="Search"]'),
+    ).not.toBeNull();
+    expect(searchInput()).not.toBe(mobileField);
+    expect(searchInput().value).toBe("ab");
+    expect(
+      container.querySelector('[data-testid="layout-search-result-box"]'),
+    ).toBeNull();
+  });
+
+  it.each([
+    ["/search?search=%20linen%20%20shirt", "linen shirt"],
+    ["/pl-PL/search/?search=Hemd&p=2", "Hemd"],
+    ["/Clothing/?search=shirt", ""],
+  ])(
+    "shows the search term of %s in the search field",
+    async (url, expected) => {
+      window.history.replaceState(null, "", url);
+      const { container } = await setup();
+
+      expect(
+        query<HTMLInputElement>(
+          container,
+          '[data-testid="header-search-input"]',
+        ).value,
+      ).toBe(expected);
+      expect(
+        container.querySelector('[data-testid="layout-search-result-box"]'),
+      ).toBeNull();
+    },
+  );
 });

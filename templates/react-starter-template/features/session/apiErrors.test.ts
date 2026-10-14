@@ -2,7 +2,11 @@ import { describe, expect, it } from "vitest";
 
 import { testTranslator } from "@/test/i18n";
 
-import { resolveApiErrorMessages as resolveWith } from "./apiErrors";
+import {
+  apiErrorCodes,
+  apiFailureSummary,
+  resolveApiErrorMessages as resolveWith,
+} from "./apiErrors";
 import type { ApiErrorContext } from "./apiErrors";
 import { apiClientError, apiClientErrorWithBody } from "./session.fixture";
 
@@ -185,5 +189,59 @@ describe("resolveApiErrorMessages", () => {
     expect(resolveWith(error, testTranslator("pl-PL"))).toEqual([
       "The email address jane@example.com is already in use",
     ]);
+  });
+});
+
+describe("apiErrorCodes", () => {
+  it("lists the codes of an API error and skips errors without one", () => {
+    expect(
+      apiErrorCodes(
+        apiClientError(
+          [
+            {
+              code: "CHECKOUT__CUSTOMER_NOT_FOUND",
+              detail: "secret@example.com",
+            },
+            { detail: "no code" },
+            { code: "VIOLATION::IS_BLANK_ERROR" },
+          ],
+          400,
+        ),
+      ),
+    ).toEqual(["CHECKOUT__CUSTOMER_NOT_FOUND", "VIOLATION::IS_BLANK_ERROR"]);
+  });
+
+  it("gives no codes for anything that is not an API error", () => {
+    expect(apiErrorCodes(new Error("offline"))).toEqual([]);
+    expect(apiErrorCodes("offline")).toEqual([]);
+  });
+});
+
+describe("apiFailureSummary", () => {
+  it("keeps only the status and the codes of an API error", () => {
+    const summary = apiFailureSummary(
+      apiClientError(
+        [
+          {
+            code: "FRAMEWORK__RATE_LIMIT_EXCEEDED",
+            detail: "jane@example.com",
+          },
+        ],
+        429,
+      ),
+    );
+
+    expect(summary).toEqual({
+      status: 429,
+      codes: ["FRAMEWORK__RATE_LIMIT_EXCEEDED"],
+    });
+    expect(JSON.stringify(summary)).not.toContain("jane@example.com");
+  });
+
+  it("names the error type of anything else", () => {
+    expect(apiFailureSummary(new TypeError("fetch failed"))).toEqual({
+      name: "TypeError",
+    });
+    expect(apiFailureSummary(null)).toEqual({ name: "object" });
   });
 });

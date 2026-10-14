@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { Suspense } from "react";
 
 import { DeepLinkOrderPageContent } from "@/features/account/orders/components/DeepLinkOrderPageContent";
 import { OrderDetailSkeleton } from "@/features/account/orders/components/OrderDetailSkeleton";
 import { getTranslator, localeFromParams } from "@/i18n/server";
+import { loadShopSettings } from "@/platform/shopware/loadShopSettings";
 
 type DeepLinkOrderPageProps = {
   params: Promise<{ locale: string; deepCode: string }>;
@@ -19,6 +21,17 @@ export async function generateMetadata({
   };
 }
 
+async function DeepLinkOrderSection({ params }: DeepLinkOrderPageProps) {
+  await connection();
+  const { cart } = await loadShopSettings();
+  return (
+    <DeepLinkOrderPageContent
+      params={params}
+      orderRefundsEnabled={cart.enableOrderRefunds}
+    />
+  );
+}
+
 export default function DeepLinkOrderPage({ params }: DeepLinkOrderPageProps) {
   return (
     <Suspense
@@ -28,7 +41,7 @@ export default function DeepLinkOrderPage({ params }: DeepLinkOrderPageProps) {
         </div>
       }
     >
-      <DeepLinkOrderPageContent params={params} />
+      <DeepLinkOrderSection params={params} />
     </Suspense>
   );
 }

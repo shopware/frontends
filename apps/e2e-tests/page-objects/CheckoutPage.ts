@@ -20,6 +20,7 @@ export class CheckoutPage {
   readonly submitButton: Locator;
   readonly termsBox: Locator;
   readonly termCheckbox: Locator;
+  readonly dataProtectionCheckbox: Locator;
   readonly createAccountToggle: Locator;
   readonly passwordInput: Locator;
 
@@ -43,6 +44,9 @@ export class CheckoutPage {
     this.submitButton = page.getByTestId("checkout-pi-submit-button");
     this.termsBox = page.getByTestId("checkout-terms-box");
     this.termCheckbox = page.getByTestId("checkout-t&c-checkbox-tos");
+    this.dataProtectionCheckbox = page.getByTestId(
+      "checkout-t&c-checkbox-data-protection",
+    );
     this.createAccountToggle = page.getByTestId(
       "checkout-create-account-toggle",
     );
@@ -60,9 +64,11 @@ export class CheckoutPage {
 
   /** Not every template asks for terms acceptance. */
   async markTerms() {
+    await this.placeOrderButton.waitFor({ state: "visible" });
     if ((await this.termCheckbox.count()) === 0) return;
-    await this.termCheckbox.waitFor({ state: "visible" });
     await this.termCheckbox.check();
+    if ((await this.dataProtectionCheckbox.count()) === 0) return;
+    await this.dataProtectionCheckbox.check();
   }
 
   async placeOrder() {

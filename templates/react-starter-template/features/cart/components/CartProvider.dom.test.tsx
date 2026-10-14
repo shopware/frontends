@@ -1,4 +1,5 @@
-import { StrictMode, useEffect, useState } from "react";
+import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
+import { Activity, StrictMode, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -15,11 +16,12 @@ import { ShopwareClientProvider } from "@/features/storefront/components/Shopwar
 import { interact, mount, query } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
-import { cart, cartPrice, lineItem } from "../cart.fixture";
+import { cart, cartError, cartPrice, lineItem } from "../cart.fixture";
 import type { CartActionResult } from "../types";
 import { useCart } from "../useCart";
 import type { UseCartResult } from "../useCart";
 import { CartProvider } from "./CartProvider";
+import { useCartLoadNotices } from "./useCartLoadNotices";
 
 const READ_CART = "readCart get /checkout/cart";
 const ADD_LINE_ITEM = "addLineItem post /checkout/cart/line-item";
@@ -254,6 +256,11 @@ describe("CartProvider", () => {
     expect(harness.cart?.removeItem).toBe(firstRender?.removeItem);
     expect(harness.cart?.changeQuantity).toBe(firstRender?.changeQuantity);
     expect(harness.cart?.refresh).toBe(firstRender?.refresh);
+    expect(harness.cart?.refreshWithResult).toBe(
+      firstRender?.refreshWithResult,
+    );
+    expect(harness.cart?.addProducts).toBe(firstRender?.addProducts);
+    expect(harness.cart?.addPromotionCode).toBe(firstRender?.addPromotionCode);
   });
 
   it("resolves a failed client as { ok: false } with the default message", async () => {
@@ -267,6 +274,60 @@ describe("CartProvider", () => {
 
     expect(result.ok).toBe(false);
     expect(result.message).toMatch(/^Unfortunately, something went wrong/);
+  });
+});
+
+function LoadNoticesProbe() {
+  useCartLoadNotices();
+  return null;
+}
+
+describe("useCartLoadNotices with the cart store", () => {
+  it("sends one read and one toast under StrictMode each time a hidden page is revealed", async () => {
+    const blocked = cartError("shipping-method-blocked", "-UPS");
+    const notify = vi.fn();
+    const visibility: { set?: (mode: "visible" | "hidden") => void } = {};
+    function Page() {
+      const [mode, setMode] = useState<"visible" | "hidden">("visible");
+      useEffect(() => {
+        visibility.set = setMode;
+      }, []);
+      return (
+        <Activity mode={mode}>
+          <LoadNoticesProbe />
+        </Activity>
+      );
+    }
+    const { backend, getClient } = createBackend();
+    backend.cart = cart({ errors: { [blocked.key]: blocked } });
+    mounted = await mount(
+      <StrictMode>
+        <CmsActionsProvider actions={{ notify }}>
+          <ShopwareClientProvider getClient={getClient}>
+            <ControlledSession initial={readySession()}>
+              <CartProvider>
+                <Page />
+              </CartProvider>
+            </ControlledSession>
+          </ShopwareClientProvider>
+        </CmsActionsProvider>
+      </StrictMode>,
+    );
+    const reads = () =>
+      backend.invocations.filter(({ operation }) => operation === READ_CART);
+
+    await vi.waitFor(() => expect(notify).toHaveBeenCalledTimes(1));
+    expect(reads()).toHaveLength(1);
+
+    await interact(() => visibility.set?.("hidden"));
+    await interact(() => visibility.set?.("visible"));
+    await vi.waitFor(() => expect(notify).toHaveBeenCalledTimes(2));
+    await interact(async () => {
+      await new Promise((settle) => setTimeout(settle, 0));
+    });
+
+    expect(reads()).toHaveLength(2);
+    expect(notify).toHaveBeenCalledTimes(2);
   });
 });
 
@@ -289,7 +350,17 @@ describe("useCart without a CartProvider", () => {
     await expect(
       run((current) => current.changeQuantity("x", 2)),
     ).resolves.toEqual({ ok: false });
-    expect(warn).toHaveBeenCalledTimes(3);
+    await expect(
+      run((current) => current.addProducts([{ id: "product-1" }])),
+    ).resolves.toEqual({ ok: false });
+    await expect(
+      run((current) => current.addPromotionCode("SUMMER")),
+    ).resolves.toEqual({ ok: false, applied: false });
+    const current = harness.cart;
+    await expect(current?.refreshWithResult()).resolves.toEqual({ ok: false });
+    await expect(current?.refresh()).resolves.toBeUndefined();
+    expect(warn).toHaveBeenCalledTimes(7);
     expect(warn.mock.calls[0]?.[0]).toContain('"addProduct"');
+    expect(warn.mock.calls[4]?.[0]).toContain('"addPromotionCode"');
   });
 });

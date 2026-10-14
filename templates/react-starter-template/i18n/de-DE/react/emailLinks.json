@@ -1,0 +1,18 @@
+{
+  "account": {
+    "registrationConfirm": {
+      "title": "Kontobestätigung",
+      "guestConfirmed": "Vielen Dank für die Bestätigung Ihrer E-Mail-Adresse. Sie können Ihre Bestellung jetzt abschließen.",
+      "toLogin": "Zur Anmeldung"
+    }
+  },
+  "newsletter": {
+    "confirm": {
+      "alreadyConfirmed": "Ihre Newsletter-Anmeldung wurde bereits bestätigt.",
+      "invalidLink": "Dieser Bestätigungslink ist ungültig. Bitte abonnieren Sie den Newsletter erneut, um einen neuen Link zu erhalten."
+    }
+  },
+  "errors": {
+    "CHECKOUT__CUSTOMER_OPTIN_NOT_COMPLETED": "Ihr Konto wurde noch nicht aktiviert. Bitte klicken Sie auf den Link in der Bestätigungs-E-Mail, die wir Ihnen gesendet haben."
+  }
+}

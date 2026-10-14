@@ -1,0 +1,21 @@
+{
+  "account": {
+    "recoverPassword": {
+      "link": "Forgot your password?",
+      "header": "Password recovery",
+      "info": "We will send you an email with a link to reset your password.",
+      "submit": "Request email",
+      "sent": "If the provided email address is registered, a confirmation email including a password reset link has been sent.",
+      "resend": "Send again",
+      "backToLogin": "Back to sign in"
+    },
+    "resetPassword": {
+      "header": "Set a new password",
+      "linkExpired": "The password reset link is no longer valid. Please request a new one.",
+      "linkInvalid": "The password reset link is invalid. Please request a new one."
+    }
+  },
+  "errors": {
+    "CHECKOUT__PASSWORD_POLICIES_UPDATED": "The password requirements have changed. Please reset your password."
+  }
+}

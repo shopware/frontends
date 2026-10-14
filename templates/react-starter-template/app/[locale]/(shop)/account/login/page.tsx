@@ -6,6 +6,7 @@ import { LoggedInRedirect } from "@/features/account/components/LoggedInRedirect
 import { LoginForm } from "@/features/account/components/LoginForm";
 import { RegistrationForm } from "@/features/account/components/RegistrationForm";
 import { RegistrationFormSkeleton } from "@/features/account/components/RegistrationFormSkeleton";
+import { loadRegistrationReferences } from "@/features/account/registrationReferences";
 import { getTranslator, localeFromParams } from "@/i18n/server";
 import { PRIVATE_PAGE_ROBOTS } from "@/platform/seo/robots";
 import { loadCountryOptions } from "@/platform/shopware/loadCountryOptions";
@@ -23,17 +24,13 @@ export async function generateMetadata({
 
 async function RegistrationSection({ params }: LoginPageProps) {
   await connection();
-  const { countries, countriesUnavailable } = await loadCountryOptions(
-    await localeFromParams(params),
-    "Registration",
-  );
+  const locale = await localeFromParams(params);
+  const [countryOptions, references] = await Promise.all([
+    loadCountryOptions(locale, "Registration"),
+    loadRegistrationReferences(locale),
+  ]);
 
-  return (
-    <RegistrationForm
-      countries={countries}
-      countriesUnavailable={countriesUnavailable}
-    />
-  );
+  return <RegistrationForm {...countryOptions} {...references} />;
 }
 
 export default function LoginPage({ params }: LoginPageProps) {

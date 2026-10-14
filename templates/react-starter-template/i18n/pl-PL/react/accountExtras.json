@@ -1,0 +1,29 @@
+{
+  "form": {
+    "title": "Tytuł",
+    "additionalAddressLine1": "Dodatkowa linia adresu 1",
+    "additionalAddressLine2": "Dodatkowa linia adresu 2",
+    "birthday": "Data urodzenia",
+    "birthdayDay": "Dzień",
+    "birthdayMonth": "Miesiąc",
+    "birthdayYear": "Rok"
+  },
+  "account": {
+    "registration": {
+      "passwordConfirmation": "Potwierdzenie hasła",
+      "birthdayIncomplete": "Podaj pełną datę urodzenia albo zostaw wszystkie trzy pola puste.",
+      "birthdayInvalid": "Podaj prawidłową datę urodzenia.",
+      "dataProtectionRequired": "Potwierdź zapoznanie się z informacjami o ochronie danych."
+    },
+    "orderDetails": {
+      "cancelOrder": "Anuluj zamówienie",
+      "cancelOrderNotice": "Anulowanego zamówienia nie można już opłacić ani zmienić. Rabaty i promocje przestają obowiązywać, a użyty kod rabatowy może nie zadziałać ponownie.",
+      "cancelOrderQuestion": "Czy na pewno chcesz anulować to zamówienie?",
+      "customerComment": "Twój komentarz"
+    },
+    "messages": {
+      "orderCancelled": "Zamówienie zostało anulowane.",
+      "orderNotCancellable": "Tego zamówienia nie można już anulować."
+    }
+  }
+}

@@ -3,6 +3,7 @@ import { useCmsActions } from "@shopware/cms-base-layer-react/client";
 import type {
   CmsActionResult,
   CmsCustomerState,
+  CmsFindVariantResult,
   CmsNotification,
 } from "@shopware/cms-base-layer-react/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -15,11 +16,19 @@ import { useSessionActions } from "@/features/session/components/SessionActionsC
 import { useSession } from "@/features/session/components/SessionProvider";
 import { READ_TIMEOUT_MS } from "@/features/session/readTimeout";
 import {
+  ENGLISH_DOMAIN,
   apiClientError,
   customer,
   salesChannelContext,
 } from "@/features/session/session.fixture";
 import type { SessionActionResult } from "@/features/session/types";
+import {
+  FIND_VARIANT,
+  READ_SEO_URL,
+  VARIANT_NOT_FOUND,
+  findVariantQuery,
+  variantSeoUrlCriteria,
+} from "@/features/variants/variantApi";
 import type { Locale } from "@/i18n/config";
 import type { PublicShopwareConfig } from "@/platform/shopware/publicConfig";
 import { testTranslator, withI18n } from "@/test/i18n";
@@ -403,6 +412,8 @@ describe("StorefrontProviders cart", () => {
         {
           messageKey: "product-stock-reached",
           params: { name: "Aerodynamic Bag", quantity: 1 },
+          key: stock.key,
+          level: stock.level,
         },
       ],
     });
@@ -562,57 +573,6 @@ describe("StorefrontProviders toasts", () => {
         '[data-testid="notification-element-button"]',
       ).getAttribute("aria-label"),
     ).toBe("Zamknij powiadomienie");
-  });
-});
-
-describe("StorefrontProviders CMS stubs", () => {
-  it("warns once and leaves no message for the island to repeat", async () => {
-    const results: CmsActionResult[] = [];
-    function ContactConsumer() {
-      const actions = useCmsActions();
-      return (
-        <button
-          type="button"
-          data-testid="call-contact"
-          onClick={() => {
-            void actions
-              .submitContactForm({ email: "jane@example.com" })
-              .then((result) => {
-                if (!result.ok && result.message) {
-                  actions.notify({ type: "error", message: result.message });
-                }
-                results.push(result);
-              });
-          }}
-        >
-          contact
-        </button>
-      );
-    }
-    mounted = await mount(
-      <StorefrontProviders>
-        <ContactConsumer />
-      </StorefrontProviders>,
-    );
-    const { container } = mounted;
-
-    await interact(() =>
-      query<HTMLButtonElement>(
-        container,
-        '[data-testid="call-contact"]',
-      ).click(),
-    );
-    await vi.waitFor(() => expect(results).toHaveLength(1));
-
-    expect(results[0]).toEqual({ ok: false });
-    const toasts = queryAll<HTMLParagraphElement>(container, MESSAGE);
-    expect(toasts).toHaveLength(1);
-    expect(toasts[0]?.textContent).toBe(
-      "Forms are not connected to a session yet.",
-    );
-    expect(toastOf(toasts[0] as HTMLParagraphElement).className).toContain(
-      "bg-states-warning-container",
-    );
   });
 });
 
@@ -1230,6 +1190,309 @@ describe("StorefrontProviders reviews", () => {
       "[Reviews] saving the product review failed",
       failure,
     );
+    expect(shop.toasts()).toHaveLength(0);
+  });
+});
+
+const VARIANT_OPTIONS = {
+  "group-color": "option-blue",
+  "group-size": "option-large",
+};
+
+function VariantIsland({
+  onResult,
+}: {
+  onResult: (result: CmsFindVariantResult) => void;
+}) {
+  const actions = useCmsActions();
+  return (
+    <button
+      type="button"
+      data-testid="find-variant"
+      onClick={() => {
+        void actions
+          .findVariant({
+            productId: "variant-red-large",
+            parentId: "parent-1",
+            options: VARIANT_OPTIONS,
+            switchedGroup: "group-color",
+          })
+          .then(onResult);
+      }}
+    >
+      find
+    </button>
+  );
+}
+
+describe("StorefrontProviders variants", () => {
+  function answerVariants(find: () => unknown) {
+    const answer = browser.invoke.getMockImplementation();
+    browser.invoke.mockImplementation(async (operation, params) => {
+      if (operation === FIND_VARIANT) return { data: find(), status: 200 };
+      if (operation === READ_SEO_URL) {
+        return {
+          data: { elements: [{ seoPathInfo: "Shirt/SW10001.2" }] },
+          status: 200,
+        };
+      }
+      return answer?.(operation, params);
+    });
+  }
+
+  async function findVariantInShop() {
+    const results: CmsFindVariantResult[] = [];
+    mounted = await mount(
+      <StorefrontProviders>
+        <VariantIsland onResult={(result) => results.push(result)} />
+      </StorefrontProviders>,
+    );
+    const { container } = mounted;
+    await interact(() =>
+      query<HTMLButtonElement>(
+        container,
+        '[data-testid="find-variant"]',
+      ).click(),
+    );
+    await vi.waitFor(() => expect(results).toHaveLength(1));
+    return { results, toasts: () => queryAll(container, MESSAGE) };
+  }
+
+  it("finds the variant and its SEO path through the session client without a toast", async () => {
+    answerVariants(() => ({
+      variantId: "variant-blue-large",
+      options: VARIANT_OPTIONS,
+    }));
+
+    const shop = await findVariantInShop();
+
+    expect(shop.results[0]).toEqual({
+      ok: true,
+      variant: { productId: "variant-blue-large", url: "/Shirt/SW10001.2" },
+    });
+    expect(invoked(FIND_VARIANT)).toEqual([
+      {
+        pathParams: { productId: "parent-1" },
+        query: findVariantQuery(VARIANT_OPTIONS, "group-color"),
+        fetchOptions: { timeout: READ_TIMEOUT_MS },
+      },
+    ]);
+    expect(invoked(READ_SEO_URL)).toEqual([
+      {
+        query: {
+          _criteria: encodeForQuery(
+            variantSeoUrlCriteria("variant-blue-large"),
+          ),
+        },
+        fetchOptions: { timeout: READ_TIMEOUT_MS },
+      },
+    ]);
+    expect(shop.toasts()).toHaveLength(0);
+  });
+
+  it("resolves an unavailable combination as not found without a toast", async () => {
+    answerVariants(() => {
+      throw apiClientError(
+        [{ code: VARIANT_NOT_FOUND, status: "404", detail: "Not found" }],
+        404,
+      );
+    });
+
+    const shop = await findVariantInShop();
+
+    expect(shop.results[0]).toEqual({ ok: false, notFound: true });
+    expect(invoked(READ_SEO_URL)).toEqual([]);
+    expect(shop.toasts()).toHaveLength(0);
+  });
+});
+
+const CONTACT_FORM = "sendContactMail post /contact-form";
+const SUBSCRIBE_NEWSLETTER = "subscribeToNewsletter post /newsletter/subscribe";
+const UNSUBSCRIBE_NEWSLETTER =
+  "unsubscribeToNewsletter post /newsletter/unsubscribe";
+
+function answerForms(answers: Record<string, () => unknown>) {
+  const answer = browser.invoke.getMockImplementation();
+  browser.invoke.mockImplementation(async (operation, params) => {
+    const form = answers[operation];
+    if (form) return { data: await form(), status: 200 };
+    return answer?.(operation, params);
+  });
+}
+
+function FormsIsland({
+  onResult,
+}: {
+  onResult: (result: CmsActionResult) => void;
+}) {
+  const actions = useCmsActions();
+  return (
+    <>
+      <button
+        type="button"
+        data-testid="send-contact"
+        onClick={() => {
+          void actions
+            .submitContactForm({
+              salutationId: "sal-1",
+              firstName: "Jane",
+              lastName: "Doe",
+              email: "jane@example.com",
+              phone: "0123456",
+              subject: "Delivery",
+              comment: "Where is my order, please?",
+              slotId: "slot-1",
+            })
+            .then(onResult);
+        }}
+      >
+        contact
+      </button>
+      <button
+        type="button"
+        data-testid="subscribe"
+        onClick={() => {
+          void actions
+            .subscribeNewsletter({ email: "jane@example.com" })
+            .then(onResult);
+        }}
+      >
+        subscribe
+      </button>
+      <button
+        type="button"
+        data-testid="unsubscribe"
+        onClick={() => {
+          void actions
+            .subscribeNewsletter({
+              email: "jane@example.com",
+              option: "unsubscribe",
+            })
+            .then(onResult);
+        }}
+      >
+        unsubscribe
+      </button>
+    </>
+  );
+}
+
+async function mountFormsShop() {
+  const results: CmsActionResult[] = [];
+  mounted = await mount(
+    <StorefrontProviders>
+      <FormsIsland onResult={(result) => results.push(result)} />
+    </StorefrontProviders>,
+  );
+  const { container } = mounted;
+  const call = async (testId: string) => {
+    const before = results.length;
+    await interact(() =>
+      query<HTMLButtonElement>(container, `[data-testid="${testId}"]`).click(),
+    );
+    await vi.waitFor(() => expect(results).toHaveLength(before + 1));
+    return results[before];
+  };
+  return { call, toasts: () => queryAll(container, MESSAGE) };
+}
+
+describe("StorefrontProviders forms", () => {
+  it("posts the contact form on the session client and shows no toast", async () => {
+    answerForms({
+      [CONTACT_FORM]: () => ({
+        individualSuccessMessage: "Thanks, we will call you.",
+        apiAlias: "contact_form_result",
+      }),
+    });
+    const shop = await mountFormsShop();
+
+    expect(await shop.call("send-contact")).toStrictEqual({
+      ok: true,
+      successMessage: "Thanks, we will call you.",
+    });
+    expect(browser.invoke).toHaveBeenCalledWith(CONTACT_FORM, {
+      body: {
+        email: "jane@example.com",
+        subject: "Delivery",
+        comment: "Where is my order, please?",
+        salutationId: "sal-1",
+        firstName: "Jane",
+        lastName: "Doe",
+        phone: "0123456",
+        slotId: "slot-1",
+      },
+    });
+    expect(shop.toasts()).toHaveLength(0);
+  });
+
+  it("subscribes with the domain of the session language as the storefront url", async () => {
+    answerForms({
+      [SUBSCRIBE_NEWSLETTER]: () => ({ status: "notSet", success: true }),
+    });
+    const shop = await mountFormsShop();
+
+    expect(await shop.call("subscribe")).toStrictEqual({
+      ok: true,
+      status: "notSet",
+    });
+    expect(browser.invoke).toHaveBeenCalledWith(SUBSCRIBE_NEWSLETTER, {
+      body: {
+        email: "jane@example.com",
+        option: "subscribe",
+        storefrontUrl: ENGLISH_DOMAIN,
+      },
+    });
+    expect(shop.toasts()).toHaveLength(0);
+  });
+
+  it("resolves a 400 violation as data and shows no toast", async () => {
+    answerForms({
+      [SUBSCRIBE_NEWSLETTER]: () => {
+        throw apiClientError([
+          {
+            code: "VIOLATION::INVALID_FORMAT_ERROR",
+            status: "400",
+            detail: "This value is not a valid email address.",
+            source: { pointer: "/email" },
+          },
+        ]);
+      },
+    });
+    const shop = await mountFormsShop();
+
+    expect(await shop.call("subscribe")).toStrictEqual({
+      ok: false,
+      message: "Value is not a valid email address",
+      violations: [
+        {
+          field: "email",
+          code: "VIOLATION::INVALID_FORMAT_ERROR",
+          message: "Value is not a valid email address",
+        },
+      ],
+    });
+    expect(shop.toasts()).toHaveLength(0);
+  });
+
+  it("answers an unsubscribe of an unknown address like a successful one", async () => {
+    answerForms({
+      [UNSUBSCRIBE_NEWSLETTER]: () => {
+        throw apiClientError([
+          {
+            code: "CONTENT__NEWSLETTER_RECIPIENT_NOT_FOUND",
+            status: "400",
+            detail:
+              'The NewsletterRecipient with the identifier "email" - jane@example.com was not found.',
+          },
+        ]);
+      },
+    });
+    const shop = await mountFormsShop();
+
+    expect(await shop.call("unsubscribe")).toStrictEqual({
+      ok: true,
+      status: "optOut",
+    });
     expect(shop.toasts()).toHaveLength(0);
   });
 });

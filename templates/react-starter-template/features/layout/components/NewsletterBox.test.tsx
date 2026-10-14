@@ -84,6 +84,7 @@ describe("NewsletterBox", () => {
     expect(input).toContain("required");
     expect(input.toLowerCase()).toContain('autocomplete="email"');
     expect(input).toContain('placeholder="Enter Email Address"');
+    expect(input).toContain('data-testid="footer-newsletter-email-input"');
   });
 
   it("renders a submit button with the Vue copy inside a non-validating form", async () => {
@@ -92,7 +93,9 @@ describe("NewsletterBox", () => {
     const button = tag(html, /<button [^>]*>/);
 
     expect(form.toLowerCase()).toContain("novalidate");
+    expect(form).toContain('data-testid="footer-newsletter-form"');
     expect(button).toContain('type="submit"');
+    expect(button).toContain('data-testid="footer-newsletter-submit-button"');
     expect(button).not.toMatch(/ disabled(="")?[ >]/);
     expect(button).toContain("bg-shell-ink");
     expect(button).toContain("text-shell-on-ink");

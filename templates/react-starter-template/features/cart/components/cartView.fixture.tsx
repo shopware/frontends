@@ -69,21 +69,31 @@ export function promotionItem(
 
 export function cartView(overrides: Partial<CartView> = {}): CartView {
   const lineItems = overrides.lineItems ?? [];
+  const current = overrides.cart ?? null;
   const count = lineItems.reduce(
     (sum, item) => (item.good === true ? sum + (item.quantity ?? 0) : sum),
     0,
   );
   return {
     status: "ready",
-    cart: null,
+    cart: current,
     lineItems,
     count,
     isEmpty: count <= 0,
     subtotal: 0,
     totalPrice: 0,
     shippingCosts: [],
+    appliedPromotionCodes: lineItems.filter(
+      (item) => item.type === "promotion",
+    ),
     refresh: async () => {},
+    refreshWithResult: async () =>
+      current
+        ? { ok: true, cart: current, errors: [], newErrors: [] }
+        : { ok: false },
     addProduct: async () => ({ ok: true }),
+    addProducts: async () => ({ ok: true }),
+    addPromotionCode: async () => ({ ok: true, applied: true }),
     removeItem: async () => ({ ok: true }),
     changeQuantity: async () => ({ ok: true }),
     ...overrides,

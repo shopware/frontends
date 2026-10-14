@@ -9,7 +9,7 @@ import { getShippingMethodDeliveryTime } from "@shopware/helpers";
 import { useEffect, useRef, useState } from "react";
 
 import type { Schemas } from "#shopware";
-import { cartResultMessages } from "@/features/cart/components/useLineItemActions";
+import { cartNotifications } from "@/features/cart/components/useLineItemActions";
 import { useCart } from "@/features/cart/useCart";
 import { getPaymentMethods } from "@/features/checkout/checkoutApi";
 import { OrderAddress } from "@/features/checkout/components/OrderAddress";
@@ -28,13 +28,20 @@ import {
   parsePaymentUrl,
   redirectToPayment,
 } from "@/features/checkout/paymentRedirect";
-import { resolveApiErrorMessages } from "@/features/session/apiErrors";
+import {
+  apiFailureSummary,
+  resolveApiErrorMessages,
+} from "@/features/session/apiErrors";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
 import { useLocale, useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 
 import {
+  cancelOrder,
+  cancelOrderErrorMessages,
   documentFileName,
   handleOrderPayment,
+  isOrderCancellable,
+  isOrderNotCancellableError,
   isOrderPaymentChangeable,
   orderPaymentReturnUrls,
   readOrderDocument,
@@ -44,6 +51,7 @@ import {
 } from "../ordersApi";
 import type { OrderDetails } from "../ordersApi";
 import { saveBlob } from "../saveBlob";
+import { CancelOrderModal } from "./CancelOrderModal";
 import { ChangePaymentModal } from "./ChangePaymentModal";
 import type { PaymentMethodsLoad } from "./ChangePaymentModal";
 import { OrderDetailLineItems } from "./OrderDetailLineItems";
@@ -61,13 +69,18 @@ function methodName(
 export type OrderDetailViewProps = {
   details: OrderDetails;
   onReload: () => Promise<void>;
+  orderRefundsEnabled?: boolean;
 };
 
-export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
+export function OrderDetailView({
+  details,
+  onReload,
+  orderRefundsEnabled = false,
+}: OrderDetailViewProps) {
   const { order } = details;
   const getClient = useShopwareClient();
   const { notify } = useCmsActions();
-  const { addProduct } = useCart();
+  const { addProducts } = useCart();
   const t = useTranslations();
   const locale = useLocale();
   const localePath = useLocalePath();
@@ -77,8 +90,14 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
   });
   const [changing, setChanging] = useState(false);
   const [reordering, setReordering] = useState(false);
+  const [cancelOpen, setCancelOpen] = useState(false);
+  const [cancelling, setCancelling] = useState(false);
+  const [cancellationRejected, setCancellationRejected] = useState(false);
   const changingRef = useRef(false);
   const reorderingRef = useRef(false);
+  const cancellingRef = useRef(false);
+  const focusStatusRef = useRef(false);
+  const statusRef = useRef<HTMLDivElement>(null);
   const methodsRequest = useRef(0);
   const onReloadRef = useRef(onReload);
 
@@ -93,6 +112,9 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
       setChanging(false);
       methodsRequest.current += 1;
       setModalOpen(false);
+      cancellingRef.current = false;
+      setCancelling(false);
+      setCancelOpen(false);
       void onReloadRef.current();
     };
     window.addEventListener("pageshow", handlePageShow);
@@ -111,10 +133,18 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
     ? getShippingMethodDeliveryTime(shippingMethod)
     : undefined;
   const paymentChangeable = isOrderPaymentChangeable(details);
+  const cancellable =
+    !cancellationRejected && isOrderCancellable(details, orderRefundsEnabled);
   const repeatItems = reorderItems(order);
   const orderDate = order.orderDate
     ? formatOrderDate(order.orderDate, locale)
     : "";
+
+  useEffect(() => {
+    if (!focusStatusRef.current || cancellable) return;
+    focusStatusRef.current = false;
+    statusRef.current?.focus();
+  }, [cancellable]);
 
   function notifyErrors(error: unknown) {
     for (const message of resolveApiErrorMessages(error, t)) {
@@ -213,21 +243,61 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
     }
   }
 
+  function openCancel() {
+    focusStatusRef.current = false;
+    setCancelOpen(true);
+  }
+
+  async function cancelCurrentOrder() {
+    if (cancellingRef.current) return;
+    cancellingRef.current = true;
+    setCancelling(true);
+    try {
+      const client = await getClient();
+      await cancelOrder(client, order.id);
+      focusStatusRef.current = true;
+      notify({
+        type: "success",
+        message: t("account.messages.orderCancelled"),
+      });
+      await onReload();
+      setCancelOpen(false);
+    } catch (error) {
+      console.error(
+        "[Account] cancelling the order failed",
+        apiFailureSummary(error),
+      );
+      for (const message of cancelOrderErrorMessages(error, t)) {
+        notify({ type: "error", message });
+      }
+      if (isOrderNotCancellableError(error)) {
+        focusStatusRef.current = true;
+        setCancellationRejected(true);
+        setCancelOpen(false);
+        await onReload();
+      } else if (isTimeoutError(error)) {
+        focusStatusRef.current = true;
+        void onReload();
+      }
+    } finally {
+      cancellingRef.current = false;
+      setCancelling(false);
+    }
+  }
+
   async function repeatOrder() {
     if (reorderingRef.current || repeatItems.length === 0) return;
     reorderingRef.current = true;
     setReordering(true);
     try {
+      const result = await addProducts(repeatItems);
       const messages = new Set<string>();
-      let added = false;
-      for (const item of repeatItems) {
-        const result = await addProduct(item);
-        if (result.ok) added = true;
-        for (const message of cartResultMessages(result, t))
-          messages.add(message);
+      for (const notification of cartNotifications(result, t)) {
+        if (messages.has(notification.message)) continue;
+        messages.add(notification.message);
+        notify(notification);
       }
-      for (const message of messages) notify({ type: "error", message });
-      if (added) {
+      if (result.ok) {
         notify({
           type: "success",
           message: t("account.messages.productsAdded"),
@@ -279,7 +349,11 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
           <span />
         )}
         {order.stateMachineState ? (
-          <div className="mt-4 sm:mt-0">
+          <div
+            ref={statusRef}
+            tabIndex={-1}
+            className="mt-4 focus:outline-hidden sm:mt-0"
+          >
             <OrderStatus state={order.stateMachineState} />
           </div>
         ) : null}
@@ -354,20 +428,45 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
             ) : null}
           </div>
         ) : null}
+        {order.customerComment?.trim() ? (
+          <div className="sm:col-span-2" data-testid="order-customer-comment">
+            <h3 className="mb-3 leading-normal font-bold text-surface-on-surface">
+              {t("account.orderDetails.customerComment")}
+            </h3>
+            <p className="border border-outline-outline p-4 break-words whitespace-pre-line text-surface-on-surface">
+              {order.customerComment}
+            </p>
+          </div>
+        ) : null}
       </div>
 
-      {repeatItems.length > 0 ? (
-        <BaseButton
-          className="mt-8"
-          variant="outline"
-          data-testid="order-repeat-button"
-          loading={reordering}
-          onClick={() => {
-            void repeatOrder();
-          }}
-        >
-          {t("account.order.repeatOrder")}
-        </BaseButton>
+      {repeatItems.length > 0 || cancellable ? (
+        <div className="mt-8 flex flex-wrap gap-3">
+          {repeatItems.length > 0 ? (
+            <BaseButton
+              variant="outline"
+              data-testid="order-repeat-button"
+              loading={reordering}
+              onClick={() => {
+                void repeatOrder();
+              }}
+            >
+              {t("account.order.repeatOrder")}
+            </BaseButton>
+          ) : null}
+          {cancellable ? (
+            <BaseButton
+              variant="outline"
+              aria-haspopup="dialog"
+              aria-disabled={cancelling || undefined}
+              className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
+              data-testid="order-cancel-button"
+              onClick={openCancel}
+            >
+              {t("account.orderDetails.cancelOrder")}
+            </BaseButton>
+          ) : null}
+        </div>
       ) : null}
 
       <ChangePaymentModal
@@ -378,6 +477,14 @@ export function OrderDetailView({ details, onReload }: OrderDetailViewProps) {
         onClose={closeModal}
         onConfirm={(paymentMethodId) => {
           void changePaymentMethod(paymentMethodId);
+        }}
+      />
+      <CancelOrderModal
+        open={cancelOpen && cancellable}
+        busy={cancelling}
+        onClose={() => setCancelOpen(false)}
+        onConfirm={() => {
+          void cancelCurrentOrder();
         }}
       />
     </div>

@@ -12,6 +12,7 @@ import type { SessionActions } from "./SessionActionsContext";
 const ACTION_NAMES: (keyof SessionActions)[] = [
   "login",
   "register",
+  "confirmRegistration",
   "logout",
   "setCurrency",
   "retrySession",
@@ -87,6 +88,19 @@ describe("notImplementedSessionActions", () => {
     ).resolves.toEqual({ ok: false });
     expect(warn).toHaveBeenCalledTimes(3);
     expect(warn.mock.calls[2]?.[0]).toContain('"setCurrency"');
+  });
+
+  it("resolves a failed confirmation for confirmRegistration and warns", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+    await expect(
+      notImplementedSessionActions.confirmRegistration({
+        em: "em",
+        hash: "hash",
+      }),
+    ).resolves.toEqual({ status: "failed" });
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(warn.mock.calls[0]?.[0]).toContain('"confirmRegistration"');
   });
 
   it("resolves an unavailable session for retrySession and warns", async () => {

@@ -9,9 +9,8 @@ import { useTranslations } from "@/i18n/I18nProvider";
 
 import { createCartStore, loadingCart } from "../cartStore";
 import type { CartStore } from "../cartStore";
-import type { CartActionResult } from "../types";
 
-function notWired(name: keyof CartStore): CartActionResult {
+function notWired(name: keyof CartStore): { ok: false } {
   console.warn(
     `[Cart] "${name}" is not wired up. Mount <CartProvider> above the component.`,
   );
@@ -26,7 +25,13 @@ export const unavailableCartStore: CartStore = {
   refresh: async () => {
     notWired("refresh");
   },
+  refreshWithResult: async () => notWired("refreshWithResult"),
   addProduct: async () => notWired("addProduct"),
+  addProducts: async () => notWired("addProducts"),
+  addPromotionCode: async () => ({
+    ...notWired("addPromotionCode"),
+    applied: false,
+  }),
   removeItem: async () => notWired("removeItem"),
   changeQuantity: async () => notWired("changeQuantity"),
 };

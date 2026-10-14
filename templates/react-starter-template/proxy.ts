@@ -19,12 +19,15 @@ export const REDIRECT_CACHE_CONTROL = "public, max-age=300, s-maxage=300";
 const STATIC_FILE =
   /\.(?:ico|png|jpe?g|gif|svg|webp|avif|txt|xml|webmanifest|json|js|css|map|woff2?|ttf|otf)$/;
 
+const SITEMAP_FILE = /^\/sitemap\/[^/]+\/[^/]+\.xml\.gz$/;
+
 function isSkipped(pathname: string): boolean {
   return (
     pathname === "/api" ||
     pathname.startsWith("/api/") ||
     pathname === "/_next" ||
     pathname.startsWith("/_next/") ||
+    SITEMAP_FILE.test(pathname) ||
     STATIC_FILE.test(pathname)
   );
 }
@@ -111,6 +114,6 @@ export async function proxy(
 
 export const config = {
   matcher: [
-    "/((?!api(?:/|$)|_next(?:/|$)|.*\\.(?:ico|png|jpe?g|gif|svg|webp|avif|txt|xml|webmanifest|json|js|css|map|woff2?|ttf|otf)$).*)",
+    "/((?!api(?:/|$)|_next(?:/|$)|sitemap/[^/]+/[^/]+\\.xml\\.gz$|.*\\.(?:ico|png|jpe?g|gif|svg|webp|avif|txt|xml|webmanifest|json|js|css|map|woff2?|ttf|otf)$).*)",
   ],
 };

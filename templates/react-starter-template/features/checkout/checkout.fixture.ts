@@ -3,6 +3,7 @@ import type { StorefrontSession } from "@/features/session/types";
 import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
 
 import type { CheckoutClient } from "./checkoutApi";
+import type { CheckoutSettings } from "./checkoutSettings";
 
 export type Invocation = { operation: string; params: unknown };
 
@@ -103,6 +104,32 @@ export function billingAddress(
     },
     ...overrides,
   } as Schemas["CustomerAddress"];
+}
+
+export function shippingAddress(
+  overrides: Partial<Schemas["CustomerAddress"]> = {},
+): Schemas["CustomerAddress"] {
+  return billingAddress({
+    id: "address-2",
+    firstName: "John",
+    lastName: "Smith",
+    street: "Harbour Road 7",
+    zipcode: "20095",
+    city: "Hamburg",
+    ...overrides,
+  });
+}
+
+export function checkoutSettings(
+  overrides: Partial<CheckoutSettings> = {},
+): CheckoutSettings {
+  return {
+    showCustomerComment: false,
+    requireDataProtectionCheckbox: false,
+    passwordMinLength: 8,
+    legalLinks: { terms: null, revocation: null },
+    ...overrides,
+  };
 }
 
 export function checkoutCustomer(

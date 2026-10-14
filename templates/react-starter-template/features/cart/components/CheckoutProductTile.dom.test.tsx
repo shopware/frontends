@@ -5,7 +5,7 @@ import type { Schemas } from "#shopware";
 import { interact, mount, query, setInputValue } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
-import { lineItem } from "./cartView.fixture";
+import { lineItem, promotionItem } from "./cartView.fixture";
 import { CheckoutProductTile } from "./CheckoutProductTile";
 import type { CheckoutProductTileProps } from "./CheckoutProductTile";
 
@@ -87,6 +87,20 @@ describe("CheckoutProductTile in the browser", () => {
 
     expect(onRemove).toHaveBeenCalledTimes(1);
     expect(onRemove).toHaveBeenCalledWith("line-1");
+  });
+
+  it("removes a promotion by its line item id", async () => {
+    const { container, onRemove } = await setup(promotionItem());
+
+    await interact(() =>
+      query<HTMLButtonElement>(
+        container,
+        '[data-testid="promotion-remove-button"]',
+      ).click(),
+    );
+
+    expect(onRemove).toHaveBeenCalledTimes(1);
+    expect(onRemove).toHaveBeenCalledWith("promotion-1");
   });
 
   it("changes the quantity and shows it while the change is pending", async () => {

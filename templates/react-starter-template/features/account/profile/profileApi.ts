@@ -16,9 +16,15 @@ export type NewsletterStatus = Schemas["NewsletterStatus"];
 export type NewsletterSubscription = {
   email: string;
   storefrontUrl: string;
+  salutationId?: string;
+  firstName?: string;
+  lastName?: string;
 };
 
 export const SUBSCRIBE_KEY = "subscribe";
+
+export const NEWSLETTER_RECIPIENT_NOT_FOUND =
+  "CONTENT__NEWSLETTER_RECIPIENT_NOT_FOUND";
 
 const NOT_SUBSCRIBED: readonly NewsletterStatus[] = ["optOut", "undefined"];
 
@@ -56,13 +62,32 @@ export async function readNewsletterStatus(
   return data.status;
 }
 
+function filled(value: string | undefined): value is string {
+  return value !== undefined && value.trim() !== "";
+}
+
 export async function subscribeNewsletter(
   client: ProfileClient,
-  { email, storefrontUrl }: NewsletterSubscription,
+  {
+    email,
+    storefrontUrl,
+    salutationId,
+    firstName,
+    lastName,
+  }: NewsletterSubscription,
 ): Promise<NewsletterStatus> {
   const { data } = await client.invoke(
     "subscribeToNewsletter post /newsletter/subscribe",
-    { body: { email, option: SUBSCRIBE_KEY, storefrontUrl } },
+    {
+      body: {
+        email,
+        option: SUBSCRIBE_KEY,
+        storefrontUrl,
+        ...(filled(salutationId) ? { salutationId } : {}),
+        ...(filled(firstName) ? { firstName } : {}),
+        ...(filled(lastName) ? { lastName } : {}),
+      },
+    },
   );
   return data.status;
 }

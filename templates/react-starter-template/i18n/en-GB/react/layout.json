@@ -11,10 +11,6 @@
       "showSubcategories": "Show subcategories",
       "hideSubcategories": "Hide subcategories"
     },
-    "notWired": {
-      "search": "Search is not connected yet.",
-      "forms": "Forms are not connected to a session yet."
-    },
     "languageSwitcher": {
       "pending": "Opening the page in {language}…"
     },

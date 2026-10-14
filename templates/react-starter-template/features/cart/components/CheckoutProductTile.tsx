@@ -10,6 +10,8 @@ import { Price } from "@/components/Price";
 import { useContentLang } from "@/i18n/ContentLanguageProvider";
 import { useMessages, useTranslations } from "@/i18n/I18nProvider";
 
+import { PromotionLineItemTile } from "./PromotionLineItemTile";
+
 export type CheckoutProductTileProps = {
   item: Schemas["LineItem"];
   onRemove: (id: string) => void;
@@ -73,7 +75,19 @@ function isThenable(value: unknown): value is PromiseLike<unknown> {
   );
 }
 
-export function CheckoutProductTile({
+export function CheckoutProductTile(props: CheckoutProductTileProps) {
+  return props.item.type === "promotion" ? (
+    <PromotionLineItemTile
+      item={props.item}
+      onRemove={props.onRemove}
+      className={props.className}
+    />
+  ) : (
+    <ProductLineItemTile {...props} />
+  );
+}
+
+function ProductLineItemTile({
   item,
   onRemove,
   onChangeQuantity,
@@ -171,6 +185,7 @@ export function CheckoutProductTile({
             <button
               type="button"
               data-testid="checkout-product-tile-remove-button"
+              data-line-item-remove
               className="inline-flex items-center gap-1 border-b border-brand-primary bg-transparent text-sm text-brand-primary hover:border-transparent"
               onClick={() => onRemove(item.id)}
             >

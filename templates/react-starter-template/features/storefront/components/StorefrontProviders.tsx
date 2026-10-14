@@ -18,6 +18,7 @@ import {
 } from "@/features/account/components/LoginModal";
 import { CartProvider } from "@/features/cart/components/CartProvider";
 import { useCart } from "@/features/cart/useCart";
+import { createFormActions } from "@/features/forms/formActions";
 import {
   readProductReviews,
   reviewViolations,
@@ -26,6 +27,7 @@ import {
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { ShopwareSessionProvider } from "@/features/session/components/ShopwareSessionProvider";
+import { findProductVariant } from "@/features/variants/variantApi";
 import {
   WishlistProvider,
   useWishlistStore,
@@ -38,7 +40,6 @@ import {
 import { useLocale, useTranslations } from "@/i18n/I18nProvider";
 
 import { cmsCustomerState } from "../cmsCustomerState";
-import { NOT_WIRED_MESSAGE_KEYS } from "../notWired";
 import { useShopwareClient } from "./ShopwareClientContext";
 
 export const TOAST_TIMEOUT_MS = 5000;
@@ -88,14 +89,9 @@ function StorefrontCmsActions({
   const customerState = useMemo(() => cmsCustomerState(session), [session]);
 
   const actions = useMemo<Partial<CmsActions>>(() => {
-    const warnNotWired = () =>
-      notify({ type: "warning", message: t(NOT_WIRED_MESSAGE_KEYS.forms) });
-    const notWired = async () => {
-      warnNotWired();
-      return { ok: false };
-    };
     return {
       notify,
+      ...createFormActions({ getClient, getSession: retrySession, t }),
       addToCart: ({ productId, quantity }) =>
         addProduct({ id: productId, quantity }),
       isInWishlist,
@@ -114,8 +110,6 @@ function StorefrontCmsActions({
         wishlistStore.syncSession(await retrySession());
         return write();
       },
-      submitContactForm: notWired,
-      subscribeNewsletter: notWired,
       getCustomerState: () => customerState,
       loadProductReviews: async (input) => {
         try {
@@ -162,10 +156,7 @@ function StorefrontCmsActions({
         const retried = await save();
         return retried.ok ? { ok: true } : failed(retried.error);
       },
-      findVariant: async () => {
-        warnNotWired();
-        return null;
-      },
+      findVariant: (input) => findProductVariant(getClient, input),
     };
   }, [
     notify,

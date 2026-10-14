@@ -145,6 +145,45 @@ describe("subscribeNewsletter", () => {
       },
     ]);
   });
+
+  it("adds the salutation and the names only when they are filled", async () => {
+    const shopware = fakeClient(() => ({ status: "direct", success: true }));
+
+    await subscribeNewsletter(shopware.client, {
+      email: "jane@example.com",
+      storefrontUrl: "https://shop.test/en",
+      salutationId: "salutation-mrs",
+      firstName: "Jane",
+      lastName: "Doe",
+    });
+    await subscribeNewsletter(shopware.client, {
+      email: "john@example.com",
+      storefrontUrl: "https://shop.test/en",
+      salutationId: "",
+      firstName: "  ",
+      lastName: undefined,
+    });
+
+    expect(shopware.invocations.map(({ params }) => params)).toStrictEqual([
+      {
+        body: {
+          email: "jane@example.com",
+          option: "subscribe",
+          storefrontUrl: "https://shop.test/en",
+          salutationId: "salutation-mrs",
+          firstName: "Jane",
+          lastName: "Doe",
+        },
+      },
+      {
+        body: {
+          email: "john@example.com",
+          option: "subscribe",
+          storefrontUrl: "https://shop.test/en",
+        },
+      },
+    ]);
+  });
 });
 
 describe("unsubscribeNewsletter", () => {

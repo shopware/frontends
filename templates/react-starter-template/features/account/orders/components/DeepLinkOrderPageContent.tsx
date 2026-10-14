@@ -44,13 +44,21 @@ type Field = keyof DeepLinkCredentials;
 
 export type DeepLinkOrderPageContentProps = {
   params: Promise<{ deepCode: string }>;
+  orderRefundsEnabled?: boolean;
 };
 
 export function DeepLinkOrderPageContent({
   params,
+  orderRefundsEnabled = false,
 }: DeepLinkOrderPageContentProps) {
   const { deepCode } = use(params);
-  return <DeepLinkOrder key={deepCode} deepLinkCode={deepCode} />;
+  return (
+    <DeepLinkOrder
+      key={deepCode}
+      deepLinkCode={deepCode}
+      orderRefundsEnabled={orderRefundsEnabled}
+    />
+  );
 }
 
 function NotFound() {
@@ -68,7 +76,13 @@ function NotFound() {
   );
 }
 
-function DeepLinkOrder({ deepLinkCode }: { deepLinkCode: string }) {
+function DeepLinkOrder({
+  deepLinkCode,
+  orderRefundsEnabled,
+}: {
+  deepLinkCode: string;
+  orderRefundsEnabled: boolean;
+}) {
   const session = useSession();
   const { refreshSession } = useSessionActions();
   const getClient = useShopwareClient();
@@ -185,6 +199,7 @@ function DeepLinkOrder({ deepLinkCode }: { deepLinkCode: string }) {
           <DeepLinkOrderView
             details={phase.details}
             focusHeading={phase.focusHeading}
+            orderRefundsEnabled={orderRefundsEnabled}
           />
         );
     }
@@ -205,9 +220,11 @@ function DeepLinkOrder({ deepLinkCode }: { deepLinkCode: string }) {
 function DeepLinkOrderView({
   details,
   focusHeading,
+  orderRefundsEnabled,
 }: {
   details: OrderDetails;
   focusHeading: boolean;
+  orderRefundsEnabled: boolean;
 }) {
   const t = useTranslations();
   const { state, reload } = useOrderDetails(details.order.id, details);
@@ -225,7 +242,11 @@ function DeepLinkOrderView({
         title={orderTitle(t, current.order.orderNumber)}
         headingRef={headingRef}
       />
-      <OrderDetailView details={current} onReload={reload} />
+      <OrderDetailView
+        details={current}
+        onReload={reload}
+        orderRefundsEnabled={orderRefundsEnabled}
+      />
     </>
   );
 }

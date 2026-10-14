@@ -12,28 +12,23 @@ import { useTranslations } from "@/i18n/I18nProvider";
 import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
 
 import type {
-  CheckoutErrors,
-  CheckoutField,
-  CheckoutValues,
+  CheckoutAddressErrors,
+  CheckoutAddressField,
+  CheckoutAddressValues,
 } from "../checkoutSchema";
 
 export type CustomerAddressProps = {
-  values: Pick<
-    CheckoutValues,
-    | "firstName"
-    | "lastName"
-    | "street"
-    | "zipcode"
-    | "city"
-    | "countryId"
-    | "countryStateId"
-  >;
-  errors: CheckoutErrors;
+  values: CheckoutAddressValues;
+  errors: CheckoutAddressErrors;
   countries: CountryOption[];
   countriesUnavailable?: boolean;
-  onFieldChange: (field: CheckoutField, value: string) => void;
-  onFieldBlur: (field: CheckoutField) => void;
+  onFieldChange: (field: CheckoutAddressField, value: string) => void;
+  onFieldBlur: (field: CheckoutAddressField) => void;
   onCountryChange: (countryId: string) => void;
+  idPrefix?: string;
+  testIdPrefix?: string;
+  countryTestId?: string;
+  autoCompletePrefix?: string;
   className?: string;
 };
 
@@ -45,6 +40,10 @@ export function CustomerAddress({
   onFieldChange,
   onFieldBlur,
   onCountryChange,
+  idPrefix = "",
+  testIdPrefix = "checkout-pi",
+  countryTestId = "country-select",
+  autoCompletePrefix = "",
   className,
 }: CustomerAddressProps) {
   const router = useRouter();
@@ -67,9 +66,9 @@ export function CustomerAddress({
         <div className="flex flex-col gap-4 sm:flex-row">
           <InputField
             className="sm:basis-1/2"
-            id="first-name"
-            autoComplete="given-name"
-            data-testid="checkout-pi-first-name-input"
+            id={`${idPrefix}first-name`}
+            autoComplete={`${autoCompletePrefix}given-name`}
+            data-testid={`${testIdPrefix}-first-name-input`}
             label={t("checkout.customerAddress.firstNameLabel")}
             placeholder={t("checkout.customerAddress.firstNamePlaceholder")}
             required
@@ -80,9 +79,9 @@ export function CustomerAddress({
           />
           <InputField
             className="sm:basis-1/2"
-            id="last-name"
-            autoComplete="family-name"
-            data-testid="checkout-pi-last-name-input"
+            id={`${idPrefix}last-name`}
+            autoComplete={`${autoCompletePrefix}family-name`}
+            data-testid={`${testIdPrefix}-last-name-input`}
             label={t("checkout.customerAddress.lastNameLabel")}
             placeholder={t("checkout.customerAddress.lastNamePlaceholder")}
             required
@@ -93,9 +92,9 @@ export function CustomerAddress({
           />
         </div>
         <InputField
-          id="street"
-          autoComplete="street-address"
-          data-testid="checkout-pi-street-address-input"
+          id={`${idPrefix}street`}
+          autoComplete={`${autoCompletePrefix}street-address`}
+          data-testid={`${testIdPrefix}-street-address-input`}
           label={t("checkout.customerAddress.streetLabel")}
           placeholder={t("checkout.customerAddress.streetPlaceholder")}
           required
@@ -107,9 +106,9 @@ export function CustomerAddress({
         <div className="flex flex-col gap-4 sm:flex-row">
           <InputField
             className="sm:basis-1/2"
-            id="zipcode"
-            autoComplete="postal-code"
-            data-testid="checkout-pi-zip-code-input"
+            id={`${idPrefix}zipcode`}
+            autoComplete={`${autoCompletePrefix}postal-code`}
+            data-testid={`${testIdPrefix}-zip-code-input`}
             label={t("checkout.customerAddress.zipcodeLabel")}
             placeholder={t("checkout.customerAddress.zipcodePlaceholder")}
             required
@@ -120,9 +119,9 @@ export function CustomerAddress({
           />
           <InputField
             className="sm:basis-1/2"
-            id="city"
-            autoComplete="address-level2"
-            data-testid="checkout-pi-city-input"
+            id={`${idPrefix}city`}
+            autoComplete={`${autoCompletePrefix}address-level2`}
+            data-testid={`${testIdPrefix}-city-input`}
             label={t("checkout.customerAddress.cityLabel")}
             placeholder={t("checkout.customerAddress.cityPlaceholder")}
             required
@@ -136,7 +135,8 @@ export function CustomerAddress({
           <div className="w-full">
             <CountrySelect
               className="w-full"
-              id="country"
+              id={`${idPrefix}country`}
+              testId={countryTestId}
               label={t("form.country")}
               placeholder={t("form.chooseCountry")}
               countries={countries}
@@ -162,12 +162,12 @@ export function CustomerAddress({
           {states.length > 0 ? (
             <SelectField
               className="w-full"
-              id="state"
-              data-testid="checkout-pi-state-input"
+              id={`${idPrefix}state`}
+              data-testid={`${testIdPrefix}-state-input`}
               label={t("form.state")}
               placeholder={t("form.chooseState")}
               required
-              autoComplete="address-level1"
+              autoComplete={`${autoCompletePrefix}address-level1`}
               optionsLang={contentLang}
               options={states.map((state) => ({
                 label: state.name,

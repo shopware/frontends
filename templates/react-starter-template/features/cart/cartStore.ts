@@ -4,8 +4,19 @@ import { READ_TIMEOUT_MS } from "@/features/session/readTimeout";
 import type { StorefrontSession } from "@/features/session/types";
 import type { Translate } from "@/i18n/translate";
 
-import { toCartActionErrors } from "./cartErrors";
-import type { CartActionResult, CartState } from "./types";
+import { promotionNotEligibleErrors, toCartActionErrors } from "./cartErrors";
+import type { CartActionError } from "./cartErrors";
+import {
+  isPromotionCodeApplied,
+  normalizePromotionCode,
+  promotionLineItems,
+} from "./promotionCode";
+import type {
+  CartActionResult,
+  CartReadResult,
+  CartState,
+  PromotionCodeResult,
+} from "./types";
 
 export type CartClient = Pick<ApiClient, "invoke">;
 
@@ -17,7 +28,10 @@ export type CartStore = {
   syncSession(session: StorefrontSession): void;
   setTranslate(t: Translate): void;
   refresh(): Promise<void>;
+  refreshWithResult(): Promise<CartReadResult>;
   addProduct(input: AddProductInput): Promise<CartActionResult>;
+  addProducts(items: AddProductInput[]): Promise<CartActionResult>;
+  addPromotionCode(code: string): Promise<PromotionCodeResult>;
   removeItem(id: string): Promise<CartActionResult>;
   changeQuantity(id: string, quantity: number): Promise<CartActionResult>;
 };
@@ -29,15 +43,20 @@ export type CartSummary = {
   subtotal: number;
   totalPrice: number;
   shippingCosts: Schemas["CartDelivery"][];
+  appliedPromotionCodes: Schemas["LineItem"][];
 };
+
+type QueuedRead = { result: Promise<CartReadResult>; done: Promise<void> };
 
 export const loadingCart: CartState = { status: "loading", cart: null };
 
 const NO_LINE_ITEMS: Schemas["LineItem"][] = [];
 const NO_DELIVERIES: Schemas["CartDelivery"][] = [];
+const NO_PROMOTIONS: Schemas["LineItem"][] = [];
 
 export function summarizeCart(cart: Schemas["Cart"] | null): CartSummary {
   const lineItems = cart?.lineItems ?? NO_LINE_ITEMS;
+  const promotions = promotionLineItems(lineItems);
   const count = lineItems.reduce(
     (total, lineItem) =>
       lineItem.good === true ? (lineItem.quantity ?? 0) + total : total,
@@ -50,6 +69,7 @@ export function summarizeCart(cart: Schemas["Cart"] | null): CartSummary {
     subtotal: cart?.price?.positionPrice || 0,
     totalPrice: cart?.price?.totalPrice || 0,
     shippingCosts: cart?.deliveries ?? NO_DELIVERIES,
+    appliedPromotionCodes: promotions.length > 0 ? promotions : NO_PROMOTIONS,
   };
 }
 
@@ -71,6 +91,15 @@ function logReadFailure(error: unknown): void {
 
 function settle(): void {}
 
+function productItems(items: AddProductInput[]) {
+  return items.map(({ id, quantity = 1 }) => ({
+    id,
+    referencedId: id,
+    quantity,
+    type: "product" as const,
+  }));
+}
+
 export function createCartStore(
   getClient: () => Promise<CartClient>,
   t: Translate,
@@ -79,7 +108,7 @@ export function createCartStore(
   let translate = t;
   const listeners = new Set<() => void>();
   let tail: Promise<void> = Promise.resolve();
-  let queuedRefresh: Promise<void> | null = null;
+  let queuedRead: QueuedRead | null = null;
   let sessionKey: string | null = null;
 
   function publish(next: CartState): void {
@@ -88,44 +117,64 @@ export function createCartStore(
   }
 
   function enqueue<T>(task: () => Promise<T>): Promise<T> {
-    queuedRefresh = null;
+    queuedRead = null;
     const run = tail.then(task);
     tail = run.then(settle, settle);
     return run;
   }
 
-  async function readCart(): Promise<void> {
+  async function readCart(): Promise<CartReadResult> {
     try {
       const client = await getClient();
       const { data } = await client.invoke("readCart get /checkout/cart", {
         fetchOptions: { timeout: READ_TIMEOUT_MS },
       });
+      const previous = snapshot.cart;
       publish({ status: "ready", cart: data });
+      return {
+        ok: true,
+        cart: data,
+        errors: toCartActionErrors(data),
+        newErrors: toCartActionErrors(data, previous),
+      };
     } catch (error) {
       logReadFailure(error);
       if (snapshot.status !== "error")
         publish({ ...snapshot, status: "error" });
+      return { ok: false };
     }
   }
 
-  function refresh(): Promise<void> {
-    if (queuedRefresh) return queuedRefresh;
-    const run = enqueue(() => {
-      if (queuedRefresh === run) queuedRefresh = null;
+  function queueRead(): QueuedRead {
+    if (queuedRead) return queuedRead;
+    const result = enqueue(() => {
+      if (queuedRead?.result === result) queuedRead = null;
       return readCart();
     });
-    queuedRefresh = run;
-    return run;
+    const entry = { result, done: result.then(settle) };
+    queuedRead = entry;
+    return entry;
+  }
+
+  function refresh(): Promise<void> {
+    return queueRead().done;
+  }
+
+  function refreshWithResult(): Promise<CartReadResult> {
+    return queueRead().result;
   }
 
   function mutate(
     call: (client: CartClient) => Promise<{ data: Schemas["Cart"] }>,
+    inspect?: (cart: Schemas["Cart"]) => void,
   ): Promise<CartActionResult> {
     return enqueue(async () => {
+      const previous = snapshot.cart;
       try {
         const { data } = await call(await getClient());
         publish({ status: "ready", cart: data });
-        return { ok: true, errors: toCartActionErrors(data) };
+        inspect?.(data);
+        return { ok: true, errors: toCartActionErrors(data, previous) };
       } catch (error) {
         return {
           ok: false,
@@ -133,6 +182,33 @@ export function createCartStore(
         };
       }
     });
+  }
+
+  function addPromotionCode(code: string): Promise<PromotionCodeResult> {
+    const referencedId = normalizePromotionCode(code);
+    if (!referencedId) {
+      return Promise.resolve({
+        ok: false,
+        applied: false,
+        message: translate("validations.required"),
+      });
+    }
+    let applied = false;
+    let notEligible: CartActionError[] = [];
+    return mutate(
+      (client) =>
+        client.invoke("addLineItem post /checkout/cart/line-item", {
+          body: { items: [{ type: "promotion", referencedId }] },
+        }),
+      (cart) => {
+        applied = isPromotionCodeApplied(cart.lineItems ?? [], referencedId);
+        notEligible = applied ? [] : promotionNotEligibleErrors(cart);
+      },
+    ).then((result) =>
+      result.errors?.length === 0 && notEligible.length > 0
+        ? { ...result, applied, errors: notEligible }
+        : { ...result, applied },
+    );
   }
 
   return {
@@ -153,14 +229,22 @@ export function createCartStore(
       translate = next;
     },
     refresh,
-    addProduct: ({ id, quantity = 1 }) =>
+    refreshWithResult,
+    addProduct: (input) =>
       mutate((client) =>
         client.invoke("addLineItem post /checkout/cart/line-item", {
-          body: {
-            items: [{ id, referencedId: id, quantity, type: "product" }],
-          },
+          body: { items: productItems([input]) },
         }),
       ),
+    addProducts: (items) =>
+      items.length === 0
+        ? Promise.resolve({ ok: true, errors: [] })
+        : mutate((client) =>
+            client.invoke("addLineItem post /checkout/cart/line-item", {
+              body: { items: productItems(items) },
+            }),
+          ),
+    addPromotionCode,
     removeItem: (id) =>
       mutate((client) =>
         client.invoke("removeLineItem post /checkout/cart/line-item/delete", {

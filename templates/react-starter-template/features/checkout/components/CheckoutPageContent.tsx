@@ -10,6 +10,9 @@ import type { MouseEvent } from "react";
 
 import type { Schemas } from "#shopware";
 import { LocaleLink } from "@/components/LocaleLink";
+import { useRequestLogin } from "@/features/account/components/LoginModal";
+import { useCartLoadNotices } from "@/features/cart/components/useCartLoadNotices";
+import { useCartRefresh } from "@/features/cart/components/useCartRefresh";
 import { useCart } from "@/features/cart/useCart";
 import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
@@ -18,31 +21,54 @@ import { useShopwareClient } from "@/features/storefront/components/ShopwareClie
 import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
 
+import { activeCheckoutAddresses } from "../checkoutAddresses";
+import type { AddressKind } from "../checkoutAddresses";
 import {
   createOrder,
   getPaymentMethods,
   getShippingMethods,
   isAmbiguousOrderFailure,
+  setContextAddress,
   setPaymentMethod,
   setShippingMethod,
+  toOrderBody,
   updateCustomerDetails,
 } from "../checkoutApi";
 import type { CheckoutClient } from "../checkoutApi";
 import {
+  emptyCheckoutAddressValues,
   emptyCheckoutValues,
-  toBillingAddressFields,
+  toCheckoutAddressFields,
   toCheckoutRegistration,
   validateCheckout,
+  validateCheckoutAddress,
 } from "../checkoutSchema";
 import type {
-  CheckoutErrors,
+  CheckoutAddressField,
+  CheckoutAddressValues,
   CheckoutField,
   CheckoutValues,
 } from "../checkoutSchema";
+import type { CheckoutSettings } from "../checkoutSettings";
+import {
+  emptyCheckoutTerms,
+  hasDigitalLineItem,
+  validateCheckoutTerms,
+} from "../checkoutTerms";
+import type {
+  CheckoutTermsField,
+  CheckoutTermsRequirements,
+  CheckoutTermsValues,
+} from "../checkoutTerms";
+import { CheckoutAddresses } from "./CheckoutAddresses";
+import type { PendingAddressChange } from "./CheckoutAddresses";
+import { CheckoutSignInPrompt } from "./CheckoutSignInPrompt";
 import { CheckoutSkeleton } from "./CheckoutSkeleton";
+import { CheckoutTerms } from "./CheckoutTerms";
 import { CustomerAddress } from "./CustomerAddress";
-import { CustomerAddressChosen } from "./CustomerAddressChosen";
 import { CustomerBaseInfo } from "./CustomerBaseInfo";
+import { CustomerComment } from "./CustomerComment";
+import { DifferentShippingAddress } from "./DifferentShippingAddress";
 import { PaymentMethods } from "./PaymentMethods";
 import { ShippingMethods } from "./ShippingMethods";
 import { StepHeader } from "./StepHeader";
@@ -51,25 +77,34 @@ import { SummaryBox } from "./SummaryBox";
 const OVERLAY_CLASS =
   "absolute inset-0 z-10 cursor-wait bg-surface-surface/70 backdrop-blur-[1px]";
 
-type Touched = Partial<Record<CheckoutField, boolean>>;
+type Touched<Field extends string> = Partial<Record<Field, boolean>>;
 
 type MethodKind = "shipping" | "payment";
 
 export type CheckoutPageContentProps = {
   countries: CountryOption[];
   countriesUnavailable?: boolean;
+  settings: CheckoutSettings;
 };
 
-function visibleErrors(
-  errors: CheckoutErrors,
-  touched: Touched,
+function visibleErrors<Field extends string>(
+  errors: Partial<Record<Field, string>>,
+  touched: Touched<Field>,
   submitted: boolean,
-): CheckoutErrors {
-  const visible: CheckoutErrors = {};
-  for (const field of Object.keys(errors) as CheckoutField[]) {
+): Partial<Record<Field, string>> {
+  const visible: Partial<Record<Field, string>> = {};
+  for (const field of Object.keys(errors) as Field[]) {
     if (submitted || touched[field]) visible[field] = errors[field];
   }
   return visible;
+}
+
+function hasErrors(errors: object): boolean {
+  return Object.keys(errors).length > 0;
+}
+
+function statesOf(countries: CountryOption[], countryId: string) {
+  return countries.find((country) => country.id === countryId)?.states ?? [];
 }
 
 type CheckoutMethods = {
@@ -124,19 +159,35 @@ function RetryAlert({ onRetry }: { onRetry: () => void }) {
 export function CheckoutPageContent({
   countries,
   countriesUnavailable = false,
+  settings,
 }: CheckoutPageContentProps) {
   const router = useRouter();
   const session = useSession();
   const { register, refreshSession, retrySession } = useSessionActions();
   const { notify } = useCmsActions();
   const getClient = useShopwareClient();
+  const requestLogin = useRequestLogin();
   const cart = useCart();
+  useCartLoadNotices();
+  const refreshCart = useCartRefresh();
   const t = useTranslations();
   const localePath = useLocalePath();
 
   const [values, setValues] = useState<CheckoutValues>(emptyCheckoutValues);
   const [createAccount, setCreateAccount] = useState(false);
-  const [touched, setTouched] = useState<Touched>({});
+  const [touched, setTouched] = useState<Touched<CheckoutField>>({});
+  const [differentShipping, setDifferentShipping] = useState(false);
+  const [shippingValues, setShippingValues] = useState<CheckoutAddressValues>(
+    emptyCheckoutAddressValues,
+  );
+  const [shippingTouched, setShippingTouched] = useState<
+    Touched<CheckoutAddressField>
+  >({});
+  const [terms, setTerms] = useState<CheckoutTermsValues>(emptyCheckoutTerms);
+  const [customerComment, setCustomerComment] = useState("");
+  const [pendingAddress, setPendingAddress] =
+    useState<PendingAddressChange | null>(null);
+  const [addressUnconfirmed, setAddressUnconfirmed] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [registeredDuringCheckout, setRegisteredDuringCheckout] =
     useState(false);
@@ -155,9 +206,15 @@ export function CheckoutPageContent({
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [focusRequest, setFocusRequest] = useState(0);
+  const [headingFocusRequest, setHeadingFocusRequest] = useState(0);
   const placingOrder = useRef(false);
+  const changingAddress = useRef(false);
   const registered = useRef(false);
   const restoreFocusTo = useRef<HTMLElement | null>(null);
+  const createdShippingAddress = useRef<{
+    customerId: string;
+    address: Schemas["CustomerAddress"];
+  } | null>(null);
   const methodChanges = useRef<Record<MethodKind, number>>({
     shipping: 0,
     payment: 0,
@@ -166,10 +223,9 @@ export function CheckoutPageContent({
 
   const context = session.context;
   const customer = context?.customer ?? null;
-  const chosenAddress =
-    customer?.defaultBillingAddress ?? customer?.activeBillingAddress ?? null;
   const isUserSession = session.isLoggedIn || session.isGuestSession;
   const showCustomerForm = !isUserSession || registeredDuringCheckout;
+  const showSignIn = !session.isLoggedIn && !registeredDuringCheckout;
   const selectedShippingMethod =
     pendingShippingMethod ?? context?.shippingMethod?.id ?? null;
   const selectedPaymentMethod =
@@ -178,14 +234,41 @@ export function CheckoutPageContent({
     selectedShippingMethod && selectedPaymentMethod,
   );
 
-  const states =
-    countries.find((country) => country.id === values.countryId)?.states ?? [];
+  if (addressUnconfirmed && session.status === "ready") {
+    setAddressUnconfirmed(false);
+  }
+
   const errors = validateCheckout(
     values,
-    { createAccount, countryHasStates: states.length > 0 },
+    {
+      createAccount,
+      countryHasStates: statesOf(countries, values.countryId).length > 0,
+      passwordMinLength: settings.passwordMinLength,
+    },
     t,
   );
   const fieldErrors = visibleErrors(errors, touched, submitted);
+  const shippingErrors =
+    showCustomerForm && differentShipping
+      ? validateCheckoutAddress(
+          shippingValues,
+          {
+            countryHasStates:
+              statesOf(countries, shippingValues.countryId).length > 0,
+          },
+          t,
+        )
+      : {};
+  const shippingFieldErrors = visibleErrors(
+    shippingErrors,
+    shippingTouched,
+    submitted,
+  );
+  const termsRequirements: CheckoutTermsRequirements = {
+    revocation: hasDigitalLineItem(cart.lineItems),
+    dataProtection: showCustomerForm && settings.requireDataProtectionCheckbox,
+  };
+  const termsErrors = validateCheckoutTerms(terms, termsRequirements, t);
 
   useEffect(() => {
     let active = true;
@@ -219,6 +302,13 @@ export function CheckoutPageContent({
   }, [focusRequest]);
 
   useEffect(() => {
+    if (headingFocusRequest === 0) return;
+    formRef.current
+      ?.querySelector<HTMLElement>("#checkout-step-1-heading")
+      ?.focus();
+  }, [headingFocusRequest]);
+
+  useEffect(() => {
     if (isPlacingOrder) return;
     const target = restoreFocusTo.current;
     restoreFocusTo.current = null;
@@ -243,6 +333,31 @@ export function CheckoutPageContent({
     );
   }, []);
 
+  const setShippingField = useCallback(
+    (field: CheckoutAddressField, value: string) => {
+      setShippingValues((current) => ({ ...current, [field]: value }));
+    },
+    [],
+  );
+
+  const touchShippingField = useCallback((field: CheckoutAddressField) => {
+    setShippingTouched((current) =>
+      current[field] ? current : { ...current, [field]: true },
+    );
+  }, []);
+
+  const handleShippingCountryChange = useCallback((countryId: string) => {
+    setShippingValues((current) =>
+      current.countryId === countryId
+        ? current
+        : { ...current, countryId, countryStateId: "" },
+    );
+  }, []);
+
+  const setTerm = useCallback((field: CheckoutTermsField, checked: boolean) => {
+    setTerms((current) => ({ ...current, [field]: checked }));
+  }, []);
+
   function handleCreateAccountChange(next: boolean) {
     setCreateAccount(next);
     if (next) return;
@@ -260,6 +375,16 @@ export function CheckoutPageContent({
     }
   }
 
+  function notifyContextChangeError(error: unknown) {
+    for (const message of resolveApiErrorMessages(error, t)) {
+      notify({ type: "error", message });
+    }
+  }
+
+  async function refreshAfterContextChange() {
+    await Promise.allSettled([refreshSession(), refreshCart()]);
+  }
+
   async function changeMethod(kind: MethodKind, id: string) {
     const setPending =
       kind === "shipping" ? setPendingShippingMethod : setPendingPaymentMethod;
@@ -273,20 +398,59 @@ export function CheckoutPageContent({
       } else {
         await setPaymentMethod(client, id);
       }
-      await Promise.allSettled([refreshSession(), cart.refresh()]);
+      await refreshAfterContextChange();
     } catch (error) {
-      for (const message of resolveApiErrorMessages(error, t)) {
-        notify({ type: "error", message });
-      }
+      notifyContextChangeError(error);
     } finally {
       if (methodChanges.current[kind] === change) setPending(null);
     }
   }
 
+  async function changeAddress(
+    kind: AddressKind,
+    addressId: string,
+  ): Promise<boolean> {
+    if (changingAddress.current) return false;
+    changingAddress.current = true;
+    setPendingAddress({ kind, id: addressId });
+    try {
+      await setContextAddress(await getClient(), kind, addressId);
+      await refreshAfterContextChange();
+      const next = await retrySession();
+      await reloadMethods();
+      const confirmed =
+        next.status === "ready" &&
+        activeCheckoutAddresses(next.context?.customer ?? {})[kind]?.id ===
+          addressId;
+      setAddressUnconfirmed(!confirmed);
+      if (!confirmed) {
+        notifyPersistentError(t("checkout.addresses.changeUnconfirmed"));
+      }
+      return confirmed;
+    } catch (error) {
+      notifyContextChangeError(error);
+      return false;
+    } finally {
+      changingAddress.current = false;
+      setPendingAddress(null);
+    }
+  }
+
+  async function handleSignIn() {
+    if (!(await requestLogin())) return;
+    setHeadingFocusRequest((count) => count + 1);
+    await reloadMethods();
+  }
+
   async function registerCustomer(): Promise<boolean> {
     setRegisteredDuringCheckout(true);
     const result = await register(
-      toCheckoutRegistration(values, createAccount),
+      toCheckoutRegistration(values, {
+        createAccount,
+        acceptedDataProtection:
+          termsRequirements.dataProtection && terms.dataProtection,
+        shippingAddress: differentShipping ? shippingValues : null,
+      }),
     );
     if (!result.ok || result.doubleOptIn) {
       setRegisteredDuringCheckout(false);
@@ -315,31 +479,44 @@ export function CheckoutPageContent({
       }
       currentCustomer = next.context?.customer ?? null;
     }
+    const customerId = currentCustomer?.id ?? null;
+    const created = createdShippingAddress.current;
     try {
       await updateCustomerDetails(await getClient(), {
         customer: currentCustomer,
-        address: toBillingAddressFields(values),
+        address: toCheckoutAddressFields(values),
+        shippingAddress: differentShipping
+          ? toCheckoutAddressFields(shippingValues)
+          : null,
+        createdShippingAddress:
+          created && created.customerId === customerId ? created.address : null,
+        onShippingAddressCreated: (address) => {
+          if (customerId) {
+            createdShippingAddress.current = { customerId, address };
+          }
+        },
       });
     } catch (error) {
       notifyApiError(error);
       return false;
     }
-    await Promise.all([refreshSession(), cart.refresh()]);
+    await Promise.all([refreshSession(), refreshCart()]);
     await reloadMethods();
     return true;
   }
 
   async function handlePlaceOrder(event: MouseEvent<HTMLButtonElement>) {
-    if (placingOrder.current) return;
+    if (placingOrder.current || changingAddress.current) return;
     const trigger = event.currentTarget;
     const formShown = showCustomerForm;
 
-    if (formShown) {
-      setSubmitted(true);
-      if (Object.keys(errors).length > 0) {
-        setFocusRequest((count) => count + 1);
-        return;
-      }
+    setSubmitted(true);
+    if (
+      hasErrors(termsErrors) ||
+      (formShown && (hasErrors(errors) || hasErrors(shippingErrors)))
+    ) {
+      setFocusRequest((count) => count + 1);
+      return;
     }
 
     if (!canPlaceOrder) {
@@ -359,7 +536,10 @@ export function CheckoutPageContent({
       const client = await getClient();
       let order: Schemas["Order"];
       try {
-        order = await createOrder(client);
+        order = await createOrder(
+          client,
+          toOrderBody(settings.showCustomerComment ? customerComment : ""),
+        );
       } catch (error) {
         if (isAmbiguousOrderFailure(error)) {
           notifyPersistentError(t("errors.order-timeout"));
@@ -462,7 +642,15 @@ export function CheckoutPageContent({
             </div>
           ) : null}
           <div ref={formRef} inert={isPlacingOrder}>
-            <StepHeader step={1} label={t("checkout.shippingAddressLabel")}>
+            <StepHeader step={1} label={t("account.yourAddress")}>
+              {showSignIn ? (
+                <CheckoutSignInPrompt
+                  className="mb-4"
+                  onSignIn={() => {
+                    void handleSignIn();
+                  }}
+                />
+              ) : null}
               {showCustomerForm ? (
                 <div className="flex flex-col">
                   <CustomerBaseInfo
@@ -485,9 +673,26 @@ export function CheckoutPageContent({
                     onFieldBlur={touchField}
                     onCountryChange={handleCountryChange}
                   />
+                  <DifferentShippingAddress
+                    checked={differentShipping}
+                    onCheckedChange={setDifferentShipping}
+                    values={shippingValues}
+                    errors={shippingFieldErrors}
+                    countries={countries}
+                    countriesUnavailable={countriesUnavailable}
+                    onFieldChange={setShippingField}
+                    onFieldBlur={touchShippingField}
+                    onCountryChange={handleShippingCountryChange}
+                  />
                 </div>
-              ) : chosenAddress ? (
-                <CustomerAddressChosen address={chosenAddress} />
+              ) : customer ? (
+                <CheckoutAddresses
+                  key={customer.id}
+                  customer={customer}
+                  pending={pendingAddress}
+                  canAddAddress={session.isLoggedIn}
+                  onSelect={changeAddress}
+                />
               ) : null}
             </StepHeader>
             <StepHeader step={2} label={t("checkout.steps.shipping")}>
@@ -510,10 +715,28 @@ export function CheckoutPageContent({
                 }}
               />
             </StepHeader>
+            {settings.showCustomerComment ? (
+              <CustomerComment
+                className="mb-10"
+                value={customerComment}
+                onChange={setCustomerComment}
+              />
+            ) : null}
+            <CheckoutTerms
+              values={terms}
+              errors={submitted ? termsErrors : {}}
+              requirements={termsRequirements}
+              legalLinks={settings.legalLinks}
+              onChange={setTerm}
+            />
             <BaseButton
               data-testid="checkout-place-order-button"
               loading={isPlacingOrder}
-              disabled={isUserSession && !canPlaceOrder}
+              disabled={
+                (isUserSession && !canPlaceOrder) ||
+                pendingAddress !== null ||
+                addressUnconfirmed
+              }
               onClick={(event) => {
                 void handlePlaceOrder(event);
               }}

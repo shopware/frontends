@@ -2,12 +2,15 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { germany } from "@/components/form/countries.fixture";
 import { RegistrationForm } from "@/features/account/components/RegistrationForm";
+import { loadRegistrationReferences } from "@/features/account/registrationReferences";
+import type { RegistrationReferences } from "@/features/account/registrationReferences";
 import { apiClientError } from "@/features/session/session.fixture";
 import type { Locale } from "@/i18n/config";
 import { loadCountryOptions } from "@/platform/shopware/loadCountryOptions";
 import { readCustomerGroupRegistration } from "@/platform/shopware/reads/customerGroupRegistration";
 import type { CustomerGroupRegistration } from "@/platform/shopware/reads/customerGroupRegistration";
 import { resolveContentLanguage } from "@/platform/shopware/reads/languages";
+import { shopSettings } from "@/platform/shopware/shopSettings.fixture";
 import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
@@ -32,6 +35,10 @@ vi.mock("@/platform/shopware/reads/languages", () => ({
   resolveContentLanguage: vi.fn(),
 }));
 
+vi.mock("@/features/account/registrationReferences", () => ({
+  loadRegistrationReferences: vi.fn(),
+}));
+
 vi.mock(
   "@/features/account/components/RegistrationForm",
   async (importOriginal) => {
@@ -49,6 +56,13 @@ const merchants: CustomerGroupRegistration = {
   introduction: "<p>Register as a <strong>merchant</strong>.</p>",
   companyOnly: false,
   metaDescription: "Become a merchant",
+};
+
+const references: RegistrationReferences = {
+  settings: shopSettings().loginRegistration,
+  salutations: [],
+  salutationsUnavailable: false,
+  birthYearMax: 2026,
 };
 
 function answer(group: CustomerGroupRegistration) {
@@ -82,6 +96,7 @@ beforeEach(() => {
     languageId: null,
     contentLang: undefined,
   });
+  vi.mocked(loadRegistrationReferences).mockResolvedValue(references);
 });
 
 describe("CustomerGroupRegistrationPage", () => {
@@ -108,9 +123,34 @@ describe("CustomerGroupRegistrationPage", () => {
     expect(vi.mocked(RegistrationForm).mock.calls[0]?.[0]).toEqual({
       countries: [germany],
       countriesUnavailable: false,
+      ...references,
       companyOnly: false,
       requestedGroupId: "group-b2b",
     });
+  });
+
+  it("loads the registration settings in the page locale and hands them to the form", async () => {
+    const settings = shopSettings({
+      loginRegistration: {
+        showSalutation: true,
+        showAccountTypeSelection: false,
+      },
+    }).loginRegistration;
+    vi.mocked(loadRegistrationReferences).mockResolvedValue({
+      ...references,
+      settings,
+      salutations: [{ label: "Pani", value: "salutation-mrs" }],
+    });
+
+    const html = await render("pl-PL");
+
+    expect(loadRegistrationReferences).toHaveBeenCalledExactlyOnceWith("pl-PL");
+    expect(vi.mocked(RegistrationForm).mock.calls[0]?.[0]).toMatchObject({
+      settings,
+      salutations: [{ label: "Pani", value: "salutation-mrs" }],
+    });
+    expect(html).toContain('data-testid="registration-salutation-select"');
+    expect(html).not.toContain("registration-account-type-select");
   });
 
   it("renders the not-found page for a group without an active registration", async () => {

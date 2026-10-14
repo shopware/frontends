@@ -1,0 +1,21 @@
+{
+  "account": {
+    "recoverPassword": {
+      "link": "Nie pamiętasz hasła?",
+      "header": "Odzyskiwanie hasła",
+      "info": "Wyślemy Ci wiadomość e-mail z linkiem do zresetowania hasła.",
+      "submit": "Wyślij e-mail",
+      "sent": "Jeśli podany adres e-mail jest zarejestrowany, wysłaliśmy na niego wiadomość z linkiem do zresetowania hasła.",
+      "resend": "Wyślij ponownie",
+      "backToLogin": "Wróć do logowania"
+    },
+    "resetPassword": {
+      "header": "Ustaw nowe hasło",
+      "linkExpired": "Link do zresetowania hasła jest już nieaktualny. Poproś o nowy.",
+      "linkInvalid": "Link do zresetowania hasła jest nieprawidłowy. Poproś o nowy."
+    }
+  },
+  "errors": {
+    "CHECKOUT__PASSWORD_POLICIES_UPDATED": "Wymagania dotyczące hasła uległy zmianie. Zresetuj swoje hasło."
+  }
+}

@@ -3,6 +3,7 @@ import "server-only";
 const DEMO_ENDPOINT = "https://demo-frontends.shopware.store/store-api/";
 const DEMO_ACCESS_TOKEN = "SWSCNWDGMUWZM0TLVUU0YKLQVW";
 const DEMO_STOREFRONT_URL = "https://demo-frontends.shopware.store/figma";
+const DEMO_MEDIA_ORIGIN = "https://cdn.shopware.store";
 const DEMO_ORIGIN = new URL(DEMO_ENDPOINT).origin;
 
 export type ShopwareConfig = {
@@ -10,6 +11,7 @@ export type ShopwareConfig = {
   publicEndpoint: string;
   accessToken: string;
   devStorefrontUrl: string | null;
+  mediaOrigin: string | null;
 };
 
 let warnedAboutDemoLeftovers = false;
@@ -45,6 +47,9 @@ export function getShopwareConfig(): ShopwareConfig {
     devStorefrontUrl:
       process.env.SHOPWARE_DEV_STOREFRONT_URL ||
       (endpoint === DEMO_ENDPOINT ? DEMO_STOREFRONT_URL : null),
+    mediaOrigin:
+      process.env.SHOPWARE_MEDIA_ORIGIN ||
+      (endpoint === DEMO_ENDPOINT ? DEMO_MEDIA_ORIGIN : null),
   };
   warnAboutDemoLeftovers(config);
   return config;

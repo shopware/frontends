@@ -2,7 +2,19 @@ import { ApiClientError, isTimeoutError } from "@shopware/api-client";
 import { encodeForQuery } from "@shopware/api-client/helpers";
 
 import type { ApiClient, Schemas, operations } from "#shopware";
-import { ORDER_TIMEOUT_MS } from "@/features/session/readTimeout";
+import {
+  addressListCriteria,
+  createCustomerAddress,
+  setDefaultShippingAddress,
+  updateCustomerAddress,
+  updatedAddressBody,
+} from "@/features/account/address/addressApi";
+import {
+  ORDER_TIMEOUT_MS,
+  READ_TIMEOUT_MS,
+} from "@/features/session/readTimeout";
+
+import type { AddressKind } from "./checkoutAddresses";
 
 export type CheckoutClient = Pick<ApiClient, "invoke">;
 
@@ -19,7 +31,11 @@ export type CheckoutAddressFields = {
 export type CheckoutCustomer = Pick<
   Schemas["Customer"],
   "salutationId" | "defaultBillingAddress"
->;
+> &
+  Partial<Pick<Schemas["Customer"], "defaultShippingAddress">>;
+
+export type CreateOrderBody =
+  operations["createOrder post /checkout/order"]["body"];
 
 type OnlyAvailableQuery = { onlyAvailable?: boolean };
 
@@ -134,9 +150,40 @@ export async function setPaymentMethod(
   });
 }
 
+export async function setContextAddress(
+  client: CheckoutClient,
+  kind: AddressKind,
+  addressId: string,
+): Promise<void> {
+  await client.invoke("updateContext patch /context", {
+    body:
+      kind === "shipping"
+        ? { shippingAddressId: addressId }
+        : { billingAddressId: addressId },
+  });
+}
+
+export async function listCheckoutAddresses(
+  client: CheckoutClient,
+): Promise<Schemas["CustomerAddress"][]> {
+  const { data } = await client.invoke(
+    "listAddress post /account/list-address",
+    {
+      body: addressListCriteria(),
+      fetchOptions: { timeout: READ_TIMEOUT_MS },
+    },
+  );
+  return data.elements ?? [];
+}
+
+export function toOrderBody(customerComment: string): CreateOrderBody {
+  const comment = customerComment.trim();
+  return comment ? { customerComment: comment } : {};
+}
+
 export async function createOrder(
   client: CheckoutClient,
-  body: operations["createOrder post /checkout/order"]["body"] = {},
+  body: CreateOrderBody = {},
 ): Promise<Schemas["Order"]> {
   const { data } = await client.invoke("createOrder post /checkout/order", {
     body,
@@ -172,12 +219,62 @@ function existingAddressBody(address: Schemas["CustomerAddress"]): AddressBody {
   };
 }
 
+type ShippingAddressSync = {
+  shippingAddress: CheckoutAddressFields | null;
+  createdShippingAddress: Schemas["CustomerAddress"] | null;
+  onShippingAddressCreated?: (address: Schemas["CustomerAddress"]) => void;
+};
+
+async function syncShippingAddress(
+  client: CheckoutClient,
+  customer: CheckoutCustomer,
+  {
+    shippingAddress,
+    createdShippingAddress,
+    onShippingAddressCreated,
+  }: ShippingAddressSync,
+): Promise<void> {
+  const billing = customer.defaultBillingAddress;
+  const current = customer.defaultShippingAddress;
+  const separate = current && current.id !== billing?.id ? current : null;
+  const own = createdShippingAddress ?? separate;
+  if (shippingAddress && own) {
+    await updateCustomerAddress(
+      client,
+      own.id,
+      updatedAddressBody(own, shippingAddress),
+    );
+    if (own.id !== current?.id) {
+      await setDefaultShippingAddress(client, own.id);
+    }
+    return;
+  }
+  if (shippingAddress) {
+    const created = await createCustomerAddress(client, shippingAddress);
+    onShippingAddressCreated?.(created);
+    await setDefaultShippingAddress(client, created.id);
+    return;
+  }
+  if (own && billing) {
+    await setDefaultShippingAddress(client, billing.id);
+  }
+}
+
 export async function updateCustomerDetails(
   client: CheckoutClient,
   {
     customer,
     address,
-  }: { customer: CheckoutCustomer | null; address: CheckoutAddressFields },
+    shippingAddress = null,
+    createdShippingAddress = null,
+    onShippingAddressCreated,
+  }: {
+    customer: CheckoutCustomer | null;
+    address: CheckoutAddressFields;
+    shippingAddress?: CheckoutAddressFields | null;
+    createdShippingAddress?: Schemas["CustomerAddress"] | null;
+    onShippingAddressCreated?: (address: Schemas["CustomerAddress"]) => void;
+  },
 ): Promise<void> {
   const existingAddress = customer?.defaultBillingAddress;
   if (existingAddress) {
@@ -188,6 +285,14 @@ export async function updateCustomerDetails(
         body: { ...existingAddressBody(existingAddress), ...address },
       },
     );
+  }
+
+  if (customer) {
+    await syncShippingAddress(client, customer, {
+      shippingAddress,
+      createdShippingAddress,
+      onShippingAddressCreated,
+    });
   }
 
   await client.invoke("changeProfile post /account/change-profile", {

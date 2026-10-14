@@ -25,6 +25,45 @@ export type CmsReviewResult = CmsActionResult & {
   violations?: CmsApiViolation[];
 };
 
+export type CmsFormViolation = {
+  field?: string;
+  code?: string;
+  message: string;
+};
+
+export type CmsFormResult = CmsActionResult & {
+  violations?: CmsFormViolation[];
+};
+
+export type CmsContactFormEntityName = "category" | "product" | "landing_page";
+
+export type CmsContactFormInput = {
+  salutationId?: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  subject: string;
+  comment: string;
+  navigationId?: string;
+  entityName?: CmsContactFormEntityName;
+  slotId?: string;
+};
+
+export type CmsContactFormResult = CmsFormResult & { successMessage?: string };
+
+export type CmsNewsletterInput = {
+  email: string;
+  option?: "subscribe" | "unsubscribe";
+  firstName?: string;
+  lastName?: string;
+  salutationId?: string;
+};
+
+export type CmsNewsletterResult = CmsFormResult & {
+  status?: Schemas["NewsletterStatus"];
+};
+
 export type CmsProductReviewsResult = CmsActionResult & {
   reviews?: Schemas["ProductReview"][];
   total?: number;
@@ -54,6 +93,20 @@ export type CmsVariantResult = {
   url?: string;
 };
 
+export type CmsFindVariantResult = CmsActionResult & {
+  variant?: CmsVariantResult;
+  notFound?: boolean;
+  cancelled?: boolean;
+};
+
+export type CmsFindVariantInput = {
+  productId: string;
+  parentId?: string;
+  options: Record<string, string>;
+  switchedGroup?: string;
+  signal?: AbortSignal;
+};
+
 export type CmsActions = {
   addToCart(input: {
     productId: string;
@@ -63,20 +116,9 @@ export type CmsActions = {
     productId: string,
   ): Promise<CmsActionResult & { inWishlist?: boolean; cancelled?: boolean }>;
   isInWishlist(productId: string): boolean;
-  findVariant(input: {
-    productId: string;
-    parentId?: string;
-    options: string[];
-    switchedGroup?: string;
-  }): Promise<CmsVariantResult | null>;
-  submitContactForm(input: Record<string, string>): Promise<CmsActionResult>;
-  subscribeNewsletter(input: {
-    email: string;
-    option?: "subscribe" | "unsubscribe";
-    firstName?: string;
-    lastName?: string;
-    salutationId?: string;
-  }): Promise<CmsActionResult>;
+  findVariant(input: CmsFindVariantInput): Promise<CmsFindVariantResult>;
+  submitContactForm(input: CmsContactFormInput): Promise<CmsContactFormResult>;
+  subscribeNewsletter(input: CmsNewsletterInput): Promise<CmsNewsletterResult>;
   submitProductReview(input: {
     productId: string;
     title: string;
@@ -105,10 +147,7 @@ export const notImplementedCmsActions: CmsActions = {
   addToCart: async () => notImplemented("addToCart"),
   toggleWishlist: async () => notImplemented("toggleWishlist"),
   isInWishlist: () => false,
-  findVariant: async () => {
-    notImplemented("findVariant");
-    return null;
-  },
+  findVariant: async () => notImplemented("findVariant"),
   submitContactForm: async () => notImplemented("submitContactForm"),
   subscribeNewsletter: async () => notImplemented("subscribeNewsletter"),
   submitProductReview: async () => notImplemented("submitProductReview"),

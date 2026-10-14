@@ -17,6 +17,7 @@ import {
 } from "@/features/checkout/checkoutTestDoubles";
 import { SessionActionsProvider } from "@/features/session/components/SessionActionsContext";
 import type { SessionActions } from "@/features/session/components/SessionActionsContext";
+import { ORDER_TIMEOUT_MS } from "@/features/session/readTimeout";
 import type { StorefrontSession } from "@/features/session/types";
 import type { Locale } from "@/i18n/config";
 import { withI18n } from "@/test/i18n";
@@ -74,11 +75,13 @@ async function setup({
   session = checkoutSession(),
   strict = false,
   locale = "en-GB",
+  orderRefundsEnabled,
 }: {
   answer: FakeAnswer;
   session?: StorefrontSession;
   strict?: boolean;
   locale?: Locale;
+  orderRefundsEnabled?: boolean;
 }) {
   const shopware = fakeClient(answer);
   const notify = vi.fn();
@@ -94,6 +97,7 @@ async function setup({
             <Suspense fallback={<p data-testid="suspended" />}>
               <DeepLinkOrderPageContent
                 params={Promise.resolve({ deepCode: "deep-code-1" })}
+                orderRefundsEnabled={orderRefundsEnabled}
               />
             </Suspense>
           </SessionActionsProvider>
@@ -368,6 +372,87 @@ describe("DeepLinkOrderPageContent", () => {
     expect(query(container, '[role="alert"]').textContent).toContain(
       "Unfortunately, something went wrong.",
     );
+  });
+});
+
+describe("DeepLinkOrderPageContent cancellation", () => {
+  const CANCEL_ORDER = "cancelOrder post /order/state/cancel";
+
+  function guestOrder() {
+    let state = "open";
+    const answer: FakeAnswer = (operation, params) => {
+      if (operation === CANCEL_ORDER) {
+        state = "cancelled";
+        return { technicalName: "cancelled" };
+      }
+      const order = accountOrder({
+        stateMachineState: {
+          technicalName: state,
+          name: state,
+          translated: { name: state === "open" ? "Open" : "Cancelled" },
+        },
+      } as never);
+      const body = (params as { body: { ids?: string[] } }).body;
+      if (body.ids || hasCredentials(params)) {
+        return orderRouteResponse([order]);
+      }
+      return notAuthenticated();
+    };
+    return answer;
+  }
+
+  it("lets a verified guest cancel an open order when the shop allows refunds", async () => {
+    const { container, shopware, notify } = await setup({
+      answer: guestOrder(),
+      orderRefundsEnabled: true,
+    });
+    await fillAndSubmit(container, {
+      email: "guest@example.com",
+      zipcode: "12345",
+    });
+
+    await interact(() =>
+      query<HTMLButtonElement>(
+        container,
+        '[data-testid="order-cancel-button"]',
+      ).click(),
+    );
+    await interact(() =>
+      query<HTMLButtonElement>(
+        document.body,
+        '[data-testid="cancel-order-confirm-button"]',
+      ).click(),
+    );
+
+    expect(shopware.calls(CANCEL_ORDER).map(({ params }) => params)).toEqual([
+      {
+        body: { orderId: accountOrder().id },
+        fetchOptions: { timeout: ORDER_TIMEOUT_MS },
+      },
+    ]);
+    expect(notify).toHaveBeenCalledWith({
+      type: "success",
+      message: "The order has been cancelled.",
+    });
+    expect(
+      container.querySelector('[data-testid="order-cancel-button"]'),
+    ).toBeNull();
+    expect(query(container, '[data-testid="order-status"]').textContent).toBe(
+      "Cancelled",
+    );
+  });
+
+  it("offers no cancellation when the shop does not allow refunds", async () => {
+    const { container } = await setup({ answer: guestOrder() });
+    await fillAndSubmit(container, {
+      email: "guest@example.com",
+      zipcode: "12345",
+    });
+
+    expect(query(container, "h1").textContent).toBe("Order #10042");
+    expect(
+      container.querySelector('[data-testid="order-cancel-button"]'),
+    ).toBeNull();
   });
 });
 

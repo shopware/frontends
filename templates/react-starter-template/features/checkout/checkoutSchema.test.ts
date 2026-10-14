@@ -3,12 +3,15 @@ import { describe, expect, it } from "vitest";
 import { testTranslator } from "@/test/i18n";
 
 import {
+  emptyCheckoutAddressValues,
   emptyCheckoutValues,
   toBillingAddressFields,
+  toCheckoutAddressFields,
   toCheckoutRegistration,
   validateCheckout,
+  validateCheckoutAddress,
 } from "./checkoutSchema";
-import type { CheckoutValues } from "./checkoutSchema";
+import type { CheckoutAddressValues, CheckoutValues } from "./checkoutSchema";
 
 const REQUIRED = "Value is required";
 const MIN_3 = "This minimum length should be at least 3";
@@ -26,7 +29,21 @@ const valid: CheckoutValues = {
   countryStateId: "",
 };
 
-const guest = { createAccount: false, countryHasStates: false };
+const guest = {
+  createAccount: false,
+  countryHasStates: false,
+  passwordMinLength: 8,
+};
+
+const shipping: CheckoutAddressValues = {
+  firstName: "John",
+  lastName: "Smith",
+  street: "Harbour Road 7",
+  zipcode: "20095",
+  city: "Hamburg",
+  countryId: "country-de",
+  countryStateId: "state-hh",
+};
 
 const t = testTranslator();
 
@@ -70,7 +87,7 @@ describe("validateCheckout", () => {
   });
 
   it("requires a password of eight characters only when an account is created", () => {
-    const account = { createAccount: true, countryHasStates: false };
+    const account = { ...guest, createAccount: true };
 
     expect(validateCheckout(valid, account, t)).toEqual({ password: REQUIRED });
     expect(
@@ -86,8 +103,19 @@ describe("validateCheckout", () => {
     );
   });
 
+  it("uses the password minimum of the shop", () => {
+    const account = { ...guest, createAccount: true, passwordMinLength: 12 };
+
+    expect(
+      validateCheckout({ ...valid, password: "password123" }, account, t),
+    ).toEqual({ password: "This minimum length should be at least 12" });
+    expect(
+      validateCheckout({ ...valid, password: "password1234" }, account, t),
+    ).toEqual({});
+  });
+
   it("requires a state when the chosen country has states", () => {
-    const withStates = { createAccount: false, countryHasStates: true };
+    const withStates = { ...guest, countryHasStates: true };
 
     expect(
       validateCheckout({ ...valid, countryId: "country-de" }, withStates, t),
@@ -127,12 +155,69 @@ describe("validateCheckout in other locales", () => {
     expect(
       validateCheckout(
         { ...valid, countryId: "country-de", password: "short" },
-        { createAccount: true, countryHasStates: true },
+        { createAccount: true, countryHasStates: true, passwordMinLength: 8 },
         testTranslator("de-DE"),
       ),
     ).toEqual({
       password: "Mindestlänge 8",
       countryStateId: "Der Wert ist erforderlich",
+    });
+  });
+});
+
+describe("validateCheckoutAddress", () => {
+  it("accepts a complete address", () => {
+    expect(
+      validateCheckoutAddress(shipping, { countryHasStates: true }, t),
+    ).toEqual({});
+  });
+
+  it("applies the billing address rules to every field", () => {
+    expect(
+      validateCheckoutAddress(
+        emptyCheckoutAddressValues,
+        { countryHasStates: true },
+        t,
+      ),
+    ).toEqual({
+      firstName: REQUIRED,
+      lastName: REQUIRED,
+      street: REQUIRED,
+      zipcode: REQUIRED,
+      city: REQUIRED,
+      countryId: REQUIRED,
+      countryStateId: "The value is required",
+    });
+    expect(
+      validateCheckoutAddress(
+        { ...shipping, firstName: "Jo", street: "St", countryStateId: "" },
+        { countryHasStates: false },
+        t,
+      ),
+    ).toEqual({ firstName: MIN_3, street: MIN_3 });
+  });
+
+  it("returns Polish messages with the Polish translator", () => {
+    expect(
+      validateCheckoutAddress(
+        { ...shipping, city: " " },
+        { countryHasStates: true },
+        testTranslator("pl-PL"),
+      ),
+    ).toEqual({ city: "Wartość jest wymagana" });
+  });
+});
+
+describe("toCheckoutAddressFields", () => {
+  it("maps an address and keeps its state", () => {
+    expect(toCheckoutAddressFields(shipping)).toEqual({
+      firstName: "John",
+      lastName: "Smith",
+      street: "Harbour Road 7",
+      zipcode: "20095",
+      city: "Hamburg",
+      countryId: "country-de",
+      countryStateId: "state-hh",
     });
   });
 });
@@ -158,7 +243,10 @@ describe("toBillingAddressFields", () => {
 describe("toCheckoutRegistration", () => {
   it("registers a guest without a password", () => {
     expect(
-      toCheckoutRegistration({ ...valid, password: "ignored" }, false),
+      toCheckoutRegistration(
+        { ...valid, password: "ignored" },
+        { createAccount: false, acceptedDataProtection: false },
+      ),
     ).toEqual({
       accountType: "private",
       firstName: "Jane",
@@ -177,17 +265,60 @@ describe("toCheckoutRegistration", () => {
         countryId: "country-pl",
         countryStateId: undefined,
       },
-      acceptedDataProtection: true,
+      acceptedDataProtection: false,
     });
   });
 
   it("registers a customer account with the password", () => {
     const input = toCheckoutRegistration(
       { ...valid, password: "password123" },
-      true,
+      { createAccount: true, acceptedDataProtection: false },
     );
 
     expect(input.guest).toBe(false);
     expect(input.password).toBe("password123");
+  });
+
+  it("sends the data protection consent it is given", () => {
+    expect(
+      toCheckoutRegistration(valid, {
+        createAccount: false,
+        acceptedDataProtection: true,
+      }).acceptedDataProtection,
+    ).toBe(true);
+  });
+
+  it("adds a separate shipping address only when there is one", () => {
+    const withShipping = toCheckoutRegistration(valid, {
+      createAccount: false,
+      acceptedDataProtection: false,
+      shippingAddress: shipping,
+    });
+
+    expect(withShipping.shippingAddress).toEqual({
+      customerId: "",
+      id: "",
+      firstName: "John",
+      lastName: "Smith",
+      street: "Harbour Road 7",
+      zipcode: "20095",
+      city: "Hamburg",
+      countryId: "country-de",
+      countryStateId: "state-hh",
+    });
+    expect(withShipping.billingAddress.street).toBe("Main Street 1");
+    expect(
+      toCheckoutRegistration(valid, {
+        createAccount: false,
+        acceptedDataProtection: false,
+        shippingAddress: null,
+      }),
+    ).not.toHaveProperty("shippingAddress");
+    expect(
+      toCheckoutRegistration(valid, {
+        createAccount: false,
+        acceptedDataProtection: false,
+      }),
+    ).not.toHaveProperty("shippingAddress");
   });
 });

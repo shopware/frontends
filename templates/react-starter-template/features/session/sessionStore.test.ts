@@ -1097,3 +1097,50 @@ describe("createSessionStore setCurrency action", () => {
     expect(consoleError).toHaveBeenCalledTimes(1);
   });
 });
+
+describe("createSessionStore confirmRegistration action", () => {
+  const REGISTER_CONFIRM = "registerConfirm post /account/register-confirm";
+
+  it("waits for the first read, confirms and publishes the re-read session of the new customer", async () => {
+    const firstRead = deferred<{ data: Schemas["SalesChannelContext"] }>();
+    let contextReads = 0;
+    const invoke = vi.fn(async (operation: string) => {
+      if (operation === REGISTER_CONFIRM) {
+        return { data: customer(), status: 200 };
+      }
+      contextReads += 1;
+      if (contextReads === 1) return firstRead.promise;
+      return {
+        data: salesChannelContext(customer(), "context-token-2"),
+        status: 200,
+      };
+    });
+    browser.createBrowserClient.mockReturnValue({
+      invoke,
+    } as unknown as ApiClient);
+    const store = createSessionStore();
+    const actions = store.createActions(() => {}, testTranslator());
+
+    const confirmed = actions.confirmRegistration({ em: "em", hash: "hash" });
+    await vi.waitFor(() => expect(invoke).toHaveBeenCalledTimes(1));
+    await new Promise((settle) => setTimeout(settle, 0));
+    expect(invoke).toHaveBeenCalledTimes(1);
+
+    firstRead.resolve({ data: salesChannelContext(null) });
+
+    await expect(confirmed).resolves.toEqual({
+      status: "confirmed",
+      guest: false,
+    });
+    expect(invoke.mock.calls).toEqual([
+      [READ_CONTEXT, READ_CONTEXT_PARAMS],
+      [REGISTER_CONFIRM, { body: { em: "em", hash: "hash" } }],
+      [READ_CONTEXT, READ_CONTEXT_PARAMS],
+    ]);
+    expect(store.getSnapshot()).toMatchObject({
+      status: "ready",
+      isLoggedIn: true,
+      context: { token: "context-token-2" },
+    });
+  });
+});

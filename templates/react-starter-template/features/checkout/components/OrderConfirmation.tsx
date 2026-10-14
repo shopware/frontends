@@ -20,6 +20,7 @@ import {
   getOrderTotals,
 } from "../orderDetails";
 import { OrderAddress } from "./OrderAddress";
+import { OrderCustomerComment } from "./OrderCustomerComment";
 import { OrderLineItems } from "./OrderLineItems";
 import { OrderMethodCard } from "./OrderMethodCard";
 import { OrderStatus } from "./OrderStatus";
@@ -207,6 +208,10 @@ export function OrderConfirmation({
                   }
                 />
               ) : null}
+              <OrderCustomerComment
+                comment={order.customerComment}
+                className="sm:col-span-2"
+              />
             </div>
           </section>
         </div>

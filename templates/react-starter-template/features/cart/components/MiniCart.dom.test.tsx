@@ -310,7 +310,14 @@ describe("MiniCart", () => {
     expect(removeItem).toHaveBeenCalledWith("line-2");
 
     await interact(() => request.resolve({ ok: true }));
-    expect(notify).not.toHaveBeenCalled();
+    expect(notify.mock.calls).toEqual([
+      [
+        {
+          type: "success",
+          message: '"Lamp" has been removed from your shopping cart.',
+        },
+      ],
+    ]);
 
     await interact(() => remove.click());
     expect(removeItem).toHaveBeenCalledTimes(2);
@@ -351,9 +358,20 @@ describe("MiniCart", () => {
         {
           messageKey: "product-stock-reached",
           params: { name: "Lamp", quantity: 3 },
+          key: "product-stock-reachedline-2",
+          level: 10,
         },
-        { messageKey: "unknown-code", params: { message: "Backend text" } },
-        { messageKey: "unknown-code-without-text" },
+        {
+          messageKey: "unknown-code",
+          params: { message: "Backend text" },
+          key: "unknown-code",
+          level: 20,
+        },
+        {
+          messageKey: "unknown-code-without-text",
+          key: "unknown-code-without-text",
+          level: 20,
+        },
       ],
     }));
     const { panel, notify } = await setup({ changeQuantity });
@@ -370,7 +388,7 @@ describe("MiniCart", () => {
     expect(notify.mock.calls).toEqual([
       [
         {
-          type: "error",
+          type: "warning",
           message: "The product Lamp is only available 3 times",
         },
       ],
@@ -378,16 +396,40 @@ describe("MiniCart", () => {
     ]);
   });
 
-  it("leaves out the quantity of a promotion", async () => {
-    const { panel } = await setup({
+  it("shows a promotion as its own tile without quantity, removed through the cart", async () => {
+    const removeItem = vi.fn<CartView["removeItem"]>(async () => ({
+      ok: true,
+      errors: [],
+    }));
+    const { panel, notify } = await setup({
       lineItems: [lineItem(), promotionItem()],
+      removeItem,
     });
 
     const tiles = queryAll<HTMLElement>(panel(), TILE);
     expect(tiles).toHaveLength(2);
+    expect(tiles[1]?.dataset.lineItemType).toBe("promotion");
     expect(
       tiles[1]?.querySelector('[data-testid="product-quantity"]'),
     ).toBeNull();
+    expect(tiles[1]?.querySelector(REMOVE)).toBeNull();
+
+    await interact(() =>
+      query<HTMLButtonElement>(
+        tiles[1] as HTMLElement,
+        '[data-testid="promotion-remove-button"]',
+      ).click(),
+    );
+
+    expect(removeItem).toHaveBeenCalledWith("promotion-1");
+    expect(notify.mock.calls).toEqual([
+      [
+        {
+          type: "success",
+          message: "Promo code removed. Shopping cart updated.",
+        },
+      ],
+    ]);
   });
 });
 

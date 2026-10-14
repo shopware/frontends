@@ -212,6 +212,32 @@ describe("LoginModal", () => {
     expect(dialog()).toBeNull();
   });
 
+  it("offers the password recovery and closes once its page opens", async () => {
+    const preventNavigation = (event: Event) => event.preventDefault();
+    document.addEventListener("click", preventNavigation, { capture: true });
+    try {
+      const { request } = await setup();
+      await request();
+      const link = query<HTMLAnchorElement>(
+        dialog() as HTMLDialogElement,
+        '[data-testid="login-forgot-password-link"]',
+      );
+      expect(link.getAttribute("href")).toBe("/account/recover");
+      expect(link.textContent).toBe("Forgot your password?");
+
+      await interact(() => link.click());
+      await interact(() => route.set("/account/recover"));
+
+      expect(results).toEqual([false]);
+      expect(dialog()).toBeNull();
+      expect(login).not.toHaveBeenCalled();
+    } finally {
+      document.removeEventListener("click", preventNavigation, {
+        capture: true,
+      });
+    }
+  });
+
   it("shares one login between requests made while the modal is open", async () => {
     const { request } = await setup();
     await request();

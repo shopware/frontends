@@ -17,7 +17,20 @@ const SKIPPED_FILE = /\.(test|fixture)\.tsx?$|\.d\.ts$/;
 const TRANSLATE_CALLEES = new Set(["t", "translate"]);
 const TRANSLATOR_FACTORIES = new Set(["getTranslator", "useTranslations"]);
 const KEY_SHAPE = /^[A-Za-z][\w-]*(\.[\w-]+)+$/;
-const REACT_AREAS = ["core", "layout", "account", "checkout"];
+const REACT_AREAS = [
+  "core",
+  "layout",
+  "account",
+  "checkout",
+  "search",
+  "variants",
+  "forms",
+  "emailLinks",
+  "recovery",
+  "cart",
+  "checkoutExtras",
+  "accountExtras",
+];
 const PLACEHOLDER = /\{\s*(\w+)\s*\}/g;
 
 type KeyUse = { key: string; at: string; fromCall: boolean };
@@ -153,7 +166,7 @@ describe("message keys used in code", () => {
     expect(uses.map(({ key }) => key)).toEqual(
       expect.arrayContaining([
         "account.menu.overview",
-        "layout.notWired.search",
+        "search.suggest.status",
         "account.address.edit.header",
         "checkout.orderUnpaid",
         "layout.ariaLabels.mainContent",

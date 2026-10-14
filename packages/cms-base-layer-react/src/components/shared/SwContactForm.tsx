@@ -1,14 +1,25 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import type { FormEvent } from "react";
 
 import { useCmsActions } from "../../actions/CmsActionsContext";
+import type {
+  CmsContactFormEntityName,
+  CmsContactFormInput,
+  CmsContactFormResult,
+} from "../../actions/CmsActionsContext";
 import { cx } from "../../helpers/cx";
 import { withTranslationDefaults } from "../../translations";
 import type { CmsTranslations } from "../../translations";
 import { SpinnerIcon } from "../icons";
 import type { SwFormSalutation } from "./formSalutations";
+import {
+  emptyFormServerErrors,
+  splitFormViolations,
+  withoutFieldError,
+} from "./formServerErrors";
+import type { FormServerErrors } from "./formServerErrors";
 import { email, isTrue, minLength, required } from "./formValidation";
 import type { FormRules } from "./formValidation";
 import { useFormValidation } from "./useFormValidation";
@@ -32,6 +43,7 @@ const defaultTranslations = {
     privacy: "Privacy",
     dataProtection: "I have read the data protection information.",
     submit: "Submit",
+    requiredFieldsNote: "Fields marked with asterisks (*) are required.",
     messages: {
       contactFormSuccess:
         "We have received your contact request and will process it as soon as possible.",
@@ -42,7 +54,7 @@ const defaultTranslations = {
 const DEFAULT_TITLE = "Contact";
 
 const INPUT_CLASS =
-  "appearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-hidden focus:ring-brand-primary focus:z-10 sm:text-sm";
+  "appearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-hidden focus:ring-2 focus:ring-brand-primary focus:z-10 sm:text-sm";
 const INPUT_ERROR_CLASS = "border-red-600 focus:border-red-600";
 const INPUT_VALID_CLASS =
   "border-outline-outline-variant focus:border-brand-primary";
@@ -60,6 +72,8 @@ type ContactFormValues = {
   checkbox: boolean;
 };
 
+type ContactField = keyof ContactFormValues;
+
 const INITIAL_VALUES: ContactFormValues = {
   salutationId: "",
   firstName: "",
@@ -71,6 +85,27 @@ const INITIAL_VALUES: ContactFormValues = {
   checkbox: false,
 };
 
+const FIELD_IDS: Record<ContactField, string> = {
+  salutationId: "salutation",
+  firstName: "first-name",
+  lastName: "last-name",
+  email: "email-address",
+  phone: "phone",
+  subject: "subject",
+  comment: "comment",
+  checkbox: "privacy",
+};
+
+const SERVER_FIELDS: readonly ContactField[] = [
+  "salutationId",
+  "firstName",
+  "lastName",
+  "email",
+  "phone",
+  "subject",
+  "comment",
+];
+
 const RULES: FormRules<ContactFormValues> = {
   email: [required, email],
   firstName: [required, minLength(3)],
@@ -81,11 +116,32 @@ const RULES: FormRules<ContactFormValues> = {
   checkbox: [required, isTrue],
 };
 
+const RULES_WITH_SALUTATION: FormRules<ContactFormValues> = {
+  salutationId: [required],
+  ...RULES,
+};
+
+function contactRules(
+  requireSalutation: boolean,
+): FormRules<ContactFormValues> {
+  return requireSalutation ? RULES_WITH_SALUTATION : RULES;
+}
+
+type FocusRequest = { target: "invalid" | "submit" };
+
+function focusIfFocusWasLost(element: HTMLElement | null) {
+  if (!element) return;
+  const { activeElement, body } = element.ownerDocument;
+  if (!activeElement || activeElement === body) element.focus();
+}
+
 export type SwContactFormProps = {
   title?: string;
   confirmationText?: string;
   salutations: SwFormSalutation[];
   navigationId?: string;
+  entityName?: CmsContactFormEntityName;
+  slotId?: string;
   translations?: CmsTranslations;
 };
 
@@ -94,73 +150,138 @@ export function SwContactForm({
   confirmationText,
   salutations,
   navigationId,
+  entityName,
+  slotId,
   translations,
 }: SwContactFormProps) {
   const t = withTranslationDefaults(translations, defaultTranslations);
   const idPrefix = useId();
   const actions = useCmsActions();
+  const requireSalutation = salutations.length > 0;
   const [loading, setLoading] = useState(false);
-  const [formSent, setFormSent] = useState(false);
+  const [sentMessage, setSentMessage] = useState<string | null>(null);
   const [values, setValues] = useState<ContactFormValues>(INITIAL_VALUES);
+  const [serverErrors, setServerErrors] = useState<
+    FormServerErrors<ContactField>
+  >(emptyFormServerErrors);
+  const [focusRequest, setFocusRequest] = useState<FocusRequest | null>(null);
+  const inFlight = useRef(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const submitRef = useRef<HTMLButtonElement>(null);
   const { isValid, touch, touchAll, hasError, errorMessage } =
-    useFormValidation(values, RULES);
+    useFormValidation(values, contactRules(requireSalutation));
+
+  useEffect(() => {
+    if (!focusRequest) return;
+    if (focusRequest.target === "submit") {
+      focusIfFocusWasLost(submitRef.current);
+      return;
+    }
+    formRef.current
+      ?.querySelector<HTMLElement>('[aria-invalid="true"]')
+      ?.focus();
+  }, [focusRequest]);
 
   const formTitle = title || DEFAULT_TITLE;
-  const confirmation = confirmationText ?? t.form.messages.contactFormSuccess;
 
-  const setValue = <KEY extends keyof ContactFormValues>(
+  const setValue = <KEY extends ContactField>(
     key: KEY,
     value: ContactFormValues[KEY],
   ) => {
     setValues((current) => ({ ...current, [key]: value }));
+    setServerErrors((current) => withoutFieldError(current, key));
   };
 
-  const inputClass = (key: keyof ContactFormValues) =>
-    cx(INPUT_CLASS, hasError(key) ? INPUT_ERROR_CLASS : INPUT_VALID_CLASS);
+  const fieldId = (key: ContactField) => `${idPrefix}${FIELD_IDS[key]}`;
+  const errorId = (key: ContactField) => `${fieldId(key)}-error`;
+  const fieldError = (key: ContactField) =>
+    errorMessage(key) ?? serverErrors.fields[key];
+  const isInvalid = (key: ContactField) =>
+    hasError(key) || serverErrors.fields[key] !== undefined;
 
-  const renderError = (key: keyof ContactFormValues) => {
-    const message = errorMessage(key);
+  const fieldA11y = (key: ContactField) => ({
+    id: fieldId(key),
+    "aria-invalid": isInvalid(key) || undefined,
+    "aria-describedby": fieldError(key) ? errorId(key) : undefined,
+  });
+
+  const inputClass = (key: ContactField) =>
+    cx(INPUT_CLASS, isInvalid(key) ? INPUT_ERROR_CLASS : INPUT_VALID_CLASS);
+
+  const renderError = (key: ContactField) => {
+    const message = fieldError(key);
     return message ? (
-      <span className={ERROR_MESSAGE_CLASS}>{message}</span>
+      <span id={errorId(key)} className={ERROR_MESSAGE_CLASS}>
+        {message}
+      </span>
     ) : null;
   };
 
+  function contactFormInput(): CmsContactFormInput {
+    return {
+      salutationId: values.salutationId || undefined,
+      firstName: values.firstName,
+      lastName: values.lastName,
+      email: values.email,
+      subject: values.subject,
+      comment: values.comment,
+      phone: values.phone,
+      ...(navigationId
+        ? { navigationId, ...(entityName ? { entityName } : {}) }
+        : {}),
+      ...(slotId ? { slotId } : {}),
+    };
+  }
+
+  function confirmationFor(result: CmsContactFormResult): string {
+    return (
+      result.successMessage?.trim() ||
+      confirmationText?.trim() ||
+      t.form.messages.contactFormSuccess
+    );
+  }
+
   async function invokeSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (inFlight.current) return;
     touchAll();
-    if (!isValid) return;
+    if (!isValid) {
+      setFocusRequest({ target: "invalid" });
+      return;
+    }
+    inFlight.current = true;
     setLoading(true);
+    setServerErrors(emptyFormServerErrors());
     try {
-      const result = await actions.submitContactForm({
-        salutationId: values.salutationId,
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        subject: values.subject,
-        comment: values.comment,
-        phone: values.phone,
-        ...(navigationId ? { navigationId } : {}),
-      });
+      const result = await actions.submitContactForm(contactFormInput());
       if (result.ok) {
-        setFormSent(true);
+        setSentMessage(confirmationFor(result));
         return;
       }
-      if (result.message) {
-        actions.notify({ type: "error", message: result.message });
-      }
+      const errors = splitFormViolations(result, SERVER_FIELDS);
+      setServerErrors(errors);
+      setFocusRequest({
+        target: Object.keys(errors.fields).length ? "invalid" : "submit",
+      });
     } catch (error) {
       actions.notify({
         type: "error",
         message: error instanceof Error ? error.message : String(error),
       });
+      setFocusRequest({ target: "submit" });
     } finally {
+      inFlight.current = false;
       setLoading(false);
     }
   }
 
   return (
     <form
+      ref={formRef}
       className="w-full relative"
+      noValidate
+      aria-busy={loading || undefined}
+      data-testid="cms-contact-form"
       onSubmit={(event) => {
         void invokeSubmit(event);
       }}
@@ -171,21 +292,28 @@ export function SwContactForm({
         </div>
       )}
       <h3 className="pb-3 mb-10 border-b border-gray-300">{formTitle}</h3>
-      {!formSent ? (
+      {sentMessage === null ? (
         <>
+          <p className="mb-5 text-sm text-surface-on-surface-variant">
+            {t.form.requiredFieldsNote}
+          </p>
           <div className="grid grid-cols-12 gap-5">
             <div className="col-span-4">
-              <label htmlFor={`${idPrefix}salutation`}>
-                {t.form.salutation}
+              <label htmlFor={fieldId("salutationId")}>
+                {requireSalutation
+                  ? `${t.form.salutation} *`
+                  : t.form.salutation}
               </label>
               <select
-                id={`${idPrefix}salutation`}
+                {...fieldA11y("salutationId")}
                 name="salutation"
+                aria-required={requireSalutation || undefined}
                 value={values.salutationId}
                 onChange={(event) =>
                   setValue("salutationId", event.target.value)
                 }
-                className="border-outline-outline-variant focus:border-brand-primary appearance-none relative block w-full px-3 py-2 border placeholder-surface-on-surface-variant text-surface-on-surface rounded-md focus:outline-hidden focus:ring-brand-primary focus:z-10 sm:text-sm"
+                onBlur={() => touch("salutationId")}
+                className={inputClass("salutationId")}
               >
                 <option disabled value="">
                   {t.form.salutationPlaceholder}
@@ -196,16 +324,18 @@ export function SwContactForm({
                   </option>
                 ))}
               </select>
+              {renderError("salutationId")}
             </div>
             <div className="col-span-4">
               <label
-                htmlFor={`${idPrefix}first-name`}
+                htmlFor={fieldId("firstName")}
               >{`${t.form.firstName} *`}</label>
               <input
-                id={`${idPrefix}first-name`}
+                {...fieldA11y("firstName")}
                 name="first-name"
                 type="text"
                 autoComplete="given-name"
+                aria-required
                 value={values.firstName}
                 onChange={(event) => setValue("firstName", event.target.value)}
                 onBlur={() => touch("firstName")}
@@ -216,13 +346,14 @@ export function SwContactForm({
             </div>
             <div className="col-span-4">
               <label
-                htmlFor={`${idPrefix}last-name`}
+                htmlFor={fieldId("lastName")}
               >{`${t.form.lastName} *`}</label>
               <input
-                id={`${idPrefix}last-name`}
+                {...fieldA11y("lastName")}
                 name="last-name"
                 type="text"
                 autoComplete="family-name"
+                aria-required
                 value={values.lastName}
                 onChange={(event) => setValue("lastName", event.target.value)}
                 onBlur={() => touch("lastName")}
@@ -232,14 +363,13 @@ export function SwContactForm({
               {renderError("lastName")}
             </div>
             <div className="col-span-6">
-              <label
-                htmlFor={`${idPrefix}email-address`}
-              >{`${t.form.email} *`}</label>
+              <label htmlFor={fieldId("email")}>{`${t.form.email} *`}</label>
               <input
-                id={`${idPrefix}email-address`}
+                {...fieldA11y("email")}
                 name="email"
                 type="email"
                 autoComplete="email"
+                aria-required
                 value={values.email}
                 onChange={(event) => setValue("email", event.target.value)}
                 onBlur={() => touch("email")}
@@ -249,12 +379,13 @@ export function SwContactForm({
               {renderError("email")}
             </div>
             <div className="col-span-6">
-              <label htmlFor={`${idPrefix}phone`}>{`${t.form.phone} *`}</label>
+              <label htmlFor={fieldId("phone")}>{`${t.form.phone} *`}</label>
               <input
-                id={`${idPrefix}phone`}
+                {...fieldA11y("phone")}
                 name="phone"
                 type="text"
                 autoComplete="tel"
+                aria-required
                 value={values.phone}
                 onChange={(event) => setValue("phone", event.target.value)}
                 onBlur={() => touch("phone")}
@@ -265,12 +396,13 @@ export function SwContactForm({
             </div>
             <div className="col-span-12">
               <label
-                htmlFor={`${idPrefix}subject`}
+                htmlFor={fieldId("subject")}
               >{`${t.form.subject} *`}</label>
               <input
-                id={`${idPrefix}subject`}
+                {...fieldA11y("subject")}
                 name="subject"
                 type="text"
+                aria-required
                 value={values.subject}
                 onChange={(event) => setValue("subject", event.target.value)}
                 onBlur={() => touch("subject")}
@@ -281,11 +413,12 @@ export function SwContactForm({
             </div>
             <div className="col-span-12">
               <label
-                htmlFor={`${idPrefix}comment`}
+                htmlFor={fieldId("comment")}
               >{`${t.form.comment} *`}</label>
               <textarea
-                id={`${idPrefix}comment`}
+                {...fieldA11y("comment")}
                 name="comment"
+                aria-required
                 value={values.comment}
                 onChange={(event) => setValue("comment", event.target.value)}
                 onBlur={() => touch("comment")}
@@ -299,24 +432,27 @@ export function SwContactForm({
               <legend>{`${t.form.privacy} *`}</legend>
               <div className="flex gap-3 items-start">
                 <input
-                  id={`${idPrefix}privacy`}
+                  {...fieldA11y("checkbox")}
                   name="privacy"
                   type="checkbox"
+                  aria-required
                   checked={values.checkbox}
                   onChange={(event) =>
                     setValue("checkbox", event.target.checked)
                   }
                   className={cx(
-                    "mt-1 focus:ring-brand-primary h-4 w-4 border text-brand-primary rounded",
-                    hasError("checkbox") ? "border-red-600" : "border-gray-300",
+                    "mt-1 focus:outline-2 focus:outline-offset-2 focus:outline-brand-primary h-4 w-4 border text-brand-primary rounded",
+                    isInvalid("checkbox")
+                      ? "border-red-600"
+                      : "border-gray-300",
                   )}
                 />
                 <div>
                   <label
                     className={
-                      hasError("checkbox") ? "text-red-600" : undefined
+                      isInvalid("checkbox") ? "text-red-600" : undefined
                     }
-                    htmlFor={`${idPrefix}privacy`}
+                    htmlFor={fieldId("checkbox")}
                   >
                     {t.form.dataProtection}
                   </label>
@@ -324,17 +460,40 @@ export function SwContactForm({
               </div>
             </fieldset>
           </div>
+          {serverErrors.form.length ? (
+            <div
+              role="alert"
+              data-testid="cms-form-error"
+              className="mt-5 p-3 border border-states-error rounded-md"
+            >
+              {serverErrors.form.map((message) => (
+                <p key={message} className="text-sm text-states-error">
+                  {message}
+                </p>
+              ))}
+            </div>
+          ) : null}
           <div className="flex justify-end mt-10">
             <button
+              ref={submitRef}
               className="group relative flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-primary-hover focus:outline-hidden focus:ring-2 focus:ring-brand-primary disabled:opacity-75"
               type="submit"
+              disabled={loading}
+              data-testid="cms-contact-form-submit"
             >
               {t.form.submit}
             </button>
           </div>
         </>
       ) : (
-        <p className="py-10 text-lg text-center">{confirmation}</p>
+        <p
+          ref={focusIfFocusWasLost}
+          tabIndex={-1}
+          data-testid="cms-form-success"
+          className="py-10 text-lg text-center"
+        >
+          {sentMessage}
+        </p>
       )}
     </form>
   );

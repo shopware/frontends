@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import type { Schemas } from "#shopware";
 import { checkoutSession } from "@/features/checkout/checkout.fixture";
 import { SessionProvider } from "@/features/session/components/SessionProvider";
+import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
 import {
@@ -13,10 +14,24 @@ import {
 } from "../orders.fixture";
 import { OrderDetailView } from "./OrderDetailView";
 
-async function render(details = orderDetails()) {
+async function render(details = orderDetails(), orderRefundsEnabled?: boolean) {
   return renderToHtml(
-    <OrderDetailView details={details} onReload={async () => {}} />,
+    <OrderDetailView
+      details={details}
+      onReload={async () => {}}
+      orderRefundsEnabled={orderRefundsEnabled}
+    />,
   );
+}
+
+function inState(technicalName: string) {
+  return orderDetails({
+    stateMachineState: {
+      technicalName,
+      name: technicalName,
+      translated: { name: technicalName },
+    },
+  } as never);
 }
 
 describe("OrderDetailView", () => {
@@ -122,5 +137,66 @@ describe("OrderDetailView", () => {
     const html = await render(orderDetails({ id: ORDER_ID, documents: [] }));
 
     expect(html).not.toContain("Documents</h3>");
+  });
+
+  it("offers cancellation only for an open order when the shop allows refunds", async () => {
+    expect(await render(inState("open"))).not.toContain(
+      'data-testid="order-cancel-button"',
+    );
+    expect(await render(inState("open"), false)).not.toContain(
+      'data-testid="order-cancel-button"',
+    );
+    for (const state of ["in_progress", "cancelled", "completed"]) {
+      expect(await render(inState(state), true)).not.toContain(
+        'data-testid="order-cancel-button"',
+      );
+    }
+
+    const html = await render(inState("open"), true);
+    expect(html).toMatch(
+      /<button[^>]*aria-haspopup="dialog"[^>]*data-testid="order-cancel-button"[^>]*><span>Cancel order<\/span><\/button>/,
+    );
+    expect(html).not.toContain("<dialog");
+  });
+
+  it("keeps the status focusable for the focus move after a cancellation", async () => {
+    const html = await render(inState("open"), true);
+
+    expect(html).toMatch(
+      /<div tabindex="-1" class="mt-4 focus:outline-hidden sm:mt-0"><span[^>]*data-testid="order-status"/i,
+    );
+  });
+
+  it("shows the customer comment with its line breaks, like the Storefront", async () => {
+    const html = await render(
+      orderDetails({ customerComment: "Ring twice\n<b>not bold</b>" }),
+    );
+
+    expect(html).toContain('data-testid="order-customer-comment"');
+    expect(html).toContain("Your comment</h3>");
+    expect(html).toMatch(
+      /<p class="[^"]*whitespace-pre-line[^"]*">Ring twice\n&lt;b&gt;not bold&lt;\/b&gt;<\/p>/,
+    );
+    expect(html).not.toMatch(/data-testid="order-customer-comment"[^>]*lang=/);
+    expect(await render()).not.toContain("order-customer-comment");
+    expect(
+      await render(orderDetails({ customerComment: " \n " })),
+    ).not.toContain("order-customer-comment");
+  });
+
+  it("names the comment and the cancellation in Polish", async () => {
+    const html = await renderToHtml(
+      withI18n(
+        <OrderDetailView
+          details={orderDetails({ customerComment: "Proszę dzwonić" })}
+          onReload={async () => {}}
+          orderRefundsEnabled
+        />,
+        "pl-PL",
+      ),
+    );
+
+    expect(html).toContain("Twój komentarz</h3>");
+    expect(html).toContain("<span>Anuluj zamówienie</span>");
   });
 });

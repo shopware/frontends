@@ -19,7 +19,8 @@ export function StepHeader({ step, label, children }: StepHeaderProps) {
         </div>
         <h2
           id={headingId}
-          className="text-2xl leading-9 text-surface-on-surface"
+          tabIndex={-1}
+          className="text-2xl leading-9 text-surface-on-surface focus:outline-hidden"
         >
           {label}
         </h2>

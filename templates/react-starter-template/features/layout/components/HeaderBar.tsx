@@ -22,6 +22,7 @@ import {
   HEADER_ACTION_LABEL_CLASS,
 } from "@/features/layout/headerAction";
 import { HeaderSearch } from "@/features/search/components/HeaderSearch";
+import { useSearchPageTerm } from "@/features/search/useSearchPageTerm";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { useWishlist } from "@/features/wishlist/useWishlist";
@@ -38,6 +39,9 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
   const t = useTranslations();
   const localePath = useLocalePath();
   const [mobileSearchActive, setMobileSearchActive] = useState(false);
+  const searchPageTerm = useSearchPageTerm();
+  const [typedSearchText, setTypedSearchText] = useState<string | null>(null);
+  const searchText = typedSearchText ?? searchPageTerm;
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [miniCartOpen, setMiniCartOpen] = useState(false);
   const [checkingSession, setCheckingSession] = useState(false);
@@ -133,7 +137,12 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
     <div className="relative mx-auto flex w-full max-w-screen-2xl items-center justify-between gap-2 px-4 py-3 sm:gap-6 lg:gap-10">
       {mobileSearchActive ? (
         <>
-          <HeaderSearch className="w-full" autoFocus />
+          <HeaderSearch
+            value={searchText}
+            onValueChange={setTypedSearchText}
+            className="w-full"
+            autoFocus
+          />
           <button
             type="button"
             className="shrink-0 border-b border-shell-accent-strong text-sm font-medium text-shell-accent-strong hover:border-transparent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-shell-ink"
@@ -156,7 +165,11 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
               className="h-10 w-auto sm:h-12"
             />
           </LocaleLink>
-          <HeaderSearch className="flex-1 max-sm:hidden lg:mr-auto lg:max-w-xl" />
+          <HeaderSearch
+            value={searchText}
+            onValueChange={setTypedSearchText}
+            className="flex-1 max-sm:hidden lg:mr-auto lg:max-w-xl"
+          />
           <div className="flex shrink-0 items-center sm:gap-1 lg:gap-2">
             <button
               ref={searchButtonRef}

@@ -41,6 +41,7 @@ let mounted: Mounted | undefined;
 beforeEach(() => {
   push.mockReset();
   refresh.mockReset();
+  window.history.replaceState(null, "", "/account/address/new");
 });
 
 afterEach(async () => {
@@ -169,6 +170,59 @@ describe("NewAddressForm in the browser", () => {
     expect(shopware.calls(CREATE_ADDRESS)).toHaveLength(2);
     expect(push).toHaveBeenCalledExactlyOnceWith("/account/address");
   });
+});
+
+describe("NewAddressForm with a redirect", () => {
+  async function saveAddress(locale: Locale = "en-GB") {
+    const { container, form } = await setup(undefined, locale);
+    await fillAddress(container);
+    await chooseCountry(container, "Poland");
+    await interact(() => submitForm(form));
+  }
+
+  it("returns to the page in the redirect parameter, such as the checkout", async () => {
+    window.history.replaceState(
+      null,
+      "",
+      "/account/address/new?redirect=%2Fcheckout",
+    );
+
+    await saveAddress();
+
+    expect(push).toHaveBeenCalledExactlyOnceWith("/checkout");
+  });
+
+  it("keeps the locale prefix the redirect already carries", async () => {
+    window.history.replaceState(
+      null,
+      "",
+      "/pl-PL/account/address/new?redirect=%2Fpl-PL%2Fcheckout",
+    );
+
+    await saveAddress("pl-PL");
+
+    expect(push).toHaveBeenCalledExactlyOnceWith("/pl-PL/checkout");
+  });
+
+  it.each([
+    "https://evil.test/checkout",
+    "//evil.test/checkout",
+    "/\\evil.test",
+    "",
+  ])(
+    "returns to the address list for the unsafe redirect %j",
+    async (target) => {
+      window.history.replaceState(
+        null,
+        "",
+        `/account/address/new?redirect=${encodeURIComponent(target)}`,
+      );
+
+      await saveAddress();
+
+      expect(push).toHaveBeenCalledExactlyOnceWith("/account/address");
+    },
+  );
 });
 
 describe("NewAddressForm in Polish", () => {

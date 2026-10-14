@@ -5,6 +5,7 @@ import {
 
 import { LoggedInRedirect } from "@/features/account/components/LoggedInRedirect";
 import { RegistrationForm } from "@/features/account/components/RegistrationForm";
+import { loadRegistrationReferences } from "@/features/account/registrationReferences";
 import { localePrefix } from "@/i18n/config";
 import type { Locale } from "@/i18n/config";
 import { notFoundOn404 } from "@/platform/shopware/errors";
@@ -23,12 +24,13 @@ export async function CustomerGroupRegistrationPage({
   locale,
   languageId,
 }: CustomerGroupRegistrationPageProps) {
-  const [group, { countries, countriesUnavailable }, { contentLang }] =
+  const [group, countryOptions, references, { contentLang }] =
     await Promise.all([
       readCustomerGroupRegistration(customerGroupId, languageId).catch(
         notFoundOn404,
       ),
       loadCountryOptions(locale, "CustomerGroupRegistration"),
+      loadRegistrationReferences(locale),
       resolveContentLanguage(locale),
     ]);
 
@@ -55,8 +57,8 @@ export async function CustomerGroupRegistrationPage({
         </div>
       ) : null}
       <RegistrationForm
-        countries={countries}
-        countriesUnavailable={countriesUnavailable}
+        {...countryOptions}
+        {...references}
         companyOnly={group.companyOnly}
         requestedGroupId={group.id}
       />

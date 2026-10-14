@@ -9,6 +9,30 @@ type CartErrorMap = Exclude<
 
 export type CartErrorEntry = CartErrorMap[string];
 
+export type CartErrorLevel = 0 | 10 | 20;
+
+export type CartActionError = CmsActionError & {
+  key: string;
+  level: CartErrorLevel;
+};
+
+export const CART_STATE_ERRORS: ReadonlySet<string> = new Set([
+  "shipping-method-blocked",
+  "payment-method-blocked",
+  "billing-address-blocked",
+  "shipping-address-blocked",
+  "billing-address-invalid",
+  "shipping-address-invalid",
+  "promotion-not-eligible",
+  "promotion-not-eligible-not-logged-in",
+  "promotion-not-eligible-specific-products",
+  "promotion-excluded",
+  "promotion-discount-zero-value",
+  "promotions-on-cart-price-zero-error",
+]);
+
+const PROMOTION_NOT_ELIGIBLE = "promotion-not-eligible";
+
 const SUCCESS_CODES = new Set(["promotion-discount-added"]);
 
 const PRODUCT_STOCK_REACHED = "product-stock-reached";
@@ -22,6 +46,10 @@ function isCartErrorEntry(value: unknown): value is CartErrorEntry {
   );
 }
 
+function normalizeLevel(level: unknown): CartErrorLevel {
+  return level === 0 || level === 10 ? level : 20;
+}
+
 export function getCartErrors(
   cart: Pick<Schemas["Cart"], "errors">,
 ): CartErrorEntry[] {
@@ -32,7 +60,7 @@ export function getCartErrors(
   );
 }
 
-export function resolveCartError(
+function resolveMessage(
   error: CartErrorEntry,
   lineItems: Schemas["LineItem"][],
 ): CmsActionError {
@@ -59,9 +87,42 @@ export function resolveCartError(
   }
 }
 
+export function resolveCartError(
+  error: CartErrorEntry,
+  lineItems: Schemas["LineItem"][],
+): CartActionError {
+  return {
+    ...resolveMessage(error, lineItems),
+    key: error.key,
+    level: normalizeLevel(error.level),
+  };
+}
+
+function errorIdentity(error: CartErrorEntry): string {
+  return JSON.stringify([error.key, error.messageKey, error.message ?? null]);
+}
+
 export function toCartActionErrors(
   cart: Pick<Schemas["Cart"], "errors" | "lineItems">,
-): CmsActionError[] {
+  previous?: Pick<Schemas["Cart"], "errors"> | null,
+): CartActionError[] {
   const lineItems = cart.lineItems ?? [];
-  return getCartErrors(cart).map((error) => resolveCartError(error, lineItems));
+  const known = new Set(
+    previous ? getCartErrors(previous).map(errorIdentity) : [],
+  );
+  return getCartErrors(cart)
+    .filter(
+      (error) =>
+        !CART_STATE_ERRORS.has(error.messageKey) ||
+        !known.has(errorIdentity(error)),
+    )
+    .map((error) => resolveCartError(error, lineItems));
+}
+
+export function promotionNotEligibleErrors(
+  cart: Pick<Schemas["Cart"], "errors" | "lineItems">,
+): CartActionError[] {
+  return toCartActionErrors(cart).filter(
+    ({ key }) => key === PROMOTION_NOT_ELIGIBLE,
+  );
 }
