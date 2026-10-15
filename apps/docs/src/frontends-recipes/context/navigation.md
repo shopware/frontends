@@ -123,16 +123,6 @@ Resolving a URL and holding the resolution are two different composables. `useNa
 
 <RecipeFlowDiagram label="Navigation and breadcrumbs flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. The layout calls `useNavigation({ type })` once per navigation and loads it inside `useAsyncData`.
-2. `readNavigation post /navigation/{activeId}/{rootId}` returns a category array, cached under `swNavigation-<type>`.
-3. The catch-all route calls `resolvePath(path)`, which asks `/seo-url` which entity that path belongs to.
-4. `useNavigationContext(ref(seoUrl))` holds the answer and exposes it as `routeName` and `foreignKey`.
-5. The page fetches the category for that id, passing listing criteria because a category page is also a listing.
-6. The page invokes `readBreadcrumb get /breadcrumb/{id}` itself and hands the response to `buildDynamicBreadcrumbs`, which writes the shared trail with router-ready paths.
-7. The layout renders the tree from the ref it loaded, and a breadcrumb component reads `breadcrumbs` from the composable.
-
 You do not need to reload the navigation on every route change, and you do not need to resolve a category link yourself. The tree is cached per type for the lifetime of the provide scope, which is why the layout loads it and pages do not, and every category in it already carries the SEO URL `getCategoryRoute` turns into a router target.
 
 ## Request Flow

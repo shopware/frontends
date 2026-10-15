@@ -95,14 +95,6 @@ For a currency there is no domain involved. `useSessionContext().setCurrency()` 
 
 <RecipeFlowDiagram label="Language and currency flow diagram" :steps="steps" />
 
-Steps 1 to 4 are the language flow in order. Step 5 is the currency branch, not a continuation — by step 4 the document has already unloaded.
-
-1. `getAvailableLanguages()` fills the shared `swLanguages` value.
-2. The switcher renders that list and marks the current language using `currentLanguageId` from the context.
-3. `changeLanguage(id)` sends the context patch and returns `{ redirectUrl? }`.
-4. The switcher navigates to `redirectUrl` — through `replaceToDevStorefront` — or reloads the page.
-5. A currency switch instead calls `setCurrency({ id })`, which patches and refreshes the context in place and leaves you on the page.
-
 `changeLanguage()` is the one switch that leaves the session context untouched. Following the redirect makes that moot, because the reload rebuilds everything — but if you stay on the page, call `refreshSessionContext()` yourself.
 
 ## Request Flow
