@@ -115,18 +115,7 @@ Registration is a single write. `register post /account/register` takes `email`,
 
 The response, not the HTTP status, tells you what happened. When double opt-in registration is enabled in the Shopware Admin, the returned customer carries `doubleOptInRegistration` and no session is created until the customer opens the confirmation email, which points at `registerConfirm post /account/register-confirm`.
 
-Hover a type chip to inspect fields generated from the current Store API schema.
-
 <RecipeFlowDiagram label="Register flow diagram" :steps="steps" />
-
-Read the diagram from left to right:
-
-1. The customer fills one object shaped like the register body, including the nested `billingAddress`, with salutation and country options loaded from their own routes.
-2. `useUser().register()` adds `storefrontUrl` from `getStorefrontUrl()` and posts the body.
-3. The Store API creates the customer in the session identified by `sw-context-token` and returns the `Customer`.
-4. `register()` writes that customer into the shared customer context only when `active` is true and `doubleOptInRegistration` is false.
-5. `register()` awaits `refreshSessionContext()`, so `readContext get /context` decides whether the session now carries a customer, and then awaits `refreshCart()`.
-6. The UI reads `user`, `isLoggedIn`, and `isGuestSession` from composables instead of keeping its own copy.
 
 <StorefrontUrlNotice
   operation="register post /account/register"

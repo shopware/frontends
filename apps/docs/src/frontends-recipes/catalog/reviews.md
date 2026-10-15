@@ -105,15 +105,6 @@ Two read routes and one write route, and none of them is used for the star ratin
 
 <RecipeFlowDiagram label="Product reviews flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. The page renders `product.ratingAverage` from data it already has.
-2. `loadProductReviews(criteria)` requests one page for the product the composable was created with.
-3. The Store API answers with an `EntitySearchResult`; the composable keeps `elements` and returns the rest.
-4. The form calls `addReview({ title, content, points })`.
-5. The Store API answers `200` with no body.
-6. The handler reloads the list and labels the new, unapproved review.
-
 You do not need a request for the average rating, and you do not need to pass the product id to either method — the composable takes the product ref once.
 
 ## Request Flow
