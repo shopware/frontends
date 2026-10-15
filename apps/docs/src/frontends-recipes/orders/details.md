@@ -108,15 +108,6 @@ What the operation does _not_ do is decide which nested data comes back. Without
 
 <RecipeFlowDiagram label="Order details flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. The route hands an order id to `useOrderDetails(orderId)`.
-2. The composable merges `useDefaultOrderAssociations()` with any associations you passed, using `defu`.
-3. `readOrder post /order` is sent with `ids`, the merged `associations`, and `checkPromotion: true`.
-4. `useOrderDetails` stores `orders.elements[0]` as the shared order and `paymentChangeable` separately.
-5. The UI reads `status`, `total`, `subtotal`, `shippingCosts`, `billingAddress`, `shippingAddress` and `personalDetails` from computed properties.
-6. `cancel()` and the two download methods act on that order: the cancellation reloads it, `getMediaFile` returns a `Blob`, and `getDocumentFile` returns `Blob | string` — the XML and HTML document variants come back as text.
-
 You do not need to reload the order after `useOrderDetails`' `cancel()` or `changePaymentMethod()` — both call `loadOrderDetails()` themselves.
 
 ## Request Flow
