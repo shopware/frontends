@@ -11,6 +11,7 @@ minimumReleaseAgeExclude:
 
 overrides:
   "@vercel/blob>undici": "^6.28.0"
+  "@tiptap/pm@<3.30.5": 3.30.5
   esbuild: ^0.28.2
   vite: ^8.2.1
   "@vueuse/core": 14.4.0
@@ -27,6 +28,7 @@ overrides:
   "@vue/runtime-dom": 3.5.42
   "@vue/server-renderer": 3.5.42
   "@vue/shared": 3.5.42
+  "@tiptap/core": 3.30.5
   "js-yaml@>=4.0.0 <4.3.2": 4.3.2
   "sharp@<0.35.5": 0.35.5
   "astro@<7.2.8": 7.2.8
