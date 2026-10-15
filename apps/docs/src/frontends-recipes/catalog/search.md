@@ -83,7 +83,7 @@ const steps = [
     title: "Detail",
     action: "Open one product",
     detail:
-      "useProductSearch().search(productId) is a lookup by id, not a text search. It calls the product detail operation — POST, or the GET variant when cacheableReads is on — and returns the product with its configurator.",
+      "useProductSearch().search(productId) is a lookup by id, not a text search. It calls the product detail operation (the GET variant for a fresh guest when cacheableReads is on, POST otherwise) and returns the product with its configurator.",
     code: "await search(productId, { withCmsAssociations: true })",
     state: "none shared",
     typeKeys: ['Schemas["ProductDetailResponse"]'],
@@ -352,7 +352,7 @@ The results are context-dependent like any listing: prices arrive calculated in 
 - `loading` is the shared listing's flag, but it only covers `search()`. `loadMore` sets `loadingMore`, which `useProductSearchSuggest` does not re-export. It is also a single boolean: with two searches in flight the first to settle clears it, so a surface can drop out of its loading state while its own request is still open.
 - `loadMore`'s argument is optional on `useProductSearchListing` but **required** in the type `useProductSearchSuggest` declares for it, so `loadMore()` type-checks through the listing and not through the suggest composable.
 - `useProductSearch().search()` takes a **product id**, not a term. The name suggests a text search and it is not one.
-- `useProductSearch` switches operation on the context's `cacheableReads` flag: `readProductDetail post /product/{productId}` when it is `false`, `readProductDetailGet get /product/{productId}` with the criteria in a `_criteria` query param when it is `true`. The context default is `false`, but `vue-starter-template` enables it, so the request you will actually observe there is the GET. Pin your tests to the flag your app sets, not to the composable's default.
+- `useProductSearch` reads through `invokeRead`. With `cacheableReads` on and a fresh default guest, it sends `readProductDetailGet get /product/{productId}` with the criteria in a `_criteria` query param. Otherwise it sends `readProductDetail post /product/{productId}`. The context default is `false`, but `vue-starter-template` enables it, so a guest there sends the GET. Pin your tests to the flag and the session, not to the composable's default.
 - `useProductSearch` merges `withCmsAssociations`, `criteria` and `associations` with `defu`, in that precedence order. Passing both `criteria.associations` and `associations` merges them rather than picking one.
 - Both the listing search and `useProductSearch` send `sw-include-seo-urls: true`, so products from the dropdown and from the detail request alike carry the data a link needs — do not resolve the route separately. `getProductRoute` still returns an unprefixed route, so wrap it in `formatLink` from `useInternationalization` unless the storefront is single-language.
 - An empty `searchTerm` produces a search for an empty string, which is a valid request returning the unfiltered listing. Guard on the term length before calling.
@@ -394,7 +394,7 @@ The results are context-dependent like any listing: prices arrive calculated in 
 - A term deleted below the minimum length inside the debounce window issues no request at all.
 - Seeding the results page with `setInitialListing` clears the applied listing the dropdown wrote.
 - An empty result set renders the empty state rather than the previous results, and the previous term's products are not rendered while a new search is pending.
-- Selecting a product calls the product detail operation with that product's id — `readProductDetailGet get /product/{productId}` when `cacheableReads` is on, as it is in `vue-starter-template`, and `readProductDetail post /product/{productId}` when it is off.
+- Selecting a product calls the product detail operation with that product's id: `readProductDetailGet get /product/{productId}` for a fresh guest when `cacheableReads` is on, as it is in `vue-starter-template`, and `readProductDetail post /product/{productId}` otherwise.
 - A failing search does not overwrite the applied listing, so the results page behind keeps its products; the dropdown swaps its own list for the error message and announces it through `role="alert"`.
 - A search that succeeds after an earlier one failed clears the error rather than leaving the banner over valid results.
 

@@ -146,7 +146,7 @@ You do not need a request per section, block or element. The only later requests
 | Read one slot               | `getSlotContent("left")`                                                    | none                                 | <SchemaTypeTooltip type-key='Schemas["CmsSlot"]' />                                                       |
 | Fetch a page by id directly | `invoke("readCms post /cms/{id}", { pathParams: { id }, body: { slots } })` | `POST /cms/{id}`                     | <SchemaTypeTooltip type-key='operations["readCms post /cms/{id}"]["body"]' />                             |
 
-`POST` is the request-layer default, but not what the supported template does: `vue-starter-template` sets `cacheableReads: true` under `runtimeConfig.public.shopware`, and with that flag `useCategorySearch` calls `readCategoryGet get /category/{navigationId}` instead, compressing the same criteria into a `_criteria` query param so the read is HTTP-cacheable. `useLandingSearch` has not been moved to the cacheable variant and always posts. Either way the same `cmsPage` tree comes back.
+`POST` is the request-layer default. `vue-starter-template` sets `cacheableReads: true` under `runtimeConfig.public.shopware`. With that flag, `useCategorySearch` calls `readCategoryGet get /category/{navigationId}` for a fresh default guest, with the same criteria compressed into a `_criteria` query param, so the read is HTTP-cacheable. Every other session still posts, see [Which sessions use GET](../../best-practices/caching.html#which-sessions-use-get). `useLandingSearch` always posts. Either way the same `cmsPage` tree comes back.
 
 The last row is the operation nothing uses. It takes a `slots` string of `|`-separated identifiers to resolve only some slots, and a `ProductListingCriteria` for the listing an element on the page may hold.
 
@@ -278,7 +278,7 @@ The two places state does appear are worth knowing. `useCmsTranslations()` injec
 
 The CMS payload is context-dependent like everything else. Prices inside a product element are calculated for the current currency and tax state, and `visibility` on a section or block can hide it for a given device. A currency or language switch invalidates the whole rendered page.
 
-That payload is also the one a shared cache may store. With the starter's `cacheableReads: true` the category read comes back `public, s-maxage=1800`, where the `POST` variant is `private, no-cache` — so the CMS tree and the calculated prices of the embedded listing sit in the same cacheable response. Keeping one customer's prices out of another's page is the backend's contract rather than the renderer's: those entries are varied on language, currency and login state, which [Backend HTTP cache and reverse proxy](../../best-practices/caching.html#backend-http-cache-and-reverse-proxy) explains. The frontend guards one thing itself — `@shopware/api-client` ignores `sw-context-token` on a publicly cacheable response, so a replayed guest token from a cache hit cannot overwrite a logged-in session.
+That payload is also the one a shared cache may store. With the starter's `cacheableReads: true`, a guest's category read comes back `public, s-maxage=1800`. The `POST` variant is `private, no-cache`. So the CMS tree and the calculated prices of the embedded listing sit in the same cacheable response. The backend keeps customers, currencies and carts apart only with `sw-cache-hash`, and a browser on another domain cannot send it. So the frontend keeps them apart itself: `invokeRead` sends GET only for a fresh default guest and posts for everyone else, see [Which sessions use GET](../../best-practices/caching.html#which-sessions-use-get). `@shopware/api-client` also ignores `sw-context-token` on a publicly cacheable response, so a replayed guest token from a cache hit cannot overwrite a logged-in session.
 
 ## Edge Cases
 
@@ -314,7 +314,7 @@ That payload is also the one a shared cache may store. With the starter's `cache
 
 ## Testing Checklist
 
-- A category page gets its layout from the category request itself — a `GET /category/{navigationId}?_criteria=…` with the starter template's `cacheableReads: true`, a `POST` without it — and never a separate `readCms post /cms/{id}` request.
+- A category page gets its layout from the category request itself, never from a separate `readCms post /cms/{id}` request. With the starter's `cacheableReads: true`, a fresh guest sends `GET /category/{navigationId}?_criteria=…`. After login or a currency switch, the same page sends a `POST`.
 - Every section in the payload resolves to a component, and an unknown type renders the fallback rather than nothing.
 - `getPositionContent` returns only the blocks whose `sectionPosition` matches.
 - `getSlotContent` returns `undefined` for a slot the block does not have, without throwing, and the element renders nothing rather than an empty wrapper.

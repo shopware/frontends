@@ -49,7 +49,7 @@ const steps = [
     title: "Store API",
     action: "Return one page",
     detail:
-      "POST by default, GET with the Criteria in _criteria when cacheableReads is enabled. Either way the response is an EntitySearchResult: the composable stores only elements, but returns the whole payload — which is where total lives.",
+      "POST by default. GET with the Criteria in _criteria when cacheableReads is enabled and the session is a fresh guest. Either way the response is an EntitySearchResult: the composable stores only elements, but returns the whole payload — which is where total lives.",
     code: "productReviews.value = data.elements ?? []",
     state: "productReviews",
     typeKeys: [
@@ -99,7 +99,7 @@ Render a product's reviews and let a customer add one. The important part is tha
 
 Two read routes and one write route, and none of them is used for the star rating. `product.ratingAverage` comes with the product response, so the summary at the top of a detail page needs no request at all.
 
-`readProductReviews post /product/{productId}/reviews` takes a `Criteria` and returns one page of reviews. When the app enables `cacheableReads`, the composable calls the cacheable GET twin instead — `readProductReviewsGet get /product/{productId}/reviews` — with the same Criteria compressed into the `_criteria` query parameter. `vue-starter-template` sets `cacheableReads: true`, so an app started from it takes the GET path.
+`readProductReviews post /product/{productId}/reviews` takes a `Criteria` and returns one page of reviews. When the app enables `cacheableReads` and the session is a fresh default guest, the composable calls the cacheable GET twin instead, `readProductReviewsGet get /product/{productId}/reviews`, with the same Criteria compressed into the `_criteria` query parameter. `vue-starter-template` sets `cacheableReads: true`, so a guest in an app started from it takes the GET path. Other sessions still post, see [Which sessions use GET](../../best-practices/caching.html#which-sessions-use-get).
 
 `saveProductReview post /product/{productId}/review` answers `200` with no body — it returns neither the created review nor an updated average. Both facts shape the handler: after a successful submit there is nothing to merge, so you reload, and what comes back is your own review marked as not yet approved.
 
@@ -130,7 +130,7 @@ You do not need a request for the average rating, and you do not need to pass th
 
 Two things about the total row. It goes through the method's **return value**, not through a reactive property — the composable stores only `elements`, so pagination controls have to keep the total themselves. And `total-count-mode` defaults to `none`, which means "do not count": without asking for `exact` you get no number to paginate with.
 
-The POST and the GET route are the same request in two shapes. `useProductReviews` picks between them from `cacheableReads` in the Shopware context; your calling code does not change.
+The POST and the GET route are the same request in two shapes. `useProductReviews` reads through `invokeRead`, which picks one per request from `cacheableReads` and the session. Your calling code does not change.
 
 ## Composables
 
@@ -383,7 +383,7 @@ Reviews carry a `status` and a `comment`. `status` is the moderation flag — `f
 - A customer can review a product once. A second `addReview` rejects with `VIOLATION::ENTITY_EXISTS`, which deserves its own message rather than a generic failure.
 - The list is one page. `productReviews` holds `elements` only, so `total` has to be read from the value `loadProductReviews()` resolves to — and only if the Criteria asked for it.
 - `total-count-mode` defaults to `none`. Without `"total-count-mode": "exact"` the response carries no usable total and every page looks like the last one.
-- With `cacheableReads` enabled the composable calls `GET /product/{productId}/reviews` and sends the Criteria in `_criteria`. Anything asserting on the request — a test, a mock, a network expectation — has to cover the shape the app actually uses.
+- With `cacheableReads` enabled, a fresh guest calls `GET /product/{productId}/reviews` and sends the Criteria in `_criteria`. A logged-in customer still posts. Anything asserting on the request — a test, a mock, a network expectation — has to cover the shape the app actually uses.
 - `loadProductReviews` reads `product.value.id` at call time. A product ref that is still `undefined` throws before any request is sent; a product object without an `id` sends one against `/product/undefined/reviews`.
 - `addReview` accepts only `title`, `content` and `points`. Setting the author's `name` or `email` — for example for a guest review — means calling `apiClient.invoke` with the full body.
 - `points` is a `double` in the save body and a `float` on the review, not an integer. A half-star UI is possible on the API side.
@@ -400,7 +400,7 @@ Reviews carry a `status` and a `comment`. `status` is the moderation flag — `f
 - Do not render the review form for an anonymous visitor.
 - Do not read the total from `productReviews.length`. That is one page.
 - Do not request a total without `"total-count-mode": "exact"`.
-- Do not assert on `POST /product/{productId}/reviews` in an app that enables `cacheableReads`.
+- Do not assert on one fixed route in an app that enables `cacheableReads`. A fresh guest sends GET, a logged-in customer sends POST.
 - Do not call `loadProductReviews()` before the product ref is populated.
 - Do not use `addReview` when you need to set the author name — invoke the operation directly.
 - Do not treat a duplicate-review rejection as an unknown error.
@@ -409,7 +409,7 @@ Reviews carry a `status` and a `comment`. `status` is the moderation flag — `f
 ## Testing Checklist
 
 - The rating average renders before any review request resolves.
-- Opening the page issues one review request for the product — `readProductReviews post /product/{productId}/reviews`, or `readProductReviewsGet get /product/{productId}/reviews` with a `_criteria` query when `cacheableReads` is enabled.
+- Opening the page issues one review request for the product — `readProductReviews post /product/{productId}/reviews`, or `readProductReviewsGet get /product/{productId}/reviews` with a `_criteria` query when `cacheableReads` is enabled and the visitor is a fresh guest.
 - The criteria carries the page size and `total-count-mode: exact`.
 - The total used for pagination comes from the method's return value.
 - Paging forward issues one request per page and replaces the rendered reviews.

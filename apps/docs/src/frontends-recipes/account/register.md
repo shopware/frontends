@@ -149,7 +149,7 @@ You do not call `readContext get /context` yourself after registering, because `
 | Refresh the cart                 | `refreshCart()`                                                                                                  | `GET /checkout/cart`                                           | <SchemaTypeTooltip type-key='operations["readCart get /checkout/cart"]["response"]' />                                                                                                  |
 | Confirm a double opt-in link     | `apiClient.invoke("registerConfirm post /account/register-confirm")`                                             | `POST /account/register-confirm`                               | <SchemaTypeTooltip type-key='operations["registerConfirm post /account/register-confirm"]["body"]' />                                                                                   |
 
-The two option lists are the only rows whose route depends on configuration. `useSalutations` and `useCountries` switch to the cacheable GET variant when `shopware.cacheableReads` is set, and `vue-starter-template` sets it, so the GET routes are what the supported template actually issues. The registration write itself is always a POST.
+The two option lists are the only rows whose route depends on configuration. `useSalutations` and `useCountries` switch to the cacheable GET variant for a fresh default guest when `shopware.cacheableReads` is set. `vue-starter-template` sets it, so a new visitor there gets the GET routes. Other sessions, like one with items in the cart, still post, see [Which sessions use GET](../../best-practices/caching.html#which-sessions-use-get). The registration write itself is always a POST.
 
 ## Composables
 

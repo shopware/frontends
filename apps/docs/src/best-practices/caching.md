@@ -148,6 +148,8 @@ The loaded state cannot show:
 
 In those cases, a session can get default guest data. The backend and any proxy decide what gets stored. See [Backend HTTP cache and reverse proxy](#backend-http-cache-and-reverse-proxy).
 
+A customer, a filled cart or a non-default currency, country, payment or shipping method always stays POST. Why: the backend looks up its cache before it reads the context token. Only the `sw-cache-hash` header or cookie keeps these sessions apart. A browser on another domain cannot send it. The header is not on the backend's CORS allow-list, and the cookie is `httponly` and needs credentialed CORS. Without the hash, a GET from such a session reads the default guest entry, for example a guest price in another currency. The backend does not store that response, it answers `private, no-cache`. So the guest entry stays clean, but the session gets wrong data.
+
 A non-default language always stays POST. Why: in Shopware 6.7.6.0 to 6.7.14.0, the built-in HTTP cache ignores `sw-language-id` and `Vary`. A GET in another language would share the default language's cache entry. [shopware#20200](https://github.com/shopware/shopware/pull/20200) fixes this, but it is not released yet. A proxy that honors `Vary` would be safe. The frontend cannot tell which cache it talks to.
 
 ### Which reads stay on POST, and why
