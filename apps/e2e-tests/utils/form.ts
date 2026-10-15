@@ -1,5 +1,7 @@
 import type { Locator, Page } from "@playwright/test";
 
+import { type StoreApi, defaultCountryName } from "./store-api";
+
 /** A native select in some templates, a searchable combobox in others. */
 export async function selectCountry(
   page: Page,
@@ -18,7 +20,15 @@ export async function selectCountry(
   // The listbox only renders once the control is active.
   await country.click();
   await country.fill(name);
-  await page.getByRole("option", { name }).first().click();
+  await page.getByRole("option", { name, exact: true }).first().click();
+}
+
+export async function selectDefaultCountry(
+  page: Page,
+  country: Locator,
+  storeApi: { value?: StoreApi },
+) {
+  await selectCountry(page, country, await defaultCountryName(page, storeApi));
 }
 
 /** Which fields a form renders is template content. */

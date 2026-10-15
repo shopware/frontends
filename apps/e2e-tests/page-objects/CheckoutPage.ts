@@ -1,9 +1,14 @@
 import type { Locator, Page } from "@playwright/test";
 
-import { selectCountry, selectFirstOptionIfPresent } from "../utils/form";
+import {
+  selectDefaultCountry,
+  selectFirstOptionIfPresent,
+} from "../utils/form";
+import { type StoreApi, captureStoreApi } from "../utils/store-api";
 
 export class CheckoutPage {
   readonly page: Page;
+  readonly storeApi: { value?: StoreApi };
   readonly goToCheckoutButton: Locator;
   readonly placeOrderButton: Locator;
   readonly loginOnCheckoutButton: Locator;
@@ -47,6 +52,7 @@ export class CheckoutPage {
       "checkout-create-account-toggle",
     );
     this.passwordInput = page.getByTestId("checkout-pi-password-input");
+    this.storeApi = captureStoreApi(page);
   }
 
   async goToCheckout() {
@@ -110,7 +116,7 @@ export class CheckoutPage {
     await this.street.fill(street);
     await this.zipcode.fill(zipcode);
     await this.city.fill(city);
-    await selectCountry(this.page, this.country, "Germany");
+    await selectDefaultCountry(this.page, this.country, this.storeApi);
     await selectFirstOptionIfPresent(this.countryState);
 
     // Demo-store checkout has a Continue control that registers the guest
