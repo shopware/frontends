@@ -102,15 +102,6 @@ On top of that, one product can carry several prices. `calculatedPrice` is the p
 
 <RecipeFlowDiagram label="Pricing flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. The Store API returns prices already calculated for the context, gross or net according to `taxState`.
-2. `usePrice` is shared on the client: the first component to call it creates the one instance the browser session reuses. On the server there is no sharing, and each call site formats from its own state.
-3. That instance watches `sessionContext.currency` with `immediate: true`, so it seeds and updates its own currency code from the context.
-4. `useProductPrice(toRef(() => product))` picks the price to display from `calculatedPrice`, `calculatedPrices` and the tier list.
-5. `hasListPrice` and `price.listPrice` tell you whether to render a reduction.
-6. `getFormattedPrice(value)` formats that number with `Intl.NumberFormat`.
-
 You do not need to compute a gross price from a net one, or a discount percentage from two prices. Both come from the server — `listPrice.percentage` is the reduction. The UI reads every one of these from composables instead of keeping its own copy.
 
 ## Request Flow

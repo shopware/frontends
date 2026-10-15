@@ -117,16 +117,6 @@ The composable holds two listings rather than one. An _initial_ listing is what 
 
 <RecipeFlowDiagram label="Product listing flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. The page seeds the initial listing from its CMS payload with `setInitialListing()`.
-2. A filter, a sorting select or a pagination control produces new criteria.
-3. `search()` deep-merges those criteria over the `defaultSearchCriteria` passed to `useListing` and issues one request.
-4. The Store API returns one page as a `ProductListingResult`.
-5. That result becomes the applied listing, shadowing the initial one.
-6. `getElements`, `getTotal`, `getCurrentPage`, `getSortingOrders`, `getCurrentFilters` and `getAvailableFilters` all read from it.
-7. `loadMore()` appends the next page's elements instead of replacing them — passed the same criteria, or the appended page ignores them.
-
 You do not need a separate request for the filter options. They are the `aggregations` on the same response, converted into a filter model by the `getListingFilters` helper.
 
 ## Request Flow
