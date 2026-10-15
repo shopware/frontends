@@ -6,7 +6,7 @@ import {
   getTranslatedProperty,
 } from "@shopware/helpers";
 import { defu } from "defu";
-import { computed, ref, unref } from "vue";
+import { computed, ref, unref, useId } from "vue";
 import type { ComputedRef } from "vue";
 
 import { useProductConfigurator, useRouter, useUrlResolver } from "#imports";
@@ -38,6 +38,7 @@ const emit =
   defineEmits<
     (e: "change", selected: Partial<Schemas["Product"]> | undefined) => void
   >();
+const instanceId = useId();
 const isLoading = ref<boolean>();
 const router = useRouter();
 const {
@@ -70,6 +71,27 @@ const onHandleChange = async () => {
     emit("change", variantFound);
   }
   isLoading.value = false;
+};
+
+const ARROW_KEYS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+let isArrowSelection = false;
+
+const onOptionKeydown = (event: KeyboardEvent) => {
+  if (ARROW_KEYS.includes(event.key)) {
+    isArrowSelection = true;
+    return;
+  }
+  const input = event.target as HTMLInputElement;
+  if ((event.key === "Enter" || event.key === " ") && input.checked) {
+    event.preventDefault();
+    onHandleChange();
+  }
+};
+
+const onOptionChange = (groupName: string, optionId: string) => {
+  const commitLater = isArrowSelection && allowRedirect;
+  isArrowSelection = false;
+  handleChange(groupName, optionId, commitLater ? undefined : onHandleChange);
 };
 </script>
 
@@ -111,15 +133,10 @@ const onHandleChange = async () => {
             <input
               type="radio"
               class="sr-only"
-              :name="`variant-${optionGroup.id}`"
+              :name="`variant-${instanceId}-${optionGroup.id}`"
               :checked="isOptionSelected(option.id)"
-              @change="
-                handleChange(
-                  optionGroup.translated.name,
-                  option.id,
-                  onHandleChange,
-                )
-              "
+              @keydown="onOptionKeydown"
+              @change="onOptionChange(optionGroup.translated.name, option.id)"
             />
             <p
               :id="`${option.id}-choice-label`"
