@@ -116,19 +116,7 @@ There is no checkout resource in the Store API. A checkout is the current cart p
 
 The consequence is that the two method lists are not static. `readShippingMethod post /shipping-method` and `readPaymentMethod post /payment-method` are filtered searches whose results depend on the cart contents, the active addresses and the rules that match them. Picking a shipping method can remove a payment method, and picking a payment method can change the delivery costs — which is why `useCheckout` caches both lists but gives you `forceReload` to break that cache.
 
-Hover a type chip to inspect fields generated from the current Store API schema.
-
 <RecipeFlowDiagram label="Checkout flow diagram" :steps="steps" />
-
-Read the diagram from left to right:
-
-1. The checkout page refreshes the session context and the cart, then loads the shipping and payment method lists.
-2. Both lists come back restricted to methods that are available for the current cart and context.
-3. `useCheckout` caches them in the `swShippingMethods` and `swPaymentMethods` injections.
-4. Selecting a method calls `setShippingMethod` or `setPaymentMethod`, which patch the context and refresh it.
-5. The page reloads the opposite method list with `forceReload: true` and refreshes the cart, because both can have changed.
-6. `createOrder()` sends `POST /checkout/order` and returns the created order.
-7. The UI navigates to the confirmation route using `order.id`, refreshes the cart the server has already discarded, and reads the selected methods and the totals from composables instead of keeping its own copy.
 
 You do not need to send the selected methods or the addresses in the order body. The Store API reads them from the context, so `createOrder()` accepts only `customerComment`, `affiliateCode` and `campaignCode`.
 
