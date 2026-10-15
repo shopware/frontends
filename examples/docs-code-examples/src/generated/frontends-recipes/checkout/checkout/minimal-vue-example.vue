@@ -14,6 +14,7 @@ const {
 const { refreshSessionContext } = useSessionContext();
 const { cart, cartItems, totalPrice, isEmpty, isVirtualCart, refreshCart } =
   useCart();
+const { getFormattedPrice } = usePrice();
 
 const isLoadingCheckout = ref(true);
 const isSelectingMethod = ref(false);
@@ -222,7 +223,7 @@ const placeOrder = async () => {
 
       <dl aria-live="polite">
         <dt>Total</dt>
-        <dd>{{ totalPrice }}</dd>
+        <dd>{{ getFormattedPrice(totalPrice) }}</dd>
       </dl>
 
       <p v-if="submitHint" id="submit-hint">{{ submitHint }}</p>

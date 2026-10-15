@@ -99,15 +99,6 @@ The sales channel context is the server-side state attached to the `sw-context-t
 
 <RecipeFlowDiagram label="Session context flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. The application root calls `readContext get /context` and passes the result into `useSessionContext(context)`, which seeds the shared `swSessionContext` value. Call it directly rather than through `useAsyncData`, for the reason in [State And Session](#state-and-session).
-2. Components call `useSessionContext()` without an argument and inject that same ref through `useContext`.
-3. A UI action calls one setter, for example `setCurrency({ id })` or `setCountry(countryId)`.
-4. The setter sends `updateContext patch /context` with a single id field.
-5. The setter awaits `refreshSessionContext()`, which calls `readContext get /context` and replaces the shared value.
-6. The UI reads `currency`, `taxState`, `countryId`, `activeShippingAddress` and `userFromContext` from computed properties instead of keeping its own copy.
-
 You do not need to call `refreshSessionContext()` after a setter from `useSessionContext()` — every one of them already does it. You also do not need to call it after login, registration or logout, because `useUser()` refreshes the context itself.
 
 ## Request Flow

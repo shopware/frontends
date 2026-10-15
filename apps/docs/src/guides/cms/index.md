@@ -7,7 +7,6 @@ nav:
 # CMS
 
 Everything related to CMS ([Shopping Experiences](../../concepts/shopping-experiences.html)).
-<PageRef page="content-pages.html" title="Create content pages" sub="In this chapter you will learn how to display content pages with data from Shopware's own CMS." />
 <PageRef page="missing-component.html" title="Implement a Missing Component" sub="Step-by-step guide for when a CMS element or block has no matching Vue component." />
 <PageRef page="create-blocks.html" title="Create Blocks" sub="In this chapter you will learn how to create CMS blocks." />
 <PageRef page="create-elements.html" title="Create Elements" sub="In this chapter you will learn how to create CMS elements." />

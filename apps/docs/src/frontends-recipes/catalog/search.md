@@ -109,15 +109,6 @@ The naming needs care too. `useProductSearch` is not a text search at all: its `
 
 <RecipeFlowDiagram label="Search and suggest flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. The input debounces the typing and enforces a minimum length itself — the composable does neither.
-2. `searchTerm.value` is set, then `search()` builds the criteria and overwrites `search` with that term.
-3. `searchPage post /search` returns a full listing result.
-4. That result lands in the applied listing of the shared `productSearchListing`.
-5. `getProducts`, `getTotal` and `loading` are that listing's `getElements`, `getTotal` and `loading`.
-6. Selecting a product calls `useProductSearch().search(productId)`, which is a detail request by id.
-
 What you do not need to call manually is the listing plumbing: `search()` writes the applied listing itself, so no component has to store the elements or the total. What you **do** still need is a request on the results page. The dropdown searched with a preview criteria — a small `limit`, no filters, no sorting, no page — and `setInitialListing` clears the applied listing when the results page seeds itself from its own payload, so the shared state is a live view, not a cache you can navigate into.
 
 ## Request Flow
@@ -144,7 +135,7 @@ Pick by scope — how much of the search the composable is about:
 | `useProductSearch`        | one product, by id            | opening a product after the customer picks it                          |
 | `useShopwareContext`      | `apiClient`, `cacheableReads` | calling `searchSuggest post /search-suggest`, which has no composable  |
 
-The results-page members live on `useProductSearchListing`: `getAvailableFilters`, `getSortingOrders` and `resetFilters` for the facets, `loadingMore` for the append state, and `setInitialListing` for seeding from the Nuxt payload.
+The results-page members live on `useProductSearchListing`: `getAvailableFilters`, `getSortingOrders` and `resetFilters` for the facets, `loadingMore` for the append state, and `setInitialListing` for seeding from the Nuxt payload. A category facet needs aggregations the Store API does not add by itself; the [Product Listing and Filters recipe](listing.html) covers it.
 
 `useProductSearchSuggest` is the one this recipe is about, and it has six members:
 
@@ -402,7 +393,6 @@ The results are context-dependent like any listing: prices arrive calculated in 
 
 - [Product Listing and Filters recipe](listing.html)
 - [Language and Currency Switch recipe](../context/language-and-currency.html)
-- [Product listing documentation](../../guides/e-commerce/product-listing.html)
 - [Caching best practices](../../best-practices/caching.html)
 - [Helpers package](../../packages/helpers.html)
 - [Composables reference](../../packages/composables/)

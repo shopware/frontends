@@ -39,8 +39,7 @@ test.describe.parallel(
       await expect(page.getByTestId("wishlist-empty-container")).toHaveCount(1);
     });
 
-    // The starter has no "clear all" action. Needs the feature, see #2679.
-    test.skip("Clear whole wishlist", async ({ page }) => {
+    test("Clear whole wishlist", async ({ page }) => {
       await homePage.addProductToWishlist();
       await wishlistPage.openWishlist();
       await wishlistPage.clearWishlist();

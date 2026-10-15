@@ -16,7 +16,7 @@ This repository shows an example of how to use translation snippets using admin 
 
 ## Requirements
 
-Go to [Documentation > Requirements](https://developer.shopware.com/frontends/framework/requirements.html) to see the details.
+Go to [Documentation > Requirements](https://developer.shopware.com/frontends/introduction/requirements.html) to see the details.
 
 ## The idea
 

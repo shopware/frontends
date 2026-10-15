@@ -1,5 +1,54 @@
 # @shopware/cms-base-layer
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2785](https://github.com/shopware/frontends/pull/2785) [`74a477b`](https://github.com/shopware/frontends/commit/74a477bfa88e3c518d3a0336e4d301c823122ba8) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Render the CMS blocks and elements Shopware added since 6.6, which rendered nothing until now:
+
+  - `category-heading` block and `category-name` element (6.7.12), used by the default listing layouts for the category headline.
+  - `video` block and element (6.7.8) for media library videos, with every option of the Administration. New translation keys: `cms.video.playLabel`, `cms.video.pauseLabel`, `cms.video.loadError` and `cms.video.notSupported`.
+  - `app-renderer` block (6.6.1) for blocks registered through the Meteor Admin SDK. A global `CmsBlockAppRenderer{AppBlockName}` component overrides a single app block, see "App blocks" in the README.
+
+- [#2774](https://github.com/shopware/frontends/pull/2774) [`5961f55`](https://github.com/shopware/frontends/commit/5961f55b9f7cebad626cc073ae0bf857aa26f91b) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Render blocks reactively and survive a missing slot
+
+  `CmsGenericElement` now takes `content` as an optional prop and renders nothing when it is missing, instead of handing `undefined` to `resolveCmsComponent` and throwing. A block does not have to carry every slot its layout allows, so that is no longer an error path.
+
+  Every block component now passes its `content` to `useCmsBlock` as a getter and reads slot lookups through a `computed`, and `CmsSectionSidebar` does the same with `useCmsSection`. A block or section that receives new content re-resolves which slot goes where, instead of rendering the tree it was mounted with.
+
+  That stops at the element boundary. Element components still call `useCmsElementConfig(props.content)` and `useCmsElementImage(props.content)`, which capture the slot object at setup, so an element reused for a different slot of the same type keeps its old config- and media-derived values — an image its old source, a text its old configured content. Only values read straight from the prop (`props.content.data`) follow. Making those composables accept a getter is a separate change.
+
+  Both generic components also stop emitting an empty `<div>` where they used to render a placeholder: a missing slot and — in production — a block or element type with no component now render nothing. Dev mode is unchanged: it still warns and renders `CmsNoComponent`.
+
+  `CmsGenericBlock` and `CmsGenericElement` dropped their `Problem resolving component: …` branch. It sat behind `if (resolvedComponent)` and tested `isResolved`, which was always `true` there, so it never rendered; an unresolved component still logs a dev warning and renders `CmsNoComponent`.
+
+### Patch Changes
+
+- [#2778](https://github.com/shopware/frontends/pull/2778) [`0d4151c`](https://github.com/shopware/frontends/commit/0d4151ce1fb231606c33e1fd88f525baff60416d) Thanks [@grenzenlos-digital](https://github.com/grenzenlos-digital)! - Use Three.js vectors for the 3D camera and light positions.
+
+- [#2731](https://github.com/shopware/frontends/pull/2731) [`46d6daa`](https://github.com/shopware/frontends/commit/46d6daade81e3d9e443f3badfeba2ca0e2751477) Thanks [@patzick](https://github.com/patzick)! - Add an optional notification action (label + link) so add-to-cart toasts can offer a "View cart" shortcut, and keep those toasts visible a little longer.
+
+- [#2813](https://github.com/shopware/frontends/pull/2813) [`c6abd30`](https://github.com/shopware/frontends/commit/c6abd3000a9c3ad8ec4512704aa99a66ab0e671c) Thanks [@patzick](https://github.com/patzick)! - Fix a 500 on every page with a listing filter (`Cannot read properties of undefined (reading 'query')`) in projects that install the layer outside this monorepo. `useSelectedListingFilters` imported `useRoute` straight from `vue-router`, which the layer does not depend on, so it could resolve to a different `vue-router` copy than the one Nuxt's router uses and get no route back. It now uses Nuxt's `useRoute`, and `SwCategoryNavigationLink` renders `NuxtLink` instead of importing `RouterLink` from `vue-router` for the same reason. The pure filter-state helpers moved from `app/utils/useSelectedListingFilters.ts` to `app/utils/listingFilterState.ts`; their auto-imported names are unchanged.
+
+- [#2785](https://github.com/shopware/frontends/pull/2785) [`74a477b`](https://github.com/shopware/frontends/commit/74a477bfa88e3c518d3a0336e4d301c823122ba8) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Fix how `CmsElementText` renders CMS text. `CmsElementProductName` and `CmsElementCategoryName` render through it and get the same fixes.
+
+  - It renders only the content the Store API resolved. When that content was empty, it fell back to the raw `config.content` value, which the backend sanitizer never saw. Static content that the sanitizer removed completely, such as a lone `<script>`, came back unsanitized, and a `{{ … }}` placeholder that resolved to nothing was shown as it was typed. Both now render nothing, as in the Storefront. An element built by hand without `data` still renders its static config.
+  - It no longer shows a mapping path. The backend answers a mapping to a value that is not a string with the path itself, for example `category.customFields`. That is now treated as unresolved.
+  - It follows a new `content`. It read its content and config once, when it was set up, so a component that received a new `content` kept the old text.
+  - HTML attributes other than `class`, `style` and `align` now reach the page, for example `id`, `title` and `colspan`. They were passed in the Vue 2 shape, so server renders dropped them and client renders added `attrs="[object Object]"`. That also made the server and client markup differ on hydration.
+
+- [#2677](https://github.com/shopware/frontends/pull/2677) [`62c8d4c`](https://github.com/shopware/frontends/commit/62c8d4c86130c076b8391271593372eac83380e3) Thanks [@mkucmus](https://github.com/mkucmus)! - Drive the product listing from the URL. Browser back and forward now update the products, and sorting no longer fires a duplicate request.
+
+- [#2677](https://github.com/shopware/frontends/pull/2677) [`62c8d4c`](https://github.com/shopware/frontends/commit/62c8d4c86130c076b8391271593372eac83380e3) Thanks [@mkucmus](https://github.com/mkucmus)! - Write listing filters to the URL before fetching, so a slow or failed request no longer drops the selection. Expose the product id on the add-to-cart button.
+
+- [#2812](https://github.com/shopware/frontends/pull/2812) [`09d8b0f`](https://github.com/shopware/frontends/commit/09d8b0fea5489e973ef4f1f49d09e72372ab9ecf) Thanks [@mkucmus](https://github.com/mkucmus)! - Show "Details" instead of "Add to cart" for variant parents, and show success only when the product is in the cart. A product with a single price tier now shows "Add to cart", like in the Twig storefront.
+
+  New translation key: `product.notAddedToCart`. Variant parents now use `product.details`. Add both to your locale files.
+
+- Updated dependencies [[`44ece9d`](https://github.com/shopware/frontends/commit/44ece9dac2e4d0248c2270f7eff496c258632f5b), [`46d6daa`](https://github.com/shopware/frontends/commit/46d6daade81e3d9e443f3badfeba2ca0e2751477), [`7dbca8b`](https://github.com/shopware/frontends/commit/7dbca8bf8bca1225b365bc03e4dbc07d3764c2e1), [`74a477b`](https://github.com/shopware/frontends/commit/74a477bfa88e3c518d3a0336e4d301c823122ba8), [`74a477b`](https://github.com/shopware/frontends/commit/74a477bfa88e3c518d3a0336e4d301c823122ba8), [`5961f55`](https://github.com/shopware/frontends/commit/5961f55b9f7cebad626cc073ae0bf857aa26f91b), [`c78188a`](https://github.com/shopware/frontends/commit/c78188ac6c95ae19b070f5ea3361a60f21dff281), [`0df4c17`](https://github.com/shopware/frontends/commit/0df4c17b18ec38fc4d0c33f1cb6396f8f532a65d), [`4b43e64`](https://github.com/shopware/frontends/commit/4b43e64a8d78be6eca1f8d9c24140e046193af41)]:
+  - @shopware/api-client@1.7.0
+  - @shopware/composables@1.14.0
+
 ## 4.0.0
 
 ### Major Changes

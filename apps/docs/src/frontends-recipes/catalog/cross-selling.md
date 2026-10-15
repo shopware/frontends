@@ -116,16 +116,6 @@ The response is a bare array — `CrossSellingElementCollection` is `CrossSellin
 
 <RecipeFlowDiagram label="Cross-selling flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. A resolved product ref is passed to `useProductAssociations(product, options)`, which throws if the ref is empty.
-2. `loadAssociations({ searchParams: {} })` is called explicitly — the composable loads nothing on mount.
-3. The request carries the product id and, when `includeSeoUrls` is set, the `sw-include-seo-urls` header.
-4. The response array becomes `productAssociations`.
-5. The UI filters out groups whose `products` array is empty before rendering.
-6. A failed request is caught and logged, leaving `productAssociations` at its previous value.
-7. The UI reads the groups from `productAssociations` instead of keeping its own copy.
-
 You do not need this composable on a CMS-driven product page whose layout contains a cross-selling CMS element (`CmsElementCrossSelling`). The backend resolves that element's groups into the CMS page payload, so the request is only needed where you build the detail page yourself.
 
 ## Request Flow
@@ -326,7 +316,6 @@ The request carries the `sw-context-token` like any other Store API call, and th
 - [Search and Suggest recipe](search.html)
 - [Product Variants recipe](variants.html)
 - [Language and Currency Switch recipe](../context/language-and-currency.html)
-- [Product listing documentation](../../guides/e-commerce/product-listing.html)
 - [Caching best practices](../../best-practices/caching.html)
 - [CMS base layer package](../../packages/cms-base-layer.html)
 - [Helpers package](../../packages/helpers.html)

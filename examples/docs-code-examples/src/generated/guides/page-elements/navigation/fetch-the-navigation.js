@@ -1,1 +1,0 @@
-const { loadNavigationElements, navigationElements } = useNavigation();

@@ -111,16 +111,6 @@ Payment is not part of order placement. `POST /checkout/order` creates the order
 
 <RecipeFlowDiagram label="Payment flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. The confirmation route receives an order id and loads the order with `useOrderDetails(orderId).loadOrderDetails()`.
-2. `readOrder post /order` returns the order with its `transactions`, plus a `paymentChangeable` map.
-3. `useOrderPayment(order)` derives `activeTransaction`, `state`, `paymentMethod` and `isAsynchronous` from that order.
-4. `handlePayment(finishUrl, errorUrl)` sends `POST /handle-payment` and stores the returned `redirectUrl` in `paymentUrl`.
-5. The frontend navigates the browser to `paymentUrl`, leaving the application entirely.
-6. The provider returns the customer to `finishUrl` or `errorUrl`, where the order is loaded again and `state.technicalName` is read.
-7. If the payment failed and `paymentChangeable` allows it, `changePaymentMethod(id)` swaps the method — and the UI reloads the order itself.
-
 You do not pass the payment method to `handlePayment`, and you do not build the order criteria: it is taken from the order transaction, and `loadOrderDetails` already sends the associations and the `checkPromotion` flag the rest of this page depends on.
 
 ## Request Flow
@@ -450,7 +440,7 @@ Nothing in the frontend advances the payment state. `stateMachineState.technical
 - [Order History recipe](../account/order-history.html)
 - [Order Details recipe](../orders/details.html)
 - [Guest Order Lookup recipe](../orders/guest-order-lookup.html)
-- [Payments documentation](../../guides/e-commerce/payments.html)
-- [Checkout documentation](../../guides/e-commerce/checkout.html)
+- [Payment app server integration](../../guides/e-commerce/payments.html#app-server-integration)
+- [Checkout and Order Placement recipe](checkout.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)

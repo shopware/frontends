@@ -8,7 +8,6 @@ nav:
 
 Task-based, how-to documentation. Looking to get a project running first? Start with [Introduction](../introduction/). To see how a feature works end-to-end, from the UI action to the Store API call, read the [Frontends Recipes](../frontends-recipes/).
 
-<PageRef title="Routing" sub="Understand which tools for routing Shopware Frontends provides." page="routing.html" />
 <PageRef title="Languages" sub="Working with multiple languages and translations." page="languages.html" />
 <PageRef title="Storefront URL" sub="Why the Store API needs a storefrontUrl and when to set devStorefrontUrl." page="storefront-url.html" />
 <PageRef title="CMS" sub="Everything related to CMS (Shopping Experiences)." page="cms/" />

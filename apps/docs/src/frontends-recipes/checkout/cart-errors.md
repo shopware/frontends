@@ -102,15 +102,6 @@ Cart errors have no operation of their own. They arrive as the `errors` field on
 
 <RecipeFlowDiagram label="Cart errors flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. A cart write returns `200` with the recalculated cart and an `errors` field.
-2. `useCart` merges that field into `swCartErrors` with `Object.assign`.
-3. `getErrorsCodes()` or `codeErrorsNotification()` consumes the map, clearing it in the process.
-4. `resolveCartError(error)` produces a `messageKey` and a `params` object for one entry.
-5. Your i18n layer translates `errors.<messageKey>` with those params.
-6. The UI reads the notifications from `useNotifications` instead of keeping its own copy.
-
 You do not need to check the HTTP status to find these. A rejected request is a different thing entirely: an HTTP error throws an `ApiClientError`, while timeouts and other transport failures can throw other error types; none reaches `swCartErrors`.
 
 ## Request Flow
@@ -348,6 +339,7 @@ Errors are app state, not component state. A mini cart, a cart page and a checko
 ## Related Links
 
 - [Cart recipe](cart.html)
-- [Checkout documentation](../../guides/e-commerce/checkout.html)
+- [Checkout and Order Placement recipe](checkout.html)
+- [Payment recipe](payment.html)
 - [Error handling in the API client](../../packages/api-client.html#error-handling)
 - [Composables reference](../../packages/composables/)

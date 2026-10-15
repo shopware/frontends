@@ -48,7 +48,7 @@ pnpm add js-cookie
 For CMS components, you can add a package that contains ready-to-use components.
 You can read more about CMS pages here:
 
-<PageRef page="../../guides/cms/content-pages.html" title="Create content pages" sub="Render a content page using components" />
+<PageRef page="../../frontends-recipes/cms/rendering.html" title="Create content pages" sub="Render a content page using components" />
 
 <!-- automd:pm-install name="@shopware/cms-base-layer" dev -->
 

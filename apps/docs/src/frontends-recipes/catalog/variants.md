@@ -108,15 +108,6 @@ The request is `readProduct post /product` by default. With `shopware: { cacheab
 
 <RecipeFlowDiagram label="Product variants flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. A parent component calls `useProduct(product, configurator)` to provide both contexts.
-2. `useProductConfigurator()` builds the initial selection from `product.optionIds`, keyed by translated group name.
-3. Choosing an option calls `handleChange(groupName, optionId, onChangeHandled?)`, which updates the selection and awaits the callback if you passed one.
-4. `findVariantForSelectedOptions()` searches the product list — from that callback, or from an explicit action in your own UI.
-5. The response is one product carrying only the fields the `includes` clause allowed.
-6. The UI reads the selection from `getSelectedOptions` instead of keeping its own copy, and either navigates to the resolved variant or emits it into `changeVariant()`.
-
 You do not get a request from `handleChange` itself. The composable separates "the customer changed the selection" from "resolve what that selection means", and the second half is yours to trigger.
 
 `cms-base-layer` ships that second half: `SwVariantConfigurator` renders the groups and resolves the variant, with an `allowRedirect` prop that is `true` by default. `vue-starter-template` has no selector of its own — it extends `@shopware/cms-base-layer`, so a CMS-rendered product page gets that one as-is. Read it before writing your own, and read it knowing what it does with a miss.
@@ -374,7 +365,7 @@ The selection itself is local to the `useProductConfigurator()` instance, not sh
 - [Search and Suggest recipe](search.html)
 - [Product Reviews recipe](reviews.html)
 - [Language and Currency Switch recipe](../context/language-and-currency.html)
-- [Product listing documentation](../../guides/e-commerce/product-listing.html)
+- [Cross-selling recipe](cross-selling.html)
 - [Caching best practices](../../best-practices/caching.html)
 - [Overwriting CMS components](../../guides/cms/overwriting-cms.html)
 - [Helpers package](../../packages/helpers.html)

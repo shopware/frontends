@@ -108,15 +108,6 @@ Where you put that override matters as much as what is in it. CMS elements are r
 
 <RecipeFlowDiagram label="Contact form flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. The element configuration decides which form renders, and supplies the form title and the confirmation text.
-2. `useSalutations` provides the list a salutation select needs, since the body takes a `salutationId`.
-3. The form validates locally against the seven fields a default shop requires, knowing a given shop may want fewer.
-4. `slotId` carries the element's id so its own configuration applies, and `navigationId` from `useNavigationContext().foreignKey` overrides it with a category's.
-5. `apiClient.invoke("sendContactMail post /contact-form")` sends the body and answers `200` with `individualSuccessMessage`, which the generated type does not describe.
-6. The success flag is local, but the confirmation copy comes from `individualSuccessMessage` in the response, with the slot config as fallback.
-
 You do not get any identifier back. There is nothing to poll, nothing to look up, and no way to tell a duplicate submission from a first one.
 
 ## Request Flow
@@ -597,7 +588,6 @@ Send both from an element override: `slotId` from `content.id`, which `CmsSlot` 
 - [Newsletter recipe](../account/newsletter.html)
 - [Language and currency recipe](../context/language-and-currency.html)
 - [URL Resolving and SEO URLs recipe](../context/url-resolving.html)
-- [Create content pages](../../guides/cms/content-pages.html)
 - [Create elements](../../guides/cms/create-elements.html)
 - [Overwriting CMS components](../../guides/cms/overwriting-cms.html)
 - [Implement a Missing CMS Component](../../guides/cms/missing-component.html)

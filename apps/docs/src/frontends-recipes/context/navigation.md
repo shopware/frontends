@@ -16,6 +16,8 @@ recipe:
     - useShopwareContext
   helpers:
     - getCategoryRoute
+    - getCategoryBreadcrumbs
+    - getCmsBreadcrumbs
   operations:
     - readNavigation post /navigation/{activeId}/{rootId}
     - readSeoUrl post /seo-url
@@ -121,16 +123,6 @@ Resolving a URL and holding the resolution are two different composables. `useNa
 
 <RecipeFlowDiagram label="Navigation and breadcrumbs flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. The layout calls `useNavigation({ type })` once per navigation and loads it inside `useAsyncData`.
-2. `readNavigation post /navigation/{activeId}/{rootId}` returns a category array, cached under `swNavigation-<type>`.
-3. The catch-all route calls `resolvePath(path)`, which asks `/seo-url` which entity that path belongs to.
-4. `useNavigationContext(ref(seoUrl))` holds the answer and exposes it as `routeName` and `foreignKey`.
-5. The page fetches the category for that id, passing listing criteria because a category page is also a listing.
-6. The page invokes `readBreadcrumb get /breadcrumb/{id}` itself and hands the response to `buildDynamicBreadcrumbs`, which writes the shared trail with router-ready paths.
-7. The layout renders the tree from the ref it loaded, and a breadcrumb component reads `breadcrumbs` from the composable.
-
 You do not need to reload the navigation on every route change, and you do not need to resolve a category link yourself. The tree is cached per type for the lifetime of the provide scope, which is why the layout loads it and pages do not, and every category in it already carries the SEO URL `getCategoryRoute` turns into a router target.
 
 ## Request Flow
@@ -167,7 +159,7 @@ Pick by what the composable is about — a tree, a path, an entity, or the trail
 `useNavigation` exposes `navigationElements` and `loadNavigationElements`, and `useNavigationContext` the three values in the row above. `useBreadcrumbs` is the one with a surface worth breaking down:
 
 - **Read** — `breadcrumbs`, the shared trail.
-- **Write** — `buildDynamicBreadcrumbs(response)` replaces the trail from a `readBreadcrumb` response; `pushBreadcrumb(breadcrumb)` appends a single `{ name, path }`.
+- **Write** — `buildDynamicBreadcrumbs(response)` replaces the trail from a `readBreadcrumb` response; `pushBreadcrumb(breadcrumb)` appends a single `{ name, path }`; `useBreadcrumbs(list)` itself replaces the trail with `list` when you pass one, which is how the starter's search page sets its crumbs.
 - **Reset** — `clearBreadcrumbs()` empties it.
 
 Six things the generated reference will not tell you:
@@ -432,6 +424,8 @@ Every request here is scoped by the `sw-context-token`, so the language in that 
 - `buildDynamicBreadcrumbs` prefixes every `path` with `/`. Passing an already-absolute path produces `//path`.
 - `pushBreadcrumb` mutates the shared array in place. Where the ref outlives the page, calling it on every route change without `clearBreadcrumbs()` grows the trail indefinitely.
 - A stale trail is only possible where the ref sits above the page. The starter guards it four ways: `FrontendNavigationPage` and `FrontendDetailPage` call `clearBreadcrumbs()` in setup, the breadcrumb component clears it again from a `router.beforeEach` guard, the breadcrumb request is aborted from that guard and from `onBeforeUnmount`, and the ref is page-scoped so it dies with the page anyway. Only the abort covers a request already in flight.
+- Two helpers from `@shopware/helpers` build a trail without a request. `getCategoryBreadcrumbs(category, { startIndex })` maps the category's own translated `breadcrumb` names, and `startIndex` drops the root levels; `getCmsBreadcrumbs(page)` returns the page's name as a single crumb, which is what the starter's `FrontendLandingPage` passes to `useBreadcrumbs`. Neither crumb carries a `path`, so render them as text or add one yourself.
+- A category can send the customer elsewhere. `getCategoryRoute` already resolves a link-type category to its target, but opening it in a new tab is yours to do: `vue-starter-template` sets `target="_blank"` when `externalLink` or `linkNewTab` is set, in both its top navigation and its footer.
 - `readCategory post /category/{navigationId}` accepts a `ProductListingCriteria` and returns a `Category`, not a search result. The listing criteria apply to the category's embedded listing.
 - `useCategory()` throws a `ContextError` when no category was provided above it. Provide it with `useCategory(categoryRef)` on the page.
 - `useNavigation` always sends `sw-include-seo-urls: true`, so the categories carry the URLs a link needs. Do not resolve routes separately.
@@ -448,6 +442,7 @@ Every request here is scoped by the `sw-context-token`, so the language in that 
 - Do not assume the trail is application-wide. It belongs to the component that called `useBreadcrumbs()` highest in the tree.
 - Do not let a failed category read fall through to a 404. Read `error` from `useAsyncData` and rethrow anything that is not a real 404.
 - Do not prefix breadcrumb paths yourself. `buildDynamicBreadcrumbs` already does.
+- Do not clear the trail from `onBeforeRouteLeave` in a page under the catch-all route. Every shop URL matches the same `[...all]` record, so the guard does not fire when the customer moves from one category or product to the next.
 - Do not use `useCategory()` on a page that has not provided a category.
 - Do not build category links by hand. Use the SEO URLs the navigation already includes.
 
@@ -470,10 +465,6 @@ Every request here is scoped by the `sw-context-token`, so the language in that 
 
 ## Related Links
 
-- [Create a navigation](../../guides/page-elements/navigation.html)
-- [Breadcrumbs](../../guides/page-elements/breadcrumbs.html)
-- [Routing](../../guides/routing.html)
-- [Product listing](../../guides/e-commerce/product-listing.html)
 - [Product Listing and Filters recipe](../catalog/listing.html)
 - [Session Context recipe](session-context.html)
 - [Language and Currency Switch recipe](language-and-currency.html)
