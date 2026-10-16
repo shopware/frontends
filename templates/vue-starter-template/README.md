@@ -12,6 +12,7 @@ A Nuxt storefront foundation with all Shopware Frontends packages pre-configured
 - UnoCSS styling with shared design tokens
 - i18n with `en-GB`, `de-DE` and `pl-PL`
 - ISR route rules and CDN cache headers
+- `/sitemap.xml`, an index of the sitemap files Shopware generates, served from this host. The page URLs inside come from the sales channel domain, so point that domain at the storefront's public URL.
 - A `Dockerfile` for production builds
 
 ## Requirements
@@ -56,7 +57,7 @@ Two values must be set. `nuxt.config.ts` defaults them to the public demo shop, 
 
 `.env.template` documents the optional values too. Two are worth knowing about:
 
-`NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL` is mainly useful for local development when the Shopware sales channel domain does not match `localhost`. In production, leave it empty unless you specifically need to override it.
+`NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL` is mainly useful for local development when the Shopware sales channel domain does not match `localhost`. For the public demo backend it is `https://demo-frontends.shopware.store/figma`, the only domain that sales channel lists. In production, leave it empty unless you specifically need to override it.
 
 `NUXT_SHOPWARE_ENDPOINT` is optional. Use it only when server-side requests should target a different internal URL than the browser-facing `NUXT_PUBLIC_SHOPWARE_ENDPOINT`.
 
