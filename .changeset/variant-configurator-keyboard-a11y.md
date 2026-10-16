@@ -6,4 +6,4 @@ Make `SwVariantConfigurator` keyboard and screen-reader accessible. Each option 
 
 Each radio group's `name` is scoped to the component instance, so two configurators on one page that share a property group such as "Size" no longer merge into one group.
 
-With `allowRedirect` (the default), an option picked with the arrow keys only updates the selection; the redirect to the variant happens on Enter or Space, or on click. Without it, every change still emits `change` immediately.
+With `allowRedirect` (the default), an option picked with the arrow keys only updates the selection; the redirect to the variant happens on Enter or Space, or on click. If focus leaves the option group before that, the selection reverts to the loaded variant, so the selected option always matches the product that Add to cart uses. Without `allowRedirect`, every change still emits `change` immediately.

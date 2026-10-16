@@ -75,23 +75,50 @@ const onHandleChange = async () => {
 
 const ARROW_KEYS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
 let isArrowSelection = false;
+let uncommittedSelection:
+  | { groupName: string; committedOptionId: string | undefined }
+  | undefined;
 
 const onOptionKeydown = (event: KeyboardEvent) => {
   if (ARROW_KEYS.includes(event.key)) {
     isArrowSelection = true;
     return;
   }
-  const input = event.target as HTMLInputElement;
-  if ((event.key === "Enter" || event.key === " ") && input.checked) {
+  if ((event.key === "Enter" || event.key === " ") && uncommittedSelection) {
     event.preventDefault();
+    uncommittedSelection = undefined;
     onHandleChange();
   }
 };
 
-const onOptionChange = (groupName: string, optionId: string) => {
-  const commitLater = isArrowSelection && allowRedirect;
+const onOptionKeyup = () => {
   isArrowSelection = false;
-  handleChange(groupName, optionId, commitLater ? undefined : onHandleChange);
+};
+
+const onOptionChange = (groupName: string, optionId: string) => {
+  if (isArrowSelection && allowRedirect) {
+    uncommittedSelection ??= {
+      groupName,
+      committedOptionId: getSelectedOptions.value[groupName],
+    };
+    handleChange(groupName, optionId);
+    return;
+  }
+  uncommittedSelection = undefined;
+  handleChange(groupName, optionId, onHandleChange);
+};
+
+const onGroupFocusout = (event: FocusEvent) => {
+  const group = event.currentTarget as HTMLElement;
+  if (group.contains(event.relatedTarget as Node | null)) return;
+  isArrowSelection = false;
+  if (uncommittedSelection?.committedOptionId) {
+    handleChange(
+      uncommittedSelection.groupName,
+      uncommittedSelection.committedOptionId,
+    );
+  }
+  uncommittedSelection = undefined;
 };
 </script>
 
@@ -114,7 +141,7 @@ const onOptionChange = (groupName: string, optionId: string) => {
       <div class="text-sm text-gray-900 font-medium">
         {{ getTranslatedProperty(optionGroup, "name") }}
       </div>
-      <fieldset class="mt-4 flex-1">
+      <fieldset class="mt-4 flex-1" @focusout="onGroupFocusout">
         <legend class="sr-only">
           {{ translations.product.chooseA }}
           {{ getTranslatedProperty(optionGroup, "name") }}
@@ -136,6 +163,7 @@ const onOptionChange = (groupName: string, optionId: string) => {
               :name="`variant-${instanceId}-${optionGroup.id}`"
               :checked="isOptionSelected(option.id)"
               @keydown="onOptionKeydown"
+              @keyup="onOptionKeyup"
               @change="onOptionChange(optionGroup.translated.name, option.id)"
             />
             <p
