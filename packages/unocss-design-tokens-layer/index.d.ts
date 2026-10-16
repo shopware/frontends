@@ -1,6 +1,6 @@
 /// <reference types="@nuxt/schema" />
 
-export * from "./.nuxt/imports";
+export {};
 
 declare module "nuxt/schema" {
   interface AppConfig extends CmsBaseLayerAppConfig {}

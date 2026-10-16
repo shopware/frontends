@@ -81,6 +81,7 @@ const handleSortingClick = (key: string) => {
             tabindex="-1"
             data-testid="listing-sort-option"
             :data-sort-key="sorting.key"
+            :data-selected="sorting.key === currentSort"
           >
             {{ sorting.translated?.label }}
           </button>
