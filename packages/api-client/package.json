@@ -77,7 +77,6 @@
     "vitest": "5.0.0"
   },
   "dependencies": {
-    "defu": "6.1.7",
     "hookable": "5.5.3",
     "ofetch": "1.5.1"
   }

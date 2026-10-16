@@ -140,7 +140,7 @@ The breadcrumb request is the only row without a composable. `referrerCategoryId
 
 The tooltip on the last two rows shows `Schemas["Breadcrumb"]`, the full wire shape. `pushBreadcrumb` is looser than that: it also accepts a bare `{ name, path }`, which is what you hand it for a crumb you build yourself.
 
-The three POST rows are the default. Under `cacheableReads` the navigation, the path resolution and the category read each switch to their GET variant, so a proxy can cache them.
+The three POST rows are the default. Under `cacheableReads` the navigation, the path resolution and the category read each switch to their GET variant for a fresh default guest, so a proxy can cache them. Other sessions still post, see [Which sessions use GET](../../best-practices/caching.html#which-sessions-use-get).
 
 ## Composables
 

@@ -87,6 +87,14 @@ function isPubliclyCacheableResponse(
   return /(?:^|,)\s*public\s*(?:,|$)/i.test(cacheControl);
 }
 
+const ANONYMOUS_REQUEST = Symbol("anonymousRequest");
+
+function dropsContextToken(headers: ClientHeaders | undefined): boolean {
+  return Object.entries(headers ?? {}).some(
+    ([key, value]) => key.toLowerCase() === "sw-context-token" && value === "",
+  );
+}
+
 export function createAPIClient<
   // TODO: Keep this broad until generated operation types are narrowed.
   OPERATIONS extends Record<string, any> = operations,
@@ -134,6 +142,10 @@ export function createAPIClient<
         // out. Session-changing routes (login/logout/register/context) respond
         // with Cache-Control: private and still update the token as before.
         if (isPubliclyCacheableResponse(context.response)) {
+          return;
+        }
+        // An anonymous request gets a guest token back. Keep the session.
+        if (ANONYMOUS_REQUEST in context.options) {
           return;
         }
         if (
@@ -229,6 +241,9 @@ export function createAPIClient<
         body: currentParams.body,
         headers: mergedHeaders as HeadersInit,
         query: currentParams.query,
+        ...(dropsContextToken(currentParams.headers) && {
+          [ANONYMOUS_REQUEST]: true,
+        }),
       });
 
       return {

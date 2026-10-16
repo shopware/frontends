@@ -21,6 +21,16 @@ describe("resolveRequestHeaders", () => {
     expect(headers.accept).toBe("application/json");
   });
 
+  it("drops a header set to an empty string instead of sending it empty", () => {
+    const headers = resolveRequestHeaders(
+      { "sw-context-token": "" },
+      { ...DEFAULTS, "sw-context-token": "token" },
+      undefined,
+    );
+    expect(headers).not.toHaveProperty("sw-context-token");
+    expect(headers.accept).toBe("application/json");
+  });
+
   it("keeps the default when there is no body", () => {
     const headers = resolveRequestHeaders(undefined, DEFAULTS, undefined);
     expect(contentTypeOf(headers)).toBe("application/json");
@@ -192,6 +202,9 @@ describe("resolveRequestHeaders", () => {
       DEFAULTS,
       new Blob(["x"]),
     );
-    expect(contentTypeOf(headers)).toBe("application/pdf");
+    expect(headers).toEqual({
+      "content-type": "application/pdf",
+      accept: "application/json",
+    });
   });
 });

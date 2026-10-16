@@ -9,6 +9,7 @@ describe("createShopwareContext", () => {
     const context = createShopwareContext(app, {});
     context.install(app);
     expect(context).toBeDefined();
+    expect(context.guestServerRender).toBe(false);
   });
 
   it("should create a Shopware context with custom options", () => {
@@ -16,9 +17,11 @@ describe("createShopwareContext", () => {
     const options = {
       devStorefrontUrl: "https://devstorefront.com",
       enableDevtools: true,
+      guestServerRender: true,
     };
     const context = createShopwareContext(app, options);
 
     expect(context).toBeDefined();
+    expect(context.guestServerRender).toBe(true);
   });
 });
