@@ -14,7 +14,7 @@ pnpm exec playwright install chromium
 
 Copy `.env.template` to `.env` and fill in the values. `BASE_E2E_URL` points at the storefront you want to test. The file is looked up from the working directory upwards, so a root `.env` works too.
 
-The login tests need an account on that storefront. Put its `USER_EMAIL` and `PASSWORD` in the same file.
+No account has to exist on that storefront. Tests that sign in to an existing account take the `customer` fixture from `fixtures.ts`, which registers a fresh one through the Store API. The other signed-in tests register through the storefront's own form. Either way, the sales channel must not require double opt-in for registration.
 
 ## Run tests
 
