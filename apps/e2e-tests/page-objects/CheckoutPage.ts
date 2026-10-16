@@ -4,7 +4,7 @@ import {
   selectDefaultCountry,
   selectFirstOptionIfPresent,
 } from "../utils/form";
-import { type StoreApi, captureStoreApi } from "../utils/store-api";
+import type { StoreApi } from "../utils/store-api";
 
 export class CheckoutPage {
   readonly page: Page;
@@ -22,7 +22,7 @@ export class CheckoutPage {
   readonly createAccountToggle: Locator;
   readonly passwordInput: Locator;
 
-  constructor(page: Page) {
+  constructor(page: Page, storeApi: { value?: StoreApi }) {
     this.page = page;
     this.goToCheckoutButton = page.getByTestId("checkout-cart-link");
     this.placeOrderButton = page.getByTestId("checkout-place-order-button");
@@ -38,11 +38,10 @@ export class CheckoutPage {
       "checkout-create-account-toggle",
     );
     this.passwordInput = page.getByTestId("checkout-pi-password-input");
-    this.storeApi = captureStoreApi(page);
+    this.storeApi = storeApi;
   }
 
   async goToCheckout() {
-    await this.page.waitForSelector("[data-testid='mini-cart-container']");
     await this.page
       .getByTestId("mini-cart-container")
       .waitFor({ state: "visible" });

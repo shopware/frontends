@@ -4,6 +4,16 @@ import { dirname } from "node:path";
 import { test as base, expect } from "@playwright/test";
 import type { Request } from "@playwright/test";
 
+import { CartPage } from "./page-objects/CartPage";
+import { CategoryPage } from "./page-objects/CategoryPage";
+import { CheckoutPage } from "./page-objects/CheckoutPage";
+import { HomePage } from "./page-objects/HomePage";
+import { LoginForm } from "./page-objects/LoginPage";
+import { MyAccountPage } from "./page-objects/MyAccountPage";
+import { ProductPage } from "./page-objects/ProductPage";
+import { RegisterForm } from "./page-objects/RegisterPage";
+import { SearchResultPage } from "./page-objects/SearchResultPage";
+import { WishlistPage } from "./page-objects/WishlistPage";
 import {
   type Customer,
   type StoreApi,
@@ -20,7 +30,18 @@ type Entry = Record<string, unknown>;
 export const test = base.extend<{
   networkDiagnostics: void;
   storeApi: { value?: StoreApi };
+  guidanceBanner: void;
   customer: Customer;
+  homePage: HomePage;
+  categoryPage: CategoryPage;
+  searchResultPage: SearchResultPage;
+  productPage: ProductPage;
+  cartPage: CartPage;
+  checkoutPage: CheckoutPage;
+  loginForm: LoginForm;
+  registrationPage: RegisterForm;
+  myAccountPage: MyAccountPage;
+  wishlistPage: WishlistPage;
 }>({
   networkDiagnostics: [
     async ({ page }, use, testInfo) => {
@@ -199,6 +220,52 @@ export const test = base.extend<{
     },
     { timeout: 120_000 },
   ],
+
+  guidanceBanner: [
+    async ({ page }, use, testInfo) => {
+      if (!testInfo.tags.includes("@accessibility")) {
+        await page.addInitScript(() => {
+          window.localStorage.setItem(
+            "shopware-guidance-banner-dismissed",
+            "true",
+          );
+        });
+      }
+      await use();
+    },
+    { auto: true },
+  ],
+
+  homePage: async ({ page }, use) => {
+    await use(new HomePage(page));
+  },
+  categoryPage: async ({ page }, use) => {
+    await use(new CategoryPage(page));
+  },
+  searchResultPage: async ({ page }, use) => {
+    await use(new SearchResultPage(page));
+  },
+  productPage: async ({ page }, use) => {
+    await use(new ProductPage(page));
+  },
+  cartPage: async ({ page }, use) => {
+    await use(new CartPage(page));
+  },
+  checkoutPage: async ({ page, storeApi }, use) => {
+    await use(new CheckoutPage(page, storeApi));
+  },
+  loginForm: async ({ page }, use) => {
+    await use(new LoginForm(page));
+  },
+  registrationPage: async ({ page, storeApi }, use) => {
+    await use(new RegisterForm(page, storeApi));
+  },
+  myAccountPage: async ({ page }, use) => {
+    await use(new MyAccountPage(page));
+  },
+  wishlistPage: async ({ page }, use) => {
+    await use(new WishlistPage(page));
+  },
 });
 
 export { expect } from "@playwright/test";

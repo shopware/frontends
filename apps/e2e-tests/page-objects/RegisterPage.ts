@@ -6,7 +6,7 @@ import {
   selectDefaultCountry,
   selectFirstOptionIfPresent,
 } from "../utils/form";
-import { type StoreApi, captureStoreApi } from "../utils/store-api";
+import type { StoreApi } from "../utils/store-api";
 
 export class RegisterForm {
   // Define selectors
@@ -27,7 +27,7 @@ export class RegisterForm {
   readonly submitButton: Locator;
 
   // Init selectors using constructor
-  constructor(page: Page) {
+  constructor(page: Page, storeApi: { value?: StoreApi }) {
     this.page = page;
     this.accountType = page.getByTestId("registration-account-type-select");
     this.firstName = page.getByTestId("registration-first-name-input");
@@ -42,7 +42,7 @@ export class RegisterForm {
     this.country = page.getByTestId("country-select");
     this.countryState = page.getByTestId("checkout-pi-state-input");
     this.submitButton = page.getByTestId("registration-submit-button");
-    this.storeApi = captureStoreApi(page);
+    this.storeApi = storeApi;
   }
 
   // Define login page methods
