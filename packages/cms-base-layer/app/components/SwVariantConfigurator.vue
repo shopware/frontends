@@ -108,6 +108,18 @@ const onOptionChange = (groupName: string, optionId: string) => {
   handleChange(groupName, optionId, onHandleChange);
 };
 
+const onOptionClick = (groupName: string, optionId: string) => {
+  if (
+    isArrowSelection ||
+    uncommittedSelection?.groupName !== groupName ||
+    getSelectedOptions.value[groupName] !== optionId
+  ) {
+    return;
+  }
+  uncommittedSelection = undefined;
+  onHandleChange();
+};
+
 const onGroupFocusout = (event: FocusEvent) => {
   const group = event.currentTarget as HTMLElement;
   if (group.contains(event.relatedTarget as Node | null)) return;
@@ -164,6 +176,7 @@ const onGroupFocusout = (event: FocusEvent) => {
               :checked="isOptionSelected(option.id)"
               @keydown="onOptionKeydown"
               @keyup="onOptionKeyup"
+              @click="onOptionClick(optionGroup.translated.name, option.id)"
               @change="onOptionChange(optionGroup.translated.name, option.id)"
             />
             <p
