@@ -1,17 +1,13 @@
-/**
- * Currently devtools are not working in Nuxt 3
- * source: https://github.com/nuxt/framework/issues/4325
- * - we don't need them for now as we do not show any significant info for now
- */
-
 import { effectScope, markRaw, reactive } from "vue";
 import type { App, EffectScope } from "vue";
-// import { registerShopwareDevtools } from "./devtools/plugin";
 
 export function createShopwareContext(
   app: App,
   options: {
     devStorefrontUrl?: string | null;
+    /**
+     * @deprecated Has no effect and will be removed in the next major release.
+     */
     enableDevtools?: boolean;
     browserLocale?: string;
     /**
@@ -27,8 +23,6 @@ export function createShopwareContext(
   const state = scope.run(() => {
     return reactive({
       interceptors: {},
-      // sharedStore: options.initialStore || reactive({}),
-      // shopwareDefaults: options.shopwareDefaults || {},
     });
   });
 
@@ -41,13 +35,13 @@ export function createShopwareContext(
     _a: app,
     _e: scope,
     devStorefrontUrl: options.devStorefrontUrl,
+    /**
+     * @deprecated Not read by any composable and will be removed in the next major release.
+     */
     state,
     browserLocale: options.browserLocale || "en-US",
     cacheableReads: options.cacheableReads ?? false,
   });
 
-  if (options?.enableDevtools && typeof window !== "undefined") {
-    // registerShopwareDevtools(app, shopwarePlugin);
-  }
   return shopwarePlugin;
 }

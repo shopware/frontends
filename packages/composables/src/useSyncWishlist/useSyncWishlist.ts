@@ -45,6 +45,8 @@ export type UseSyncWishlistReturn = {
   products: ComputedRef<Schemas["Product"][]>;
   /**
    * Indicates if the wishlist is loading
+   *
+   * @deprecated Never updated, always `false`. Will be removed in the next major release.
    */
   isLoading: Ref<boolean>;
 };

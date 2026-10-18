@@ -22,6 +22,8 @@ export type UseProductConfiguratorReturn = {
 
   /**
    * Indicates if the options are being (re)loaded
+   *
+   * @deprecated Set once from `product.options` and never updated. Track the loading state in your component. Will be removed in the next major release.
    */
   isLoadingOptions: Ref<boolean>;
   /**
