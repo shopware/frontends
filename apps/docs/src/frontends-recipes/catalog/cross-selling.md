@@ -37,7 +37,7 @@ const steps = [
     action: "Provide a product",
     detail:
       "useProductAssociations takes a ComputedRef of the product and throws immediately if it is empty. The product has to be resolved before the composable is created.",
-    code: "useProductAssociations(product, { associationContext: 'cross-selling' })",
+    code: "useProductAssociations(product, { includeSeoUrls: true })",
     state: "product ref",
     typeKeys: ['Schemas["Product"]'],
   },
@@ -45,8 +45,8 @@ const steps = [
     title: "UI",
     action: "Trigger the load",
     detail:
-      "Nothing loads on its own. loadAssociations is called explicitly, and its declared params argument is ignored by the implementation.",
-    code: "await loadAssociations({ searchParams: {} })",
+      "Nothing loads on its own. loadAssociations is called explicitly, and its deprecated params argument is ignored by the implementation.",
+    code: "await loadAssociations()",
     state: "isLoading",
     typeKeys: [],
   },
@@ -120,13 +120,13 @@ You do not need this composable on a CMS-driven product page whose layout contai
 
 ## Request Flow
 
-| Step                   | Code                                     | Store API                                 | Type                                                                                                                        |
-| ---------------------- | ---------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| Resolve the product    | `useProductSearch().search(productId)`   | `POST /product/{productId}`               | <SchemaTypeTooltip type-key='operations["readProductDetail post /product/{productId}"]["response"]' />                      |
-| Load the groups        | `loadAssociations({ searchParams: {} })` | `POST /product/{productId}/cross-selling` | none — the operation declares no request body                                                                               |
-| Read the groups        | `productAssociations`                    | `POST /product/{productId}/cross-selling` | <SchemaTypeTooltip type-key='operations["readProductCrossSellings post /product/{productId}/cross-selling"]["response"]' /> |
-| Read one group         | `group.crossSelling`, `group.products`   | none                                      | <SchemaTypeTooltip type-key='Schemas["CrossSellingElement"]' />                                                             |
-| Read its configuration | `group.crossSelling.position`, `.type`   | none                                      | <SchemaTypeTooltip type-key='Schemas["ProductCrossSelling"]' />                                                             |
+| Step                   | Code                                   | Store API                                 | Type                                                                                                                        |
+| ---------------------- | -------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Resolve the product    | `useProductSearch().search(productId)` | `POST /product/{productId}`               | <SchemaTypeTooltip type-key='operations["readProductDetail post /product/{productId}"]["response"]' />                      |
+| Load the groups        | `loadAssociations()`                   | `POST /product/{productId}/cross-selling` | none — the operation declares no request body                                                                               |
+| Read the groups        | `productAssociations`                  | `POST /product/{productId}/cross-selling` | <SchemaTypeTooltip type-key='operations["readProductCrossSellings post /product/{productId}/cross-selling"]["response"]' /> |
+| Read one group         | `group.crossSelling`, `group.products` | none                                      | <SchemaTypeTooltip type-key='Schemas["CrossSellingElement"]' />                                                             |
+| Read its configuration | `group.crossSelling.position`, `.type` | none                                      | <SchemaTypeTooltip type-key='Schemas["ProductCrossSelling"]' />                                                             |
 
 The load row's `Type` cell is empty because there is nothing to type. That is the fact this whole recipe hangs on.
 
@@ -145,14 +145,14 @@ Pick by scope — where the product ref comes from, then what you do with it:
 
 `useProductAssociations` is the one this recipe is about:
 
-- **Create** — `useProductAssociations(product, options)`. `product` is a `ComputedRef<Product>`, not an id; `options` is `{ associationContext, includeSeoUrls? }`.
+- **Create** — `useProductAssociations(product, options)`. `product` is a `ComputedRef<Product>`, not an id; `options` is optional, `{ associationContext?, includeSeoUrls? }`, and `associationContext` is deprecated.
 - **Read** — `productAssociations` and `isLoading`, both `ComputedRef`.
-- **Write** — `loadAssociations({ searchParams: {} })`, the only thing that fetches anything.
+- **Write** — `loadAssociations()`, the only thing that fetches anything.
 
 Seven things the generated reference will not tell you:
 
-- `loadAssociations` declares a `params` argument with `method` and `searchParams`, and the implementation takes no parameters at all. Both are discarded — but the argument is still **required by the type**, so a bare `loadAssociations()` fails to compile with `TS2554`. Pass `{ searchParams: {} }` and expect it to be thrown away. `examples/product-detail-page` passes a full `associations` object inside `searchParams` that goes nowhere — treat it as a warning, not a pattern.
-- `options.associationContext` accepts `"cross-selling" | "reviews"`, but the implementation always calls the cross-selling operation. Passing `"reviews"` fetches cross-sellings. Use `useProductReviews` instead — see the [Product Reviews recipe](reviews.html).
+- `loadAssociations` declares an optional `params` argument with `method` and `searchParams`, and the implementation takes no parameters at all. Both are deprecated and discarded, so call `loadAssociations()`. `examples/product-detail-page` passes a full `associations` object inside `searchParams` that goes nowhere — treat it as a warning, not a pattern.
+- `options.associationContext` is deprecated. It accepts `"cross-selling" | "reviews"`, but the implementation always calls the cross-selling operation. Passing `"reviews"` fetches cross-sellings. Use `useProductReviews` instead — see the [Product Reviews recipe](reviews.html).
 - The composable throws `[useProductAssociations]: Product is not provided.` during setup when the product ref is empty. It is a `throw` in the composable body, not a rejected promise, so it takes the whole component down — and on a server render it propagates to Nitro as a 500 for the entire route unless a `<NuxtErrorBoundary>` catches it. Resolve the product first.
 - Errors from the request are caught, logged to the console and swallowed. A resolved `loadAssociations()` is not proof that anything was fetched.
 - `productAssociations` is backed by a plain `ref([])` created per call. Nothing is provided or shared, so two components calling it for the same product each issue their own request.
@@ -208,7 +208,7 @@ const { formatLink } = useInternationalization(localePath);
 const { productAssociations, isLoading, loadAssociations } =
   useProductAssociations(
     computed(() => product),
-    { associationContext: "cross-selling", includeSeoUrls: true },
+    { includeSeoUrls: true },
   );
 
 const groups = computed(() =>
@@ -217,7 +217,7 @@ const groups = computed(() =>
 
 watch(
   () => product.id,
-  () => loadAssociations({ searchParams: {} }),
+  () => loadAssociations(),
   { immediate: import.meta.client },
 );
 </script>
@@ -261,7 +261,7 @@ The groups are rendered stacked, each under its own `h2`, rather than as tabs. A
 
 The watcher is guarded with `immediate: import.meta.client`, so the load is deliberately client-only. That keeps session-dependent prices and rule-based exclusion out of the server-rendered response, which matters because catalog routes are ISR-cached — the cost is that the block is absent from the cached HTML and appears after hydration.
 
-The request carries the `sw-context-token` like any other Store API call, and the response depends on that session. Prices on the cross-sold products are calculated for the current currency and tax state, and a product excluded by the customer's rules does not appear. Switching currency or language leaves the already-loaded groups in place, stale, until you call `loadAssociations({ searchParams: {} })` again — the composable watches nothing itself, which is why the example wires its own watcher.
+The request carries the `sw-context-token` like any other Store API call, and the response depends on that session. Prices on the cross-sold products are calculated for the current currency and tax state, and a product excluded by the customer's rules does not appear. Switching currency or language leaves the already-loaded groups in place, stale, until you call `loadAssociations()` again — the composable watches nothing itself, which is why the example wires its own watcher.
 
 `includeSeoUrls` is the one option that has an effect. Setting it adds `sw-include-seo-urls: true`, which is what `getProductRoute` needs to build a link — without it the cross-sold products come back with no SEO URLs.
 
@@ -283,7 +283,7 @@ The request carries the `sw-context-token` like any other Store API call, and th
 
 ## Common Mistakes
 
-- Do not pass criteria to `loadAssociations`. They are discarded — but the argument itself is required, so pass `{ searchParams: {} }`.
+- Do not pass criteria to `loadAssociations`. They are discarded, and the `params` argument is deprecated.
 - Do not use `associationContext: "reviews"` and expect reviews.
 - Do not expect `loadAssociations` to run on mount.
 - Do not treat a resolved `loadAssociations()` as proof the request succeeded. Errors are swallowed.
@@ -301,7 +301,7 @@ The request carries the `sw-context-token` like any other Store API call, and th
 ## Testing Checklist
 
 - Creating the composable with an empty product ref throws during setup.
-- `loadAssociations({ searchParams: {} })` issues exactly one `readProductCrossSellings post /product/{productId}/cross-selling` request.
+- `loadAssociations()` issues exactly one `readProductCrossSellings post /product/{productId}/cross-selling` request.
 - The request carries no body.
 - With `includeSeoUrls: true` the request carries the `sw-include-seo-urls` header, and the rendered links use the SEO path.
 - Groups with an empty `products` array are not rendered.
