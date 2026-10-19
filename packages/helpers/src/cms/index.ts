@@ -27,6 +27,7 @@ export * from "./layoutClasses";
 export * from "./isMaintenanceMode";
 export * from "./getCmsTranslate";
 export * from "./getCmsBreadcrumbs";
+export * from "./getCmsMeta";
 export { getProductListingFromCmsPage } from "./getProductListingFromCmsPage";
 
 /**

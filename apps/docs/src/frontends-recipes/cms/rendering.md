@@ -20,6 +20,7 @@ recipe:
     - useListing
   helpers:
     - getCmsLayoutConfiguration
+    - getCmsMeta
     - getProductListingFromCmsPage
     - getTranslatedProperty
   operations:
@@ -100,8 +101,8 @@ const steps = [
     title: "UI",
     action: "Set the meta tags",
     detail:
-      "useCmsMeta reads the meta fields off the entity, not off the CMS page. It takes the entity itself rather than a ref — the templates unwrap theirs inside useCmsHead — so it does not follow a replacement.",
-    code: "const { title, meta } = useCmsMeta(unref(category))",
+      "getCmsMeta reads the meta fields off the entity, not off the CMS page. It takes the entity itself rather than a ref — the templates unwrap theirs inside useCmsHead — so it does not follow a replacement.",
+    code: "const { title, metaTitle, metaDescription, keywords } = getCmsMeta(unref(category))",
     state: "document head",
     typeKeys: [],
   },
@@ -150,7 +151,7 @@ Pick by scope — how much of the CMS page the composable is about:
 | `useLandingSearch`     | a landing page       | the same, for a landing page                                    |
 | `useCategory`          | the current category | reading the category a page already fetched, as a `ComputedRef` |
 | `useNavigationContext` | the current route    | deciding whether the page behaves as a category page            |
-| `useCmsMeta`           | the entity           | filling the document title and meta tags                        |
+| `useCmsMeta`           | the entity           | never — deprecated, use `getCmsMeta` from `@shopware/helpers`   |
 | `useCmsTranslations`   | every CMS component  | overriding a component's fallback strings per locale            |
 | `useCmsSection`        | one section          | splitting a section's blocks by position                        |
 | `useCmsBlock`          | one block            | picking the slot an element component renders from              |
@@ -169,7 +170,7 @@ Five things the generated reference will not tell you:
 - Only the lookups follow a replacement, and only if you hand them something to follow. `getPositionContent` and `getSlotContent` read the current value on every call, but the `section` and `block` the composable returns are the value read when it was called. `useCmsElementConfig` accepts the element, a `ref` or a getter, and `getConfigValue` reads it on every call. `useCmsMeta` follows nothing at all and takes the object itself: a `ref` makes it produce empty strings without an error.
 - `getSlotContent(name)` is `Array.find` with a cast. A slot the block does not have is `undefined` at runtime while the type promises a value.
 - `getConfigValue(key)` returns `false`, not the value, when the entry's `source` is `"mapped"` — the case where the value comes from the surrounding entity rather than from the layout.
-- `useCmsMeta(entity)` returns a `title` and a `meta` computed, and it takes the entity, not a ref to it. Neither template calls it directly; both wrap it in their own `useCmsHead(entity)`, which unwraps the ref, passes the title, description and Open Graph tags to `useSeoMeta`, and the remaining meta entries and the canonical link to `useHead`.
+- `useCmsMeta(entity)` is deprecated. It takes the entity, not a ref to it, so its `title` and `meta` computeds do not follow a replacement. `getCmsMeta(entity)` from `@shopware/helpers` returns the same fields as plain strings, and both templates call it inside their own `useCmsHead(entity)`, which unwraps the ref, passes the title, description and Open Graph tags to `useSeoMeta`, and the remaining meta entries and the canonical link to `useHead`.
 - `useCmsElementConfig` and `useCmsElementImage` live in `packages/composables/src/cms/` rather than in a `use*` directory of their own, so the generated reference — built one page per `use*` directory — has no page for them.
 
 `resolveCmsComponent(content)` is exported from `@shopware/composables` alongside them. It derives the component name from `content.type` and `content.apiAlias` and attempts the resolution for you.
@@ -298,7 +299,7 @@ That payload is also the one a shared cache may store. With the starter's `cache
 - Do not use `getSlotContent` without a guard. The cast hides a possible `undefined`.
 - Do not call `resolveComponent` outside a component's setup or render.
 - Do not put a CMS component override outside a path registered `global: true`.
-- Do not read meta tags off the CMS page. `useCmsMeta` takes the entity, unwrapped.
+- Do not read meta tags off the CMS page. `getCmsMeta` takes the entity, unwrapped.
 - Do not issue a listing request on a category page before checking whether the CMS payload already carried one.
 - Do not assume a rendered CMS page survives a currency or language switch.
 
@@ -311,7 +312,7 @@ That payload is also the one a shared cache may store. With the starter's `cache
 - Replacing the `content` of a mounted block changes what its slots render, without a remount.
 - A category page renders its first page of products before any listing request is sent.
 - A product listing element on a landing page fails loudly through `useCategoryListing` instead of rendering an empty listing.
-- `useCmsMeta` produces a title from the entity's translated name and meta entries only for the fields that are set.
+- `getCmsMeta` returns the entity's translated name as `title` and an empty string for every meta field that is not set.
 - A component reading `useCmsTranslations()` renders its own defaults when nothing was provided.
 - An element reads its admin configuration through `getConfigValue`, and a key the layout does not set comes back `undefined`.
 - Switching the language re-renders the page with translated CMS content.

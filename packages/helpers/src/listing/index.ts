@@ -8,3 +8,4 @@ export {
   getCategoryFilterPostFilter,
 } from "./categoryFilter";
 export * from "./filters";
+export * from "./getListingFiltersQuery";

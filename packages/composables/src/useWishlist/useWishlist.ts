@@ -1,3 +1,4 @@
+import { getTotalPages } from "@shopware/helpers";
 import { defu } from "defu";
 /**
  * Template composable
@@ -104,7 +105,9 @@ export function useWishlist(): UseWishlistReturn {
     canSyncWishlist.value ? itemsSync.value : itemsLocal.value,
   );
 
-  const totalPagesCount = computed(() => Math.ceil(count.value / limit.value));
+  const totalPagesCount = computed(() =>
+    getTotalPages(count.value, limit.value),
+  );
 
   const clearWishlist = async () => {
     if (canSyncWishlist.value) {
