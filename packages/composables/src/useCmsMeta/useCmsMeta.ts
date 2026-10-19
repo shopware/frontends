@@ -19,7 +19,7 @@ export type UseCmsMetaReturn = {
 };
 
 /**
- * @deprecated Use `getCmsMeta` from `@shopware/helpers` instead. It reads the same fields without wrapping them in computeds that never update. Will be removed in the next major release.
+ * @deprecated Use `getCmsMeta` from `@shopware/helpers` instead, inside a `computed` to keep following in-place changes of a reactive entity. Will be removed in the next major release.
  * @category CMS (Shopping Experiences)
  */
 export function useCmsMeta(

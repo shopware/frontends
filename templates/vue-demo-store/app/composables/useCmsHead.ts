@@ -31,24 +31,26 @@ export function useCmsHead(
     return url.href;
   });
   // get title and meta tags available in the Shopware instance
-  const cmsMeta = getCmsMeta(unrefEntity);
+  const cmsMeta = computed(() => getCmsMeta(unrefEntity));
 
   const title = computed(() => {
-    const title = cmsMeta.title;
+    const title = cmsMeta.value.title;
     if (options?.mainShopTitle) {
       return `${title} | ${options.mainShopTitle}`;
     }
     return title;
   });
 
-  const description = computed(() => cmsMeta.metaDescription || undefined);
+  const description = computed(
+    () => cmsMeta.value.metaDescription || undefined,
+  );
 
   const ogTitle = computed(() =>
     isProduct(unrefEntity)
       ? getTranslatedProperty(unrefEntity, "ogTitle") ||
-        cmsMeta.metaTitle ||
+        cmsMeta.value.metaTitle ||
         title.value
-      : cmsMeta.metaTitle || undefined,
+      : cmsMeta.value.metaTitle || undefined,
   );
 
   const ogDescription = computed(() =>
@@ -75,8 +77,8 @@ export function useCmsHead(
 
   const additionalMeta = computed(() =>
     [
-      { name: "keywords", content: cmsMeta.keywords },
-      { name: "title", content: cmsMeta.metaTitle },
+      { name: "keywords", content: cmsMeta.value.keywords },
+      { name: "title", content: cmsMeta.value.metaTitle },
     ].filter((entry) => entry.content),
   );
 

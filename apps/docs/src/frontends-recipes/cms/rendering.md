@@ -102,7 +102,7 @@ const steps = [
     action: "Set the meta tags",
     detail:
       "getCmsMeta reads the meta fields off the entity, not off the CMS page. It takes the entity itself rather than a ref — the templates unwrap theirs inside useCmsHead — so it does not follow a replacement.",
-    code: "const { title, metaTitle, metaDescription, keywords } = getCmsMeta(unref(category))",
+    code: "const cmsMeta = computed(() => getCmsMeta(unref(category)))",
     state: "document head",
     typeKeys: [],
   },
@@ -170,7 +170,7 @@ Five things the generated reference will not tell you:
 - Only the lookups follow a replacement, and only if you hand them something to follow. `getPositionContent` and `getSlotContent` read the current value on every call, but the `section` and `block` the composable returns are the value read when it was called. `useCmsElementConfig` accepts the element, a `ref` or a getter, and `getConfigValue` reads it on every call. `useCmsMeta` follows nothing at all and takes the object itself: a `ref` makes it produce empty strings without an error.
 - `getSlotContent(name)` is `Array.find` with a cast. A slot the block does not have is `undefined` at runtime while the type promises a value.
 - `getConfigValue(key)` returns `false`, not the value, when the entry's `source` is `"mapped"` — the case where the value comes from the surrounding entity rather than from the layout.
-- `useCmsMeta(entity)` is deprecated. It takes the entity, not a ref to it, so its `title` and `meta` computeds do not follow a replacement. `getCmsMeta(entity)` from `@shopware/helpers` returns the same fields as plain strings, and both templates call it inside their own `useCmsHead(entity)`, which unwraps the ref, passes the title, description and Open Graph tags to `useSeoMeta`, and the remaining meta entries and the canonical link to `useHead`.
+- `useCmsMeta(entity)` is deprecated. It takes the entity, not a ref to it, so its `title` and `meta` computeds do not follow a replacement. `getCmsMeta(entity)` from `@shopware/helpers` returns the same fields as plain strings, and both templates call it inside a `computed` in their own `useCmsHead(entity)` — called outside one it snapshots the values and misses in-place changes to a reactive entity — which unwraps the ref, passes the title, description and Open Graph tags to `useSeoMeta`, and the remaining meta entries and the canonical link to `useHead`.
 - `useCmsElementConfig` and `useCmsElementImage` live in `packages/composables/src/cms/` rather than in a `use*` directory of their own, so the generated reference — built one page per `use*` directory — has no page for them.
 
 `resolveCmsComponent(content)` is exported from `@shopware/composables` alongside them. It derives the component name from `content.type` and `content.apiAlias` and attempts the resolution for you.
