@@ -2,7 +2,9 @@ import { encodeForQuery } from "@shopware/api-client/helpers";
 import { describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 
-import { cartOf, guestSession, salesChannel, useSetup } from "../_test";
+import { cartOf, defaultSession, salesChannel, useSetup } from "../_test";
+import { useCart } from "../useCart/useCart";
+import { useSessionContext } from "../useSessionContext/useSessionContext";
 import { canUseCacheableGet, useCacheableRead } from "./useCacheableRead";
 
 describe("canUseCacheableGet", () => {
@@ -31,13 +33,13 @@ describe("canUseCacheableGet", () => {
     { name: "token, unknown session", session: undefined, expected: false },
     {
       name: "token differs from the session token",
-      session: guestSession({ token: "old" }),
+      session: defaultSession({ token: "old" }),
       expected: false,
     },
     { name: "default guest with an empty cart", expected: true },
     {
       name: "default guest with the currency entity",
-      session: guestSession({
+      session: defaultSession({
         context: { languageIdChain: ["language"] },
         currency: { id: "currency" },
       }),
@@ -50,24 +52,27 @@ describe("canUseCacheableGet", () => {
     },
     {
       name: "customer",
-      session: guestSession({ customer: { id: "customer" } }),
+      session: defaultSession({ customer: { id: "customer" } }),
       expected: false,
     },
     {
       name: "guest account",
-      session: guestSession({ customer: { id: "customer", guest: true } }),
+      session: defaultSession({ customer: { id: "customer", guest: true } }),
       expected: false,
     },
     {
       name: "non-default currency in the context",
-      session: guestSession({
+      session: defaultSession({
         context: { currencyId: "other", languageIdChain: ["language"] },
       }),
       expected: false,
     },
     {
       name: "non-default currency without a context currency",
-      session: guestSession({ context: undefined, currency: { id: "other" } }),
+      session: defaultSession({
+        context: undefined,
+        currency: { id: "other" },
+      }),
       expected: false,
     },
     {
@@ -77,29 +82,31 @@ describe("canUseCacheableGet", () => {
     },
     {
       name: "non-default country",
-      session: guestSession({ shippingLocation: { country: { id: "other" } } }),
+      session: defaultSession({
+        shippingLocation: { country: { id: "other" } },
+      }),
       expected: false,
     },
     {
       name: "country state",
-      session: guestSession({
+      session: defaultSession({
         shippingLocation: { country: { id: "country" }, state: { id: "s" } },
       }),
       expected: false,
     },
     {
       name: "non-default payment method",
-      session: guestSession({ paymentMethod: { id: "other" } }),
+      session: defaultSession({ paymentMethod: { id: "other" } }),
       expected: false,
     },
     {
       name: "non-default shipping method",
-      session: guestSession({ shippingMethod: { id: "other" } }),
+      session: defaultSession({ shippingMethod: { id: "other" } }),
       expected: false,
     },
     {
       name: "non-default language in the context",
-      session: guestSession({
+      session: defaultSession({
         context: { currencyId: "currency", languageIdChain: ["other"] },
       }),
       expected: false,
@@ -121,20 +128,20 @@ describe("canUseCacheableGet", () => {
       expected: false,
     },
     {
-      name: "guest server render skips the cart",
+      name: "server render without user context skips the cart",
       cart: undefined,
-      guestServerRender: true,
+      ssrWithoutUserContext: true,
       expected: true,
     },
     {
-      name: "guest server render with a loaded cart with line items",
+      name: "server render without user context, cart with line items",
       cart: cartOf({ lineItems: [{ id: "item" }] }),
-      guestServerRender: true,
+      ssrWithoutUserContext: true,
       expected: false,
     },
     {
       name: "missing sales channel",
-      session: guestSession({ salesChannel: undefined }),
+      session: defaultSession({ salesChannel: undefined }),
       expected: false,
     },
     ...(
@@ -155,7 +162,7 @@ describe("canUseCacheableGet", () => {
       ] as const
     ).map(([name, overrides, key]) => ({
       name: `missing ${name} id on both sides`,
-      session: guestSession({
+      session: defaultSession({
         ...overrides,
         salesChannel: { ...salesChannel, [key]: undefined },
       }),
@@ -165,7 +172,7 @@ describe("canUseCacheableGet", () => {
     expect(
       canUseCacheableGet({
         headers: withToken,
-        session: guestSession(),
+        session: defaultSession(),
         cart: cartOf(),
         ...params,
       }),
@@ -176,19 +183,19 @@ describe("canUseCacheableGet", () => {
 describe("useCacheableRead", () => {
   function setup({
     cacheableReads = true,
-    guestServerRender = false,
+    ssrWithoutUserContext = false,
     defaultHeaders = { "sw-context-token": "token" },
-    session = ref(guestSession()),
+    session = ref(defaultSession()),
     cart = ref(cartOf()),
   }: {
     cacheableReads?: boolean;
-    guestServerRender?: boolean;
+    ssrWithoutUserContext?: boolean;
     defaultHeaders?: Record<string, string>;
     session?: unknown;
     cart?: unknown;
   } = {}) {
     return useSetup(useCacheableRead, {
-      shopware: { cacheableReads, guestServerRender },
+      shopware: { cacheableReads, ssrWithoutUserContext },
       apiClient: { invoke: vi.fn(), defaultHeaders },
       swSessionContext: session,
       swCart: cart,
@@ -233,8 +240,11 @@ describe("useCacheableRead", () => {
     );
   });
 
-  it("sends GET without a loaded cart during a guest server render", async () => {
-    const { vm, injections } = setup({ guestServerRender: true, cart: ref() });
+  it("sends GET without a loaded cart in a server render without user context", async () => {
+    const { vm, injections } = setup({
+      ssrWithoutUserContext: true,
+      cart: ref(),
+    });
 
     await vm.invokeRead("readLanguages post /language");
 
@@ -271,14 +281,14 @@ describe("useCacheableRead", () => {
       name: "a non-default language only in the session",
       defaultHeaders: {},
       session: ref(
-        guestSession({
+        defaultSession({
           context: { currencyId: "currency", languageIdChain: ["other"] },
         }),
       ),
     },
     {
       name: "a logged-in customer",
-      session: ref(guestSession({ customer: { id: "customer" } })),
+      session: ref(defaultSession({ customer: { id: "customer" } })),
     },
     {
       name: "a mixed-case language header",
@@ -347,12 +357,60 @@ describe("useCacheableRead", () => {
     );
   });
 
+  it("keeps the caller's query on GET", async () => {
+    const { vm, injections } = setup();
+
+    await vm.invokeRead("readCategory post /category/{navigationId}", {
+      pathParams: { navigationId: "category" },
+      query: { slots: "slot" },
+      body: { p: 2 },
+    });
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledWith(
+      "readCategoryGet get /category/{navigationId}",
+      {
+        headers: { "sw-context-token": "" },
+        pathParams: { navigationId: "category" },
+        query: { _criteria: encodeForQuery({}), slots: "slot", p: 2 },
+      },
+    );
+  });
+
+  it("sends GET with the session and cart loaded by their composables", async () => {
+    const invoke = vi.fn(async (operation: string) => ({
+      data:
+        operation === "readContext get /context" ? defaultSession() : cartOf(),
+    }));
+    const { vm } = useSetup(
+      () => ({
+        ...useCacheableRead(),
+        cart: useCart(),
+        session: useSessionContext(),
+      }),
+      {
+        shopware: { cacheableReads: true },
+        apiClient: { invoke, defaultHeaders: { "sw-context-token": "token" } },
+        swSessionContext: ref(),
+        swCart: ref(),
+      } as Parameters<typeof useSetup>[1],
+    );
+
+    await vm.session.refreshSessionContext();
+    await vm.cart.refreshCart();
+    await vm.invokeRead("readSalutation post /salutation");
+
+    expect(invoke).toHaveBeenLastCalledWith(
+      "readSalutationGet get /salutation",
+      expect.anything(),
+    );
+  });
+
   it("checks the session on every request", async () => {
-    const session = ref(guestSession());
+    const session = ref(defaultSession());
     const { vm, injections } = setup({ session });
 
     await vm.invokeRead("readSalutation post /salutation");
-    session.value = guestSession({ customer: { id: "customer" } });
+    session.value = defaultSession({ customer: { id: "customer" } });
     await vm.invokeRead("readSalutation post /salutation");
 
     expect(injections.apiClient.invoke).toHaveBeenNthCalledWith(

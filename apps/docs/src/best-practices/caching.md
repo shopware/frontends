@@ -72,13 +72,16 @@ The flag is read from the public runtime config, so it is available on both serv
 
 ```ts
 import { createShopwareContext } from "@shopware/composables";
-import { createApp } from "vue";
+import { createApp, ref } from "vue";
 
 const app = createApp({});
 const shopware = createShopwareContext(app, {
   cacheableReads: true,
 });
 app.use(shopware);
+// app-wide session and cart, so cacheable reads can check them
+app.provide("swSessionContext", ref());
+app.provide("swCart", ref());
 ```
 
 <!-- /automd -->
@@ -103,7 +106,7 @@ async function fetchCountries() {
 
 <!-- /automd -->
 
-Only routes in the `useCacheableRead` registry can use GET. A coverage test next to it fails when a read with a GET twin is not listed. It also fails when code in the packages and starter templates it scans calls a listed route without `invokeRead`.
+Only routes in the `useCacheableRead` registry can use GET. A coverage test next to it fails when a read with a GET twin is not listed. It also fails when code in the packages and templates it scans calls a listed route without `invokeRead`.
 
 ### Which reads switch to GET
 
@@ -138,7 +141,9 @@ A GET from `invokeRead` has three guarantees:
 2. Its response cannot set or replace the client's token. This holds even when a login finishes during the read.
 3. The GET or POST choice uses the loaded session and cart. That state can be stale or incomplete. So it does not prove the backend session is a fresh guest.
 
-The check needs the cart. With `useUserContextInSSR: true`, the server render has no cart. So server-side reads stay POST once the visitor has a context token. Outside Nuxt, provide `swSessionContext` and `swCart` refs on the app. Otherwise reads stay POST once a token exists.
+The check needs the cart. With `useUserContextInSSR: true`, the server render has no cart. So server-side reads stay POST once the visitor has a context token. Outside Nuxt, provide `swSessionContext` and `swCart` refs on the app, as in the setup above. Otherwise reads stay POST once a token exists.
+
+In the browser, the starter template loads the cart after mount. So on a direct landing, even a first visit, reads during hydration go POST. Their data is correct, but no CDN caches them. Later navigations use GET.
 
 The loaded state cannot show:
 

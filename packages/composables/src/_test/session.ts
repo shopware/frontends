@@ -8,7 +8,7 @@ export const salesChannel = {
   languageId: "language",
 };
 
-export function guestSession(overrides: Record<string, unknown> = {}) {
+export function defaultSession(overrides: Record<string, unknown> = {}) {
   return {
     token: "token",
     salesChannel,

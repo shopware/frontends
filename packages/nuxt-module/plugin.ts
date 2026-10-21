@@ -202,7 +202,7 @@ function setupShopwarePlugin(NuxtApp: ShopwarePluginNuxtApp): {
     devStorefrontUrl: shopwareRuntimeConfigPublic?.devStorefrontUrl || null,
     browserLocale,
     cacheableReads: shopwareRuntimeConfigPublic?.cacheableReads ?? false,
-    guestServerRender: !shouldUseSessionContextInServerRender,
+    ssrWithoutUserContext: !shouldUseSessionContextInServerRender,
   });
   NuxtApp.vueApp.provide("shopware", shopwareContext);
 

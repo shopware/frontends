@@ -566,7 +566,7 @@ apiClient.invoke("readProductGet get /product", {
 
 ### mergeRequestHeaders
 
-Merges request headers over default headers, like `invoke` does. Names match case-insensitively and come back lowercase. A header set to `""` is removed.
+Merges request headers over default headers, like `invoke` does. Names match case-insensitively and come back lowercase. Values come back as strings. A header set to `""` is removed.
 
 ```typescript
 import { mergeRequestHeaders } from "@shopware/api-client/helpers";

@@ -95,7 +95,8 @@ The essentials for code changes:
   - For a read, call `useCacheableRead().invokeRead` with the POST operation.
     It picks GET or POST per request. Never branch on `cacheableReads`.
   - Register new GET twins in `packages/composables/src/useCacheableRead/`.
-    The coverage test there enforces it. Mutations always stay POST/PATCH.
+    The coverage test there checks it. PR CI runs that test only when
+    `composables` or its dependencies change. Mutations always stay POST/PATCH.
 - **`routeRules` (render layer)** — page-level caching lives in each template's
   `nuxt.config.ts`: `isr` for catalog/content, `ssr: false` for personalized
   routes (`/checkout`, `/account/**`), immutable `Cache-Control` for static

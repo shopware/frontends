@@ -47,6 +47,18 @@ describe("mergeRequestHeaders", () => {
     ).toEqual({ "sw-language-id": "caller" });
   });
 
+  it("returns boolean values as strings", () => {
+    expect(
+      mergeRequestHeaders(
+        { "sw-include-seo-urls": true, "sw-skip-trigger-flow": false },
+        undefined,
+      ),
+    ).toEqual({
+      "sw-include-seo-urls": "true",
+      "sw-skip-trigger-flow": "false",
+    });
+  });
+
   it("keeps the default when the caller header is undefined", () => {
     expect(
       mergeRequestHeaders(

@@ -343,7 +343,7 @@ The resolution is provided, not fetched twice. `useNavigationContext(seoUrl)` wr
 
 `resolvePath("/")` depends on the session context being loaded. It reads `sessionContext.salesChannel.navigationCategoryId`, so the home page cannot resolve before the root has seeded the context — and the id it returns changes with the sales channel, not with the route.
 
-The lookup itself carries `sw-context-token` like any Store API call, but it changes nothing on the session. Whether it travels as a POST body or as a `_criteria` query parameter is decided per call. GET needs `cacheableReads` in `nuxt.config.ts` and a fresh default guest session.
+The lookup changes nothing on the session. Whether it travels as a POST body or as a `_criteria` query parameter is decided per call. GET needs `cacheableReads` in `nuxt.config.ts` and a fresh default guest session. The POST carries `sw-context-token` like any Store API call. The GET carries none.
 
 `useUrlResolver().getUrlPrefix()` reads an injected `urlPrefix` with `""` as its default. Nothing in the composable provides it; the application does — `vue-starter-template` calls `provide("urlPrefix", prefix)` in `app.vue`, which is how the locale prefix reaches CMS components that render internal links.
 

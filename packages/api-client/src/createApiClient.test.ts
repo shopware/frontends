@@ -274,7 +274,7 @@ describe("createAPIClient", () => {
       client.hook("onContextChanged", contextChangedMock);
 
       await client.invoke("readLanguagesGet get /language", {
-        // @ts-expect-error sw-context-token is not a typed header of this endpoint
+        // @ts-expect-error only the lowercase name is typed
         headers: { "Sw-Context-Token": "" },
       });
 
@@ -326,7 +326,6 @@ describe("createAPIClient", () => {
         {
           release: read.resolve,
           request: client.invoke("readLanguagesGet get /language", {
-            // @ts-expect-error sw-context-token is not a typed header of this endpoint
             headers: { "sw-context-token": "" },
           }),
         },
@@ -376,12 +375,42 @@ describe("createAPIClient", () => {
         baseURL,
       });
 
-      // @ts-expect-error sw-context-token is not a typed header of this endpoint
       await client.invoke("readLanguagesGet get /language", { headers });
 
       // node lowercases incoming header names, so this covers every casing
       expect(receivedHeaders).toHaveProperty("sw-access-key", "123");
       expect(receivedHeaders).not.toHaveProperty("sw-context-token");
+    },
+  );
+
+  it.each([
+    { name: "a language header", headers: { "sw-language-id": "language" } },
+    {
+      name: "the client's own token",
+      headers: { "sw-context-token": "logged-in-token" },
+    },
+  ])(
+    "should adopt sw-context-token from a request with $name",
+    async ({ headers }) => {
+      const app = createApp().use(
+        "/language",
+        eventHandler(async (event) => {
+          setHeader(event, "sw-context-token", "new-token");
+          return { elements: [] };
+        }),
+      );
+
+      const baseURL = await createPortAndGetUrl(app);
+
+      const client = createAPIClient<operations>({
+        accessToken: "123",
+        contextToken: "logged-in-token",
+        baseURL,
+      });
+
+      await client.invoke("readLanguagesGet get /language", { headers });
+
+      expect(client.defaultHeaders["sw-context-token"]).toEqual("new-token");
     },
   );
 

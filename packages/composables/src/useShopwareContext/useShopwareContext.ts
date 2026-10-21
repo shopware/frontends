@@ -19,8 +19,10 @@ export type ShopwareContext = {
    * When `true`, reads may use the cacheable GET variants of the Store API.
    * `useCacheableRead().invokeRead` decides per request.
    *
-   * @deprecated Do not branch on this flag. Use
-   * `useCacheableRead().invokeRead`. It also checks the session.
+   * @deprecated Do not branch on this flag. For a registered read, use
+   * `useCacheableRead().invokeRead`. It also checks the session. Keep other
+   * reads on POST. A branch on this flag sends GET with the context token,
+   * also for a logged-in customer.
    * @default false
    */
   cacheableReads: boolean;
@@ -29,7 +31,7 @@ export type ShopwareContext = {
    *
    * @default false
    */
-  guestServerRender?: boolean;
+  ssrWithoutUserContext?: boolean;
 };
 
 /**
@@ -51,6 +53,6 @@ export function useShopwareContext(): ShopwareContext {
     devStorefrontUrl: shopwareContext.devStorefrontUrl,
     browserLocale: shopwareContext.browserLocale || "en-US",
     cacheableReads: shopwareContext.cacheableReads ?? false,
-    guestServerRender: shopwareContext.guestServerRender ?? false,
+    ssrWithoutUserContext: shopwareContext.ssrWithoutUserContext ?? false,
   };
 }

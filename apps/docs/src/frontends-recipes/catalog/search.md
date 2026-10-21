@@ -137,12 +137,12 @@ Two rows carry a trap. `loadMore` sends exactly the criteria you hand it — the
 
 Pick by scope — how much of the search the composable is about:
 
-| Composable                | Scope                         | Reach for it when                                                      |
-| ------------------------- | ----------------------------- | ---------------------------------------------------------------------- |
-| `useProductSearchListing` | the whole search listing      | building the results page — filters, sortings, pagination, SSR seeding |
-| `useProductSearchSuggest` | the suggest dropdown          | building the suggest dropdown on top of that listing                   |
-| `useProductSearch`        | one product, by id            | opening a product after the customer picks it                          |
-| `useShopwareContext`      | `apiClient`, `cacheableReads` | calling `searchSuggest post /search-suggest`, which has no composable  |
+| Composable                | Scope                    | Reach for it when                                                      |
+| ------------------------- | ------------------------ | ---------------------------------------------------------------------- |
+| `useProductSearchListing` | the whole search listing | building the results page — filters, sortings, pagination, SSR seeding |
+| `useProductSearchSuggest` | the suggest dropdown     | building the suggest dropdown on top of that listing                   |
+| `useProductSearch`        | one product, by id       | opening a product after the customer picks it                          |
+| `useShopwareContext`      | `apiClient`              | calling `searchSuggest post /search-suggest` (no composable, POST)     |
 
 The results-page members live on `useProductSearchListing`: `getAvailableFilters`, `getSortingOrders` and `resetFilters` for the facets, `loadingMore` for the append state, and `setInitialListing` for seeding from the Nuxt payload. A category facet needs aggregations the Store API does not add by itself; the [Product Listing and Filters recipe](listing.html) covers it.
 

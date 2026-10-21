@@ -3,6 +3,7 @@ import {
   encodeForQuery,
   mergeRequestHeaders,
 } from "@shopware/api-client/helpers";
+import type { RequestHeaders } from "@shopware/api-client/helpers";
 import { injectLocal } from "@vueuse/core";
 import type { Ref } from "vue";
 
@@ -88,7 +89,7 @@ type SessionContext = Schemas["SalesChannelContext"] & {
 
 type ReadParams = {
   body?: Record<string, unknown>;
-  headers?: Record<string, string>;
+  headers?: RequestHeaders;
   query?: Record<string, unknown>;
 };
 
@@ -96,7 +97,7 @@ type ReadParams = {
 const sameId = (current: unknown, expected?: string) =>
   !!expected && current === expected;
 
-function isDefaultGuest(
+function isDefaultSession(
   session: SessionContext,
   headers: Record<string, unknown>,
 ) {
@@ -124,17 +125,17 @@ export function canUseCacheableGet({
   headers,
   session,
   cart,
-  guestServerRender,
+  ssrWithoutUserContext,
 }: {
   headers: Record<string, unknown>;
   session?: SessionContext;
   cart?: Schemas["Cart"];
-  guestServerRender?: boolean;
+  ssrWithoutUserContext?: boolean;
 }): boolean {
   const token = headers["sw-context-token"];
   if (
     session
-      ? !isDefaultGuest(session, headers)
+      ? !isDefaultSession(session, headers)
       : headers["sw-language-id"] || headers["sw-currency-id"]
   ) {
     return false;
@@ -143,8 +144,8 @@ export function canUseCacheableGet({
   if (!token) return true;
   // session unknown, or not refreshed after a token change
   if (session?.token !== token) return false;
-  // guest server render: a cart that was never loaded is empty
-  if (guestServerRender && !cart) return true;
+  // server render without user context: a cart that was never loaded is empty
+  if (ssrWithoutUserContext && !cart) return true;
   return cart?.token === token && cart.lineItems?.length === 0;
 }
 
@@ -156,7 +157,8 @@ export function canUseCacheableGet({
  * @category Context & Language
  */
 export function useCacheableRead(): UseCacheableReadReturn {
-  const { apiClient, cacheableReads, guestServerRender } = useShopwareContext();
+  const { apiClient, cacheableReads, ssrWithoutUserContext } =
+    useShopwareContext();
   // not useContext: it creates an empty ref
   const session = injectLocal<Ref<SessionContext | undefined> | null>(
     "swSessionContext",
@@ -167,7 +169,7 @@ export function useCacheableRead(): UseCacheableReadReturn {
     null,
   );
 
-  const invoke = apiClient.invoke as unknown as (
+  const invoke = apiClient.invoke as (
     operation: string,
     ...params: [ReadParams?]
   ) => Promise<unknown>;
@@ -185,7 +187,7 @@ export function useCacheableRead(): UseCacheableReadReturn {
         ),
         session: session?.value,
         cart: cart?.value,
-        guestServerRender,
+        ssrWithoutUserContext,
       });
     if (!canUseGet) return invoke(operation, ...params);
 
@@ -195,6 +197,7 @@ export function useCacheableRead(): UseCacheableReadReturn {
     const criteria = { ...body };
     const plainQuery: Record<string, unknown> = {};
     for (const key of route.query ?? []) {
+      if (criteria[key] === undefined) continue;
       plainQuery[key] = criteria[key];
       delete criteria[key];
     }
@@ -211,6 +214,6 @@ export function useCacheableRead(): UseCacheableReadReturn {
   }
 
   return {
-    invokeRead: invokeRead as unknown as UseCacheableReadReturn["invokeRead"],
+    invokeRead: invokeRead as UseCacheableReadReturn["invokeRead"],
   };
 }

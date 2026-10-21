@@ -23,11 +23,12 @@ export function createShopwareContext(
     cacheableReads?: boolean;
     /**
      * Server render without the visitor's session. Every request is a fresh
-     * guest.
+     * default session. The Nuxt module sets it when `useUserContextInSSR` is
+     * off.
      *
      * @default false
      */
-    guestServerRender?: boolean;
+    ssrWithoutUserContext?: boolean;
   },
 ) {
   const scope: EffectScope = effectScope(true);
@@ -51,7 +52,7 @@ export function createShopwareContext(
     state,
     browserLocale: options.browserLocale || "en-US",
     cacheableReads: options.cacheableReads ?? false,
-    guestServerRender: options.guestServerRender ?? false,
+    ssrWithoutUserContext: options.ssrWithoutUserContext ?? false,
   });
 
   if (options?.enableDevtools && typeof window !== "undefined") {

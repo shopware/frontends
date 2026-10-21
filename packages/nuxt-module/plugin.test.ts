@@ -435,12 +435,12 @@ describe("nuxt-module plugin", () => {
   });
 
   it.each([
-    { ssr: true, useUserContextInSSR: false, guestServerRender: true },
-    { ssr: true, useUserContextInSSR: true, guestServerRender: false },
-    { ssr: false, useUserContextInSSR: false, guestServerRender: false },
+    { ssr: true, useUserContextInSSR: false, ssrWithoutUserContext: true },
+    { ssr: true, useUserContextInSSR: true, ssrWithoutUserContext: false },
+    { ssr: false, useUserContextInSSR: false, ssrWithoutUserContext: false },
   ])(
-    "sets guestServerRender to $guestServerRender for ssr $ssr and useUserContextInSSR $useUserContextInSSR",
-    async ({ ssr, useUserContextInSSR, guestServerRender }) => {
+    "sets ssrWithoutUserContext to $ssrWithoutUserContext for ssr $ssr and useUserContextInSSR $useUserContextInSSR",
+    async ({ ssr, useUserContextInSSR, ssrWithoutUserContext }) => {
       useRuntimeConfigMock.mockReturnValue({
         shopware: { ...SHOPWARE_CONFIG },
         public: { shopware: { ...SHOPWARE_CONFIG, useUserContextInSSR } },
@@ -450,21 +450,25 @@ describe("nuxt-module plugin", () => {
 
       expect(createShopwareContextMock).toHaveBeenCalledWith(
         expect.anything(),
-        expect.objectContaining({ guestServerRender }),
+        expect.objectContaining({ ssrWithoutUserContext }),
       );
     },
   );
 
-  it("provides the cart state app-wide", async () => {
-    const nuxtApp = createNuxtAppMock(true);
+  it.each([true, false])(
+    "provides the cart state app-wide (ssr %s)",
+    async (ssr) => {
+      if (!ssr) runOnClient();
+      const nuxtApp = createNuxtAppMock(ssr);
 
-    await runPlugin(nuxtApp);
+      await runPlugin(nuxtApp);
 
-    expect(nuxtApp.vueApp.provide).toHaveBeenCalledWith(
-      "swCart",
-      expect.objectContaining({ value: undefined }),
-    );
-  });
+      expect(nuxtApp.vueApp.provide).toHaveBeenCalledWith(
+        "swCart",
+        expect.objectContaining({ value: undefined }),
+      );
+    },
+  );
 
   it("takes the browser branch when import.meta.server is false", async () => {
     runOnClient();

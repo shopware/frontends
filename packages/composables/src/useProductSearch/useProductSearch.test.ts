@@ -2,7 +2,7 @@ import { encodeForQuery } from "@shopware/api-client/helpers";
 import { describe, expect, it } from "vitest";
 import { ref } from "vue";
 
-import { guestSession, useSetup } from "../_test";
+import { defaultSession, useSetup } from "../_test";
 import { cmsAssociations } from "../cms/cmsAssociations";
 import { useProductSearch } from "./useProductSearch";
 
@@ -64,7 +64,7 @@ describe("useProductSearch", () => {
     const { vm, injections } = useSetup(() => useProductSearch(), {
       shopware: { cacheableReads: true },
       swSessionContext: ref(
-        guestSession({
+        defaultSession({
           context: { currencyId: "other", languageIdChain: ["language"] },
         }),
       ),
