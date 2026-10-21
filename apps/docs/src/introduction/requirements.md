@@ -43,11 +43,11 @@ Shopware Frontends requires a Node.js runtime environment.
 
 Supported versions:
 
-- **v22.19** or newer
-- **v24.11** or newer
+- **v22.22.3** or newer
+- **v24.15** or newer
 - **v26** or newer
 
-The floor comes from Nuxt 4.5. Node v18 and v20 are end of life and no longer
+The floor comes from Nuxt 4.6. Node v18 and v20 are end of life and no longer
 supported. Each template declares its own range in `package.json`, and its
 manifest entry repeats it in the `node` field.
 

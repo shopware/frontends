@@ -115,19 +115,7 @@ Build a newsletter subscription: a form for any visitor and a subscription toggl
 
 The subscribe and unsubscribe routes are secured with the sales channel access token alone, so a guest can subscribe. `readNewsletterRecipient post /account/newsletter-recipient` is an account route secured with the context token, which is why `getNewsletterStatus()` belongs behind the login and the other two calls do not.
 
-Hover a type chip to inspect fields generated from the current Store API schema.
-
 <RecipeFlowDiagram label="Newsletter flow diagram" :steps="steps" />
-
-Read the diagram from left to right:
-
-1. A visitor submits an email address with `option` set to `SUBSCRIBE_KEY`.
-2. `useNewsletter` adds `storefrontUrl` from `useInternationalization().getStorefrontUrl()` to the body.
-3. The Store API creates the recipient and, for the `subscribe` option, sends the confirmation email.
-4. `newsletterSubscribe` writes the returned `status` into `newsletterStatus`, so no extra status request is needed after subscribing.
-5. The link in the email opens your app with `em` and `hash`, and that page calls `confirmNewsletter post /newsletter/confirm`.
-6. `getNewsletterStatus()` reads the status of the logged-in customer from the account route.
-7. The UI reads `isNewsletterSubscriber` and `confirmationNeeded` from the composable instead of keeping its own copy.
 
 <StorefrontUrlNotice
   operation="subscribeToNewsletter post /newsletter/subscribe"
