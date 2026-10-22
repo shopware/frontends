@@ -6,7 +6,7 @@ export function changePasswordFormRules(
     operations["changePassword post /account/change-password"]["body"]
   >,
 ) {
-  const { required, minLength, sameAs } = customValidators();
+  const { required, minLength, sameAsPassword } = customValidators();
   return {
     newPassword: {
       required,
@@ -14,7 +14,7 @@ export function changePasswordFormRules(
     },
     newPasswordConfirm: {
       required,
-      sameAs: sameAs(computed(() => state.value.newPassword)),
+      sameAs: sameAsPassword(computed(() => state.value.newPassword)),
     },
     password: {
       required,

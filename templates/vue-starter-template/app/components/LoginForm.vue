@@ -12,6 +12,8 @@ const model = ref<LoginForm>({
 });
 
 const { r$ } = useRegle(model, loginFormRules());
+const localePath = useLocalePath();
+const { formatLink } = useInternationalization(localePath);
 
 const emit = defineEmits<{
   submit: [LoginForm];
@@ -49,6 +51,13 @@ async function handleSubmit() {
       :label="$t('loginForm.passwordLabel')"
       :errorMessage="r$.password.$errors[0]"
     />
+    <NuxtLink
+      :to="formatLink('/account/recover')"
+      class="self-end text-sm text-brand-primary underline"
+      data-testid="login-forgot-password-link"
+    >
+      {{ $t("loginForm.forgotPasswordLink") }}
+    </NuxtLink>
     <FormBaseButton
       data-testid="login-submit-button"
       :label="$t('loginForm.submitButtonLabel')"
