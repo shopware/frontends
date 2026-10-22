@@ -42,6 +42,7 @@
     "@shopware/helpers": "canary",
     "@shopware/nuxt-module": "canary",
     "@shopware/unocss-design-tokens-layer": "canary",
+    "@shopware/webmcp": "workspace:*",
     "@unocss/core": "66.10.5",
     "@unocss/nuxt": "66.10.5",
     "@vueuse/core": "15.0.0",
