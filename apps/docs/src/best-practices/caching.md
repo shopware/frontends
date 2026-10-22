@@ -106,7 +106,7 @@ async function fetchCountries() {
 
 <!-- /automd -->
 
-Only routes in the `useCacheableRead` registry can use GET. A coverage test next to it fails when a read with a GET twin is not listed. It also fails when code in the packages and templates it scans calls a listed route without `invokeRead`.
+Only routes in the `useCacheableRead` registry can use GET. A coverage test next to it fails when a read with a GET twin is not listed. A root check, `pnpm check:cacheable-reads`, runs on every pull request. It fails when code in the packages and templates it scans calls a listed route without `invokeRead`, or branches on `cacheableReads`.
 
 ### Which reads switch to GET
 
@@ -164,7 +164,7 @@ These reads have a GET twin but are not migrated yet:
 - `useListing` (listing and search), tracked in [#2691](https://github.com/shopware/frontends/issues/2691). Core [PR #17204](https://github.com/shopware/shopware/pull/17204) declared `_criteria` on `GET /store-api/product-listing` in 6.7.12.0.
 - `useLandingSearch` - always `readLandingPage post /landing-page/{landingPageId}`
 
-Session-dependent reads stay POST on purpose, like payment and shipping methods. The coverage test lists every POST-only route with a reason.
+Session-dependent reads stay POST on purpose, like payment and shipping methods. The registry lists every POST-only route with a reason.
 
 Write and auth/context mutations (login, register, logout, `readCustomer`, `updateContext`, checkout) also stay on POST/PATCH regardless of the flag, because they are mutations and are not cacheable by design.
 

@@ -94,9 +94,10 @@ The essentials for code changes:
   (JSON → gzip → base64url, matching the backend `RequestCriteriaBuilder`).
   - For a read, call `useCacheableRead().invokeRead` with the POST operation.
     It picks GET or POST per request. Never branch on `cacheableReads`.
-  - Register new GET twins in `packages/composables/src/useCacheableRead/`.
-    The coverage test there checks it. PR CI runs that test only when
-    `composables` or its dependencies change. Mutations always stay POST/PATCH.
+  - Register new GET twins in `packages/composables/src/useCacheableRead/routes.ts`.
+    The coverage test there classifies them. `pnpm check:cacheable-reads` (a
+    root script, run by the Lint CI job on every PR) fails on any direct call
+    to a registered read or a GET twin. Mutations always stay POST/PATCH.
 - **`routeRules` (render layer)** — page-level caching lives in each template's
   `nuxt.config.ts`: `isr` for catalog/content, `ssr: false` for personalized
   routes (`/checkout`, `/account/**`), immutable `Cache-Control` for static

@@ -10,65 +10,7 @@ import type { Ref } from "vue";
 import { useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
-type GetTwin<OPERATION> = OPERATION extends `${infer NAME} post ${infer PATH}`
-  ? `${NAME}Get get ${PATH}` & keyof operations
-  : never;
-
-/**
- * POST reads with a cacheable GET twin. `query`: body keys sent as plain query
- * params.
- */
-export const cacheableReadRoutes = {
-  "readCategoryList post /category": {
-    get: "readCategoryListGet get /category",
-  },
-  "readCategory post /category/{navigationId}": {
-    get: "readCategoryGet get /category/{navigationId}",
-    // the listing reads these from the request, `_criteria` drops `limit`
-    query: [
-      "slots",
-      "limit",
-      "p",
-      "order",
-      "manufacturer",
-      "properties",
-      "min-price",
-      "max-price",
-      "rating",
-      "shipping-free",
-    ],
-  },
-  "readCountry post /country": {
-    get: "readCountryGet get /country",
-  },
-  "readLanguages post /language": {
-    get: "readLanguagesGet get /language",
-  },
-  "readNavigation post /navigation/{activeId}/{rootId}": {
-    get: "readNavigationGet get /navigation/{activeId}/{rootId}",
-    query: ["buildTree", "depth"],
-  },
-  "readProduct post /product": {
-    get: "readProductGet get /product",
-  },
-  "readProductDetail post /product/{productId}": {
-    get: "readProductDetailGet get /product/{productId}",
-  },
-  "readProductReviews post /product/{productId}/reviews": {
-    get: "readProductReviewsGet get /product/{productId}/reviews",
-  },
-  "readSalutation post /salutation": {
-    get: "readSalutationGet get /salutation",
-  },
-  "readSeoUrl post /seo-url": {
-    get: "readSeoUrlGet get /seo-url",
-  },
-} satisfies {
-  [OPERATION in keyof operations]?: {
-    get: GetTwin<OPERATION>;
-    query?: string[];
-  };
-};
+import { cacheableReadRoutes } from "./routes";
 
 type CacheableReadOperation = keyof typeof cacheableReadRoutes;
 
