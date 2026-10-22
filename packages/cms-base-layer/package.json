@@ -61,11 +61,11 @@
     "@nuxt/schema": "4.6.1",
     "@types/three": "0.182.0",
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
-    "@vitest/coverage-v8": "5.0.0",
+    "@vitest/coverage-v8": "5.0.5",
     "nuxt": "4.6.1",
     "tsconfig": "workspace:*",
     "typescript": "5.9.3",
-    "vitest": "5.0.0",
+    "vitest": "5.0.5",
     "vue-router": "5.3.1",
     "vue-tsc": "3.3.11"
   }

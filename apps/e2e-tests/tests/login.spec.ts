@@ -1,32 +1,17 @@
 import { expect, test } from "../fixtures";
-import { HomePage } from "../page-objects/HomePage";
-import { LoginForm } from "../page-objects/LoginPage";
-import { findEnv } from "../utils/helpers";
-
-require("dotenv").config({ path: findEnv() });
-const userEmail = process.env.USER_EMAIL || "test@shopware.com";
-const password = process.env.PASSWORD || "shopware123";
 
 test.describe("Login user", { tag: "@frontends" }, () => {
-  let homePage: HomePage;
-  let loginForm: LoginForm;
-
-  // Before Hook
-  test.beforeEach(async ({ page }) => {
-    homePage = new HomePage(page);
-    loginForm = new LoginForm(page);
-
+  test.beforeEach(async ({ homePage }) => {
     await homePage.visitMainPage();
   });
 
-  test("Login user", async ({ page }) => {
+  test("Login user", async ({ page, customer, homePage, loginForm }) => {
     await homePage.clickOnSignIn();
-    await loginForm.login(userEmail, password);
-    await page.waitForLoadState("networkidle");
+    await loginForm.login(customer.email, customer.password);
     await expect(
       page.locator(
         '[data-testid="header-account-button"][data-logged-in="true"]',
       ),
-    ).toHaveCount(1);
+    ).toHaveCount(1, { timeout: 30_000 });
   });
 });

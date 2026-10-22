@@ -40,12 +40,26 @@ export class WishlistPage {
   }
 
   async removeProductFromWishlist() {
-    await this.page.waitForLoadState("networkidle");
-    await this.productInWishlistButton.click();
+    await Promise.all([
+      this.waitForWishlistDelete(),
+      this.productInWishlistButton.click(),
+    ]);
   }
 
   async clearWishlist() {
-    await this.page.waitForLoadState("networkidle");
-    await this.clearWishlistButton.click();
+    await Promise.all([
+      this.waitForWishlistDelete(),
+      this.clearWishlistButton.click(),
+    ]);
+  }
+
+  private waitForWishlistDelete() {
+    return this.page.waitForResponse(
+      (response) =>
+        response.url().includes("/customer/wishlist/delete/") &&
+        response.request().method() === "DELETE" &&
+        response.ok(),
+      { timeout: 30000 },
+    );
   }
 }
