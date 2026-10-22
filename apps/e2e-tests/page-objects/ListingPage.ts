@@ -139,6 +139,7 @@ export abstract class ListingPage {
       );
     }
     await this.rendered();
+    await expect(entry).toHaveAttribute("data-selected", "true");
     await expect(entry).toHaveAttribute("aria-checked", "true");
   }
 

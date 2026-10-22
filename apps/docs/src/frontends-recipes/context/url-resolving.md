@@ -126,16 +126,6 @@ Two paths never reach that request. `/` is answered from the session context, us
 
 <RecipeFlowDiagram label="URL resolving flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. The catch-all route receives the path and strips the locale prefix.
-2. `resolvePath("/")` synthesises a resolution from `sessionContext.salesChannel.navigationCategoryId`.
-3. Any other path is looked up over `/seo-url`, filtered on `seoPathInfo` or `pathInfo`.
-4. With no match, `getRouteFromPathInfo` derives a resolution from the technical prefix, or returns `null`.
-5. A technical path that mapped to a real SEO URL is redirected with a `301`.
-6. `useNavigationContext(seoUrl)` provides `routeName` and `foreignKey`, and the pascal-cased route name is the page component.
-7. That component fetches its own entity — a category, a product or a landing page — from composables instead of keeping its own copy of the resolution.
-
 You do not need one route per page type, and you do not fetch the entity in the catch-all. The `routeName` on the resolution is what selects the component, which is why `frontend.navigation.page` becomes `FrontendNavigationPage`.
 
 ## Request Flow

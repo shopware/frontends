@@ -21,7 +21,7 @@
     "@tailwindcss/typography": "0.5.16",
     "@types/node": "22.13.14",
     "fflate": "^0.8.3",
-    "nuxt": "4.5.2",
+    "nuxt": "4.6.1",
     "oxfmt": "0.62.0",
     "oxlint": "1.77.0",
     "typescript": "5.9.3",

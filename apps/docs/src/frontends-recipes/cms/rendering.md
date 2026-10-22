@@ -122,16 +122,6 @@ What comes back is `CmsPage → sections → blocks → slots`. Every level carr
 
 <RecipeFlowDiagram label="CMS rendering flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. The page fetches its entity; the route returns the resolved `cmsPage` along with it.
-2. The response carries the full `cmsPage` tree — sections, blocks and slots.
-3. Each section's `type` is resolved to a `CmsSection<Type>` component.
-4. `useCmsSection(section).getPositionContent(position)` groups the blocks by section position.
-5. `useCmsBlock(block).getSlotContent(name)` picks one slot for an element component.
-6. On a category page the embedded product listing seeds the shared listing context.
-7. `useCmsMeta(entity)` supplies the title and meta tags for the document head.
-
 You do not need a request per section, block or element. The only later requests are the ones an element makes for itself — a cross-selling slider, a product listing page change.
 
 ## Request Flow
