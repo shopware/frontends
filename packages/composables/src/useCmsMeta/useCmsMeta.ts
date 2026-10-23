@@ -1,9 +1,12 @@
-import { getTranslatedProperty } from "@shopware/helpers";
+import { getCmsMeta } from "@shopware/helpers";
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
 
 import type { Schemas } from "#shopware";
 
+/**
+ * @deprecated Use `getCmsMeta` from `@shopware/helpers` instead. Will be removed in the next major release.
+ */
 export type UseCmsMetaReturn = {
   /**
    * Meta title for current page/entity
@@ -16,32 +19,30 @@ export type UseCmsMetaReturn = {
 };
 
 /**
- * TODO: remove parameter and use reactive state of cmsResponse provided by useCms composable
+ * @deprecated Use `getCmsMeta` from `@shopware/helpers` instead, inside a `computed` to keep following in-place changes of a reactive entity. Will be removed in the next major release.
  * @category CMS (Shopping Experiences)
  */
 export function useCmsMeta(
   entity: Schemas["Category"] | Schemas["Product"] | Schemas["LandingPage"],
 ): UseCmsMetaReturn {
   const meta = computed(() => {
+    const { keywords, metaDescription, metaTitle } = getCmsMeta(entity);
     const entries = [];
-    const keywords = getTranslatedProperty(entity, "keywords");
-    const description = getTranslatedProperty(entity, "metaDescription");
-    const title = getTranslatedProperty(entity, "metaTitle");
     if (keywords) {
       entries.push({ name: "keywords", content: keywords });
     }
-    if (description) {
-      entries.push({ name: "description", content: description });
+    if (metaDescription) {
+      entries.push({ name: "description", content: metaDescription });
     }
-    if (title) {
-      entries.push({ name: "title", content: title });
+    if (metaTitle) {
+      entries.push({ name: "title", content: metaTitle });
     }
 
     return entries;
   });
 
   return {
-    title: computed(() => getTranslatedProperty(entity, "name")),
+    title: computed(() => getCmsMeta(entity).title),
     meta,
   };
 }
