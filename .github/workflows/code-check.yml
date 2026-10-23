@@ -37,6 +37,9 @@ jobs:
       - uses: ./.github/actions/setup
       - name: Lint
         run: pnpm lint
+      # a root check, so it also runs on template-only PRs that turbo would skip
+      - name: Cacheable reads go through invokeRead
+        run: pnpm check:cacheable-reads
 
   build:
     name: Build

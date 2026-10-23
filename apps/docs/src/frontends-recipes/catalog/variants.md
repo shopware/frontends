@@ -66,7 +66,7 @@ const steps = [
     title: "Store API",
     action: "Find the variant",
     detail:
-      "findVariantForSelectedOptions builds an equals filter on parentId plus one per selected option and searches the product list with limit 1. It does not use the find-variant operation. With cacheableReads enabled the same criteria goes to readProductGet as an encoded _criteria query parameter.",
+      "findVariantForSelectedOptions builds an equals filter on parentId plus one per selected option and searches the product list with limit 1. It does not use the find-variant operation. With cacheableReads enabled, a fresh guest sends the same criteria to readProductGet as an encoded _criteria query parameter.",
     code: 'apiClient.invoke("readProduct post /product", { body: criteria })',
     state: "sw-context-token",
     typeKeys: ['operations["readProduct post /product"]["body"]'],
@@ -104,7 +104,7 @@ The Store API has an operation built for this — `searchProductVariantIds post 
 
 That search carries an `includes` clause restricting the product to `id`, `translated`, `productNumber` and `seoUrls`, plus a `seoUrls` association and a `seo_url` include for `seoPathInfo`. The result is therefore a link target, not a product you can render. Which is exactly why the shipped configurator pushes the router to the variant's URL and lets the page reload the real product.
 
-The request is `readProduct post /product` by default. With `shopware: { cacheableReads: true }` — which `vue-starter-template` ships with — the composable sends the identical criteria to `readProductGet get /product` in the `_criteria` query parameter instead, so the storefront can cache it. Filter, `includes` and result are the same either way; only the transport changes. See [Caching best practices](../../best-practices/caching.html).
+The request is `readProduct post /product` by default. With `shopware: { cacheableReads: true }`, which `vue-starter-template` ships with, a fresh default guest sends the identical criteria to `readProductGet get /product` in the `_criteria` query parameter instead, so the storefront can cache it. Other sessions still post. Filter, `includes` and result are the same either way; only the transport changes. See [Caching best practices](../../best-practices/caching.html).
 
 <RecipeFlowDiagram label="Product variants flow diagram" :steps="steps" />
 
@@ -342,7 +342,7 @@ The selection itself is local to the `useProductConfigurator()` instance, not sh
 - Do not disable the option groups while resolving. A disabled control cannot hold focus, so a keyboard customer is thrown back to the top of the document mid-selection — use `aria-busy` and guard the handler.
 - Do not push `getProductRoute(variant)` unprefixed. Wrap it in `buildUrlPrefix` with `useUrlResolver().getUrlPrefix()`, or a localised storefront silently drops its language prefix.
 - Do not treat `undefined` from `findVariantForSelectedOptions` as a bug — it also means the request failed silently.
-- Do not assert the POST route in tests or proxies without checking `cacheableReads`. With the flag on, the same search goes out as `GET /product`.
+- Do not assert the POST route in tests or proxies without checking `cacheableReads` and the session. With the flag on, a fresh guest sends the same search as `GET /product`.
 - Do not build the variant URL by hand. `getProductRoute` uses the `seoUrls` the search asked for.
 
 ## Testing Checklist
@@ -350,7 +350,7 @@ The selection itself is local to the `useProductConfigurator()` instance, not sh
 - A product without a configurator renders no option groups.
 - The initial selection matches `product.optionIds`, one option per group, and drops ids that belong to no group.
 - Choosing an option updates `getSelectedOptions` and issues no request.
-- Submitting issues exactly one variant search — `POST /product`, or `GET /product` when `cacheableReads` is enabled.
+- Submitting issues exactly one variant search: `GET /product` for a fresh guest when `cacheableReads` is enabled, `POST /product` otherwise.
 - That request filters on `parentId` and on one `optionIds` value per selected option.
 - A resolvable combination navigates to the variant's SEO URL, keeping the active language prefix.
 - An unavailable combination renders a message, stays on the page, and can be submitted again.
