@@ -13,7 +13,7 @@ overrides:
   "@vercel/blob>undici": "^6.28.0"
   "@tiptap/pm@<3.30.5": 3.30.5
   esbuild: ^0.28.2
-  vite: ^8.2.1
+  vite: ^8.3.4
   "@vueuse/core": 14.4.0
   "@vueuse/shared": 14.4.0
   "@vueuse/metadata": 14.4.0
@@ -35,6 +35,9 @@ overrides:
   "@simple-git/argv-parser@<2.0.1": 2.0.1
   "tinypool@<2.1.2": 2.1.2
   "postcss-selector-parser@<7.1.6": 7.1.6
+  "follow-redirects@<1.16.1": 1.16.1
+  "launch-editor@<2.14.2": 2.14.2
+  "@nuxt/devtools@>=3.0.0 <3.4.3": ^3.4.3
 
 peerDependencyRules:
   ignoreMissing:
@@ -64,10 +67,6 @@ allowBuilds:
 # Advisories with no usable patched release yet. Drop each entry once its fix ships.
 auditConfig:
   ignoreGhsas:
-    # simple-git: fixed only in v4, which removed the default export @nuxt/devtools 3 imports (needs devtools 4, still beta). Dev-only, local git calls.
-    - GHSA-x6jw-m9v5-85vh
-    - GHSA-g4wm-2vf7-vfgr
-    - GHSA-858h-whjf-mvg5
     # node-forge: advisory names >=1.4.1, not published yet. Used by listhen for local dev HTTPS certs only.
     - GHSA-86w9-cpqp-85rv
     # braces: advisory names >=3.0.4, not published yet. Only matches build-time glob patterns we write.
