@@ -1,7 +1,4 @@
 import { defu } from "defu";
-/**
- * Template composable
- */
 import { computed, ref } from "vue";
 import type { ComputedRef } from "vue";
 

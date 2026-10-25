@@ -5,8 +5,14 @@ import type { App, InjectionKey } from "vue";
 
 const TIMELINE_EVENT_LAYER_ID = "shopware:events";
 const INSPECTOR_ID = "shopware";
+/**
+ * @deprecated Not used by the package and will be removed in the next major release.
+ */
 export const shopwareSymbol = Symbol("shopware") as InjectionKey<string>;
 
+/**
+ * @deprecated Not registered by `createShopwareContext` and will be removed in the next major release.
+ */
 /* istanbul ignore next */
 export function registerShopwareDevtools(
   app: App,
