@@ -1,19 +1,25 @@
-Renders an Element type structure
+Renders an Element type structure.
+
+`content` is optional: `getSlotContent()` returns `undefined` for a slot the block
+does not carry, and this component renders nothing in that case.
 
 Example usage:
 
-```vue{19,22}
+```vue{22,25}
 <script setup lang="ts">
 import type { CmsBlockGalleryBuybox } from "@shopware/composables";
+import { computed } from "vue";
 import { useCmsBlock } from "#imports";
 
 const props = defineProps<{
   content: CmsBlockGalleryBuybox;
 }>();
 
-const { getSlotContent } = useCmsBlock(props.content);
-const rightContent = getSlotContent("right");
-const leftContent = getSlotContent("left");
+// Pass a getter so the lookups follow a replaced block, and read them through
+// computeds so each one re-runs when it does.
+const { getSlotContent } = useCmsBlock(() => props.content);
+const rightContent = computed(() => getSlotContent("right"));
+const leftContent = computed(() => getSlotContent("left"));
 </script>
 
 <template>

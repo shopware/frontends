@@ -21,9 +21,76 @@ recipe:
 ---
 
 <script setup>
-import LoginFlowDiagram from "../../components/LoginFlowDiagram.vue";
 import LoginVueFlowDiagram from "../../components/LoginVueFlowDiagram.vue";
+import RecipeFlowDiagram from "../../components/RecipeFlowDiagram.vue";
 import SchemaTypeTooltip from "../../components/SchemaTypeTooltip.vue";
+
+const steps = [
+  {
+    title: "UI",
+    action: "Submit credentials",
+    detail:
+      "The login form collects username and password, then calls the composable. The component owns loading and form error state only.",
+    code: "submit() -> login(credentials)",
+    state: "local form state",
+    typeKeys: ['operations["loginCustomer post /account/login"]["body"]'],
+  },
+  {
+    title: "Composable",
+    action: "Run login workflow",
+    detail:
+      "useUser owns the Shopware-specific workflow. It sends credentials first, then refreshes context and cart data.",
+    code: "useUser().login(credentials)",
+    state: "customer workflow",
+    typeKeys: [
+      'operations["loginCustomer post /account/login"]["body"]',
+      'operations["loginCustomer post /account/login"]["response"]',
+    ],
+  },
+  {
+    title: "Store API",
+    action: "Authenticate customer",
+    detail:
+      "The API client invokes the generated operation for POST /account/login. This step validates credentials. The client keeps sending the current sw-context-token and picks up a new one if the response changes it.",
+    code: 'apiClient.invoke("loginCustomer post /account/login")',
+    state: "sw-context-token",
+    typeKeys: [
+      'operations["loginCustomer post /account/login"]["body"]',
+      'operations["loginCustomer post /account/login"]["response"]',
+      'components["schemas"]["failure"]',
+    ],
+  },
+  {
+    title: "Context",
+    action: "Refresh session",
+    detail:
+      "useUser calls refreshSessionContext(), which fetches GET /context again so customer, customer group, currency, rules, and other context-dependent values are current.",
+    code: "refreshSessionContext()",
+    state: "user, isLoggedIn, sales channel context",
+    typeKeys: [
+      'operations["readContext get /context"]["response"]',
+      'Schemas["Customer"]',
+    ],
+  },
+  {
+    title: "Cart",
+    action: "Reload cart",
+    detail:
+      "The cart is refreshed because prices, promotions, and line items can depend on the authenticated customer context.",
+    code: "refreshCart()",
+    state: "cart, prices, promotions",
+    typeKeys: ['Schemas["Cart"]'],
+  },
+  {
+    title: "UI",
+    action: "Render new state",
+    detail:
+      "The UI reads user, isLoggedIn, and cart data from composables instead of keeping its own copy.",
+    code: "user + isLoggedIn + cart",
+    state: "reactive UI",
+    typeKeys: ['Schemas["Customer"]', 'Schemas["Cart"]'],
+  },
+];
 </script>
 
 # Login
@@ -37,21 +104,10 @@ Build a customer login flow and understand what happens after credentials are su
 Login is a small form action, but it changes the whole sales channel session. The important part is that `POST /account/login` only authenticates the customer. The UI becomes reliable after the session context and cart are refreshed.
 
 <ClientOnly>
-  <LoginVueFlowDiagram />
+  <LoginVueFlowDiagram :steps="steps" />
 </ClientOnly>
 
-Hover a type chip to inspect fields generated from the current Store API schema.
-
-<LoginFlowDiagram />
-
-Read the diagram from left to right:
-
-1. Customer submits the login form.
-2. `useUser().login()` sends credentials to `POST /account/login`.
-3. The API client keeps using the current `sw-context-token` and reacts to context-token changes from the API response.
-4. `useUser` refreshes the sales channel context with `GET /context`.
-5. `useUser` refreshes the cart so it matches the customer session.
-6. The UI reads `user`, `isLoggedIn`, and cart state from composables instead of keeping its own copy.
+<RecipeFlowDiagram label="Login flow diagram" :steps="steps" />
 
 You usually do not need to call `readContext get /context` manually after login, because `useUser` calls `refreshSessionContext()` internally.
 
@@ -81,6 +137,8 @@ Use generated Store API types when you need to type credentials, responses, or l
   <SchemaTypeTooltip type-key='Schemas["Cart"]' />
 </div>
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/login/types.ts" code lang="ts" no-name -->
+
 ```ts
 import type { Schemas, operations } from "#shopware";
 
@@ -91,7 +149,11 @@ type SessionContext = operations["readContext get /context"]["response"];
 type Customer = Schemas["Customer"];
 ```
 
+<!-- /automd -->
+
 ## Minimal Vue Example
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/frontends-recipes/account/login/minimal-vue-example.vue" code lang="vue" no-name -->
 
 ```vue
 <script setup lang="ts">
@@ -153,13 +215,17 @@ const submit = async () => {
 </template>
 ```
 
+<!-- /automd -->
+
 ## State And Session
 
 The Store API identifies the current sales channel session with the `sw-context-token` header. A successful login can affect the current customer context and the cart associated with that context.
 
 After `POST /account/login`, `useUser().login()` calls `refreshSessionContext()`. That request uses `GET /context` and updates the reactive session context. The `user` and `isLoggedIn` values then reflect the customer from the refreshed context.
 
-`useUser().login()` also calls `refreshCart()`. This matters because cart prices, promotions, customer-specific rules, and line items can depend on the logged-in customer context.
+`useUser().login()` also calls `refreshCart()`, because cart prices, promotions, customer-specific rules, and line items can depend on the logged-in customer context.
+
+It does not **await** that call, and neither does `logout()`. Only `register()` awaits its cart refresh. So `await login()` resolves once the context is refreshed, with the cart request still in flight — read the cart reactively from `useCart()` rather than assuming it has settled on the line after the login promise resolves.
 
 ## Edge Cases
 
@@ -167,6 +233,7 @@ After `POST /account/login`, `useUser().login()` calls `refreshSessionContext()`
 - If the session context is missing or stale, login can fail before customer state is refreshed.
 - Customer-specific prices, promotions, or rules may change after login because the cart is refreshed in the new context.
 - A successful API response does not mean old local UI state is still valid. Read `user`, `isLoggedIn`, and cart data from the composables after the login promise resolves.
+- The cart refresh that `login()` and `logout()` fire is not awaited and has no error handling of its own, so a failing cart read neither rejects the login promise nor surfaces anywhere in the form.
 
 ## Common Mistakes
 
@@ -179,13 +246,12 @@ After `POST /account/login`, `useUser().login()` calls `refreshSessionContext()`
 
 - Successful login calls `loginCustomer post /account/login`.
 - Successful login refreshes the session context and updates `isLoggedIn`.
-- Successful login refreshes the cart.
+- Successful login triggers a cart refresh. Assert on the cart reactively — `login()` does not await it, so an assertion made immediately after the promise resolves can race the request.
 - Invalid credentials show a form-level error and keep the user logged out.
 - Logout calls `logoutCustomer post /account/logout`, refreshes context, and refreshes cart.
 
 ## Related Links
 
-- [Login form page element](../../getting-started/page-elements/login-form.html)
+- [Cart recipe](../checkout/cart.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
-- [Cart documentation](../../getting-started/e-commerce/cart.html)

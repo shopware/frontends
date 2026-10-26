@@ -25,7 +25,11 @@ By default, the broadcasting feature is disabled in the Vue-Demo template. To en
 2. Locate the broadcasting configuration setting.
 3. Set the `broadcasting` property to `true` as shown below:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/broadcasting/enabling-broadcasting-in-vue-demo-template.ts" code lang="typescript" no-name -->
+
 ```typescript
+import { defineNuxtConfig } from "nuxt/config";
+
 export default defineNuxtConfig({
   // Other configurations...
   runtimeConfig: {
@@ -33,6 +37,8 @@ export default defineNuxtConfig({
   },
 });
 ```
+
+<!-- /automd -->
 
 For more information, please visit the [troubleshooting page](https://developer.shopware.com/frontends/resources/troubleshooting.html#broadcasting-and-bfcache-compatibility)
 
@@ -49,6 +55,11 @@ This way:
 <!-- automd:file src="templates/vue-demo-store/app/composables/useBroadcastChannelSync.ts" code -->
 
 ```ts [useBroadcastChannelSync.ts]
+import { createSharedComposable, useBroadcastChannel } from "@vueuse/core";
+import { watch } from "vue";
+import type { Ref } from "vue";
+
+import { useCart, useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 
 export function useSyncChannel<Entity>(

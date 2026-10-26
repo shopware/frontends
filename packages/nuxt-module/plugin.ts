@@ -1,11 +1,15 @@
 import { createAPIClient } from "@shopware/api-client";
 import { isMaintenanceMode } from "@shopware/helpers";
+import type {
+  ApiClientRuntimeConfig,
+  ShopwareNuxtOptions,
+} from "@shopware/nuxt-module";
 import { getCookie } from "h3";
 import type { H3Event } from "h3";
 import Cookies from "js-cookie";
 import { ref } from "vue";
 
-import type { Plugin } from "#app";
+import type { NuxtSSRContext, Plugin } from "#app";
 import {
   createShopwareContext,
   defineNuxtPlugin,
@@ -16,15 +20,13 @@ import {
 } from "#imports";
 import type { ApiClient } from "#shopware";
 
-import type { ApiClientRuntimeConfig, ShopwareNuxtOptions } from "./src";
-
 type ShopwarePluginInjections = {
   shopwareApiClient: ApiClient;
 };
 
 type ShopwarePluginNuxtApp = {
   ssrContext?: {
-    event: H3Event;
+    event: H3Event | NuxtSSRContext["event"];
   };
   vueApp: {
     provide: (name: string, value: unknown) => void;
@@ -120,8 +122,10 @@ function setupShopwarePlugin(NuxtApp: ShopwarePluginNuxtApp): {
     !!shopwareRuntimeConfigPublic?.useUserContextInSSR ||
     !!shopwareRuntimeConfig?.useUserContextInSSR;
 
+  // Under Nitro 2, the SSR event is h3 v1's H3Event. This package is typed
+  // without Nitro, so the cast is needed; revisit it on the move to h3 v2.
   const contextTokenFromCookie = NuxtApp.ssrContext
-    ? getCookie(NuxtApp.ssrContext.event, "sw-context-token")
+    ? getCookie(NuxtApp.ssrContext.event as H3Event, "sw-context-token")
     : Cookies.get("sw-context-token");
 
   const privateApiClientConfig = import.meta.server

@@ -1,6 +1,10 @@
 {
   "product": {
     "addToCart": "Add to cart",
+    "details": "Details",
+    "addedToCart": "has been added to cart.",
+    "notAddedToCart": "could not be added to cart.",
+    "viewCart": "View cart",
     "addToWishlist": "Add to wishlist",
     "removeFromWishlist": "Remove from wishlist",
     "addReview": "Add review",

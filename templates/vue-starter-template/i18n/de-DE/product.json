@@ -1,6 +1,10 @@
 {
   "product": {
     "addToCart": "Zum Warenkorb hinzufügen",
+    "details": "Details",
+    "addedToCart": "wurde in den Warenkorb gelegt.",
+    "notAddedToCart": "konnte nicht in den Warenkorb gelegt werden.",
+    "viewCart": "Warenkorb anzeigen",
     "addToWishlist": "Zur Wunschliste hinzufügen",
     "removeFromWishlist": "Von der Wunschliste entfernen",
     "addReview": "Bewertung hinzufügen",

@@ -1,0 +1,15 @@
+vue-starter-template/
+├─ app/
+│  ├─ components/
+│  │  ├─ global/       /* Frontend* SEO page resolvers (Nuxt global) */
+│  │  ├─ cms/          /* Custom/override CMS blocks & elements (Nuxt global) */
+│  │  ├─ layout/       /* Header, footer, navigation (auto-import) */
+│  │  └─ ...           /* Other auto-imported UI */
+│  ├─ pages/           /* Route pages, including [...all].vue resolver */
+│  ├─ layouts/         /* Layout components */
+│  └─ ...
+├─ public/             /* Static assets */
+├─ nuxt.config.ts      /* Nuxt configuration */
+├─ uno.config.ts       /* Template-specific UnoCSS extensions */
+├─ package.json
+├─ tsconfig.json

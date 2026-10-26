@@ -8,15 +8,28 @@ import CmsPage from "./mocks/CmsPage";
 
 vi.mock("vue");
 describe("resolveCmsComponent", () => {
-  vi.spyOn(vue, "resolveComponent").mockImplementation((element) => element);
   it("should resolve a cms component", () => {
+    vi.spyOn(vue, "resolveComponent").mockImplementation(() => ({}));
     const section = CmsPage.cmsPage.sections?.[0];
     const block = section?.blocks?.[0];
 
     const result = resolveCmsComponent(block as unknown as Schemas["CmsBlock"]);
     expect(result.componentName).toBe("image-simple-grid");
     expect(result.componentNameToResolve).toBe("CmsBlockImageSimpleGrid");
+    expect(result.resolvedComponent).toEqual({});
     expect(result.isResolved).toBe(true);
+  });
+
+  it("is not resolved when Vue hands the component name back", () => {
+    // resolveComponent returns the name it was given when nothing is registered
+    vi.spyOn(vue, "resolveComponent").mockImplementation((element) => element);
+    const section = CmsPage.cmsPage.sections?.[0];
+    const block = section?.blocks?.[0];
+
+    const result = resolveCmsComponent(block as unknown as Schemas["CmsBlock"]);
+    expect(result.componentNameToResolve).toBe("CmsBlockImageSimpleGrid");
+    expect(result.resolvedComponent).toBeUndefined();
+    expect(result.isResolved).toBe(false);
   });
 
   it("getDefaultApiParams", () => {
@@ -32,15 +45,20 @@ describe("resolveCmsComponent", () => {
     vi.spyOn(vue, "resolveComponent").mockImplementation(() => ({}));
     const result = resolveCmsComponent({
       apiAlias: "cms_section",
+      type: "sidebar",
     } as unknown as Schemas["CmsBlock"]);
+    expect(result.componentNameToResolve).toBe("CmsSectionSidebar");
     expect(result.isResolved).toBe(true);
   });
 
   it("cms custom component", () => {
+    vi.spyOn(vue, "resolveComponent").mockImplementation(() => ({}));
     const result = resolveCmsComponent({
       apiAlias: "cms_custom",
+      type: "text",
     } as unknown as Schemas["CmsBlock"]);
 
+    expect(result.componentNameToResolve).toBe("CmsElementText");
     expect(result.isResolved).toBe(true);
   });
 

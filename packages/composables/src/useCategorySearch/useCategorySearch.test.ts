@@ -45,7 +45,7 @@ describe("useCategorySearch", () => {
           "sw-include-seo-urls": true,
         },
         body: {
-          associations: cmsAssociations,
+          associations: cmsAssociations.associations,
         },
       }),
     );
@@ -79,7 +79,7 @@ describe("useCategorySearch", () => {
         },
         query: {
           _criteria: encodeForQuery({
-            associations: cmsAssociations,
+            associations: cmsAssociations.associations,
             filter: [{ type: "equals", field: "active", value: true }],
             limit: 1,
             sort: [{ field: "name", order: "ASC" }],

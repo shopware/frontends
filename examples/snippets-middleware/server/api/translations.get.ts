@@ -28,14 +28,27 @@ export default defineEventHandler(async (handler) => {
   //   return cache.get(localeParam);
   // }
 
+  const runtimeConfig = useRuntimeConfig();
+
+  if (!runtimeConfig.api_client_id || !runtimeConfig.api_client_secret) {
+    return sendError(handler, {
+      statusCode: 500,
+      statusMessage: "Admin API credentials are missing",
+      fatal: true,
+      message:
+        "Set NUXT_API_CLIENT_ID and NUXT_API_CLIENT_SECRET in .env, see README.md",
+      name: "AdminApiCredentialsMissing",
+    });
+  }
+
   // create an instance of the Shopware API client
   // using client credentials grant type
   const client = createAdminAPIClient<operations>({
-    baseURL: `${useRuntimeConfig().public.shopware.endpoint?.replace("store-api", "api")}`,
+    baseURL: `${runtimeConfig.public.shopware.endpoint?.replace("store-api", "api")}`,
     credentials: {
       grant_type: "client_credentials",
-      client_id: useRuntimeConfig()?.api_client_id,
-      client_secret: useRuntimeConfig()?.api_client_secret,
+      client_id: runtimeConfig.api_client_id,
+      client_secret: runtimeConfig.api_client_secret,
     },
     // onAuthChange: (auth) => {
     //    auth.accessToken

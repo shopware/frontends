@@ -1,0 +1,1 @@
+pnpm create vue@latest

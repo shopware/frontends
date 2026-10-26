@@ -1,0 +1,7 @@
+  {
+    ...
+      shopware: {
+          endpoint: "<frontends >store-api/",
+          ...
+      }
+  }

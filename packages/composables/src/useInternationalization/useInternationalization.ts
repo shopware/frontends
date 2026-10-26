@@ -1,7 +1,7 @@
 import { urlIsAbsolute } from "@shopware/helpers";
 import type { Ref } from "vue";
 
-import { useContext, useShopwareContext } from "#imports";
+import { useContext, useSessionContext, useShopwareContext } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 export type UseInternationalizationReturn = {
@@ -82,6 +82,7 @@ export function useInternationalization(
   pathResolver?: (path: string) => string,
 ): UseInternationalizationReturn {
   const { devStorefrontUrl, apiClient, cacheableReads } = useShopwareContext();
+  const { sessionContext } = useSessionContext();
 
   const _storeLanguages = useContext<Schemas["Language"][]>("swLanguages");
   const _storeCurrentLanguage = useContext<string>(
@@ -90,7 +91,25 @@ export function useInternationalization(
   const _storeCurrentPrefix = useContext<string>("swLanguagesCurrentPrefix");
 
   function getStorefrontUrl() {
-    return devStorefrontUrl ?? window.location.origin ?? "";
+    const preferred = devStorefrontUrl ?? window.location.origin ?? "";
+    const domains = sessionContext?.value?.salesChannel?.domains ?? [];
+    if (!domains.length) return preferred;
+
+    const normalizedPreferred = preferred.replace(/\/$/, "");
+    const matchingDomain = domains.find(
+      (domain) => domain.url?.replace(/\/$/, "") === normalizedPreferred,
+    );
+    if (matchingDomain?.url) return matchingDomain.url;
+
+    const languageId =
+      sessionContext?.value?.context?.languageIdChain?.[0] ??
+      sessionContext?.value?.salesChannel?.languageId;
+    const languageDomain = domains.find(
+      (domain) => domain.languageId === languageId && domain.url,
+    );
+    if (languageDomain?.url) return languageDomain.url;
+
+    return domains.find((domain) => domain.url)?.url ?? preferred;
   }
 
   async function getAvailableLanguages() {

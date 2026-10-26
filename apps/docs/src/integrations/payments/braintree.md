@@ -30,9 +30,13 @@ This guide shows how to integrate **Braintree Credit Card** payments using the [
 
 ## Install dependencies
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/braintree/install-dependencies.sh" code lang="bash" no-name -->
+
 ```bash
 npm install braintree-web-drop-in
 ```
+
+<!-- /automd -->
 
 ## Integration Flow
 
@@ -46,7 +50,11 @@ The Braintree App integration requires three steps:
 
 First, obtain an app token from Shopware, then exchange it for a Braintree client token.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/braintree/step-1-get-client-token.ts" code lang="ts" no-name -->
+
 ```ts
+import { useSessionContext, useShopwareContext } from "#imports";
+
 const { apiClient } = useShopwareContext();
 const { sessionContext } = useSessionContext();
 
@@ -55,7 +63,8 @@ const tokenResponse = await apiClient.invoke(
   "generateJWTAppSystemAppServer post /app-system/{name}/generate-token",
   { pathParams: { name: "SwagBraintreeApp" } },
 );
-const { token, shopId } = tokenResponse.data;
+const token = tokenResponse.data?.token ?? "";
+const shopId = tokenResponse.data?.shopId ?? "";
 
 // Get Braintree client config from the app server
 const currencyId = sessionContext.value?.currency?.id;
@@ -74,14 +83,20 @@ const configResponse = await fetch(
 const { clientToken } = await configResponse.json();
 ```
 
+<!-- /automd -->
+
 :::warning Important
 Use the `shopware-app-token` header, **NOT** `Authorization: Bearer`. Using the wrong header format will result in 500 errors.
 :::
 
 ## Step 2: Initialize Braintree Drop-in
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/braintree/step-2-initialize-braintree-drop-in.ts" lines="1:" code lang="ts" no-name -->
+
 ```ts
 import dropin from "braintree-web-drop-in";
+
+import { clientToken } from "./snippet-context";
 
 const instance = await dropin.create({
   authorization: clientToken,
@@ -95,11 +110,19 @@ const instance = await dropin.create({
 });
 ```
 
+<!-- /automd -->
+
 ## Step 3: Create Order and Handle Payment
 
 When the user submits payment, get the nonce from the Drop-in, create the order, then call `/handle-payment` with the Braintree data.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/braintree/step-3-create-order-and-handle-payment.ts" lines="1:" code lang="ts" no-name -->
+
 ```ts
+import { useCheckout, useShopwareContext } from "#imports";
+
+import { instance } from "./snippet-context";
+
 const { createOrder } = useCheckout();
 const { apiClient } = useShopwareContext();
 
@@ -109,19 +132,22 @@ async function onPaymentSubmit() {
 
   // Create order (no braintree params here)
   const order = await createOrder();
+  const paymentPayload = {
+    orderId: order.id,
+    finishUrl: `${window.location.origin}/checkout/finish`,
+    errorUrl: `${window.location.origin}/checkout/error`,
+    braintreeNonce: nonce,
+    braintreeDeviceData: deviceData,
+  };
 
   // Handle payment WITH Braintree data
   await apiClient.invoke("handlePaymentMethod post /handle-payment", {
-    body: {
-      orderId: order.id,
-      finishUrl: `${window.location.origin}/checkout/finish`,
-      errorUrl: `${window.location.origin}/checkout/error`,
-      braintreeNonce: nonce,
-      braintreeDeviceData: deviceData,
-    },
+    body: paymentPayload,
   });
 }
 ```
+
+<!-- /automd -->
 
 :::warning Important
 Pass `braintreeNonce` and `braintreeDeviceData` to `/handle-payment`, **NOT** to `/checkout/order`.

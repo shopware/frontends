@@ -1,0 +1,20 @@
+  i18n: {
+    strategy: "prefix_except_default",
+    defaultLocale: "en-GB",
+    detectBrowserLanguage: false,
+    langDir: "./src/langs/",
+    vueI18n: "config.ts",
+    locales: [
+      {
+        code: "en-GB",
+        language: "en-GB",
+        file: "en-GB.ts",
+      },
+      {
+        code: "testde",
+        language: "de-DE",
+        file: "de-DE.ts",
+        localeId: "c19b753b5f2c4bea8ad15e00027802d4",
+      },
+    ],
+  },

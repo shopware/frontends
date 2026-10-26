@@ -15,20 +15,24 @@ nav:
 
 # Create Blocks (CMS)
 
-Make sure, you've created a new file as described in [customize components](customize-components.html#create-new-files).
+Create the file under a directory registered with `global: true` — `app/components/cms/` in `vue-starter-template` — as [Overwrite CMS components](overwriting-cms.html#where-the-file-goes) explains.
 
 Next, import the correct type for your block and use it to define the `content` property:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-blocks/example.vue" code lang="vue" no-name -->
+
 ```vue
-<!-- components/cms/CmsBlockImageThreeColumn.vue -->
+<!-- app/components/cms/CmsBlockImageThreeColumn.vue -->
 <script setup lang="ts">
-import { CmsBlockImageThreeColumn } from "@shopware/composables";
+import type { CmsBlockImageThreeColumn } from "@shopware/composables";
 
 const props = defineProps<{
   content: CmsBlockImageThreeColumn;
 }>();
 </script>
 ```
+
+<!-- /automd -->
 
 ## Slots
 
@@ -42,49 +46,35 @@ For that reason, there's a generic element `CmsGenericElement` which can be plac
 
 Let's build the `image-three-column` block, which has three slots - `left`, `center` and `right`.
 
-```vue{4-15}
-<!-- components/cms/CmsBlockImageThreeColumn.vue -->
-<template>
-    <div class="grid grid-cols-3">
-        <CmsGenericElement
-            :content="props.content.slots.filter(
-                (slot) => slot.slot === 'left')
-            " />
-        <CmsGenericElement
-            :content="props.content.slots.filter(
-                (slot) => slot.slot === 'center')
-            " />
-        <CmsGenericElement
-            :content="props.content.slots.filter(
-                (slot) => slot.slot === 'right')
-            " />
-    </div>
-</template>
-```
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/create-blocks/slots-2.vue" code lang="vue{12,14-16,20-22}" no-name -->
 
-That works, but it's quite repetiive and hard to read. So we can use another composable `useCmsBlock` which makes our lives way easier.
-
-```vue{8,10-12,16-18}
+```vue{12,14-16,20-22}
 <script setup lang="ts">
-import { CmsBlockImageThreeColumn } from "@shopware/composables";
+import type { CmsBlockImageThreeColumn } from "@shopware/composables";
+
+import { computed, useCmsBlock } from "#imports";
 
 const props = defineProps<{
   content: CmsBlockImageThreeColumn;
 }>();
 
-const { getSlotContent } = useCmsBlock(props.content);
+// A getter keeps the lookups pointed at the current block, and a computed
+// re-runs the lookup when that block is replaced.
+const { getSlotContent } = useCmsBlock(() => props.content);
 
-const leftContent = getSlotContent("left");
-const rightContent = getSlotContent("right");
-const centerContent = getSlotContent("center");
+const leftContent = computed(() => getSlotContent("left"));
+const rightContent = computed(() => getSlotContent("right"));
+const centerContent = computed(() => getSlotContent("center"));
 </script>
 <template>
-    <div class="grid grid-cols-3">
-        <CmsGenericElement :content="leftContent" />
-        <CmsGenericElement :content="centerContent" />
-        <CmsGenericElement :content="rightContent" />
-    </div>
+  <div class="grid grid-cols-3">
+    <CmsGenericElement :content="leftContent" />
+    <CmsGenericElement :content="centerContent" />
+    <CmsGenericElement :content="rightContent" />
+  </div>
 </template>
 ```
 
-No you can go ahead and override blocks and elements step by step.
+<!-- /automd -->
+
+Now you can go ahead and override blocks and elements step by step. The [Rendering CMS Pages recipe](../../frontends-recipes/cms/rendering.html) explains how a block's `content` reaches this component, and why the getter and the `computed` matter.

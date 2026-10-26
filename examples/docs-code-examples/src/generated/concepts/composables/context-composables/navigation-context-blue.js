@@ -1,0 +1,1 @@
+const { routeName, foreignKey } = useNavigationContext();

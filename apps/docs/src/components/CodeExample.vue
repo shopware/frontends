@@ -11,7 +11,7 @@ const props = withDefaults(
     title: "Example",
     peek: 260,
     expanded: false,
-  }
+  },
 );
 
 const bodyId = useId();

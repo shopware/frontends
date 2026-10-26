@@ -1,0 +1,5 @@
+your-project/
+└── app/
+    └── components/
+        └── cms/
+            └── {{ componentName }}.vue   ← create this

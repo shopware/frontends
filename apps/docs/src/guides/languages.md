@@ -16,6 +16,9 @@ head:
 :::warning
 This is the implementation working with the `vue-starter-template`. To see the details, please go to the `templates/vue-starter-template` directory in the repository.
 :::
+
+This page covers the i18n configuration. What happens at runtime — switching the language and the currency, the redirect a language switch ends in, and building locale-aware links with `formatLink` — is covered end-to-end in the [Language and Currency Switch recipe](../frontends-recipes/context/language-and-currency.html) and the [Session Context recipe](../frontends-recipes/context/session-context.html).
+
 Each store has two sources of translations.
 
 Backend source for:
@@ -40,117 +43,115 @@ For the frontend app we recommend to use `vue-i18n` module.
 Backend languages codes and frontend languages codes must be the same!
 :::
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/configuration" code no-name -->
+
 ```
 www.example.com         // GB site
 www.example.com/de-DE   // DE site
 ```
 
+<!-- /automd -->
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/configuration-2" code no-name -->
+
 ```
 {
   i18n: {
-    vueI18n: {
-      fallbackLocale: "en-GB",
-    },
     strategy: "prefix_except_default",
     defaultLocale: "en-GB",
-    langDir: "i18n/src/",
+    langDir: "./src/langs/",
+    vueI18n: "config.ts",
     locales: [
-    {
-      code: "en-GB",
-      iso: "en-GB",
-      file: "en-GB.ts",
-    },
-    {
-      code: "de-DE",
-      iso: "de-DE",
-      file: "de-DE.ts",
-    },
-  ],
+      {
+        code: "en-GB",
+        language: "en-GB",
+        file: "en-GB.ts",
+      },
+      {
+        code: "de-DE",
+        language: "de-DE",
+        file: "de-DE.ts",
+      },
+    ],
   },
 }
 ```
 
+<!-- /automd -->
+
 **_When you are using different domains:_**
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/configuration-3" code no-name -->
 
 ```
 www.example1.com     // GB site
 www.example2.com     // DE site
 ```
 
+<!-- /automd -->
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/configuration-4" code no-name -->
+
 ```
 {
   i18n: {
-    vueI18n: {
-      fallbackLocale: "en-GB",
-    },
-    langDir: "i18n/src/",
+    differentDomains: true,
+    langDir: "./src/langs/",
+    vueI18n: "config.ts",
     locales: [
-    {
-      domain: 'example1.com'
-      code: "en-GB",
-      iso: "en-GB",
-      file: "en-GB.ts",
-    },
-    {
-      domain: 'example2.com'
-      code: "de-DE",
-      iso: "de-DE",
-      file: "de-DE.ts",
-    },
-  ],
+      {
+        domain: "example1.com",
+        code: "en-GB",
+        language: "en-GB",
+        file: "en-GB.ts",
+      },
+      {
+        domain: "example2.com",
+        code: "de-DE",
+        language: "de-DE",
+        file: "de-DE.ts",
+      },
+    ],
   },
 }
 ```
 
-## Routing
-
-When you are using _prefix_ domain languages, you have to use `formatLink()` method from `useInternationalization` composable for building URLs.
-The main task of this composable is to add a prefix to URL if needed.
-
-```vue
-<script setup lang="ts">
-const localePath = useLocalePath();
-const { formatLink } = useInternationalization(localePath);
-</script>
-<template>
-  <NuxtLink :to="formatLink('/account')"> Account</NuxtLink>
-</template>
-```
+<!-- /automd -->
 
 ## Testing
 
-If you want to test languages locally, and your local domain differs from what is declared on the backend, you can use environment variables.
-
-```
-NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=http://127.0.0.1:3000
-```
+To test languages against a local domain that differs from the one declared on the backend, set `devStorefrontUrl`. The [Storefront URL guide](./storefront-url.html#devstorefronturl) explains how to set it and when the environment variable takes effect.
 
 ## localeId
 
 In more complex scenarios, such as when different prefixes are used on the backend and frontend, the `localeId` attribute can be utilized.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/localeid" code no-name -->
+
 ```
-  i18n: {
+i18n: {
     strategy: "prefix_except_default",
     defaultLocale: "en-GB",
     detectBrowserLanguage: false,
-    langDir: "./i18n/src/langs/",
-    vueI18n: "./i18n/config",
+    langDir: "./src/langs/",
+    vueI18n: "config.ts",
     locales: [
       {
         code: "en-GB",
-        iso: "en-GB",
+        language: "en-GB",
         file: "en-GB.ts",
       },
       {
         code: "testde",
-        iso: "de-DE",
+        language: "de-DE",
         file: "de-DE.ts",
         localeId: "c19b753b5f2c4bea8ad15e00027802d4",
       },
     ],
   },
 ```
+
+<!-- /automd -->
 
 The `localeId` attribute corresponds to a specific language identifier, which can be located within the Shopware administrative panel. Additional information is available at this link: https://docs.shopware.com/en/shopware-6-en/settings/languages
 
@@ -168,17 +169,7 @@ _This example should be run locally because of the multi-domain requirements_
 
 After switching the language, the URL returned from the backend is used as the basis for redirection which leads to exiting the localhost context.
 
-```typescript
-const onChangeHandler = async (option: Event) => {
-  const data = await changeLanguage((option.target as HTMLSelectElement).value);
-
-  if (data.redirectUrl) {
-    window.location.replace(replaceToDevStorefront(data.redirectUrl));
-  } else {
-    window.location.reload();
-  }
-};
-```
+The switch itself, with `changeLanguage` and `replaceToDevStorefront`, is shown in the [Language and Currency Switch recipe](../frontends-recipes/context/language-and-currency.html).
 
 This can be problematic if you are trying to locally test the language switch flow. Below are some examples of how to resolve this problem:
 
@@ -190,11 +181,15 @@ Windows: `C:\Windows\System32\drivers\etc`
 Linux: `/etc/hosts`
 macOS: `/etc/hosts`
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/locally-host-overrides" code no-name -->
+
 ```
 127.0.0.1       yourDomainFromBackend.com
 #IPv6
 ::1             yourDomainFromBackend.com
 ```
+
+<!-- /automd -->
 
 Thanks to this, you will be able to use your local Frontends app instance with the domain returned by the backend.
 
@@ -202,8 +197,15 @@ Thanks to this, you will be able to use your local Frontends app instance with t
 
 You can add own dev resolver to avoid redirection
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/languages/add-dev-resolver.ts" code lang="typescript" no-name -->
+
 ```typescript
-const dev = process.dev;
+import { ref, useInternationalization } from "#imports";
+
+const { changeLanguage, getLanguageCodeFromId, replaceToDevStorefront } =
+  useInternationalization();
+const locale = ref("");
+const dev = import.meta.dev;
 
 const onChangeHandler = async (option: Event) => {
   const data = await changeLanguage((option.target as HTMLSelectElement).value);
@@ -227,6 +229,8 @@ const onChangeHandler = async (option: Event) => {
 };
 ```
 
+<!-- /automd -->
+
 ## Troubleshooting in reverse proxy environments
 
 When deploying your application behind a reverse proxy, such as Fastly, Cloudflare, or Vercel, you may encounter issues with language switching. This is primarily due to how these services cache responses and handle headers, which can affect the way languages are served to users.
@@ -235,15 +239,17 @@ To face possible issues with language switching, you would need to understand ho
 
 ### **Language Detection**
 
-The i18n module detects the user's preferred language based on the URL or the `Accept-Language` header.xz
+The i18n module detects the user's preferred language based on the URL or the `Accept-Language` header.
 The setting can be disabled by setting `detectBrowserLanguage: false` in the i18n module configuration. Then, the language will be determined solely based on the URL and the configured locales.
 
 ### **URL Structure**
 
-The i18n module uses a specific URL structure to differentiate between languages. For example, it might use `/en/` for English and `/de/` for German. There are two strategies for this:
+The i18n module uses a specific URL structure to differentiate between languages. For example, it might use `/en/` for English and `/de/` for German. The `strategy` option picks one of four schemes:
 
-- `prefix_except_default`: This strategy adds a prefix to the URL for all languages except the default one.
-- `prefix_and_default`: This strategy adds a prefix to the URL for all languages, including the default one.
+- `prefix_except_default`: every language except the default one gets a prefix. This is the default and what `vue-starter-template` uses.
+- `prefix`: every language gets a prefix, the default one included.
+- `prefix_and_default`: every language gets a prefix, and the default one is also served without it.
+- `no_prefix`: no language gets a prefix.
 
 ### Multiple locales for the same domain
 

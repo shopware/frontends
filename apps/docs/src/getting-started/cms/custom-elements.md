@@ -4,11 +4,11 @@ nav:
 head:
   - - meta
     - http-equiv: refresh
-      content: "0; url=/frontends/guides/cms/custom-elements.html"
+      content: "0; url=/frontends/guides/cms/missing-component.html"
 ---
 
 # This page has moved
 
-This content is now part of **[Custom Elements (CMS)](/frontends/guides/cms/custom-elements.html)**.
+This content is now part of **[Implement a Missing CMS Component](/frontends/guides/cms/missing-component.html)**.
 
-If you are not redirected automatically, [click here](/frontends/guides/cms/custom-elements.html).
+If you are not redirected automatically, [click here](/frontends/guides/cms/missing-component.html).

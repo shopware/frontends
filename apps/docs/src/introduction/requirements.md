@@ -43,11 +43,11 @@ Shopware Frontends requires a Node.js runtime environment.
 
 Supported versions:
 
-- **v22.19** or newer
-- **v24.11** or newer
+- **v22.22.3** or newer
+- **v24.15** or newer
 - **v26** or newer
 
-The floor comes from Nuxt 4.5. Node v18 and v20 are end of life and no longer
+The floor comes from Nuxt 4.6. Node v18 and v20 are end of life and no longer
 supported. Each template declares its own range in `package.json`, and its
 manifest entry repeats it in the `node` field.
 
@@ -62,10 +62,14 @@ Use [Node Version Manager](https://github.com/nvm-sh/nvm) to manage a Node.js ve
 Use **pnpm**. The templates are developed and tested with it, and each one
 ships a `pnpm.onlyBuiltDependencies` list so a fresh scaffold runs unattended.
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/introduction/requirements/package-manager.sh" code lang="bash" no-name -->
+
 ```bash
 npx tiged shopware/frontends/templates/vue-starter-template my-store && cd my-store
 pnpm i && pnpm dev
 ```
+
+<!-- /automd -->
 
 :::info
 `npm` is available out of the box with Node.js; pnpm needs a one-time install

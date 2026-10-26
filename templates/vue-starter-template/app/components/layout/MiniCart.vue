@@ -33,7 +33,7 @@ onClickOutside(miniCartContainer, () => {
   <div
     ref="miniCartContainer"
     data-testid="mini-cart-container"
-    class="z-20 max-w-[500px] w-full"
+    class="z-40 max-w-[500px] w-full"
   >
     <div
       class="px-6 pt-4 pb-3 border bg-surface-surface flex items-center justify-between"

@@ -17,8 +17,6 @@ nav:
 
 We splitted the section into different parts to cover the most important aspects of testing.
 
-<!-- - [Unit Testing](./unit-testing.md) -->
-
 - [E2E Testing with Playwright](./testing/e2e-testing.md)
 - [A/B Testing](./testing/ab-testing.md)
 - [Accessibility Testing](./testing/accessibility-testing.md)

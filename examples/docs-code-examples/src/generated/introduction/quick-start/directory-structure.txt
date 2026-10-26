@@ -1,0 +1,28 @@
+my-store/
+├─ app/
+│  ├─ components/
+│  │  ├─ layout/       /* header, footer, account menu etc. */
+│  │  ├─ checkout/     /* cart items, cart overview */
+│  │  ├─ account/      /* order history, account settings */
+│  │  ├─ product/      /* product components */
+│  │  ├─ form/         /* form components */
+│  │  ├─ shared/       /* modals, notifications */
+│  │  ├─ ...
+│  ├─ composables/     /* auto-imported composables */
+│  ├─ layouts/
+│  │  ├─ checkout.vue  /* minimal layout without navigation and footer */
+│  │  ├─ default.vue   /* default layout with navigation and footer */
+│  ├─ pages/
+│  │  ├─ checkout/     /* checkout pages */
+│  │  ├─ account/      /* user account pages */
+│  │  ├─ [...all].vue  /* catch-all route for CMS pages */
+│  │  ├─ ...
+│  ├─ utils/           /* utility functions */
+│  ├─ app.config.ts    /* app configuration */
+│  ├─ app.vue          /* app root component */
+├─ i18n/               /* internationalization */
+├─ public/             /* static assets */
+├─ server/             /* server-side code */
+├─ nuxt.config.ts      /* Nuxt configuration */
+├─ package.json
+├─ tsconfig.json

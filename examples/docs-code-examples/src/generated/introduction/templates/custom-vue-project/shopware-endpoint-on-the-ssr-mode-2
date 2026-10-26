@@ -1,0 +1,2 @@
+NUXT_SHOPWARE_ENDPOINT=http://shopware
+NUXT_PUBLIC_SHOPWARE_ENDPOINT=https://demo-frontends.shopware.store

@@ -40,9 +40,9 @@ That's why the PR title is the commit message for the whole PR. Please make sure
 
 ## Agent instruction files
 
-The repo carries `AGENTS.md` / `CLAUDE.md` instruction files for AI coding
-agents, at the root and in some packages. If you add or edit one, the rules —
-file pairing, the size budget, and what belongs in them — are in
+The repo carries `AGENTS.md` instruction files for AI coding agents, at the root
+and in some packages. If you add or edit one, the rules — no `CLAUDE.md` files,
+the size budget, and what belongs in them — are in
 [AGENTS.md](AGENTS.md#maintaining-these-files).
 
 ## Documenting code

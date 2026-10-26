@@ -1,0 +1,21 @@
+{
+  i18n: {
+    differentDomains: true,
+    langDir: "./src/langs/",
+    vueI18n: "config.ts",
+    locales: [
+      {
+        domain: "example1.com",
+        code: "en-GB",
+        language: "en-GB",
+        file: "en-GB.ts",
+      },
+      {
+        domain: "example2.com",
+        code: "de-DE",
+        language: "de-DE",
+        file: "de-DE.ts",
+      },
+    ],
+  },
+}

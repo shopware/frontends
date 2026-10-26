@@ -83,8 +83,8 @@ jobs:
         run: |
           cd apps/e2e-tests
           # pnpm forwards these straight through; `--` would swallow them.
-          # One worker: the specs share a customer and a backend, so parallel
-          # workers clobber each other. Measured 5 passing at 4 workers vs 8.
+          # One worker: the specs share one rate-limited backend, so parallel
+          # workers starve each other. Measured 5 passing at 4 workers vs 8.
           pnpm run test:e2e --project=chromium --reporter=github,html --workers=1
 
       # Nitro logs neither, so without this a backend problem is just a timeout.

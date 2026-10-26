@@ -1,17 +1,37 @@
 <script setup lang="ts">
-import { useCmsSection } from "@shopware/composables";
+import { useCmsSection, useCmsTranslations } from "@shopware/composables";
 import type { CmsSectionSidebar } from "@shopware/composables";
+import { defu } from "defu";
 import { computed, provide } from "vue";
 
 const props = defineProps<{
   content: CmsSectionSidebar;
 }>();
-const { getPositionContent, section } = useCmsSection(props.content);
 
-const sidebarBlocks = getPositionContent("sidebar");
-const mainBlocks = getPositionContent("main");
+type Translations = {
+  layout: {
+    ariaLabels: {
+      contentSidebar: string;
+    };
+  };
+};
+
+let translations: Translations = {
+  layout: {
+    ariaLabels: {
+      contentSidebar: "Content sidebar",
+    },
+  },
+};
+
+translations = defu(useCmsTranslations(), translations) as Translations;
+
+const { getPositionContent } = useCmsSection(() => props.content);
+
+const sidebarBlocks = computed(() => getPositionContent("sidebar"));
+const mainBlocks = computed(() => getPositionContent("main"));
 const mobileBehavior = computed(() => props.content.mobileBehavior);
-const fullWidth = computed(() => section.sizingMode === "full_width");
+const fullWidth = computed(() => props.content.sizingMode === "full_width");
 
 // Provide layout context for child components
 provide("cms-section-layout", "sidebar");
@@ -25,6 +45,7 @@ provide("cms-section-layout", "sidebar");
     }"
   >
     <aside
+      :aria-label="translations.layout.ariaLabels.contentSidebar"
       :class="{
         'w-full lg:w-72 xl:w-80 flex-shrink-0 bg-surface-surface flex flex-col justify-start items-stretch gap-4 lg:sticky lg:top-20 px-4 lg:px-0':
           mobileBehavior !== 'hidden',

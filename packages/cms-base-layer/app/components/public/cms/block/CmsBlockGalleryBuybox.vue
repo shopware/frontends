@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CmsBlockGalleryBuybox } from "@shopware/composables";
+import { computed } from "vue";
 
 import { useCmsBlock } from "#imports";
 
@@ -7,9 +8,9 @@ const props = defineProps<{
   content: CmsBlockGalleryBuybox;
 }>();
 
-const { getSlotContent } = useCmsBlock(props.content);
-const rightContent = getSlotContent("right");
-const leftContent = getSlotContent("left");
+const { getSlotContent } = useCmsBlock(() => props.content);
+const rightContent = computed(() => getSlotContent("right"));
+const leftContent = computed(() => getSlotContent("left"));
 </script>
 
 <template>

@@ -25,17 +25,25 @@ This example requires NUXT 3 instance.
 
 Add Strapi Nuxt module as a dev dependencies
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/strapi/how-to-install.cmd" code lang="cmd" no-name -->
+
 ```cmd
 pnpm add -D @nuxtjs/strapi
 ```
 
+<!-- /automd -->
+
 Update Nuxt config `nuxt.config.ts`
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/strapi/how-to-install.js" code lang="js" no-name -->
 
 ```js
 export default {
   modules: ["@nuxtjs/strapi"],
 };
 ```
+
+<!-- /automd -->
 
 More about installation can be found [HERE](https://strapi.nuxtjs.org/setup)
 
@@ -46,18 +54,25 @@ More about installation can be found [HERE](https://strapi.nuxtjs.org/setup)
 As a example we will add a global banner to our demo shop.
 At the beginning we created a single type on the Strapi collection, with fallowing fields
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/strapi/fetching-and-displaying-single-element.ts" code lang="ts" no-name -->
+
 ```ts
-interface {
+interface StrapiBanner {
   text: string; // short input field - this will represent a text that we want to display in the banner
   color: string; // short input field - this will represent a color of the banner (this can be done also with color picker filed, but for this example we will use input text)
 }
-
 ```
+
+<!-- /automd -->
 
 The next step is to create a banner component
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/strapi/fetching-and-displaying-single-element.vue" code lang="vue" no-name -->
+
 ```vue
 <script setup lang="ts">
+import { computed, useStrapi } from "#imports";
+
 interface GlobalBanner {
   text: string;
   color: string;
@@ -77,8 +92,12 @@ const bgColor = computed(() => data.attributes?.color || "#fff");
 </template>
 ```
 
+<!-- /automd -->
+
 Now we can add our component to the layout.
 `frontends/templates/vue-starter-template/app/layouts/default.vue`
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/strapi/fetching-and-displaying-single-element-2.vue" code lang="vue" no-name -->
 
 ```vue
 <template>
@@ -94,6 +113,8 @@ Now we can add our component to the layout.
 </template>
 ```
 
+<!-- /automd -->
+
 ## Fetching and displaying pages
 
 :::warning
@@ -102,16 +123,24 @@ This example is written for the vue-starter-template and assuming that you [impl
 
 Create new collection type `Page` on the Strapi admin site with fields:
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/strapi/fetching-and-displaying-pages.ts" code lang="ts" no-name -->
+
 ```ts
-interface {
+interface StrapiContentPage {
   text: string; // Content page
   seoUrl: string; // Page slug
 }
 ```
 
+<!-- /automd -->
+
 Composable for resolving components
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/strapi/fetching-and-displaying-pages-2.ts" code lang="ts" no-name -->
+
 ```ts
+import { h, useStrapi } from "#imports";
+
 interface StripePage {
   text: string;
   seoUrl: string;
@@ -139,9 +168,19 @@ export function useSWStrapi() {
 }
 ```
 
+<!-- /automd -->
+
 Provide Strapi resolver to the `pageRenderMiddlewares`
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/cms/strapi/fetching-and-displaying-pages-3.ts" code lang="ts" no-name -->
+
 ```ts
+import { provide } from "#imports";
+
+import { useSWStrapi } from "./fetching-and-displaying-pages-2";
+
 const { resolveComponent } = useSWStrapi();
 provide("pageRenderMiddlewares", resolveComponent);
 ```
+
+<!-- /automd -->

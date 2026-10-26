@@ -1,0 +1,33 @@
+{
+  // irrelevant data omitted
+  ...
+  "mimeType": "image/webp", // mime-type of media object, supported by the Shopware 6 platform
+  "fileExtension": "webp",
+  "fileSize": 492024,
+  "title": "Frontends Logo",
+  "metaData": {
+      "hash": "b795091b0a92b8a0605281f710dc1c28",
+      "type": 2,
+      "width": 3505, // original width
+      "height": 5258 // original height
+  },
+  "alt": "Shopware Frontends",
+  "url": "http://localhost/media/shopware-frontends-4P8HWu_NRp4-unsplash.jpg",
+  "fileName": "shopware-frontends-4P8HWu_NRp4-unsplash",
+  "thumbnails": [ // list of resized images for previously configured ranges
+    {
+      "width": 1920,
+      "height": 1920,
+      "url": "http://localhost/thumbnail/ainars-cekuls-4P8HWu_NRp4-unsplash_1920x1920.webp",
+    },
+    {
+      // omitted irrelevant data
+      "width": 800,
+      "height": 800,
+      "url": "http://localhost/thumbnail/ainars-cekuls-4P8HWu_NRp4-unsplash_800x800.webp",
+      "apiAlias": "media_thumbnail"
+    },
+    ...
+  ]
+  ...
+}

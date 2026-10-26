@@ -1,10 +1,14 @@
 ---
 nav:
-  title: B2B
-  position: 110
+  hidden: true
+head:
+  - - meta
+    - http-equiv: refresh
+      content: "0; url=/frontends/integrations/commercial/"
 ---
 
-# B2B modules
+# This page has moved
 
-Collection of B2B elements and documentation how to use them.
-<PageRef page="quote-management.html" title="Quote Management" sub="How to use B2B Quote Management module" />
+This content is now part of **[Commercial Integrations](/frontends/integrations/commercial/)**.
+
+If you are not redirected automatically, [click here](/frontends/integrations/commercial/).

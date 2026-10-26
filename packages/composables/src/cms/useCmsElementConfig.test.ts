@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
+import { ref } from "vue";
 
 import type {
   CmsElementBuyBox,
   CmsElementForm,
   CmsElementImage,
+  CmsElementText,
 } from "../types";
 import { useCmsElementConfig } from "./useCmsElementConfig";
 
@@ -148,6 +150,42 @@ describe("useCmsElementConfig", () => {
         const { getConfigValue } = useCmsElementConfig(cmsElement);
         expect(getConfigValue("defaultMailReceiver")).toEqual(false);
         expect(getConfigValue("mailReceiver")).toEqual(["first", "second"]);
+      });
+
+      it("should not return the mapping path of a mapped value", () => {
+        const { getConfigValue } = useCmsElementConfig({
+          config: {
+            content: { source: "mapped", value: "category.name" },
+          },
+        } as unknown as CmsElementText);
+
+        expect(getConfigValue("content")).toBe(false);
+      });
+
+      it("should follow a ref passed as element", () => {
+        const element = ref({
+          config: { alignment: { source: "static", value: "flex-start" } },
+        } as unknown as CmsElementBuyBox);
+        const { getConfigValue } = useCmsElementConfig(element);
+
+        element.value = {
+          config: { alignment: { source: "static", value: "center" } },
+        } as unknown as CmsElementBuyBox;
+
+        expect(getConfigValue("alignment")).toBe("center");
+      });
+
+      it("should follow a getter passed as element", () => {
+        let element = {
+          config: { alignment: { source: "static", value: "flex-start" } },
+        } as unknown as CmsElementBuyBox;
+        const { getConfigValue } = useCmsElementConfig(() => element);
+
+        element = {
+          config: { alignment: { source: "static", value: "flex-end" } },
+        } as unknown as CmsElementBuyBox;
+
+        expect(getConfigValue("alignment")).toBe("flex-end");
       });
     });
   });
