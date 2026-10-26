@@ -25,7 +25,11 @@ Crawling proves the catch-all works. It does not give you the catalog. Listing p
 
 ## Configuration
 
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/prerendering/configuration.ts" code lang="ts" no-name -->
+
 ```ts
+import { defineNuxtConfig } from "nuxt/config";
+
 export default defineNuxtConfig({
   nitro: {
     prerender: {
@@ -52,6 +56,8 @@ export default defineNuxtConfig({
   },
 });
 ```
+
+<!-- /automd -->
 
 **A green build is not a complete one.** With `failOnError` off, a run that could not render a page still succeeds, and the gap is wider than that page alone: a failed page returns no links, so the crawler never sees anything below it.
 
