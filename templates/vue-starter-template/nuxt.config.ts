@@ -24,6 +24,8 @@ export default defineNuxtConfig({
       endpoint: "",
     },
     public: {
+      // Public URL of the storefront. /sitemap.xml builds its links from it.
+      siteUrl: "",
       shopware: {
         endpoint: "https://demo-frontends.shopware.store/store-api/",
         accessToken: "SWSCNWDGMUWZM0TLVUU0YKLQVW",

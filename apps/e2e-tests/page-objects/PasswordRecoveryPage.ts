@@ -1,28 +1,45 @@
 import type { Locator, Page } from "@playwright/test";
 
-import { AbstractPage } from "./AbstractPage";
-
-export class PasswordRecoveryPage extends AbstractPage {
-  readonly forgotPasswordLink: Locator;
+export class PasswordRecoveryPage {
+  readonly page: Page;
   readonly recoverForm: Locator;
-  readonly emailInput: Locator;
-  readonly submitButton: Locator;
-  readonly successMessage: Locator;
+  readonly recoverEmailInput: Locator;
+  readonly recoverSubmitButton: Locator;
+  readonly recoverSuccessMessage: Locator;
   readonly resetForm: Locator;
-  readonly expiredMessage: Locator;
-  readonly retryButton: Locator;
+  readonly resetNewPasswordInput: Locator;
+  readonly resetConfirmPasswordInput: Locator;
+  readonly resetSubmitButton: Locator;
+  readonly resetSuccessMessage: Locator;
+  readonly resetExpiredMessage: Locator;
+  readonly resetRetryButton: Locator;
   readonly errorNotification: Locator;
 
   constructor(page: Page) {
-    super(page);
-    this.forgotPasswordLink = page.getByTestId("login-forgot-password-link");
+    this.page = page;
     this.recoverForm = page.getByTestId("recover-password-form");
-    this.emailInput = page.getByTestId("recover-password-email-input");
-    this.submitButton = page.getByTestId("recover-password-submit-button");
-    this.successMessage = page.getByTestId("recover-password-success-message");
+    this.recoverEmailInput = page.getByTestId("recover-password-email-input");
+    this.recoverSubmitButton = page.getByTestId(
+      "recover-password-submit-button",
+    );
+    this.recoverSuccessMessage = page.getByTestId(
+      "recover-password-success-message",
+    );
     this.resetForm = page.getByTestId("reset-password-form");
-    this.expiredMessage = page.getByTestId("reset-password-expired-message");
-    this.retryButton = page.getByTestId("reset-password-retry-button");
+    this.resetNewPasswordInput = page.getByTestId(
+      "reset-password-new-password-input",
+    );
+    this.resetConfirmPasswordInput = page.getByTestId(
+      "reset-password-confirm-password-input",
+    );
+    this.resetSubmitButton = page.getByTestId("reset-password-submit-button");
+    this.resetSuccessMessage = page.getByTestId(
+      "reset-password-success-message",
+    );
+    this.resetExpiredMessage = page.getByTestId(
+      "reset-password-expired-message",
+    );
+    this.resetRetryButton = page.getByTestId("reset-password-retry-button");
     this.errorNotification = page.getByTestId("notification-element-danger");
   }
 
@@ -35,7 +52,13 @@ export class PasswordRecoveryPage extends AbstractPage {
   }
 
   async requestRecoveryMail(email: string) {
-    await this.emailInput.fill(email);
-    await this.submitButton.click();
+    await this.recoverEmailInput.fill(email);
+    await this.recoverSubmitButton.click();
+  }
+
+  async resetPassword(password: string) {
+    await this.resetNewPasswordInput.fill(password);
+    await this.resetConfirmPasswordInput.fill(password);
+    await this.resetSubmitButton.click();
   }
 }

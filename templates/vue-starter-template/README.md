@@ -12,7 +12,7 @@ A Nuxt storefront foundation with all Shopware Frontends packages pre-configured
 - UnoCSS styling with shared design tokens
 - i18n with `en-GB`, `de-DE` and `pl-PL`
 - ISR route rules and CDN cache headers
-- `/sitemap.xml`, an index of the sitemap files Shopware generates, served from this host. The page URLs inside come from the sales channel domain, so point that domain at the storefront's public URL.
+- `/sitemap.xml`, an index of the sitemap files Shopware generates, served from this host. The page URLs inside come from the sales channel domain, so point that domain at the storefront's public URL. On a headless sales channel from Shopware 6.7.15, also turn on **External storefront** for it. Behind a proxy that rewrites the Host header, set `NUXT_PUBLIC_SITE_URL`.
 - A `Dockerfile` for production builds
 
 ## Requirements

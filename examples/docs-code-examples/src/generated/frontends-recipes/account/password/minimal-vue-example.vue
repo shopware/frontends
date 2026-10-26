@@ -80,8 +80,17 @@ const checkHash = async () => {
       "getCustomerRecoveryIsExpired post /account/customer-recovery-is-expired",
       { body: { hash }, fetchOptions: { timeout: 10_000 } },
     );
-    // the flag sits inside an array_struct envelope, not on the response root
-    isExpired.value = !!recoveryResponse.data?.[0]?.isExpired;
+    // Shopware sends the flag at the root. The bundled type still has the
+    // older data[0] shape, so read both and treat neither as a failed check.
+    const response = recoveryResponse as typeof recoveryResponse & {
+      isExpired?: boolean;
+    };
+    const expired = response.isExpired ?? response.data?.[0]?.isExpired;
+    if (expired === undefined) {
+      isCheckFailed.value = true;
+    } else {
+      isExpired.value = expired;
+    }
   } catch (error) {
     // Only the API rejecting the hash means the link is dead. A dropped
     // connection or a 5xx says nothing about it, so offer a retry instead.

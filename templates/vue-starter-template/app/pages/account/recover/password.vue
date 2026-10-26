@@ -2,6 +2,8 @@
 import { useRegle } from "@regle/core";
 import { ApiClientError } from "@shopware/api-client";
 
+import type { FocusableInput } from "#imports";
+
 // Shopware links here from the recovery mail: /account/recover/password?hash=...
 definePageMeta({
   layout: "default",
@@ -31,7 +33,13 @@ const linkStatus = ref<"checking" | "valid" | "expired" | "unknown">(
 );
 const loading = ref(false);
 const isResetComplete = ref(false);
-const heading = useTemplateRef<HTMLElement>("heading");
+const status = useTemplateRef<HTMLElement>("status");
+const newPasswordInput = useTemplateRef<FocusableInput>("newPasswordInput");
+
+async function focusStatus() {
+  await nextTick();
+  status.value?.focus();
+}
 
 async function checkLink() {
   if (!hash) {
@@ -43,9 +51,17 @@ async function checkLink() {
   try {
     const { data } = await apiClient.invoke(
       "getCustomerRecoveryIsExpired post /account/customer-recovery-is-expired",
-      { body: { hash } },
+      { body: { hash }, fetchOptions: { timeout: 10_000 } },
     );
-    linkStatus.value = data.data?.[0]?.isExpired ? "expired" : "valid";
+    // Shopware sends the flag at the root (shopware/shopware#20556). The
+    // bundled type still has the older data[0] shape, so read both.
+    const response = data as typeof data & { isExpired?: boolean };
+    const isExpired = response.isExpired ?? response.data?.[0]?.isExpired;
+    if (isExpired === undefined) {
+      linkStatus.value = "unknown";
+    } else {
+      linkStatus.value = isExpired ? "expired" : "valid";
+    }
   } catch (error) {
     // Shopware rejects a malformed hash with 400 and an unknown one with 404.
     // Anything else, such as a rate limit or a dropped connection, says
@@ -57,9 +73,20 @@ async function checkLink() {
   }
 }
 
+async function retryCheck() {
+  await checkLink();
+  if (linkStatus.value === "valid") {
+    await nextTick();
+    newPasswordInput.value?.focus();
+  } else {
+    await focusStatus();
+  }
+}
+
 async function handleSubmit() {
   await r$.$validate();
   if (r$.$invalid) {
+    focusFirstInvalid();
     return;
   }
 
@@ -72,11 +99,15 @@ async function handleSubmit() {
     state.value.newPassword = "";
     state.value.newPasswordConfirm = "";
     isResetComplete.value = true;
-    // The form that held focus is gone now.
-    await nextTick();
-    heading.value?.focus();
+    await focusStatus();
   } catch (error) {
-    handleApiError(error);
+    // 410: the link expired, or a newer mail replaced it. 404: it is gone.
+    if (error instanceof ApiClientError && [404, 410].includes(error.status)) {
+      linkStatus.value = "expired";
+      await focusStatus();
+    } else {
+      handleApiError(error);
+    }
   } finally {
     loading.value = false;
   }
@@ -91,9 +122,7 @@ onMounted(checkLink);
       <SharedIconBadge icon="i-carbon-password" size="large" />
       <div class="flex flex-col gap-2">
         <h1
-          ref="heading"
-          tabindex="-1"
-          class="text-3xl md:text-4xl font-['Noto_Serif'] leading-tight text-surface-on-surface focus:outline-none"
+          class="text-3xl md:text-4xl font-['Noto_Serif'] leading-tight text-surface-on-surface"
         >
           {{ $t("account.resetPassword.header") }}
         </h1>
@@ -119,7 +148,9 @@ onMounted(checkLink);
 
           <div
             v-else-if="linkStatus === 'unknown'"
-            class="flex flex-col items-center gap-4"
+            ref="status"
+            tabindex="-1"
+            class="flex flex-col items-center gap-4 focus:outline-none"
           >
             <SharedIconBadge icon="i-carbon-cloud-offline" variant="error" />
             <p class="text-surface-on-surface">
@@ -129,13 +160,15 @@ onMounted(checkLink);
               variant="outline"
               :label="$t('account.resetPassword.retryButton')"
               data-testid="reset-password-retry-button"
-              @click="checkLink"
+              @click="retryCheck"
             />
           </div>
 
           <div
             v-else-if="linkStatus === 'expired'"
-            class="flex flex-col items-center gap-4"
+            ref="status"
+            tabindex="-1"
+            class="flex flex-col items-center gap-4 focus:outline-none"
             data-testid="reset-password-expired-message"
           >
             <SharedIconBadge icon="i-carbon-time" variant="error" />
@@ -153,7 +186,9 @@ onMounted(checkLink);
 
           <div
             v-else-if="isResetComplete"
-            class="flex flex-col items-center gap-4"
+            ref="status"
+            tabindex="-1"
+            class="flex flex-col items-center gap-4 focus:outline-none"
             data-testid="reset-password-success-message"
           >
             <SharedIconBadge icon="i-carbon-checkmark" variant="success" />
@@ -178,6 +213,7 @@ onMounted(checkLink);
         >
           <FormInputField
             id="newPassword"
+            ref="newPasswordInput"
             v-model="state.newPassword"
             type="password"
             autocomplete="new-password"

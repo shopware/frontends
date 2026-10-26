@@ -28,6 +28,9 @@
         },
         "NUXT_SHOPWARE_ENDPOINT": {
           "description": "Optional. Private endpoint for server-side requests when it differs from the public one."
+        },
+        "NUXT_PUBLIC_SITE_URL": {
+          "description": "Optional. Public URL of the storefront, e.g. https://your-shop.com. /sitemap.xml builds its links from it instead of the request host."
         }
       },
       "node": "^22.19.0 || ^24.11.0 || >=26.0.0",
@@ -72,6 +75,9 @@
         },
         "NUXT_SHOPWARE_ENDPOINT": {
           "description": "Optional. Private endpoint for server-side requests when it differs from the public one."
+        },
+        "NUXT_PUBLIC_SITE_URL": {
+          "description": "Optional. Public URL of the storefront, e.g. https://your-shop.com. /sitemap.xml builds its links from it instead of the request host."
         }
       },
       "node": "^22.19.0 || ^24.11.0 || >=26.0.0",

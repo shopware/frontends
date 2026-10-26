@@ -19,11 +19,12 @@ const state = ref({ email: "" });
 const { r$ } = useRegle(state, recoverPasswordFormRules());
 const loading = ref(false);
 const isRequested = ref(false);
-const heading = useTemplateRef<HTMLElement>("heading");
+const successMessage = useTemplateRef<HTMLElement>("successMessage");
 
 async function handleSubmit() {
   await r$.$validate();
   if (r$.$invalid) {
+    focusFirstInvalid();
     return;
   }
 
@@ -36,10 +37,10 @@ async function handleSubmit() {
     isRequested.value = true;
     // The form that held focus is gone now.
     await nextTick();
-    heading.value?.focus();
+    successMessage.value?.focus();
   } catch (error) {
-    // Shopware answers a known and an unknown address alike, so a failure
-    // here is operational. Say so and keep the form for another try.
+    // From Shopware 6.6.10.3, a known and an unknown address get the same
+    // answer, so a failure here is operational. Keep the form for another try.
     console.error("[account/recover]", error);
     pushError(t("account.recoverPassword.errorMessage"));
   } finally {
@@ -54,9 +55,7 @@ async function handleSubmit() {
       <SharedIconBadge icon="i-carbon-email" size="large" />
       <div class="flex flex-col gap-2">
         <h1
-          ref="heading"
-          tabindex="-1"
-          class="text-3xl md:text-4xl font-['Noto_Serif'] leading-tight text-surface-on-surface focus:outline-none"
+          class="text-3xl md:text-4xl font-['Noto_Serif'] leading-tight text-surface-on-surface"
         >
           {{ $t("account.recoverPassword.header") }}
         </h1>
@@ -71,7 +70,9 @@ async function handleSubmit() {
         <div aria-live="polite">
           <div
             v-if="isRequested"
-            class="flex flex-col items-center gap-4"
+            ref="successMessage"
+            tabindex="-1"
+            class="flex flex-col items-center gap-4 focus:outline-none"
             data-testid="recover-password-success-message"
           >
             <SharedIconBadge icon="i-carbon-checkmark" variant="success" />

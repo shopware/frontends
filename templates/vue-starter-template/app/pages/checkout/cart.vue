@@ -32,7 +32,7 @@ function handleUpdateQuantity(id: string, quantity: number) {
       </p>
       <NuxtLink
         :to="formatLink('/')"
-        class="mt-2 px-4 py-3 rounded bg-brand-primary text-brand-on-primary font-bold leading-normal inline-flex items-center justify-center hover:bg-brand-primary-hover transition-colors"
+        class="mt-2 bg-brand-primary text-brand-on-primary text-center font-bold leading-6 py-3 px-4 rounded-md"
       >
         {{ $t("cart.continueShopping") }}
       </NuxtLink>

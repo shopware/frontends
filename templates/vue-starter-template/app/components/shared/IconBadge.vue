@@ -10,7 +10,7 @@ const {
 }>();
 
 const variantClasses = {
-  brand: "bg-brand-secondary text-brand-primary",
+  brand: "bg-brand-secondary text-brand-on-secondary",
   success: "bg-states-success-container text-states-on-success-container",
   error: "bg-states-error-container text-states-on-error-container",
 };

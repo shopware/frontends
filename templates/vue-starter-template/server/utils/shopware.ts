@@ -1,5 +1,8 @@
 import { createAPIClient } from "@shopware/api-client";
-import type { ApiClientRuntimeConfig } from "@shopware/nuxt-module";
+import type {
+  ApiClientRuntimeConfig,
+  ShopwareNuxtOptions,
+} from "@shopware/nuxt-module";
 
 import type { operations } from "#shopware";
 
@@ -9,12 +12,29 @@ function toTimeout(value: unknown) {
 }
 
 /**
- * Same precedence as the @shopware/nuxt-module plugin on the server: the
- * private endpoint (NUXT_SHOPWARE_ENDPOINT) wins, the public one is the fallback.
+ * Endpoint and access key for server-side Store API calls, read like the
+ * @shopware/nuxt-module plugin on the server: the private endpoint
+ * (NUXT_SHOPWARE_ENDPOINT) wins over the public one, and the deprecated
+ * `shopwareEndpoint` and `shopwareAccessToken` keys are read too.
  */
-export function getShopwareServerEndpoint() {
+export function getShopwareServerConfig() {
   const config = useRuntimeConfig();
-  return config.shopware.endpoint || config.public.shopware.endpoint;
+  const privateConfig = config.shopware as ShopwareNuxtOptions | undefined;
+  const publicConfig = config.public.shopware as ShopwareNuxtOptions;
+
+  const endpoint =
+    (privateConfig?.endpoint ?? privateConfig?.shopwareEndpoint) ||
+    (publicConfig.endpoint ?? publicConfig.shopwareEndpoint);
+  const accessToken =
+    publicConfig.accessToken ?? publicConfig.shopwareAccessToken;
+
+  if (!endpoint || !accessToken) {
+    throw new Error(
+      "Make sure that endpoint and accessToken are settled in the configuration",
+    );
+  }
+
+  return { endpoint, accessToken };
 }
 
 /**
@@ -44,11 +64,12 @@ export function getServerApiClientOptions() {
  * it only for data that is the same for every visitor.
  */
 export function createServerApiClient() {
+  const { endpoint, accessToken } = getShopwareServerConfig();
   const { headers, timeout } = getServerApiClientOptions();
 
   return createAPIClient<operations>({
-    baseURL: getShopwareServerEndpoint(),
-    accessToken: useRuntimeConfig().public.shopware.accessToken,
+    baseURL: endpoint,
+    accessToken,
     defaultHeaders: headers,
     ...(timeout === undefined ? {} : { fetchOptions: { timeout } }),
   });

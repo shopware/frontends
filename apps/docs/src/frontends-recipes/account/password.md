@@ -198,7 +198,7 @@ type SuccessResponse = Schemas["SuccessResponse"];
 
 <!-- /automd -->
 
-`RecoveryMailBody` is the type that makes the `storefrontUrl` requirement visible — it is required there and absent from all three other bodies. `RecoveryExpiredResponse` is the one worth expanding in the tooltip: it is an `array_struct` envelope, so the flag lives at `data[0].isExpired`. The example below annotates its two form objects with `RecoveryConfirmBody` and `ChangePasswordBody`, which is what makes `{ hash, ...resetForm }` self-evidently complete.
+`RecoveryMailBody` is the type that makes the `storefrontUrl` requirement visible: it is required there and absent from all three other bodies. `RecoveryExpiredResponse` is the one worth expanding in the tooltip, because it is out of date. Shopware sends the flag at the response root, as `{ "isExpired": true, "apiAlias": "array_struct" }`. The bundled type still shows the older `data[0].isExpired` shape, which shopware/shopware#20556 fixed upstream. The example below annotates its two form objects with `RecoveryConfirmBody` and `ChangePasswordBody`, which is what makes `{ hash, ...resetForm }` self-evidently complete.
 
 ## Minimal Vue Example
 
@@ -289,8 +289,17 @@ const checkHash = async () => {
       "getCustomerRecoveryIsExpired post /account/customer-recovery-is-expired",
       { body: { hash }, fetchOptions: { timeout: 10_000 } },
     );
-    // the flag sits inside an array_struct envelope, not on the response root
-    isExpired.value = !!recoveryResponse.data?.[0]?.isExpired;
+    // Shopware sends the flag at the root. The bundled type still has the
+    // older data[0] shape, so read both and treat neither as a failed check.
+    const response = recoveryResponse as typeof recoveryResponse & {
+      isExpired?: boolean;
+    };
+    const expired = response.isExpired ?? response.data?.[0]?.isExpired;
+    if (expired === undefined) {
+      isCheckFailed.value = true;
+    } else {
+      isExpired.value = expired;
+    }
   } catch (error) {
     // Only the API rejecting the hash means the link is dead. A dropped
     // connection or a 5xx says nothing about it, so offer a retry instead.
@@ -547,11 +556,11 @@ The recovery flow has no session at all. The hash in the mail link is the entire
 
 ## Edge Cases
 
-- `sendRecoveryMail` answers the same way for a known and an unknown address. Never render "no account with that address" — the API does not tell you, and saying it would leak who has an account. A rejected request is a different matter: Shopware validates `storefrontUrl` and applies its rate limit before it looks the customer up, so a failure says nothing about the address. Show a generic error and keep the form instead of claiming a mail is on its way.
+- From Shopware 6.5.8.18, 6.6.10.3 and 6.7.0.0 on, `sendRecoveryMail` answers the same way for a known and an unknown address. Earlier releases answer an unknown address with 401 `CHECKOUT__CUSTOMER_NOT_FOUND`. Never render "no account with that address", because it would leak who has an account. A rejected request is a different matter: Shopware validates `storefrontUrl` and applies its rate limit before it looks the customer up, so a failure says nothing about the address. Show a generic error and keep the form instead of claiming a mail is on its way.
 - The recovery hash expires, which is the whole reason `getCustomerRecoveryIsExpired` exists. Check it before showing a form, or the customer fills in two fields for nothing.
 - Only a rejection from the API means the link is dead. A dropped connection or a 5xx says nothing about the hash, so treating every failure as expiry sends a customer back for a new mail they did not need — keep the two apart and offer a retry.
 - Nothing in the composables carries a request deadline. Configure `apiClientConfig.timeout` or pass one per call, or a hash check that never settles leaves the page on "Checking the link…" with no error and no way out.
-- `getCustomerRecoveryIsExpired` answers with an `array_struct` envelope: the flag is at `data[0].isExpired`, not on the response root. Reading it one level too high yields `undefined`, which is falsy — so a stale link renders the form as if it were valid.
+- `getCustomerRecoveryIsExpired` sends the flag at the response root, but the bundled type still puts it at `data[0].isExpired`. Read the root and fall back to `data[0]`. If neither is there, treat the check as failed. A missing flag is `undefined`, which is falsy, so reading it as "not expired" renders the form for a stale link.
 - `recoveryPassword post /account/recovery-password-confirm` requires `newPassword` **and** `newPasswordConfirm`. The server compares them, so a client-side check is a convenience, not the validation — which means a mismatch comes back as a rejection you have to map to the right field.
 - A completed reset does not log the customer in. Send them to the login form, or call `useUser().login()` yourself with the address and the new password.
 - `changePassword post /account/change-password` requires the current `password`. A wrong one is a normal rejection and belongs on the current-password field — read `error.details.errors?.[0]?.source?.pointer` to tell it apart from a rejected new password.
@@ -562,7 +571,7 @@ The recovery flow has no session at all. The hash in the mail link is the entire
 - Do not tell the customer whether the address was found, and do not let a failed request claim a mail was sent.
 - Do not call `getStorefrontUrl()` in the component body — resolve it in the submit handler.
 - Do not render the reset form before the hash check has answered.
-- Do not read `isExpired` off the response root. It is inside the `data` array.
+- Do not read `isExpired` only where the bundled type puts it. Shopware sends it at the response root.
 - Do not map every rejection to one message. A rejected password and a dead link need opposite actions from the customer, and `ApiClientError` covers both.
 - Do not disable the submit button while the request runs. It drops focus and never returns it; use `aria-disabled` and guard in the handler.
 - Do not treat the reset as a login. There is no session afterwards.

@@ -1,4 +1,3 @@
-import { customValidators } from "#imports";
 import type { operations } from "#shopware";
 
 export type ResetPasswordFormState = Omit<
@@ -7,15 +6,5 @@ export type ResetPasswordFormState = Omit<
 >;
 
 export function resetPasswordFormRules(state: Ref<ResetPasswordFormState>) {
-  const { required, minLength, sameAsPassword } = customValidators();
-  return {
-    newPassword: {
-      required,
-      minLength: minLength(8),
-    },
-    newPasswordConfirm: {
-      required,
-      sameAs: sameAsPassword(computed(() => state.value.newPassword)),
-    },
-  };
+  return newPasswordFormRules(state);
 }

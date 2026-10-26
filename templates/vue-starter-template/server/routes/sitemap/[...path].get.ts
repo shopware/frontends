@@ -14,18 +14,14 @@ export default defineEventHandler(async (event) => {
   }
 
   const upstream = await fetchSitemapFile(file);
-  if (!upstream.ok) {
+  if (upstream.status !== 200) {
     throw createError({
       statusCode: 502,
       statusMessage: "Sitemap file unavailable",
     });
   }
 
-  setHeader(
-    event,
-    "Content-Type",
-    path.endsWith(".gz") ? "application/gzip" : "application/xml",
-  );
+  setHeader(event, "Content-Type", "application/gzip");
 
   return Buffer.from(await upstream.arrayBuffer());
 });

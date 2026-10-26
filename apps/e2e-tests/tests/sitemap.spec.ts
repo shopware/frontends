@@ -32,4 +32,10 @@ test.describe("Sitemap", { tag: "@frontends" }, () => {
       : bytes.toString("utf8");
     expect(xml).toContain("<urlset");
   });
+
+  test("sitemap proxy serves only listed files", async ({ request }) => {
+    expect((await request.get("/sitemap/not-listed.xml.gz")).status()).toBe(
+      404,
+    );
+  });
 });

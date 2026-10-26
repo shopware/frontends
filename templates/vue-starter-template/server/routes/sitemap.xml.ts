@@ -13,15 +13,18 @@ function escapeXml(value: string) {
 /**
  * Sitemap index for the files Shopware generates for the sales channel. The
  * files are served by `/sitemap/[...path]`, so every location is on this host.
+ * Set NUXT_PUBLIC_SITE_URL when a proxy in front of the app rewrites the Host
+ * header. Without it, the request URL is used, as in `useRequestURL`.
  */
 export default defineEventHandler(async (event) => {
-  const { origin } = getRequestURL(event);
+  const { siteUrl } = useRuntimeConfig(event).public;
+  const base = (siteUrl || getRequestURL(event).origin).replace(/\/+$/, "");
   const files = await listSitemapFiles();
 
   const entries = files
     .map(
       ({ path }) =>
-        `  <sitemap>\n    <loc>${escapeXml(`${origin}/sitemap/${path}`)}</loc>\n  </sitemap>`,
+        `  <sitemap>\n    <loc>${escapeXml(`${base}/sitemap/${path}`)}</loc>\n  </sitemap>`,
     )
     .join("\n");
 
