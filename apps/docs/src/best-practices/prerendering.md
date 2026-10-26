@@ -38,12 +38,11 @@ export default defineNuxtConfig({
       // render fans out into several Store API calls of its own.
       concurrency: 2,
       // Spaces out each worker's next request. It is not a global rate limit:
-      // up to `concurrency` requests can still land together.
+      // up to `concurrency` requests can still land together. It is also the
+      // only room a page gets. Nitro does not retry a failed page - the
+      // prerenderer's local fetch ignores `retry` and `retryDelay` - so a
+      // rate-limited render stays failed.
       interval: 200,
-      // Nitro retries a failed page (defaults: retry 3, retryDelay 500). A
-      // retry that lands inside the same rate-limit window just collects a
-      // second rejection, so give it room.
-      retryDelay: 2000,
       // Leave Nuxt's `failOnError: true` alone for a build you deploy (raw
       // Nitro defaults to false). Set it to false only to collect diagnostics
       // or inspect partial output.
