@@ -41,6 +41,8 @@ is its definition; the field meanings live there, not here.
 - Every template runs against a public demo backend with no configuration. The
   `env` vars in its manifest entry only re-point it at your own instance; the
   names differ per framework, so read them from the manifest.
+- Before proposing a new template, layer or package, answer the questions in
+  [templates/README.md](templates/README.md).
 
 ## Build order and the two layer packages
 
