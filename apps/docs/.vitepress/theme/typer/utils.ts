@@ -1,3 +1,13 @@
+export const DYNAMIC_MARKDOWN_PLACEHOLDER =
+  '\n<div data-placeholder="dynamic-markdown"></div>\n';
+
+export function stripTrailingDynamicPlaceholder(code: string): string {
+  if (code.endsWith(DYNAMIC_MARKDOWN_PLACEHOLDER)) {
+    return code.slice(0, -DYNAMIC_MARKDOWN_PLACEHOLDER.length);
+  }
+  return code;
+}
+
 export function replacer(
   code: string,
   value: string,

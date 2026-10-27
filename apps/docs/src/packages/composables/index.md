@@ -1,4 +1,223 @@
-{{INTRO}}
+<!-- dump:intro -->
+# shopware/frontends - composables
+
+[![](https://img.shields.io/npm/v/@shopware/composables?color=blue&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCA0ODggNTUzIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNNDM5LjA0MSAxMjkuNTkzTDI1OC43NjkgMzEuMzA3NkMyNDQuOTE1IDIzLjc1NDEgMjI4LjExNiAyNC4wMDkzIDIxNC40OTcgMzEuOTgwMkw0Ny4yNjkgMTI5Ljg1OEMzMy40NzYzIDEzNy45MzEgMjUgMTUyLjcxMyAyNSAxNjguNjk1VjM4OC40NjZDMjUgNDA0LjczMiAzMy43Nzg1IDQxOS43MzIgNDcuOTYwMiA0MjcuNjk5TDIxNS4xNzggNTIxLjYzNkMyMjguNDUxIDUyOS4wOTIgMjQ0LjU5MyA1MjkuMzMyIDI1OC4wODIgNTIyLjI3NEw0MzguMzY0IDQyNy45MzRDNDUzLjIwMSA0MjAuMTcgNDYyLjUgNDA0LjgwOSA0NjIuNSAzODguMDYzVjE2OS4xMDJDNDYyLjUgMTUyLjYzMiA0NTMuNTAyIDEzNy40NzcgNDM5LjA0MSAxMjkuNTkzWiIgc3Ryb2tlPSJ1cmwoI3BhaW50MF9saW5lYXJfMTUzXzY5MjY1KSIgc3Ryb2tlLXdpZHRoPSI1MCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzE1M182OTI2NSIgeDE9Ii0xNi4yOTg5IiB5MT0iMTY1LjM0OSIgeDI9IjI3Ni40MTIiIHkyPSItODkuMzIzNCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMDA4NUZGIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0MwRTJGNSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPg==)](https://npmjs.com/package/@shopware/composables)
+[![](https://img.shields.io/github/package-json/v/shopware/frontends?color=blue&filename=packages%2Fcomposables%2Fpackage.json&label=frontends/composables&logo=github)](https://github.com/shopware/frontends/tree/main/packages/composables)
+[![](https://img.shields.io/github/issues/shopware/frontends/composables?label=package%20issues&logo=github)](https://github.com/shopware/frontends/issues?q=is%3Aopen+is%3Aissue+label%3Acomposables)
+[![](https://img.shields.io/github/license/shopware/frontends?color=blue)](#)
+
+Set of Vue.js composition functions that can be used in any Vue.js project. They provide state management, UI logic and data fetching and are the base for all guides in our [building section](https://developer.shopware.com/frontends/frontends-recipes/context/navigation.html).
+
+## Features
+
+- `createShopwareContext` method to create a Vue 3 plugin to install
+- State management
+- Logic for UI
+- Communication with Store-API via [api-client](https://www.npmjs.com/package/@shopware/api-client) package
+
+## Setup
+
+Install npm packages (composables & api-client):
+
+```bash
+# Using pnpm
+pnpm add @shopware/composables @shopware/api-client @shopware/api-gen
+
+# Using yarn
+yarn add @shopware/composables @shopware/api-client @shopware/api-gen
+
+# Using npm
+npm i @shopware/composables @shopware/api-client @shopware/api-gen
+```
+
+Now generate your types ysing the [CLI](https://www.npmjs.com/package/@shopware/api-gen):
+
+```bash
+pnpm shopware-api-gen generate --apiType=store
+```
+
+Initialize the [api-client](https://www.npmjs.com/package/@shopware/api-client) instance:
+
+```js
+import { createAPIClient } from "@shopware/api-client";
+import type { operations } from "#shopware";
+
+export const apiClient = createAPIClient<operations>({
+  baseURL: "https://your-api-instance.com",
+  accessToken: "your-sales-channel-access-token",
+});
+
+// and then provide it in the Vue app
+app.provide("apiClient", apiClient);
+```
+
+Now, we can create a Vue 3 plugin to install a Shopware context in an app:
+
+```js
+import { createShopwareContext } from "@shopware/composables";
+
+// app variable in type of App
+const shopwareContext = createShopwareContext(app, {
+  devStorefrontUrl: "https://your-sales-channel-configured-domain.com",
+});
+// register a plugin in a Vue instance
+app.use(shopwareContext);
+```
+
+Exclude `@shopware/composables` package from [pre-building](https://vite.dev/guide/dep-pre-bundling.html#customizing-the-behavior) process:
+
+```ts
+// vite.config.js or .ts
+...
+optimizeDeps: {
+  exclude: ["@shopware/composables"],
+},
+...
+```
+
+---
+
+> The example does not provide the session handling and that means you need to do few additional steps if you need to keep your session after the page reload (see the chapter below with 🍪)
+
+## Basic usage
+
+Now you can use any composable function in your setup function:
+
+```html
+<script setup>
+    import { useUser, useSessionContext } from "@shopware/composables/dist";
+
+    const { login } = useUser();
+    const { refreshSessionContext, sessionContext } = useSessionContext();
+    await refreshSessionContext();
+</script>
+<template>
+    <pre>{{ sessionContext }}</pre>
+    <button @click="login({
+        username: "some-user",
+        password: "secret-passwd"
+    })">
+        Try to login!
+    </button>
+</template>
+```
+
+## Session persistence with 🍪
+
+By default, the API-Client is stateless, but accepts an optional context token as a parameter while initializing an instance. In order to keep a session, install some cookie parser to work with cookies easier:
+
+```bash
+# Using pnpm
+pnpm add js-cookie
+
+# Using yarn
+yarn add js-cookie
+
+# Using npm
+npm i js-cookie
+```
+
+Let's get back to the step where the `api-client` was initialized:
+
+<!-- automd:file src="examples/b2b-quote-management/src/apiClient.ts" code -->
+
+```ts [apiClient.ts]
+import { createAPIClient } from "@shopware/api-client";
+import Cookies from "js-cookie";
+
+import type { operations } from "#shopware";
+
+const shopwareEndpoint = "https://demo-frontends.shopware.store/store-api";
+
+export const apiClient = createAPIClient<operations>({
+  baseURL: shopwareEndpoint,
+  accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+  contextToken: Cookies.get("sw-context-token"),
+});
+
+apiClient.hook("onContextChanged", (newContextToken) => {
+  Cookies.set("sw-context-token", newContextToken, {
+    expires: 365, // days
+    path: "/",
+    sameSite: "lax",
+    secure: shopwareEndpoint.startsWith("https://"),
+  });
+});
+```
+
+<!-- /automd -->
+
+Thanks to this, the session will be kept to the corresponding `sw-context-token` saved in the cookie, so it can be reachable also in the SSR. Check the example to see it in action:
+
+[![](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/github/shopware/frontends/tree/main/examples/blank-playground?file=src%2Fmain.ts)
+
+## TypeScript support
+
+All composable functions are fully typed with TypeScript and they are registed globally in Nuxt.js application, so the type hinting will help you to work with all of them.
+
+## Links
+
+- [📘 Documentation](https://developer.shopware.com/frontends)
+
+- [👥 Community Discord](https://discord.com/channels/1308047705309708348/1405501315160739951) (`#composable-frontend`)
+
+<!-- AUTO GENERATED CHANGELOG -->
+
+## Changelog
+
+Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
+
+### Latest changes: 1.14.0
+
+### Minor Changes
+
+- [#2785](https://github.com/shopware/frontends/pull/2785) [`74a477b`](https://github.com/shopware/frontends/commit/74a477bfa88e3c518d3a0336e4d301c823122ba8) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - `useCmsElementConfig` accepts a `ref` or a getter. `getConfigValue` reads the element on every call, so a component that passes `() => props.content` follows a new `content` instead of the one it was set up with. Passing a plain object works as before.
+
+- [#2785](https://github.com/shopware/frontends/pull/2785) [`74a477b`](https://github.com/shopware/frontends/commit/74a477bfa88e3c518d3a0336e4d301c823122ba8) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add the `CmsBlockCategoryHeading`, `CmsBlockVideo`, `CmsBlockAppRenderer`, `CmsElementCategoryName`, `CmsElementVideo` and `MediaDisplayMode` types.
+
+- [#2774](https://github.com/shopware/frontends/pull/2774) [`5961f55`](https://github.com/shopware/frontends/commit/5961f55b9f7cebad626cc073ae0bf857aa26f91b) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Let the CMS tree lookups follow a changing `content`, and fix `resolveCmsComponent().isResolved`
+
+  **`useCmsSection` and `useCmsBlock` accept a `ref` or a getter.** Both took a plain object and closed over it, so `getPositionContent()` and `getSlotContent()` kept reading the tree captured at setup: a component receiving a new `content` prop had to remount to see it, and calling the function again did not help. Both now accept `MaybeRefOrGetter` and resolve it with `toValue()` on every call.
+
+  Passing a plain object still works exactly as before, so nothing has to change. To benefit, pass a getter and read the lookups through a `computed`:
+
+  ```ts
+  const { getSlotContent } = useCmsBlock(() => props.content);
+  const leftContent = computed(() => getSlotContent("left"));
+  ```
+
+  The returned `section` and `block` are still the value read when the composable was called, so they do not follow a replacement — use the source you passed in when you need that.
+
+  **`resolveCmsComponent().isResolved` now means resolved.** It compared the resolved value with `content.type`, while Vue's `resolveComponent` returns the _component name_ when nothing is registered — two strings that never match, so `isResolved` was `true` even when nothing resolved, and code guarding a fallback with `!isResolved` never ran. It is now derived from `resolvedComponent !== undefined`. Check `resolvedComponent` directly if you want the component itself.
+
+  The `resolved` field, which appears only when resolving throws, is now marked `@deprecated`. It always equals `isResolved`, so read that instead.
+
+  Note what is not fixed here: `getSlotContent()` still returns `undefined` at runtime for a slot the block does not carry, while its return type promises a value. The signature stays as it is because correcting it would be a breaking type change; the JSDoc now says so, and callers should keep guarding on the result.
+
+### Patch Changes
+
+- [#2731](https://github.com/shopware/frontends/pull/2731) [`46d6daa`](https://github.com/shopware/frontends/commit/46d6daade81e3d9e443f3badfeba2ca0e2751477) Thanks [@patzick](https://github.com/patzick)! - Add an optional notification action (label + link) so add-to-cart toasts can offer a "View cart" shortcut, and keep those toasts visible a little longer.
+
+- [#2799](https://github.com/shopware/frontends/pull/2799) [`7dbca8b`](https://github.com/shopware/frontends/commit/7dbca8bf8bca1225b365bc03e4dbc07d3764c2e1) Thanks [@mkucmus](https://github.com/mkucmus)! - `useCategorySearch().search()` with `withCmsAssociations: true` now requests the CMS associations. Before, it nested them one level too deep, so the backend ignored them.
+
+- [#2724](https://github.com/shopware/frontends/pull/2724) [`c78188a`](https://github.com/shopware/frontends/commit/c78188ac6c95ae19b070f5ea3361a60f21dff281) Thanks [@patzick](https://github.com/patzick)! - Fall back `getStorefrontUrl()` to a sales channel domain
+
+  `useUser().register()` injects `storefrontUrl` from `getStorefrontUrl()`. Shopware rejects that value unless it matches a **Sales Channel → Domains** entry, so guest checkout against the public demo (`devStorefrontUrl` pointing at the starter Vercel host) never reached `POST /checkout/order`.
+
+  `getStorefrontUrl()` now uses the preferred URL when it is one of the current sales channel domains, and otherwise the domain for the active language (or the first configured domain).
+
+- [#2700](https://github.com/shopware/frontends/pull/2700) [`0df4c17`](https://github.com/shopware/frontends/commit/0df4c17b18ec38fc4d0c33f1cb6396f8f532a65d) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Refresh the cart after `register()`
+
+  `useUser().register()` changed the session context without refreshing the cart, while `login()` and `logout()` both did. Registration is the first point at which the backend learns the customer's billing country, which drives tax rates, shipping surcharges and customer-group prices, so the cart totals held in `useCart()` could stay at their pre-registration values while the order was placed at the recalculated ones.
+
+  `register()` now awaits `refreshCart()` after `refreshSessionContext()`, so a caller that awaits `register()` cannot observe the pre-registration totals afterwards. Note this makes `register()` resolve slightly later than before, and a failing cart refresh now rejects `register()` even though the customer was created — the same property `refreshSessionContext()` on the preceding line already had.
+
+  `login()` and `logout()` still call `refreshCart()` without awaiting it and are unchanged here.
+
+- Updated dependencies [[`44ece9d`](https://github.com/shopware/frontends/commit/44ece9dac2e4d0248c2270f7eff496c258632f5b), [`4b43e64`](https://github.com/shopware/frontends/commit/4b43e64a8d78be6eca1f8d9c24140e046193af41)]:
+  - @shopware/api-client@1.7.0
+
+<!-- /dump:intro -->
 
 ## Composables list
 

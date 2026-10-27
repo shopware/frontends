@@ -1,15 +1,19 @@
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 
-// @ts-nocheck
-import type { Plugin } from "vite";
+import {
+  DYNAMIC_MARKDOWN_PLACEHOLDER,
+  prepareGithubPermalink,
+  stripTrailingDynamicPlaceholder,
+} from "./utils";
 
-import { prepareGithubPermalink } from "./utils";
+const LOAD_REGION = /<!--\s*load:\s*([^ ]+)\s*-->[\s\S]*?<!--\s*\/load\s*-->/;
+const LOAD_BARE = /<!--\s*load:\s*([^ ]+)\s*-->/;
 
 /**
  * Transforms relative links (./path) in markdown content to full GitHub URLs.
- * This is needed because when README files are loaded into VitePress,
- * relative links would otherwise be resolved in the VitePress docs context
+ * This is needed because when README files are loaded into docs pages,
+ * relative links would otherwise be resolved in the docs context
  * instead of pointing to the original package location.
  */
 function transformRelativeLinksToGithub(
@@ -42,50 +46,51 @@ function transformRelativeLinksToGithub(
   return result;
 }
 
-export async function ReadmeLoader(): Promise<Plugin> {
-  return {
-    name: "readme-loader-md-transform",
-    enforce: "pre",
-    async transform(code, id) {
-      if (!id.match(/\.md\b/)) return null;
+export async function transformReadmeLoader(
+  code: string,
+  id: string,
+  context: { readmeLoaderDir: string },
+): Promise<string> {
+  if (!id.match(/\.md\b/)) return code;
 
-      let transformedCode = code;
+  const regionMatch = code.match(LOAD_REGION);
+  const bareMatch = regionMatch ? null : code.match(LOAD_BARE);
+  const match = regionMatch ?? bareMatch;
+  if (!match) return code;
 
-      const pattern = /<!--\s*load:\s*([^ ]+)\s*-->/;
+  const loadPath = match[1];
+  const pattern = regionMatch ? LOAD_REGION : LOAD_BARE;
+  let transformedCode = stripTrailingDynamicPlaceholder(code);
 
-      const match = transformedCode.match(pattern);
-      if (match) {
-        const path = match[1];
+  const filePath = resolve(context.readmeLoaderDir, loadPath);
 
-        const filePath = resolve(__dirname, path);
+  if (!existsSync(filePath) || !filePath.endsWith(".md")) {
+    throw new Error(
+      `File ${filePath} does not exist or it's not a markdown file.`,
+    );
+  }
 
-        if (!existsSync(filePath) || !filePath.endsWith(".md")) {
-          throw new Error(
-            `File ${filePath} does not exist or it's not a markdown file.`,
-          );
-        }
+  let fileContent = readFileSync(filePath, "utf-8");
 
-        let fileContent = readFileSync(filePath, "utf-8");
+  // Transform relative links to GitHub URLs
+  fileContent = transformRelativeLinksToGithub(fileContent, loadPath);
 
-        // Transform relative links to GitHub URLs
-        fileContent = transformRelativeLinksToGithub(fileContent, path);
-
-        const content = `\n:::\n${fileContent}\n\n---\n\n:::info Auto-generated\nThis page is generated from an external markdown file. \nIn case of any issues or dead links, please \n${prepareGithubPermalink(
-          {
-            path,
-            label: "visit the source file.",
-            project: "shopware/frontends",
-            inlineStyle: "",
-          },
-        )}\n\n`;
-
-        transformedCode = transformedCode.replace(pattern, content);
-        // for LLM training
-        transformedCode +=
-          '\n<div data-placeholder="dynamic-markdown"></div>\n';
-      }
-
-      return transformedCode;
+  const content = `\n:::\n${fileContent}\n\n---\n\n:::info Auto-generated\nThis page is generated from an external markdown file. \nIn case of any issues or dead links, please \n${prepareGithubPermalink(
+    {
+      path: loadPath,
+      label: "visit the source file.",
+      project: "shopware/frontends",
+      inlineStyle: "",
     },
-  };
+  )}\n\n`;
+
+  // Keep the load directive so a later dump can replace this region.
+  transformedCode = transformedCode.replace(
+    pattern,
+    `<!-- load: ${loadPath} -->${content}<!-- /load -->`,
+  );
+  // for LLM training
+  transformedCode += DYNAMIC_MARKDOWN_PLACEHOLDER;
+
+  return transformedCode;
 }

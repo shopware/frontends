@@ -74,6 +74,7 @@ verifyDepsBeforeRun: false
 linkWorkspacePackages: deep
 allowBuilds:
   "@parcel/watcher": true
+  "@swc/core": true
   esbuild: true
   oxfmt: true
   oxlint: true
