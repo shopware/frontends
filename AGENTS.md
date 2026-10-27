@@ -41,8 +41,6 @@ is its definition; the field meanings live there, not here.
 - Every template runs against a public demo backend with no configuration. The
   `env` vars in its manifest entry only re-point it at your own instance; the
   names differ per framework, so read them from the manifest.
-- Before proposing a new template, layer or package, answer the questions in
-  [templates/README.md](templates/README.md).
 
 ## Build order and the two layer packages
 
@@ -160,6 +158,8 @@ BASE_E2E_URL=https://frontends-starter-template.vercel.app/ \
 
 ## Pull requests
 
+- Anything new beyond a bug fix? Answer the questions in
+  [templates/README.md](templates/README.md) on the issue before any code.
 - Conventional Commits title (`feat:`, `fix:`, `docs:`, `chore:`).
 - A changeset is required for any change to a published package; commit the
   generated `.changeset/*.md` with your change.

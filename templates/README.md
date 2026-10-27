@@ -23,6 +23,8 @@ Answer the questions for each part of the work, and the first yes picks its shap
 
 "The starter" is `templates/vue-starter-template`.
 
+`templates/manifest.json` lists the templates we ship today, with a `supportLevel` per entry. `vue-starter-template-extended` (Lumora) is not a shape these questions produce. It shows shop projects how to extend the starter as a Nuxt layer, and it cannot leave the monorepo: its entry is `scaffoldable: false`, and its `notes` field says why. Shop projects can follow that pattern. Work we ship here still answers the questions, so one brand's tokens stay a starter mode, see question 3. `astro` and `vue-vite-blank` show the API client outside Nuxt, not a storefront. When templates move to their own repository ([#2634](https://github.com/shopware/frontends/issues/2634), answer 6), the starter and Lumora move together.
+
 ### 1. Store API logic, no UI, used by two apps?
 
 Store API logic that two apps use goes into a package: `@shopware/composables`, `@shopware/api-client` or `@shopware/helpers`. "Two apps" means two templates or examples in this repo today, or one named in an issue. Logic with one consumer stays next to its UI.
@@ -35,7 +37,7 @@ A non-Nuxt app cannot use our Nuxt layers, so `@shopware/cms-base-layer` cannot 
 
 "Backend not ready" means Shopware lacks the feature, or the demo backend lacks the data to show it. This matters for a template or a starter change, because every template runs against the public demo backend with no configuration. An example may need its own backend, like an installed payment plugin. Its README lists that.
 
-After the spike, answer the questions again.
+After the spike, answer the questions again, and skip question 2 for the part the spike settled. A non-Nuxt app never settles it, so it stays an example app, like `astro` or `vue-vite-blank`, or a project outside this repo, until [#2723](https://github.com/shopware/frontends/issues/2723) decides that a non-Nuxt template is viable. If it does, the decision note names the framework, the schema change in the Spike steps comes first, and New template step 3 applies to that framework instead of Nuxt.
 
 ### 3. Same app as the starter, only config?
 
@@ -64,7 +66,7 @@ Answer no if the add-on must replace a starter page, route rule or composable. L
 - A layer's `nitro.routeRules` replaces a whole app route rule.
 - Layer order decides components and auto-imported composables.
 
-Adding any layer to the starter has a side effect. The starter pins its component dirs at `priority: 2`. So an extra layer, a local `layers/*` folder or a new `extends` entry, can outrank them and replace same-named app components. A new `extends` entry can even lift `@shopware/cms-base-layer` above the app's CMS overrides.
+Adding any layer to the starter has a side effect. The starter pins its component dirs at `priority: 2` (`templates/vue-starter-template/nuxt.config.ts`). So an extra layer, a local `layers/*` folder or a new `extends` entry, can outrank them and replace same-named app components. A new `extends` entry can even lift `@shopware/cms-base-layer` above the app's CMS overrides.
 
 ### 6. Every shop wants it by default?
 
@@ -90,14 +92,14 @@ A template is cheap to change but costly to keep in sync with the starter. A lay
 
 B2B is planned as its own template ([decision](https://github.com/shopware/frontends/issues/2657#issuecomment-5928341830)), pending sign-off in [#2634](https://github.com/shopware/frontends/issues/2634). Its bug fixes are separate parts. [#2803](https://github.com/shopware/frontends/issues/2803) and [#2804](https://github.com/shopware/frontends/issues/2804) go into `@shopware/composables`, and [#2806](https://github.com/shopware/frontends/issues/2806) goes into the starter.
 
-B2B first answered yes to question 2, so it started as a spike. The demo backend still has no B2B demo company. The spike then answered yes to question 4. Login is required, and every page shows company prices, so the starter's shared page cache must be off everywhere.
+B2B first answered yes to question 2, so it started as a spike. The spike settled that part, so the second pass skipped question 2 and answered yes to question 4. Login is required, and every page shows company prices, so the starter's shared page cache must be off everywhere. The demo backend still has no B2B demo company, so the template needs a seed script, see New template step 7.
 
 The B2B layer built in the spike showed why a layer does not fit:
 
 - Config cannot switch off `cacheableReads`, only the `NUXT_PUBLIC_SHOPWARE_CACHEABLE_READS` env var can. The `/**` ISR rule goes only through `nitro.routeRules`, which replaces the whole rule, headers included. Miss either step, and users silently see guest prices.
 - The starter's `/account` and `/checkout` pages win over the layer's pages, with no warning.
 
-Overriding `useUser`, from a layer or from the app, reaches every consumer, including `@shopware/cms-base-layer`. So those fixes go upstream instead. The quote logic leaves `@shopware/composables` only after `examples/b2b-quote-management` and its docs move. `useB2bQuoteManagement` and `canUseQuoteActions` are deprecated first.
+Overriding `useUser`, from a layer or from the app, reaches every consumer, including `@shopware/cms-base-layer`. So those fixes go upstream instead. The quote logic leaves `@shopware/composables` and `@shopware/helpers` only after `examples/b2b-quote-management` and its docs move. `useB2bQuoteManagement` in composables and `canUseQuoteActions` in helpers are deprecated first, so each package needs its own major.
 
 ## Procedure
 
@@ -137,7 +139,7 @@ Then follow the steps for the shape.
 ### Example
 
 1. Build it in `examples/<name>` as its own small app, with a docs page.
-2. Name the package `example-<name>`. Changesets ignore that prefix, so it needs no changeset.
+2. Name the package `example-<name>`. The `ignore` list in `.changeset/config.json` covers that prefix, so it needs no changeset.
 3. `examples.yml` builds it in CI.
 4. If it must sit inside a starter page, propose a slot or hook as a separate starter change.
 
@@ -145,7 +147,7 @@ Then follow the steps for the shape.
 
 1. Build a proof in a branch, with no template directory and no support promise.
 2. End it with a decision note on the spike issue, then answer the questions again.
-3. If the answer is a template, the note also picks the `supportLevel`. `manifest.schema.json` allows only `nuxt`, `astro` and `vite` as `framework`, so a new framework needs a schema change first.
+3. If the answer is a template, the note also picks the `supportLevel`. The `framework` enum in `manifest.schema.json` lists the frameworks we allow, so a new one needs a schema change first.
 
 ### New template
 
@@ -155,7 +157,7 @@ Then follow the steps for the shape.
 4. Fix shared bugs upstream first, and install `@shopware/*` from `canary`.
 5. Add the entry to `manifest.json` and run `pnpm run check:templates`.
 6. Make caching correct by default: `ssr: false` for personalized routes, and no personalized data in ISR HTML.
-7. Add an `AGENTS.md`, a CI build and a drift check against the starter. Add a seed script if the demo backend lacks data.
+7. Add an `AGENTS.md`, a CI build and a drift check against the starter. Add a seed script if the demo backend lacks data, and keep it optional: the template must still start against the public demo backend with no configuration, where missing data hides a feature but breaks nothing.
 8. Add a docs page under `apps/docs/src/introduction/templates/` and a card in `apps/docs/src/introduction/templates.md`.
 
 A template may also live in its own repository at the same bar ([#2634](https://github.com/shopware/frontends/issues/2634), answer 6). In-repo stays the default, so package changes are tested against the template in the same PR.
