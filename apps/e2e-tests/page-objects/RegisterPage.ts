@@ -6,14 +6,13 @@ import {
   selectDefaultCountry,
   selectFirstOptionIfPresent,
 } from "../utils/form";
-import { type StoreApi, captureStoreApi } from "../utils/store-api";
+import type { StoreApi } from "../utils/store-api";
 
 export class RegisterForm {
   // Define selectors
   readonly page: Page;
   readonly storeApi: { value?: StoreApi };
   readonly accountType: Locator;
-  readonly salutation: Locator;
   readonly firstName: Locator;
   readonly lastName: Locator;
   readonly emailAdrdress: Locator;
@@ -28,10 +27,9 @@ export class RegisterForm {
   readonly submitButton: Locator;
 
   // Init selectors using constructor
-  constructor(page: Page) {
+  constructor(page: Page, storeApi: { value?: StoreApi }) {
     this.page = page;
     this.accountType = page.getByTestId("registration-account-type-select");
-    this.salutation = page.getByTestId("registration-salutation-select");
     this.firstName = page.getByTestId("registration-first-name-input");
     this.lastName = page.getByTestId("registration-last-name-input");
     this.emailAdrdress = page.getByTestId("registration-email-input");
@@ -44,7 +42,7 @@ export class RegisterForm {
     this.country = page.getByTestId("country-select");
     this.countryState = page.getByTestId("checkout-pi-state-input");
     this.submitButton = page.getByTestId("registration-submit-button");
-    this.storeApi = captureStoreApi(page);
+    this.storeApi = storeApi;
   }
 
   // Define login page methods
@@ -54,7 +52,6 @@ export class RegisterForm {
     email: string,
     password: string,
   ) {
-    await selectFirstOptionIfPresent(this.salutation);
     await this.firstName.fill(firstName);
     await this.lastName.fill(lastName);
     await this.emailAdrdress.fill(email);
@@ -98,7 +95,6 @@ export class RegisterForm {
   }
 
   async createUser() {
-    await selectFirstOptionIfPresent(this.salutation);
     await this.firstName.fill(`e2e ${faker.person.firstName()}`);
     await this.lastName.fill(`e2e ${faker.person.lastName()}`);
     await this.emailAdrdress.fill(uniqueEmail());

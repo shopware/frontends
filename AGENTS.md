@@ -142,11 +142,12 @@ written there:
 - Unit tests (Vitest) live next to their sources as `*.test.ts`. `pnpm run
 coverage` exists only in `packages/composables`.
 - `pnpm run test:e2e` is `playwright test --grep @frontends` and takes its
-  target from `BASE_E2E_URL`. The specs navigate generically, so they run
-  against any storefront. CI runs them against `vue-starter-template` in
+  target from `BASE_E2E_URL`. The specs take catalogue data from the backend
+  but select on `vue-starter-template`'s test ids, so they run against the
+  starter and templates extending it, not `vue-demo-store`. CI runs them in
   `.github/workflows/e2e-starter-template.yml`, nightly and on manual dispatch
   rather than on pull requests; a failure notifies Slack, nothing is gated.
-- The `@accessibility` specs are template-agnostic and run the same way:
+- The `@accessibility` specs share those page objects and run the same way:
 
 ```bash
 cd apps/e2e-tests

@@ -1,17 +1,13 @@
 import { expect, test } from "../fixtures";
-import { HomePage } from "../page-objects/HomePage";
 
 test.describe("Check for seo-url requests", { tag: "@frontends" }, () => {
-  let homePage: HomePage;
-
-  // Before Hook
-  test.beforeEach(async ({ page }) => {
-    homePage = new HomePage(page);
+  test.beforeEach(async ({ homePage }) => {
     await homePage.visitMainPage();
   });
 
   test("should not show any seo-url requests during internal navigation", async ({
     page,
+    homePage,
   }) => {
     let SeoUrlRequest = false;
     page.on("request", (request) => {
