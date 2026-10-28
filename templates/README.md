@@ -23,7 +23,7 @@ Answer the questions for each part of the work, and the first yes picks its shap
 
 "The starter" is `templates/vue-starter-template`.
 
-`templates/manifest.json` lists the templates we ship today, with a `supportLevel` per entry. `vue-starter-template-extended` (Lumora) is not a shape these questions produce. It shows shop projects how to extend the starter as a Nuxt layer, and it cannot leave the monorepo: its entry is `scaffoldable: false`, and its `notes` field says why. Shop projects can follow that pattern. Work we ship here still answers the questions, so one brand's tokens stay a starter mode, see question 3. `astro` and `vue-vite-blank` show the API client outside Nuxt, not a storefront. When templates move to their own repository ([#2634](https://github.com/shopware/frontends/issues/2634), answer 6), the starter and Lumora move together.
+`templates/manifest.json` lists the templates we ship today, with a `supportLevel` per entry. `vue-starter-template-extended` (Lumora) is not a shape these questions produce. It shows shop projects how to extend the starter as a Nuxt layer, and it cannot leave the monorepo: its entry is `scaffoldable: false`, and its `notes` field says why. Shop projects can follow that pattern. Work we ship here still answers the questions, so one brand's tokens stay a starter mode, see question 3. `astro` and `vue-vite-blank` show the API client outside Nuxt, not a storefront. If templates move to their own repository ([#2634](https://github.com/shopware/frontends/issues/2634), answer 6), the starter and Lumora move together.
 
 ### 1. Store API logic, no UI, used by two apps?
 
@@ -35,7 +35,7 @@ Routes that only an extension adds, like SwagCommercial, answer no. Their logic 
 
 A non-Nuxt app cannot use our Nuxt layers, so `@shopware/cms-base-layer` cannot be reused there ([#2656](https://github.com/shopware/frontends/issues/2656)). For React and Next, [#2723](https://github.com/shopware/frontends/issues/2723) decides if a template is viable at all.
 
-"Backend not ready" means Shopware lacks the feature, or the demo backend lacks the data to show it. This matters for a template or a starter change, because every template runs against the public demo backend with no configuration. An example may need its own backend, like an installed payment plugin. Its README lists that.
+"Backend not ready" means Shopware lacks the feature, or the demo backend cannot run it. Data you can seed yourself is not a blocker, see New template step 7. This matters for a template or a starter change, because every template runs against the public demo backend with no configuration. An example may need its own backend, like an installed payment plugin. Its README lists that.
 
 After the spike, answer the questions again, and skip question 2 for the part the spike settled. A non-Nuxt app never settles it, so it stays an example app, like `astro` or `vue-vite-blank`, or a project outside this repo, until [#2723](https://github.com/shopware/frontends/issues/2723) decides that a non-Nuxt template is viable. If it does, the decision note names the framework, the schema change in the Spike steps comes first, and New template step 3 applies to that framework instead of Nuxt.
 
@@ -63,7 +63,7 @@ Answer no if the add-on must replace a starter page, route rule or composable. L
 
 - The app wins on pages with the same path and on plain config values.
 - Arrays like `modules` and `css` are merged ([Nuxt layers](https://nuxt.com/docs/4.x/guide/going-further/layers)).
-- A layer's `routeRules` replaces a whole app route rule.
+- `routeRules` merge key by key. The app wins on every key it sets, so a layer cannot remove or change an app rule.
 - Layer order decides components and auto-imported composables.
 
 Adding any layer to the starter has a side effect. The starter pins its component dirs at `priority: 2` (`templates/vue-starter-template/nuxt.config.ts`). So an extra layer, a local `layers/*` folder or a new `extends` entry, can outrank them and replace same-named app components. A new `extends` entry can even lift `@shopware/cms-base-layer` above the app's CMS overrides.
@@ -92,14 +92,14 @@ A template is cheap to change but costly to keep in sync with the starter. A lay
 
 B2B is planned as its own template ([decision](https://github.com/shopware/frontends/issues/2657#issuecomment-5928341830)), pending sign-off in [#2634](https://github.com/shopware/frontends/issues/2634). Its bug fixes are separate parts. [#2803](https://github.com/shopware/frontends/issues/2803) and [#2804](https://github.com/shopware/frontends/issues/2804) go into `@shopware/composables`, and [#2806](https://github.com/shopware/frontends/issues/2806) goes into the starter.
 
-B2B started as a spike because its shape was open: [#2657](https://github.com/shopware/frontends/issues/2657) asked whether B2B is a template or a Nuxt layer. The spike answered yes to question 4. Login is required, and every page shows company prices, so the starter's shared page cache must be off everywhere. The demo backend runs the commercial B2B suite, but seeds no B2B company, so the template needs a seed script, see New template step 7.
+B2B started as a spike because its shape was open: [#2657](https://github.com/shopware/frontends/issues/2657) asked whether B2B is a template or a Nuxt layer. The spike answered question 2 with no, because the demo backend runs the full commercial B2B suite. The second pass then answered yes to question 4. Login is required, and every page shows company prices, so the starter's shared page cache must be off everywhere. No B2B company is seeded, so the template ships a seed script, see New template step 7.
 
 The B2B layer built in the spike showed why a layer does not fit:
 
-- Config cannot switch off `cacheableReads`, only the `NUXT_PUBLIC_SHOPWARE_CACHEABLE_READS` env var can. The `/**` ISR rule goes only through `routeRules`, which replaces the whole rule, headers included. Miss either step, and users silently see guest prices.
+- Config cannot switch off `cacheableReads`, only the `NUXT_PUBLIC_SHOPWARE_CACHEABLE_READS` env var can. A layer cannot switch off the starter's `/**` ISR rule at all: `routeRules` merge key by key, so the app's `isr` value wins. Users then silently see guest prices.
 - The starter's `/account` and `/checkout` pages win over the layer's pages, with no warning.
 
-Overriding `useUser`, from a layer or from the app, reaches every consumer, including `@shopware/cms-base-layer`. So those fixes go upstream instead. The quote logic leaves `@shopware/composables` and `@shopware/helpers` only after `examples/b2b-quote-management` and its docs move. `useB2bQuoteManagement` in composables and `canUseQuoteActions` in helpers are deprecated first, so each package needs its own major.
+Overriding `useUser`, from a layer or from the app, reaches every consumer, including `@shopware/cms-base-layer`. So those fixes go upstream instead. The quote logic leaves `@shopware/composables` and `@shopware/helpers` only after `examples/b2b-quote-management` and its docs move. `useB2bQuoteManagement` in composables and `canUseQuoteActions` in helpers will be deprecated first, so each package needs its own major.
 
 ## Procedure
 
@@ -124,7 +124,7 @@ Then follow the steps for the shape.
 1. Edit `templates/vue-starter-template`. CMS overrides go under `app/components/cms/`, the dir registered `global: true`.
 2. A config mode gets a docs page, not a new directory.
 3. If a build or dev script changes, update `manifest.json` in the same PR and run `pnpm run check:templates`.
-4. Run `pnpm changeset`. `privatePackages.version` is on and only `e2e-tests` and `example-*` are in the `ignore` list, so the starter gets a version too ([#2719](https://github.com/shopware/frontends/pull/2719)).
+4. No npm publish. The starter ships from the repo.
 
 ### Published layer
 
@@ -155,9 +155,9 @@ Then follow the steps for the shape.
 2. Get sign-off in [#2634](https://github.com/shopware/frontends/issues/2634) before any code.
 3. Build `templates/<id>` as a plain Nuxt app. Put feature code in `app/**/<feature>` folders, with no `layers/` folder and no hidden overrides.
 4. Fix shared bugs upstream first, and install `@shopware/*` from `canary`.
-5. Add the entry to `manifest.json`, run `pnpm run check:templates`, and ship a changeset. Templates are versioned too, see Starter change step 4.
+5. Add the entry to `manifest.json` and run `pnpm run check:templates`.
 6. Make caching correct by default: `ssr: false` for personalized routes, and no personalized data in ISR HTML.
-7. Add an `AGENTS.md`, a CI build and a drift check against the starter. Add a seed script if the demo backend lacks data, and keep it optional: the template must still start against the public demo backend with no configuration, where missing data hides a feature but breaks nothing.
+7. Add an `AGENTS.md`, a CI build and a drift check against the starter. Add a seed script if the demo backend lacks data. Keep it optional where the template still renders without that data, so it starts against the public demo backend with no configuration. A template that needs login on every page cannot, so its README lists the seed script as a setup step.
 8. Add a docs page under `apps/docs/src/introduction/templates/` and a card in `apps/docs/src/introduction/templates.md`.
 
 A template may also live in its own repository at the same bar ([#2634](https://github.com/shopware/frontends/issues/2634), answer 6). In-repo stays the default, so package changes are tested against the template in the same PR.
