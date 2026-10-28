@@ -159,8 +159,7 @@ BASE_E2E_URL=https://frontends-starter-template.vercel.app/ \
 
 ## Pull requests
 
-- Anything new beyond a bug fix? Answer the questions in
-  [templates/README.md](templates/README.md) on the issue before any code.
+- New template, layer, package or example? See [templates/README.md](templates/README.md).
 - Conventional Commits title (`feat:`, `fix:`, `docs:`, `chore:`).
 - A changeset is required for any change to a published package; commit the
   generated `.changeset/*.md` with your change.

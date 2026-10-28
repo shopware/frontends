@@ -1,6 +1,6 @@
 # Template, layer or package?
 
-How we decide the shape of new work. Most new work does not need a new template. Answer the questions below before anyone proposes a new template, layer or package.
+How we decide the shape of new work. Most new work does not need a new template. Answer the questions below before anyone proposes a new template, layer, package or example.
 
 The questions come from our earlier decisions: B2B ([#2657](https://github.com/shopware/frontends/issues/2657#issuecomment-5928341830)), prerendering ([#2655](https://github.com/shopware/frontends/issues/2655#issuecomment-5730660176)), the layer experiments ([#1714](https://github.com/shopware/frontends/issues/1714), [#1797](https://github.com/shopware/frontends/issues/1797#issuecomment-2804702807)) and the templates epic ([#2634](https://github.com/shopware/frontends/issues/2634)). They cover code we ship in this repo. Shop projects and partners can build on the starter however they like.
 
@@ -10,7 +10,7 @@ We build a new template only for a new kind of shop or a separate app, like B2B.
 
 ## The questions
 
-Answer the questions for each part of the work, and the first yes picks its shape. A part is one piece you could ship alone, like a composable or a page. Bug fixes skip the questions and go where the code lives.
+Answer the questions for each part of the work, and the first yes picks its shape. A part is one piece you could ship alone, like a composable or a page. Bug fixes, docs, chores and refactors skip the questions and go where the code lives.
 
 | #   | Question                                  | If yes                                 | If no         |
 | --- | ----------------------------------------- | -------------------------------------- | ------------- |
@@ -63,7 +63,7 @@ Answer no if the add-on must replace a starter page, route rule or composable. L
 
 - The app wins on pages with the same path and on plain config values.
 - Arrays like `modules` and `css` are merged ([Nuxt layers](https://nuxt.com/docs/4.x/guide/going-further/layers)).
-- A layer's `nitro.routeRules` replaces a whole app route rule.
+- A layer's `routeRules` replaces a whole app route rule.
 - Layer order decides components and auto-imported composables.
 
 Adding any layer to the starter has a side effect. The starter pins its component dirs at `priority: 2` (`templates/vue-starter-template/nuxt.config.ts`). So an extra layer, a local `layers/*` folder or a new `extends` entry, can outrank them and replace same-named app components. A new `extends` entry can even lift `@shopware/cms-base-layer` above the app's CMS overrides.
@@ -92,11 +92,11 @@ A template is cheap to change but costly to keep in sync with the starter. A lay
 
 B2B is planned as its own template ([decision](https://github.com/shopware/frontends/issues/2657#issuecomment-5928341830)), pending sign-off in [#2634](https://github.com/shopware/frontends/issues/2634). Its bug fixes are separate parts. [#2803](https://github.com/shopware/frontends/issues/2803) and [#2804](https://github.com/shopware/frontends/issues/2804) go into `@shopware/composables`, and [#2806](https://github.com/shopware/frontends/issues/2806) goes into the starter.
 
-B2B first answered yes to question 2, so it started as a spike. The spike settled that part, so the second pass skipped question 2 and answered yes to question 4. Login is required, and every page shows company prices, so the starter's shared page cache must be off everywhere. The demo backend still has no B2B demo company, so the template needs a seed script, see New template step 7.
+B2B started as a spike because its shape was open: [#2657](https://github.com/shopware/frontends/issues/2657) asked whether B2B is a template or a Nuxt layer. The spike answered yes to question 4. Login is required, and every page shows company prices, so the starter's shared page cache must be off everywhere. The demo backend runs the commercial B2B suite, but seeds no B2B company, so the template needs a seed script, see New template step 7.
 
 The B2B layer built in the spike showed why a layer does not fit:
 
-- Config cannot switch off `cacheableReads`, only the `NUXT_PUBLIC_SHOPWARE_CACHEABLE_READS` env var can. The `/**` ISR rule goes only through `nitro.routeRules`, which replaces the whole rule, headers included. Miss either step, and users silently see guest prices.
+- Config cannot switch off `cacheableReads`, only the `NUXT_PUBLIC_SHOPWARE_CACHEABLE_READS` env var can. The `/**` ISR rule goes only through `routeRules`, which replaces the whole rule, headers included. Miss either step, and users silently see guest prices.
 - The starter's `/account` and `/checkout` pages win over the layer's pages, with no warning.
 
 Overriding `useUser`, from a layer or from the app, reaches every consumer, including `@shopware/cms-base-layer`. So those fixes go upstream instead. The quote logic leaves `@shopware/composables` and `@shopware/helpers` only after `examples/b2b-quote-management` and its docs move. `useB2bQuoteManagement` in composables and `canUseQuoteActions` in helpers are deprecated first, so each package needs its own major.
@@ -124,7 +124,7 @@ Then follow the steps for the shape.
 1. Edit `templates/vue-starter-template`. CMS overrides go under `app/components/cms/`, the dir registered `global: true`.
 2. A config mode gets a docs page, not a new directory.
 3. If a build or dev script changes, update `manifest.json` in the same PR and run `pnpm run check:templates`.
-4. No changeset. Only published packages get one.
+4. Run `pnpm changeset`. `privatePackages.version` is on and only `e2e-tests` and `example-*` are in the `ignore` list, so the starter gets a version too ([#2719](https://github.com/shopware/frontends/pull/2719)).
 
 ### Published layer
 
@@ -155,7 +155,7 @@ Then follow the steps for the shape.
 2. Get sign-off in [#2634](https://github.com/shopware/frontends/issues/2634) before any code.
 3. Build `templates/<id>` as a plain Nuxt app. Put feature code in `app/**/<feature>` folders, with no `layers/` folder and no hidden overrides.
 4. Fix shared bugs upstream first, and install `@shopware/*` from `canary`.
-5. Add the entry to `manifest.json` and run `pnpm run check:templates`.
+5. Add the entry to `manifest.json`, run `pnpm run check:templates`, and ship a changeset. Templates are versioned too, see Starter change step 4.
 6. Make caching correct by default: `ssr: false` for personalized routes, and no personalized data in ISR HTML.
 7. Add an `AGENTS.md`, a CI build and a drift check against the starter. Add a seed script if the demo backend lacks data, and keep it optional: the template must still start against the public demo backend with no configuration, where missing data hides a feature but breaks nothing.
 8. Add a docs page under `apps/docs/src/introduction/templates/` and a card in `apps/docs/src/introduction/templates.md`.
