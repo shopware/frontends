@@ -41,7 +41,7 @@
   "dependencies": {
     "@iconify-json/carbon": "1.2.27",
     "@nuxt/image": "2.1.0",
-    "@nuxt/kit": "4.6.1",
+    "@nuxt/kit": "4.6.2",
     "@shopware/api-client": "workspace:*",
     "@shopware/composables": "workspace:*",
     "@shopware/helpers": "workspace:*",
@@ -58,11 +58,11 @@
     "xss": "1.0.15"
   },
   "devDependencies": {
-    "@nuxt/schema": "4.6.1",
+    "@nuxt/schema": "4.6.2",
     "@types/three": "0.182.0",
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
     "@vitest/coverage-v8": "5.0.5",
-    "nuxt": "4.6.1",
+    "nuxt": "4.6.2",
     "tsconfig": "workspace:*",
     "typescript": "5.9.3",
     "vitest": "5.0.5",
