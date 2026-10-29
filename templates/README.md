@@ -21,7 +21,7 @@ Bug fixes, docs, chores and refactors skip the questions. They go where the code
 
 "The starter" is `templates/vue-starter-template`.
 
-`templates/manifest.json` lists what we ship today, with a `supportLevel` per entry. Four entries are not shapes these questions produce:
+`templates/manifest.json` lists what we ship today, with a `supportLevel` per entry. Every entry but the starter is not a shape these questions produce:
 
 - `vue-starter-template-extended` (Lumora) shows shop projects how to extend the starter as a Nuxt layer. It cannot leave the monorepo, so its entry is `scaffoldable: false` and its `notes` field says why. Shop projects can follow that pattern.
 - `astro` and `vue-vite-blank` show the API client outside Nuxt, not a storefront.
@@ -43,7 +43,7 @@ Routes that only an extension adds, like SwagCommercial, answer no. That logic s
 
 A non-Nuxt app cannot use our Nuxt layers, so `@shopware/cms-base-layer` cannot be reused there ([#2656](https://github.com/shopware/frontends/issues/2656)). For React and Next, [#2723](https://github.com/shopware/frontends/issues/2723) decides if a template is viable at all.
 
-"Backend not ready" means Shopware lacks the feature, or the demo backend cannot run it. Data you can seed yourself is not a blocker, see New template step 7. It matters here because every template runs against the public demo backend with no configuration. An example may need its own backend, like an installed payment plugin, and its README lists that.
+"Backend not ready" means Shopware lacks the feature, or the demo backend cannot run it. Data you can seed yourself is not a blocker, see New template step 8. It matters here because every template runs against the public demo backend with no configuration. An example may need its own backend, like an installed payment plugin, and its README lists that.
 
 After the spike, answer the questions again and skip question 2. A non-Nuxt app never settles it. It stays in `templates/` with `supportLevel: example`, like `astro` or `vue-vite-blank`, or lives outside this repo until [#2723](https://github.com/shopware/frontends/issues/2723) says otherwise.
 
@@ -73,7 +73,7 @@ Answer no if the add-on must replace a starter page, route rule or composable. L
 
 - The app wins on pages with the same path, and on plain config values.
 - Arrays like `modules` and `css` are merged ([Nuxt layers](https://nuxt.com/docs/4.x/guide/going-further/layers)).
-- `routeRules` merge key by key. The app wins on every key it sets, so a layer cannot remove or change an app rule.
+- `routeRules` merge per pattern. On a pattern the app also sets, the app wins property by property, so a layer cannot relax that rule. A layer's more specific pattern does win for its own paths.
 - Layer order decides components and auto-imported composables.
 
 Adding any layer to the starter has a side effect. The starter pins its component dirs at `priority: 2` (`templates/vue-starter-template/nuxt.config.ts`). An extra layer can outrank them and replace same-named app components, and so can a local `layers/*` folder or a new `extends` entry. A new `extends` entry can even lift `@shopware/cms-base-layer` above the app's CMS overrides.
@@ -102,12 +102,12 @@ A template is cheap to change but costly to keep in sync with the starter. A lay
 
 B2B is planned as its own template ([decision](https://github.com/shopware/frontends/issues/2657#issuecomment-5928341830)), pending sign-off in [#2634](https://github.com/shopware/frontends/issues/2634).
 
-It started as a spike, because [#2657](https://github.com/shopware/frontends/issues/2657) asked whether B2B is a template or a Nuxt layer. The spike answered question 2 with no: the demo backend runs the full commercial B2B suite. The second pass answered yes to question 4. Login is required, and every page shows company prices, so the starter's shared page cache must be off everywhere.
+Question 2 was open, because nobody had checked whether the demo backend runs the commercial B2B suite, and [#2657](https://github.com/shopware/frontends/issues/2657) asked whether B2B is a template or a Nuxt layer. So it started as a spike, which settled question 2 as no: the suite is there. The second pass answered yes to question 4. Login is required, and every page shows company prices, so the starter's shared page cache must be off everywhere.
 
 The B2B layer built in the spike showed why a layer does not fit:
 
 - A layer cannot switch off `cacheableReads`. The starter sets it in its own `shopware` options, and the app wins. A template can ship `false` itself, and `NUXT_PUBLIC_SHOPWARE_CACHEABLE_READS` overrides it at runtime.
-- A layer cannot switch off the starter's `/**` ISR rule, by the precedence in question 5, so users silently see guest prices.
+- A layer cannot relax the starter's `/**` ISR rule, by the precedence in question 5, and B2B needs the cache off on every path, so users silently see guest prices.
 - The starter's `/account` and `/checkout` pages win over the layer's pages, with no warning.
 
 Its bug fixes are separate parts. [#2803](https://github.com/shopware/frontends/issues/2803) and [#2804](https://github.com/shopware/frontends/issues/2804) go into `@shopware/composables`, [#2806](https://github.com/shopware/frontends/issues/2806) into the starter. Overriding `useUser` reaches every consumer, including `@shopware/cms-base-layer`, so those fixes go upstream.
@@ -127,7 +127,7 @@ Then follow the steps for the shape.
 
 ### Package
 
-1. Change `packages/composables`, `api-client` or `helpers`. Never hand-edit `packages/api-client/api-types/*.d.ts`.
+1. Change `packages/composables`, `api-client`, `helpers` or `nuxt-module`. Never hand-edit `packages/api-client/api-types/*.d.ts`.
 2. Add a Vitest test next to the source as `*.test.ts`.
 3. Run `pnpm changeset`. Deprecate first and remove in the next major.
 4. Scaffolded projects get the change from the next canary, which `release.yml` publishes on a main push with a pending changeset.
@@ -151,7 +151,7 @@ Then follow the steps for the shape.
 
 ### Example
 
-1. Build it in `examples/<name>` as its own small app, with a docs page.
+1. Build it in `examples/<name>` as its own small app, with a docs page. [examples/README.md](../examples/README.md) holds the rest of the rules.
 2. Name the package `example-<name>`. The `ignore` list in `.changeset/config.json` covers that prefix, so it needs no changeset.
 3. `examples.yml` builds it in CI.
 4. If it must sit inside a starter page, propose a slot or hook as a separate starter change.
