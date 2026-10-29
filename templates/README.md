@@ -14,7 +14,7 @@ Answer the questions for each part of the work, and the first yes picks its shap
 
 | #   | Question                                  | If yes                                 | If no         |
 | --- | ----------------------------------------- | -------------------------------------- | ------------- |
-| 1   | Store API logic, no UI, used by two apps? | Package                                | Next question |
+| 1   | Store API logic, no UI, used by two apps? | Package, if the route has shipped      | Next question |
 | 2   | Non-Nuxt, or backend not ready?           | Spike, then answer again               | Next question |
 | 3   | Same app as the starter, only config?     | Starter change, as a documented mode   | Next question |
 | 4   | New kind of shop, or separate app?        | New template, after team sign-off      | Next question |
@@ -23,11 +23,11 @@ Answer the questions for each part of the work, and the first yes picks its shap
 
 "The starter" is `templates/vue-starter-template`.
 
-`templates/manifest.json` lists the templates we ship today, with a `supportLevel` per entry. `vue-starter-template-extended` (Lumora) is not a shape these questions produce. It shows shop projects how to extend the starter as a Nuxt layer, and it cannot leave the monorepo: its entry is `scaffoldable: false`, and its `notes` field says why. Shop projects can follow that pattern. Work we ship here still answers the questions, so one brand's tokens stay a starter mode, see question 3. `astro` and `vue-vite-blank` show the API client outside Nuxt, not a storefront. If templates move to their own repository ([#2634](https://github.com/shopware/frontends/issues/2634), answer 6), the starter and Lumora move together.
+`templates/manifest.json` lists the templates we ship today, with a `supportLevel` per entry. `vue-starter-template-extended` (Lumora) is not a shape these questions produce. It shows shop projects how to extend the starter as a Nuxt layer, and it cannot leave the monorepo: its entry is `scaffoldable: false`, and its `notes` field says why. Shop projects can follow that pattern. Work we ship here still answers the questions, so one brand's tokens stay a starter mode, see question 3. `astro` and `vue-vite-blank` show the API client outside Nuxt, not a storefront. `vue-blank` is an empty Nuxt app with the packages installed, and `vue-demo-store` is deprecated ([#2667](https://github.com/shopware/frontends/pull/2667)), so neither is a model for new work. If templates move to their own repository ([#2634](https://github.com/shopware/frontends/issues/2634), answer 6), the starter and Lumora move together.
 
 ### 1. Store API logic, no UI, used by two apps?
 
-Store API logic that two apps use goes into a package: `@shopware/composables`, `@shopware/api-client` or `@shopware/helpers`. "Two apps" means two templates or examples in this repo today, or one named in an issue. Logic with one consumer stays next to its UI.
+Store API logic that two apps use goes into a package: `@shopware/composables`, `@shopware/api-client` or `@shopware/helpers`. "Two apps" means two templates or examples in this repo today, or one named in an issue. Logic with one consumer stays next to its UI. The route must already be in a released Shopware version, because a package is published with semver. Logic for an unshipped route goes to question 2 instead.
 
 Routes that only an extension adds, like SwagCommercial, answer no. Their logic stays with the example or template that uses it. Vendor logic, like tracking for one analytics tool, answers no too.
 
@@ -37,7 +37,7 @@ A non-Nuxt app cannot use our Nuxt layers, so `@shopware/cms-base-layer` cannot 
 
 "Backend not ready" means Shopware lacks the feature, or the demo backend cannot run it. Data you can seed yourself is not a blocker, see New template step 7. This matters for a template or a starter change, because every template runs against the public demo backend with no configuration. An example may need its own backend, like an installed payment plugin. Its README lists that.
 
-After the spike, answer the questions again, and skip question 2 for the part the spike settled. A non-Nuxt app never settles it, so it stays an example app, like `astro` or `vue-vite-blank`, or a project outside this repo, until [#2723](https://github.com/shopware/frontends/issues/2723) decides that a non-Nuxt template is viable. If it does, the decision note names the framework, the schema change in the Spike steps comes first, and New template step 3 applies to that framework instead of Nuxt.
+After the spike, answer the questions again, and skip question 2 for the part the spike settled. A non-Nuxt app never settles it, so it stays in `templates/` with `supportLevel: example`, like `astro` or `vue-vite-blank`, or a project outside this repo, until [#2723](https://github.com/shopware/frontends/issues/2723) decides that a non-Nuxt template is viable. If it does, the decision note names the framework, the schema change in the Spike steps comes first, and New template step 3 applies to that framework instead of Nuxt.
 
 ### 3. Same app as the starter, only config?
 
@@ -157,7 +157,7 @@ Then follow the steps for the shape.
 4. Fix shared bugs upstream first, and install `@shopware/*` from `canary`.
 5. Add the entry to `manifest.json` and run `pnpm run check:templates`.
 6. Make caching correct by default: `ssr: false` for personalized routes, and no personalized data in ISR HTML.
-7. Add an `AGENTS.md`, a CI build and a drift check against the starter. Add a seed script if the demo backend lacks data. Keep it optional where the template still renders without that data, so it starts against the public demo backend with no configuration. A template that needs login on every page cannot, so its README lists the seed script as a setup step.
-8. Add a docs page under `apps/docs/src/introduction/templates/` and a card in `apps/docs/src/introduction/templates.md`.
+7. Add an `AGENTS.md`, a CI build and a drift check against the starter, comparing shared `nuxt.config.ts` keys and `@shopware/*` versions. Add a seed script if the demo backend lacks data, and keep it optional: every template starts against the public demo backend with no configuration. The README says what the missing data costs, for B2B that is signing in.
+8. Add a docs page under `apps/docs/src/introduction/templates/` and a section with a `<PageRef>` in `apps/docs/src/introduction/templates.md`.
 
 A template may also live in its own repository at the same bar ([#2634](https://github.com/shopware/frontends/issues/2634), answer 6). In-repo stays the default, so package changes are tested against the template in the same PR.
