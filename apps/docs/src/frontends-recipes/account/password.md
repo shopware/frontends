@@ -110,15 +110,6 @@ Two things this flow does _not_ do are easy to get wrong. It does not tell you w
 
 <RecipeFlowDiagram label="Password recovery flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. The customer submits their email address in a forgotten-password form.
-2. `resetPassword()` sends `sendRecoveryMail post /account/recovery-password` with the address and a `storefrontUrl`, and Shopware mails a link containing a hash.
-3. The customer opens that link, arriving on a reset route with the hash and no session.
-4. The page checks the hash with `getCustomerRecoveryIsExpired post /account/customer-recovery-is-expired` before rendering a form.
-5. `recoveryPassword post /account/recovery-password-confirm` sets the new password from the hash and the two password fields.
-6. The separate in-account flow is a single `changePassword post /account/change-password` call that also requires the current password.
-
 You do not need to refresh the session context or the cart in either flow. Neither operation changes the logged-in customer, so nothing derived from the context becomes stale.
 
 <StorefrontUrlNotice

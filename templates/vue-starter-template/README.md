@@ -19,7 +19,7 @@ A Nuxt storefront foundation with all Shopware Frontends packages pre-configured
 
 Go to [Documentation > Requirements](https://developer.shopware.com/frontends/introduction/requirements.html) to see the details.
 
-Node `^22.19.0 || ^24.11.0 || >=26.0.0`, the range in `package.json`. This
+Node `^22.22.3 || ^24.15.0 || >=26.0.0`, the range in `package.json`. This
 repository uses pnpm.
 
 ## Install & Run

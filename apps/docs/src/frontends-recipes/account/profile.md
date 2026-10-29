@@ -107,18 +107,7 @@ Build an account page that shows the logged-in customer and lets them change the
 
 `changeProfile post /account/change-profile` and `changeEmail post /account/change-email` both respond with a `SuccessResponse` and nothing else. `updatePersonalInfo()` and `updateEmail()` therefore return `Promise<void>` and leave the shared customer untouched. Refreshing it is your job, either with `refreshUser()` or by refreshing the whole context.
 
-Hover a type chip to inspect fields generated from the current Store API schema.
-
 <RecipeFlowDiagram label="Customer profile flow diagram" :steps="steps" />
-
-Read the diagram from left to right:
-
-1. The form is seeded from `useUser().user`, which already holds the customer from the context.
-2. `updatePersonalInfo()` or `updateEmail()` posts the changed fields.
-3. The Store API answers with a bare `SuccessResponse`.
-4. `refreshUser()` sends `readCustomer post /account/customer` and writes the customer into the shared value.
-5. The UI re-renders from `user` and the session flags computed over it.
-6. `convertGuest post /account/convert-guest` and `deleteCustomer delete /account/customer` are called through `apiClient.invoke`, followed by a context refresh.
 
 You do not need to call `refreshSessionContext()` after a profile or email change. The token and the sales channel are untouched, and `refreshUser()` already writes the fresh customer into the shared value. It writes only there, though: the customer copy inside the sales channel context keeps the old name until something refreshes it. That is harmless for a name, a salutation or an email address, and it is exactly why the [addresses recipe](addresses.html) reaches for `refreshSessionContext()` instead — the checkout reads its active addresses from that context. Keep the context refresh for `convertGuest` and `deleteCustomer` too, which change who the token resolves to.
 
