@@ -43,6 +43,11 @@ overrides:
   "follow-redirects@<1.16.1": 1.16.1
   "launch-editor@<2.14.2": 2.14.2
   "@nuxt/devtools@>=3.0.0 <3.4.3": ^3.4.3
+  "vue-i18n@<11.4.14": 11.4.16
+  "@intlify/core@<11.4.14": 11.4.16
+  "@intlify/core-base@<11.4.14": 11.4.16
+  "@intlify/shared@<11.4.14": 11.4.16
+  "seroval@<1.6.11": 1.6.12
 
 peerDependencyRules:
   ignoreMissing:
@@ -74,7 +79,6 @@ auditConfig:
   ignoreGhsas:
     # node-forge: advisory names >=1.4.1, not published yet. Used by listhen for local dev HTTPS certs only.
     - GHSA-86w9-cpqp-85rv
-    # braces: advisory names >=3.0.4, not published yet. Only matches build-time glob patterns we write.
-    - GHSA-vfj7-8cjw-p6xm
-    # deepmerge: advisory has no patched release yet. Build-time dependency of unbuild only.
+    # deepmerge: no patched release, the advisory covers <=4.3.1 and that is the latest.
+    # Build-time only (@rollup/plugin-node-resolve in nitropack and unbuild). Drops out with rollup/plugins#2036.
     - GHSA-gcqx-w48m-w2h4
