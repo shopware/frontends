@@ -10,7 +10,7 @@ minimumReleaseAgeExclude:
   - "@shopware/*"
 
 overrides:
-  "@vercel/blob>undici": "^6.28.0"
+  "@vercel/blob>undici": "^6.29.1"
   "@tiptap/pm@<3.30.5": 3.30.5
   esbuild: ^0.28.2
   vite: ^8.3.4
@@ -31,13 +31,23 @@ overrides:
   "@tiptap/core": 3.30.5
   "js-yaml@>=4.0.0 <4.3.2": 4.3.2
   "sharp@<0.35.5": 0.35.5
-  "astro@<7.2.8": 7.2.8
-  "@simple-git/argv-parser@<2.0.1": 2.0.1
+  "astro@<7.4.2": 7.4.2
   "tinypool@<2.1.2": 2.1.2
   "postcss-selector-parser@<7.1.6": 7.1.6
+  "undici@>=7.0.0 <7.30.1": 7.30.1
+  "undici@>=8.0.0 <8.12.2": 8.12.3
+  "fast-uri@<3.1.9": 3.1.9
+  "qs@<6.16.1": 6.16.1
+  "serialize-javascript@<7.1.3": 7.1.3
+  "zod@>=4.0.0 <4.6.6": 4.6.6
   "follow-redirects@<1.16.1": 1.16.1
   "launch-editor@<2.14.2": 2.14.2
   "@nuxt/devtools@>=3.0.0 <3.4.3": ^3.4.3
+  "vue-i18n@<11.4.14": 11.4.16
+  "@intlify/core@<11.4.14": 11.4.16
+  "@intlify/core-base@<11.4.14": 11.4.16
+  "@intlify/shared@<11.4.14": 11.4.16
+  "seroval@<1.6.11": 1.6.12
 
 peerDependencyRules:
   ignoreMissing:
@@ -69,5 +79,6 @@ auditConfig:
   ignoreGhsas:
     # node-forge: advisory names >=1.4.1, not published yet. Used by listhen for local dev HTTPS certs only.
     - GHSA-86w9-cpqp-85rv
-    # braces: advisory names >=3.0.4, not published yet. Only matches build-time glob patterns we write.
-    - GHSA-vfj7-8cjw-p6xm
+    # deepmerge: no patched release, the advisory covers <=4.3.1 and that is the latest.
+    # Build-time only (@rollup/plugin-node-resolve in nitropack and unbuild). Drops out with rollup/plugins#2036.
+    - GHSA-gcqx-w48m-w2h4
