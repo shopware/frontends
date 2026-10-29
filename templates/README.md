@@ -59,7 +59,7 @@ Answer yes if a shop built on the starter would never turn it on. That happens w
 
 A separate app with its own pages is also yes, like a sales agent app ([Discussion #522](https://github.com/shopware/frontends/discussions/522)).
 
-The B2B decision rests on this test: nobody extends a B2C shop with B2B. A new template goes against the goal of one supported starter, so it needs a decision note and team sign-off on the issue before any code.
+The B2B decision rests on this test: nobody extends a B2C shop with B2B. A new template goes against the goal of one supported starter, so the New template steps open with a decision note and sign-off.
 
 ### 5. Shared add-on, not a shop feature?
 
@@ -107,7 +107,7 @@ It started as a spike, because [#2657](https://github.com/shopware/frontends/iss
 The B2B layer built in the spike showed why a layer does not fit:
 
 - A layer cannot switch off `cacheableReads`. The starter sets it in its own `shopware` options, and the app wins. A template can ship `false` itself, and `NUXT_PUBLIC_SHOPWARE_CACHEABLE_READS` overrides it at runtime.
-- A layer cannot switch off the starter's `/**` ISR rule at all. `routeRules` merge key by key, so the app's `isr` value wins and users silently see guest prices.
+- A layer cannot switch off the starter's `/**` ISR rule, by the precedence in question 5, so users silently see guest prices.
 - The starter's `/account` and `/checkout` pages win over the layer's pages, with no warning.
 
 Its bug fixes are separate parts. [#2803](https://github.com/shopware/frontends/issues/2803) and [#2804](https://github.com/shopware/frontends/issues/2804) go into `@shopware/composables`, [#2806](https://github.com/shopware/frontends/issues/2806) into the starter. Overriding `useUser` reaches every consumer, including `@shopware/cms-base-layer`, so those fixes go upstream.
@@ -171,7 +171,7 @@ Then follow the steps for the shape.
 5. Add the entry to `manifest.json` and run `pnpm run check:templates`.
 6. Make caching correct by default: `ssr: false` for personalized routes, and no personalized data in ISR HTML.
 7. Add an `AGENTS.md`, a CI build and a drift check against the starter. The drift check compares shared `nuxt.config.ts` keys and `@shopware/*` versions.
-8. Add a seed script if the demo backend lacks data, and keep it optional. Every template starts against the public demo backend with no configuration, so the README says what the missing data costs. For B2B that is signing in.
+8. Add a seed script if the demo backend lacks data, and keep it optional, see question 2. The README says what the missing data costs. For B2B that is signing in.
 9. Add a docs page under `apps/docs/src/introduction/templates/` and a section with a `<PageRef>` in `apps/docs/src/introduction/templates.md`.
 
 A template may also live in its own repository at the same bar ([#2634](https://github.com/shopware/frontends/issues/2634), answer 6). The registry cannot describe one yet: `manifest.schema.json` has no `repository` field and rejects extra ones, and `check:templates` wants a local `templates/<id>/`. So that needs a schema and checker change first. In-repo stays the default, so package changes are tested against the template in the same PR.
