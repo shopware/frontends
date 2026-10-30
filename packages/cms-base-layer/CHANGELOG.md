@@ -1,5 +1,27 @@
 # @shopware/cms-base-layer
 
+## 4.1.1
+
+### Patch Changes
+
+- [#2720](https://github.com/shopware/frontends/pull/2720) [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789) Thanks [@mkucmus](https://github.com/mkucmus)! - `CmsElementProductDescriptionReviews` loads reviews with `useCacheableRead().invokeRead`.
+
+- [#2859](https://github.com/shopware/frontends/pull/2859) [`2c1e574`](https://github.com/shopware/frontends/commit/2c1e574187a80692addb866db96882ef4acbebda) Thanks [@mkucmus](https://github.com/mkucmus)! - Align the `@nuxt/kit` dependency with the Nuxt 4.6.2 bump. The advisories themselves (GHSA-vjh5-4x84-xrqp, GHSA-xfq5-w38q-pc2x) are fixed by `nuxt` and `@nuxt/nitro-server` 4.6.2; `@nuxt/kit` is not an affected package.
+
+- [#2834](https://github.com/shopware/frontends/pull/2834) [`2d3987c`](https://github.com/shopware/frontends/commit/2d3987c201db2f437af2785eed7948e958399cda) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Give the `CmsSectionSidebar` `<aside>` an accessible name so pages with more than one complementary landmark pass the axe `landmark-unique` rule. New translation key: `layout.ariaLabels.contentSidebar` (default "Content sidebar"). Add it to your locale files.
+
+- [#2791](https://github.com/shopware/frontends/pull/2791) [`4f0f33b`](https://github.com/shopware/frontends/commit/4f0f33b9fcb66c5a6bacf86400fa6d82f68e064f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Point the README and JSDoc documentation links at the Frontends Recipes that replaced the redirected guides
+
+- [#2825](https://github.com/shopware/frontends/pull/2825) [`0b5de57`](https://github.com/shopware/frontends/commit/0b5de57fe1149212fd7274b6f530495a245742b5) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add `data-testid` and `data-*` state attributes to the wishlist toggle, variant options, sort dropdown, pagination and top navigation, so e2e tests no longer depend on translated text or CSS classes. Sort options are now `menuitemradio` items with `aria-checked`, so screen readers announce the active sort.
+
+- [#2835](https://github.com/shopware/frontends/pull/2835) [`22c1b4f`](https://github.com/shopware/frontends/commit/22c1b4fb2a34e351ff4e84e7f198cfc306f9fb5f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Support Nuxt 4.6. `@shopware/nuxt-module` and `@shopware/cms-base-layer` now depend on `@nuxt/kit` 4.6.1, and the Nuxt plugin types `ssrContext.event` from `NuxtSSRContext`, so it type-checks on both Nuxt 4.5 and 4.6. The Nuxt templates require Node `^22.22.3 || ^24.15.0 || >=26.0.0`, the range Nuxt 4.6 supports. `@shopware/unocss-design-tokens-layer` no longer re-exports its generated `.nuxt/imports` from `index.d.ts`, which pulled server routes into the shared type context of apps extending the layer.
+
+- [#2816](https://github.com/shopware/frontends/pull/2816) [`b6c09e5`](https://github.com/shopware/frontends/commit/b6c09e53ff457c3552ac4f159a6d5072538373e5) Thanks [@mkucmus](https://github.com/mkucmus)! - Add `data-testid` attributes to the reviews section header (`product-reviews-tab`) and the review success message (`review-success-message`) in `CmsElementProductDescriptionReviews`.
+- Updated dependencies [[`4f0f33b`](https://github.com/shopware/frontends/commit/4f0f33b9fcb66c5a6bacf86400fa6d82f68e064f), [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789), [`2202e1c`](https://github.com/shopware/frontends/commit/2202e1cec2b7d72260ed115940386c6793523676), [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789)]:
+  - @shopware/composables@1.15.0
+  - @shopware/helpers@1.9.0
+  - @shopware/api-client@1.8.0
+
 ## 4.1.0
 
 ### Minor Changes

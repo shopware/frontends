@@ -1,5 +1,19 @@
 # @shopware/nuxt-module
 
+## 1.6.1
+
+### Patch Changes
+
+- [#2835](https://github.com/shopware/frontends/pull/2835) [`22c1b4f`](https://github.com/shopware/frontends/commit/22c1b4fb2a34e351ff4e84e7f198cfc306f9fb5f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Support Nuxt 4.6. `@shopware/nuxt-module` and `@shopware/cms-base-layer` now depend on `@nuxt/kit` 4.6.1, and the Nuxt plugin types `ssrContext.event` from `NuxtSSRContext`, so it type-checks on both Nuxt 4.5 and 4.6. The Nuxt templates require Node `^22.22.3 || ^24.15.0 || >=26.0.0`, the range Nuxt 4.6 supports. `@shopware/unocss-design-tokens-layer` no longer re-exports its generated `.nuxt/imports` from `index.d.ts`, which pulled server routes into the shared type context of apps extending the layer.
+
+- [#2859](https://github.com/shopware/frontends/pull/2859) [`2c1e574`](https://github.com/shopware/frontends/commit/2c1e574187a80692addb866db96882ef4acbebda) Thanks [@mkucmus](https://github.com/mkucmus)! - Align the `@nuxt/kit` dependency with the Nuxt 4.6.2 bump. The advisories themselves (GHSA-vjh5-4x84-xrqp, GHSA-xfq5-w38q-pc2x) are fixed by `nuxt` and `@nuxt/nitro-server` 4.6.2; `@nuxt/kit` is not an affected package.
+
+- [#2720](https://github.com/shopware/frontends/pull/2720) [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789) Thanks [@mkucmus](https://github.com/mkucmus)! - The cart state is now app-wide. The plugin sets `ssrWithoutUserContext` for server renders without a visitor session.
+- Updated dependencies [[`4f0f33b`](https://github.com/shopware/frontends/commit/4f0f33b9fcb66c5a6bacf86400fa6d82f68e064f), [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789), [`2202e1c`](https://github.com/shopware/frontends/commit/2202e1cec2b7d72260ed115940386c6793523676), [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789)]:
+  - @shopware/composables@1.15.0
+  - @shopware/helpers@1.9.0
+  - @shopware/api-client@1.8.0
+
 ## 1.6.0
 
 ### Minor Changes

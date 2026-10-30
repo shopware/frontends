@@ -192,17 +192,16 @@ The API Client instance is aware of your custom API types thanks to declaring `#
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/nuxt-module/CHANGELOG.md)
 
-### Latest changes: 1.6.0
-
-### Minor Changes
-
-- [#2693](https://github.com/shopware/frontends/pull/2693) [`9d4710c`](https://github.com/shopware/frontends/commit/9d4710ca02ab35f35c65ea39bebd384630f4e1a7) Thanks [@mkucmus](https://github.com/mkucmus)! - `apiClientConfig.timeout` now works. Set it in milliseconds under `runtimeConfig.apiClientConfig` or `runtimeConfig.public.apiClientConfig`, next to `headers`, and the plugin forwards it to the API client. Unset by default. Only a positive number arms it, and a numeric string is coerced. Any other value is ignored and logged once as a warning naming the config path the value came from, instead of being dropped silently. It aborts a request whose response headers do not arrive in time, including one still opening its connection. It does not abort a response that stalls after its headers arrived, unless the call passes its own `signal`.
-
-  `apiClientConfig` under the `shopware` module options is deprecated, and now works as a fallback. It had never been read before, so a value set there in the past becomes active with this release. It is read last, only when neither `runtimeConfig` path holds a valid value, and Nuxt warns at build time when a timeout is set there. Move to `runtimeConfig.apiClientConfig`; the fallback goes away in the next major.
+### Latest changes: 1.6.1
 
 ### Patch Changes
 
-- [#2777](https://github.com/shopware/frontends/pull/2777) [`fb7e480`](https://github.com/shopware/frontends/commit/fb7e480af6202013adc3d602d58918789156a3ee) Thanks [@grenzenlos-digital](https://github.com/grenzenlos-digital)! - Resolve plugin configuration types from the published package entrypoint.
-- Updated dependencies [[`44ece9d`](https://github.com/shopware/frontends/commit/44ece9dac2e4d0248c2270f7eff496c258632f5b), [`46d6daa`](https://github.com/shopware/frontends/commit/46d6daade81e3d9e443f3badfeba2ca0e2751477), [`7dbca8b`](https://github.com/shopware/frontends/commit/7dbca8bf8bca1225b365bc03e4dbc07d3764c2e1), [`74a477b`](https://github.com/shopware/frontends/commit/74a477bfa88e3c518d3a0336e4d301c823122ba8), [`74a477b`](https://github.com/shopware/frontends/commit/74a477bfa88e3c518d3a0336e4d301c823122ba8), [`5961f55`](https://github.com/shopware/frontends/commit/5961f55b9f7cebad626cc073ae0bf857aa26f91b), [`c78188a`](https://github.com/shopware/frontends/commit/c78188ac6c95ae19b070f5ea3361a60f21dff281), [`0df4c17`](https://github.com/shopware/frontends/commit/0df4c17b18ec38fc4d0c33f1cb6396f8f532a65d), [`4b43e64`](https://github.com/shopware/frontends/commit/4b43e64a8d78be6eca1f8d9c24140e046193af41)]:
-  - @shopware/api-client@1.7.0
-  - @shopware/composables@1.14.0
+- [#2835](https://github.com/shopware/frontends/pull/2835) [`22c1b4f`](https://github.com/shopware/frontends/commit/22c1b4fb2a34e351ff4e84e7f198cfc306f9fb5f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Support Nuxt 4.6. `@shopware/nuxt-module` and `@shopware/cms-base-layer` now depend on `@nuxt/kit` 4.6.1, and the Nuxt plugin types `ssrContext.event` from `NuxtSSRContext`, so it type-checks on both Nuxt 4.5 and 4.6. The Nuxt templates require Node `^22.22.3 || ^24.15.0 || >=26.0.0`, the range Nuxt 4.6 supports. `@shopware/unocss-design-tokens-layer` no longer re-exports its generated `.nuxt/imports` from `index.d.ts`, which pulled server routes into the shared type context of apps extending the layer.
+
+- [#2859](https://github.com/shopware/frontends/pull/2859) [`2c1e574`](https://github.com/shopware/frontends/commit/2c1e574187a80692addb866db96882ef4acbebda) Thanks [@mkucmus](https://github.com/mkucmus)! - Align the `@nuxt/kit` dependency with the Nuxt 4.6.2 bump. The advisories themselves (GHSA-vjh5-4x84-xrqp, GHSA-xfq5-w38q-pc2x) are fixed by `nuxt` and `@nuxt/nitro-server` 4.6.2; `@nuxt/kit` is not an affected package.
+
+- [#2720](https://github.com/shopware/frontends/pull/2720) [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789) Thanks [@mkucmus](https://github.com/mkucmus)! - The cart state is now app-wide. The plugin sets `ssrWithoutUserContext` for server renders without a visitor session.
+- Updated dependencies [[`4f0f33b`](https://github.com/shopware/frontends/commit/4f0f33b9fcb66c5a6bacf86400fa6d82f68e064f), [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789), [`2202e1c`](https://github.com/shopware/frontends/commit/2202e1cec2b7d72260ed115940386c6793523676), [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789)]:
+  - @shopware/composables@1.15.0
+  - @shopware/helpers@1.9.0
+  - @shopware/api-client@1.8.0
