@@ -15,12 +15,20 @@ export function createShopwareContext(
     enableDevtools?: boolean;
     browserLocale?: string;
     /**
-     * Opt in to reading data via cacheable GET Store API routes instead of
-     * POST. Surfaced on the Shopware context as `cacheableReads`.
+     * Opt in to cacheable GET Store API reads. Only a session that looks like
+     * a fresh default guest uses GET. Every other session stays on POST.
      *
      * @default false
      */
     cacheableReads?: boolean;
+    /**
+     * Server render without the visitor's session. Every request is a fresh
+     * default session. The Nuxt module sets it when `useUserContextInSSR` is
+     * off.
+     *
+     * @default false
+     */
+    ssrWithoutUserContext?: boolean;
   },
 ) {
   const scope: EffectScope = effectScope(true);
@@ -44,6 +52,7 @@ export function createShopwareContext(
     state,
     browserLocale: options.browserLocale || "en-US",
     cacheableReads: options.cacheableReads ?? false,
+    ssrWithoutUserContext: options.ssrWithoutUserContext ?? false,
   });
 
   if (options?.enableDevtools && typeof window !== "undefined") {

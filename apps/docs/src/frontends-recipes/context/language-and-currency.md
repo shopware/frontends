@@ -109,7 +109,7 @@ For a currency there is no domain involved. `useSessionContext().setCurrency()` 
 
 `readCurrency post /currency` has no composable wrapper, and its response is a bare array of currencies rather than an entity search result — the tooltip above is generated from a schema that still describes it as one, so trust the generated type. `changeLanguage post /account/change-language` has no wrapper either — it stores the language on the customer, which is a different thing from switching the current context.
 
-The language list is one of the reads that [`cacheableReads`](../../best-practices/caching.html#request-layer-cacheablereads) moves off POST. With the flag enabled, `getAvailableLanguages()` calls `readLanguagesGet get /language` instead, and the response shape is unchanged. The context patch is a mutation and always stays `PATCH /context`.
+The language list is one of the reads that [`cacheableReads`](../../best-practices/caching.html#request-layer-cacheablereads) moves off POST. With the flag enabled, `getAvailableLanguages()` calls `readLanguagesGet get /language` instead for a fresh default guest, and the response shape is unchanged. Once the visitor switches language or currency, it posts again, see [Which sessions use GET](../../best-practices/caching.html#which-sessions-use-get). The context patch is a mutation and always stays `PATCH /context`.
 
 ## Composables
 
@@ -371,7 +371,7 @@ The current language itself is read from the context, not from this composable. 
 - `changeLanguage post /account/change-language` takes `{ languageId }`, required, and the backend expects a 32-character hex id. Store API schemas before 6.7.13 named the property `language` while marking `languageId` required, and the tooltip above is rendered from a 6.7.10 snapshot, so it can still show `language`. The generated types you compile against are the ones to trust.
 - `setLanguage()` on `useSessionContext` returns silently when the language has no `id`, and unlike `changeLanguage()` it refreshes the context — but it ignores `redirectUrl` entirely.
 - `setCurrency()` also returns silently — it logs and stops when the argument has no `id` — so a failed switch is not always a rejected promise. Compare `currency` against the id you asked for instead of trusting the resolved promise.
-- With `cacheableReads` enabled, the language list is fetched over `readLanguagesGet get /language`. Assertions and mocks written against `POST /language` do not match a storefront that has the flag on.
+- With `cacheableReads` enabled, a fresh guest fetches the language list over `readLanguagesGet get /language`. After a language or currency switch, it comes over `POST /language`. Assertions and mocks have to cover both.
 
 ## Common Mistakes
 
@@ -407,7 +407,7 @@ The current language itself is read from the context, not from this composable. 
 - A `setCurrency()` that rejects because the context refresh failed reports an unconfirmed switch, not a failed one.
 - Mounted in an application that has not loaded the context, the switcher still marks the active language and currency.
 - Selecting the language or currency that is already active sends no request.
-- With `cacheableReads` enabled, the language list is requested over `GET /language`.
+- With `cacheableReads` enabled, a fresh guest requests the language list over `GET /language`, and over `POST /language` after a language or currency switch.
 
 ## Related Links
 

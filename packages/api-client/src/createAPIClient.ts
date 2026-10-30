@@ -10,6 +10,10 @@ import {
 import type { operations } from "../api-types/storeApiTypes";
 import { type ClientHeaders, createHeaders } from "./defaultHeaders";
 import { errorInterceptor } from "./errorInterceptor";
+import {
+  type RequestHeaders,
+  mergeRequestHeaders,
+} from "./helpers/mergeRequestHeaders";
 import { mergeSignalWithTimeout } from "./mergeSignalWithTimeout";
 import { resolveRequestHeaders } from "./resolveRequestHeaders";
 import { createPathWithParams } from "./transformPathToQuery";
@@ -59,6 +63,12 @@ export type InvokeParameters<CURRENT_OPERATION> =
     >;
   };
 
+type StoreInvokeParameters<CURRENT_OPERATION> =
+  InvokeParameters<CURRENT_OPERATION> & {
+    /** `"sw-context-token": ""` sends the request without the client's token. */
+    headers?: { "sw-context-token"?: string };
+  };
+
 export type GlobalFetchOptions = Pick<
   FetchOptions<ResponseType>,
   "retry" | "retryDelay" | "retryStatusCodes" | "timeout"
@@ -85,6 +95,14 @@ function isPubliclyCacheableResponse(
     return false;
   }
   return /(?:^|,)\s*public\s*(?:,|$)/i.test(cacheControl);
+}
+
+const ANONYMOUS_REQUEST = Symbol("anonymousRequest");
+
+// asks the merge itself, so it matches the headers that go out
+function hasEmptyContextToken(headers: RequestHeaders | undefined): boolean {
+  const merged = mergeRequestHeaders(headers, { "sw-context-token": "token" });
+  return !merged["sw-context-token"];
 }
 
 export function createAPIClient<
@@ -134,6 +152,10 @@ export function createAPIClient<
         // out. Session-changing routes (login/logout/register/context) respond
         // with Cache-Control: private and still update the token as before.
         if (isPubliclyCacheableResponse(context.response)) {
+          return;
+        }
+        // An anonymous request gets a guest token back. Keep the session.
+        if (ANONYMOUS_REQUEST in context.options) {
           return;
         }
         if (
@@ -189,8 +211,8 @@ export function createAPIClient<
       | {
           pathParams: unknown;
         }
-      ? [InvokeParameters<CURRENT_OPERATION>]
-      : [InvokeParameters<CURRENT_OPERATION>?]
+      ? [StoreInvokeParameters<CURRENT_OPERATION>]
+      : [StoreInvokeParameters<CURRENT_OPERATION>?]
   ): Promise<RequestReturnType<CURRENT_OPERATION>> {
     const [, method, requestPath] = pathParam.split(" ") as [
       string,
@@ -199,7 +221,7 @@ export function createAPIClient<
     ];
 
     const currentParams =
-      params[0] || ({} as InvokeParameters<CURRENT_OPERATION>);
+      params[0] || ({} as StoreInvokeParameters<CURRENT_OPERATION>);
 
     const requestPathWithParams = createPathWithParams(
       requestPath,
@@ -229,6 +251,9 @@ export function createAPIClient<
         body: currentParams.body,
         headers: mergedHeaders as HeadersInit,
         query: currentParams.query,
+        ...(hasEmptyContextToken(currentParams.headers) && {
+          [ANONYMOUS_REQUEST]: true,
+        }),
       });
 
       return {
