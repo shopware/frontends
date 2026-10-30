@@ -24,10 +24,13 @@
           "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access)."
         },
         "NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL": {
-          "description": "Optional. Storefront domain registered in your Sales Channel; without it customer registration fails in local development."
+          "description": "Optional. Storefront domain registered in your Sales Channel; without it customer registration fails in local development. For the public demo backend use https://demo-frontends.shopware.store/figma."
         },
         "NUXT_SHOPWARE_ENDPOINT": {
           "description": "Optional. Private endpoint for server-side requests when it differs from the public one."
+        },
+        "NUXT_PUBLIC_SITE_URL": {
+          "description": "Optional. Public URL of the storefront, e.g. https://your-shop.com. /sitemap.xml builds its links from it instead of the request host."
         }
       },
       "node": "^22.22.3 || ^24.15.0 || >=26.0.0",
@@ -68,10 +71,13 @@
           "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access)."
         },
         "NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL": {
-          "description": "Optional. Storefront domain registered in your Sales Channel; without it customer registration fails in local development."
+          "description": "Optional. Storefront domain registered in your Sales Channel; without it customer registration fails in local development. For the public demo backend use https://demo-frontends.shopware.store/candles."
         },
         "NUXT_SHOPWARE_ENDPOINT": {
           "description": "Optional. Private endpoint for server-side requests when it differs from the public one."
+        },
+        "NUXT_PUBLIC_SITE_URL": {
+          "description": "Optional. Public URL of the storefront, e.g. https://your-shop.com. /sitemap.xml builds its links from it instead of the request host."
         }
       },
       "node": "^22.22.3 || ^24.15.0 || >=26.0.0",

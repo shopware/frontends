@@ -24,6 +24,8 @@ export default defineNuxtConfig({
       endpoint: "",
     },
     public: {
+      // Public URL of the storefront. /sitemap.xml builds its links from it.
+      siteUrl: "",
       shopware: {
         endpoint: "https://demo-frontends.shopware.store/store-api/",
         accessToken: "SWSCNWDGMUWZM0TLVUU0YKLQVW",
@@ -159,6 +161,11 @@ export default defineNuxtConfig({
       headers: {
         "Cache-Control": "public, max-age=31536000, immutable",
       },
+    },
+    // The index lists URLs on the request host, but ISR caches one copy per
+    // path for every domain of a deployment.
+    "/sitemap.xml": {
+      isr: false,
     },
     "/checkout": {
       ssr: false,

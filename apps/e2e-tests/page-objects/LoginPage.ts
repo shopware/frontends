@@ -6,6 +6,7 @@ export class LoginForm {
   readonly usernameInput: Locator;
   readonly passwordInput: Locator;
   readonly submitButton: Locator;
+  readonly forgotPasswordLink: Locator;
 
   // Init selectors using constructor
   constructor(page: Page) {
@@ -13,6 +14,7 @@ export class LoginForm {
     this.usernameInput = page.getByTestId("login-email-input");
     this.passwordInput = page.getByTestId("login-password-input");
     this.submitButton = page.getByTestId("login-submit-button");
+    this.forgotPasswordLink = page.getByTestId("login-forgot-password-link");
   }
 
   // Define login page methods

@@ -1,0 +1,15 @@
+{
+  "errorPage": {
+    "404": "We can't find the page you are looking for. It may have moved or no longer exists.",
+    "408": "The shop is taking too long to respond.",
+    "429": "Too many requests at once. Please wait a moment and try again.",
+    "500": "Oops, something went wrong on our side.",
+    "502": "The shop could not complete your request. Please try again in a few seconds.",
+    "503": "The shop is busy right now. Please try again in a moment.",
+    "goBackHome": "Go back home",
+    "maintenance": {
+      "title": "Maintenance",
+      "text": "We are currently performing maintenance. We will be back shortly."
+    }
+  }
+}
