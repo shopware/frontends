@@ -1,5 +1,12 @@
 # @shopware/api-gen
 
+## 1.5.4
+
+### Patch Changes
+
+- Updated dependencies [[`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789)]:
+  - @shopware/api-client@1.8.0
+
 ## 1.5.3
 
 ### Patch Changes
