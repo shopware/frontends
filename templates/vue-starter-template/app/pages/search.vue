@@ -105,6 +105,16 @@ watch(
   { immediate: true },
 );
 
+const webMcpPageContext = useWebMcpPageContext();
+watch(
+  () => route.query.search,
+  (term) => {
+    webMcpPageContext.value =
+      typeof term === "string" && term ? { searchTerm: term } : {};
+  },
+  { immediate: true },
+);
+
 const changePage = async (page: number) => {
   await router.push({
     query: {
