@@ -13,21 +13,21 @@ overrides:
   "@vercel/blob>undici": "^6.29.1"
   "@tiptap/pm@<3.30.5": 3.30.5
   esbuild: ^0.28.2
-  vite: ^8.3.4
+  vite: ^8.3.5
   "@vueuse/core": 14.4.0
   "@vueuse/shared": 14.4.0
   "@vueuse/metadata": 14.4.0
   "@vueuse/integrations": 14.4.0
-  vue: 3.5.42
-  "@vue/compiler-core": 3.5.42
-  "@vue/compiler-dom": 3.5.42
-  "@vue/compiler-sfc": 3.5.42
-  "@vue/compiler-ssr": 3.5.42
-  "@vue/reactivity": 3.5.42
-  "@vue/runtime-core": 3.5.42
-  "@vue/runtime-dom": 3.5.42
-  "@vue/server-renderer": 3.5.42
-  "@vue/shared": 3.5.42
+  vue: 3.5.44
+  "@vue/compiler-core": 3.5.44
+  "@vue/compiler-dom": 3.5.44
+  "@vue/compiler-sfc": 3.5.44
+  "@vue/compiler-ssr": 3.5.44
+  "@vue/reactivity": 3.5.44
+  "@vue/runtime-core": 3.5.44
+  "@vue/runtime-dom": 3.5.44
+  "@vue/server-renderer": 3.5.44
+  "@vue/shared": 3.5.44
   "@tiptap/core": 3.30.5
   "js-yaml@>=4.0.0 <4.3.2": 4.3.2
   "sharp@<0.35.5": 0.35.5
@@ -48,6 +48,10 @@ overrides:
   "@intlify/core-base@<11.4.14": 11.4.16
   "@intlify/shared@<11.4.14": 11.4.16
   "seroval@<1.6.11": 1.6.12
+  "node-forge": 1.4.1
+  "follow-redirects": 1.16.2
+  "minimatch": 11.0.1
+  "glob": 14.0.2
 
 peerDependencyRules:
   ignoreMissing:

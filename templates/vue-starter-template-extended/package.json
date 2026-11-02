@@ -23,8 +23,8 @@
   },
   "dependencies": {
     "@shopware/api-client": "canary",
-    "nuxt": "4.6.2",
-    "vue": "3.5.43",
+    "nuxt": "4.6.3",
+    "vue": "3.5.44",
     "vue-starter-template": "workspace:*"
   },
   "devDependencies": {
