@@ -43,6 +43,15 @@ function showTooltip() {
 function hideTooltip() {
   isVisible.value = false;
 }
+
+// Escape closes only the tooltip. Marking the event as handled keeps an
+// enclosing dialog from closing on the same key press.
+function onEscape(event: KeyboardEvent) {
+  if (isVisible.value) {
+    event.preventDefault();
+    hideTooltip();
+  }
+}
 </script>
 
 <template>
@@ -54,7 +63,7 @@ function hideTooltip() {
     @mouseleave="hideTooltip"
     @focus="showTooltip"
     @blur="hideTooltip"
-    @keydown.escape="hideTooltip"
+    @keydown.escape="onEscape"
   >
     {{ displayLabel }}
     <Teleport to="body">
@@ -93,7 +102,7 @@ function hideTooltip() {
   display: inline-flex;
   max-width: 100%;
   padding: 3px 7px;
-  border: 1px solid var(--vp-c-divider);
+  border: 1px solid var(--vp-c-border);
   border-radius: 999px;
   background: var(--vp-c-bg-soft);
   color: var(--vp-c-brand-1);
@@ -115,7 +124,7 @@ function hideTooltip() {
   display: grid;
   gap: 8px;
   padding: 12px;
-  border: 1px solid var(--vp-c-divider);
+  border: 1px solid var(--vp-c-border);
   border-radius: 8px;
   background: var(--vp-c-bg);
   color: var(--vp-c-text-1);

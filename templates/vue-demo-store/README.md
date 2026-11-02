@@ -16,7 +16,7 @@ This repository is an example demo application built with Shopware Frontends Fra
 
 ## Requirements
 
-Go to [Documentation > Requirements](https://developer.shopware.com/frontends/framework/requirements.html) to see the details.
+Go to [Documentation > Requirements](https://developer.shopware.com/frontends/introduction/requirements.html) to see the details.
 
 ## Set up your Shopware 6 instance
 

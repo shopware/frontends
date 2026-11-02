@@ -115,18 +115,7 @@ Registration is a single write. `register post /account/register` takes `email`,
 
 The response, not the HTTP status, tells you what happened. When double opt-in registration is enabled in the Shopware Admin, the returned customer carries `doubleOptInRegistration` and no session is created until the customer opens the confirmation email, which points at `registerConfirm post /account/register-confirm`.
 
-Hover a type chip to inspect fields generated from the current Store API schema.
-
 <RecipeFlowDiagram label="Register flow diagram" :steps="steps" />
-
-Read the diagram from left to right:
-
-1. The customer fills one object shaped like the register body, including the nested `billingAddress`, with salutation and country options loaded from their own routes.
-2. `useUser().register()` adds `storefrontUrl` from `getStorefrontUrl()` and posts the body.
-3. The Store API creates the customer in the session identified by `sw-context-token` and returns the `Customer`.
-4. `register()` writes that customer into the shared customer context only when `active` is true and `doubleOptInRegistration` is false.
-5. `register()` awaits `refreshSessionContext()`, so `readContext get /context` decides whether the session now carries a customer, and then awaits `refreshCart()`.
-6. The UI reads `user`, `isLoggedIn`, and `isGuestSession` from composables instead of keeping its own copy.
 
 <StorefrontUrlNotice
   operation="register post /account/register"
@@ -149,7 +138,7 @@ You do not call `readContext get /context` yourself after registering, because `
 | Refresh the cart                 | `refreshCart()`                                                                                                  | `GET /checkout/cart`                                           | <SchemaTypeTooltip type-key='operations["readCart get /checkout/cart"]["response"]' />                                                                                                  |
 | Confirm a double opt-in link     | `apiClient.invoke("registerConfirm post /account/register-confirm")`                                             | `POST /account/register-confirm`                               | <SchemaTypeTooltip type-key='operations["registerConfirm post /account/register-confirm"]["body"]' />                                                                                   |
 
-The two option lists are the only rows whose route depends on configuration. `useSalutations` and `useCountries` switch to the cacheable GET variant when `shopware.cacheableReads` is set, and `vue-starter-template` sets it, so the GET routes are what the supported template actually issues. The registration write itself is always a POST.
+The two option lists are the only rows whose route depends on configuration. `useSalutations` and `useCountries` switch to the cacheable GET variant for a fresh default guest when `shopware.cacheableReads` is set. `vue-starter-template` sets it, so a new visitor there gets the GET routes. Other sessions, like one with items in the cart, still post, see [Which sessions use GET](../../best-practices/caching.html#which-sessions-use-get). The registration write itself is always a POST.
 
 ## Composables
 
@@ -661,8 +650,7 @@ The Store API identifies the sales channel session with the `sw-context-token` h
 - [Login recipe](login.html)
 - [Session Context recipe](../context/session-context.html)
 - [Customer Profile recipe](profile.html)
+- [Cart recipe](../checkout/cart.html)
 - [Storefront URL](../../guides/storefront-url.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
-- [Cart documentation](../../guides/e-commerce/cart.html)
-- [devStorefrontUrl troubleshooting](../../resources/troubleshooting.html#what-is-devstorefronturl-and-when-to-use-it)

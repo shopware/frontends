@@ -83,7 +83,7 @@ const steps = [
     title: "Detail",
     action: "Open one product",
     detail:
-      "useProductSearch().search(productId) is a lookup by id, not a text search. It calls the product detail operation — POST, or the GET variant when cacheableReads is on — and returns the product with its configurator.",
+      "useProductSearch().search(productId) is a lookup by id, not a text search. It calls the product detail operation (the GET variant for a fresh guest when cacheableReads is on, POST otherwise) and returns the product with its configurator.",
     code: "await search(productId, { withCmsAssociations: true })",
     state: "none shared",
     typeKeys: ['Schemas["ProductDetailResponse"]'],
@@ -109,15 +109,6 @@ The naming needs care too. `useProductSearch` is not a text search at all: its `
 
 <RecipeFlowDiagram label="Search and suggest flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. The input debounces the typing and enforces a minimum length itself — the composable does neither.
-2. `searchTerm.value` is set, then `search()` builds the criteria and overwrites `search` with that term.
-3. `searchPage post /search` returns a full listing result.
-4. That result lands in the applied listing of the shared `productSearchListing`.
-5. `getProducts`, `getTotal` and `loading` are that listing's `getElements`, `getTotal` and `loading`.
-6. Selecting a product calls `useProductSearch().search(productId)`, which is a detail request by id.
-
 What you do not need to call manually is the listing plumbing: `search()` writes the applied listing itself, so no component has to store the elements or the total. What you **do** still need is a request on the results page. The dropdown searched with a preview criteria — a small `limit`, no filters, no sorting, no page — and `setInitialListing` clears the applied listing when the results page seeds itself from its own payload, so the shared state is a live view, not a cache you can navigate into.
 
 ## Request Flow
@@ -137,14 +128,14 @@ Two rows carry a trap. `loadMore` sends exactly the criteria you hand it — the
 
 Pick by scope — how much of the search the composable is about:
 
-| Composable                | Scope                         | Reach for it when                                                      |
-| ------------------------- | ----------------------------- | ---------------------------------------------------------------------- |
-| `useProductSearchListing` | the whole search listing      | building the results page — filters, sortings, pagination, SSR seeding |
-| `useProductSearchSuggest` | the suggest dropdown          | building the suggest dropdown on top of that listing                   |
-| `useProductSearch`        | one product, by id            | opening a product after the customer picks it                          |
-| `useShopwareContext`      | `apiClient`, `cacheableReads` | calling `searchSuggest post /search-suggest`, which has no composable  |
+| Composable                | Scope                    | Reach for it when                                                      |
+| ------------------------- | ------------------------ | ---------------------------------------------------------------------- |
+| `useProductSearchListing` | the whole search listing | building the results page — filters, sortings, pagination, SSR seeding |
+| `useProductSearchSuggest` | the suggest dropdown     | building the suggest dropdown on top of that listing                   |
+| `useProductSearch`        | one product, by id       | opening a product after the customer picks it                          |
+| `useShopwareContext`      | `apiClient`              | calling `searchSuggest post /search-suggest` (no composable, POST)     |
 
-The results-page members live on `useProductSearchListing`: `getAvailableFilters`, `getSortingOrders` and `resetFilters` for the facets, `loadingMore` for the append state, and `setInitialListing` for seeding from the Nuxt payload.
+The results-page members live on `useProductSearchListing`: `getAvailableFilters`, `getSortingOrders` and `resetFilters` for the facets, `loadingMore` for the append state, and `setInitialListing` for seeding from the Nuxt payload. A category facet needs aggregations the Store API does not add by itself; the [Product Listing and Filters recipe](listing.html) covers it.
 
 `useProductSearchSuggest` is the one this recipe is about, and it has six members:
 
@@ -352,7 +343,7 @@ The results are context-dependent like any listing: prices arrive calculated in 
 - `loading` is the shared listing's flag, but it only covers `search()`. `loadMore` sets `loadingMore`, which `useProductSearchSuggest` does not re-export. It is also a single boolean: with two searches in flight the first to settle clears it, so a surface can drop out of its loading state while its own request is still open.
 - `loadMore`'s argument is optional on `useProductSearchListing` but **required** in the type `useProductSearchSuggest` declares for it, so `loadMore()` type-checks through the listing and not through the suggest composable.
 - `useProductSearch().search()` takes a **product id**, not a term. The name suggests a text search and it is not one.
-- `useProductSearch` switches operation on the context's `cacheableReads` flag: `readProductDetail post /product/{productId}` when it is `false`, `readProductDetailGet get /product/{productId}` with the criteria in a `_criteria` query param when it is `true`. The context default is `false`, but `vue-starter-template` enables it, so the request you will actually observe there is the GET. Pin your tests to the flag your app sets, not to the composable's default.
+- `useProductSearch` reads through `invokeRead`. With `cacheableReads` on and a fresh default guest, it sends `readProductDetailGet get /product/{productId}` with the criteria in a `_criteria` query param. Otherwise it sends `readProductDetail post /product/{productId}`. The context default is `false`, but `vue-starter-template` enables it, so a guest there sends the GET. Pin your tests to the flag and the session, not to the composable's default.
 - `useProductSearch` merges `withCmsAssociations`, `criteria` and `associations` with `defu`, in that precedence order. Passing both `criteria.associations` and `associations` merges them rather than picking one.
 - Both the listing search and `useProductSearch` send `sw-include-seo-urls: true`, so products from the dropdown and from the detail request alike carry the data a link needs — do not resolve the route separately. `getProductRoute` still returns an unprefixed route, so wrap it in `formatLink` from `useInternationalization` unless the storefront is single-language.
 - An empty `searchTerm` produces a search for an empty string, which is a valid request returning the unfiltered listing. Guard on the term length before calling.
@@ -394,7 +385,7 @@ The results are context-dependent like any listing: prices arrive calculated in 
 - A term deleted below the minimum length inside the debounce window issues no request at all.
 - Seeding the results page with `setInitialListing` clears the applied listing the dropdown wrote.
 - An empty result set renders the empty state rather than the previous results, and the previous term's products are not rendered while a new search is pending.
-- Selecting a product calls the product detail operation with that product's id — `readProductDetailGet get /product/{productId}` when `cacheableReads` is on, as it is in `vue-starter-template`, and `readProductDetail post /product/{productId}` when it is off.
+- Selecting a product calls the product detail operation with that product's id: `readProductDetailGet get /product/{productId}` for a fresh guest when `cacheableReads` is on, as it is in `vue-starter-template`, and `readProductDetail post /product/{productId}` otherwise.
 - A failing search does not overwrite the applied listing, so the results page behind keeps its products; the dropdown swaps its own list for the error message and announces it through `role="alert"`.
 - A search that succeeds after an earlier one failed clears the error rather than leaving the banner over valid results.
 
@@ -402,8 +393,6 @@ The results are context-dependent like any listing: prices arrive calculated in 
 
 - [Product Listing and Filters recipe](listing.html)
 - [Language and Currency Switch recipe](../context/language-and-currency.html)
-- [Product listing documentation](../../guides/e-commerce/product-listing.html)
-- [Product detail page](../../guides/e-commerce/product-detail-page.html)
 - [Caching best practices](../../best-practices/caching.html)
 - [Helpers package](../../packages/helpers.html)
 - [Composables reference](../../packages/composables/)

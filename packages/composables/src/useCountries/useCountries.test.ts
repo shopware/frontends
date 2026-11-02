@@ -118,10 +118,11 @@ describe("useCountries", () => {
     await vm.fetchCountries();
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("readCountryGet get"),
-      expect.objectContaining({
+      "readCountryGet get /country",
+      {
+        headers: { "sw-context-token": "" },
         query: { _criteria: encodeForQuery({ associations: { states: {} } }) },
-      }),
+      },
     );
   });
 
@@ -160,15 +161,16 @@ describe("useCountries", () => {
     await vm.fetchCountries();
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("readCountryGet get"),
-      expect.objectContaining({
+      "readCountryGet get /country",
+      {
+        headers: { "sw-context-token": "" },
         query: {
           _criteria: encodeForQuery({
             associations: { states: {} },
             limit: 1,
           }),
         },
-      }),
+      },
     );
   });
 

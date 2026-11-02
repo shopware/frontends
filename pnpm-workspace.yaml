@@ -10,18 +10,10 @@ minimumReleaseAgeExclude:
   - "@shopware/*"
 
 overrides:
-  "editorconfig>minimatch": "^9.0.9"
-  "@vercel/blob>undici": "^6.28.0"
-  less: ^4.8.1
-  "qs@<6.16.0": 6.16.0
-  "fast-uri@<3.1.8": 3.1.8
-  "undici@>=8.0.0 <8.10.2": 8.10.2
-  "brace-expansion@>=2.0.0 <2.1.7": 2.1.7
-  "brace-expansion@>=4.0.0 <5.0.12": 5.0.12
+  "@vercel/blob>undici": "^6.29.1"
   "@tiptap/pm@<3.30.5": 3.30.5
-  "nanoid@<3.3.18": "^3.3.18"
   esbuild: ^0.28.2
-  vite: ^8.2.1
+  vite: ^8.3.4
   "@vueuse/core": 14.4.0
   "@vueuse/shared": 14.4.0
   "@vueuse/metadata": 14.4.0
@@ -36,17 +28,26 @@ overrides:
   "@vue/runtime-dom": 3.5.42
   "@vue/server-renderer": 3.5.42
   "@vue/shared": 3.5.42
-  browserslist: 4.28.9
   "@tiptap/core": 3.30.5
-  "fflate@<0.6.11": "^0.6.11"
   "js-yaml@>=4.0.0 <4.3.2": 4.3.2
-  "svgo@>=4.0.0 <4.1.0": 4.1.0
-  "smol-toml@<=1.7.0": 1.7.1
-  "sharp@<0.35.4": 0.35.4
-  "astro@<7.2.8": 7.2.8
-  "vitest@>=2.1.0 <4.1.11": 4.1.11
-  "@vitest/mocker@>=2.1.0 <4.1.11": 4.1.11
-  "devalue@<5.9.1": 5.9.1
+  "sharp@<0.35.5": 0.35.5
+  "astro@<7.4.2": 7.4.2
+  "tinypool@<2.1.2": 2.1.2
+  "postcss-selector-parser@<7.1.6": 7.1.6
+  "undici@>=7.0.0 <7.30.1": 7.30.1
+  "undici@>=8.0.0 <8.12.2": 8.12.3
+  "fast-uri@<3.1.9": 3.1.9
+  "qs@<6.16.1": 6.16.1
+  "serialize-javascript@<7.1.3": 7.1.3
+  "zod@>=4.0.0 <4.6.6": 4.6.6
+  "follow-redirects@<1.16.1": 1.16.1
+  "launch-editor@<2.14.2": 2.14.2
+  "@nuxt/devtools@>=3.0.0 <3.4.3": ^3.4.3
+  "vue-i18n@<11.4.14": 11.4.16
+  "@intlify/core@<11.4.14": 11.4.16
+  "@intlify/core-base@<11.4.14": 11.4.16
+  "@intlify/shared@<11.4.14": 11.4.16
+  "seroval@<1.6.11": 1.6.12
 
 peerDependencyRules:
   ignoreMissing:
@@ -72,3 +73,12 @@ allowBuilds:
   oxlint: true
   sharp: true
   vue-demi: true
+
+# Advisories with no usable patched release yet. Drop each entry once its fix ships.
+auditConfig:
+  ignoreGhsas:
+    # node-forge: advisory names >=1.4.1, not published yet. Used by listhen for local dev HTTPS certs only.
+    - GHSA-86w9-cpqp-85rv
+    # deepmerge: no patched release, the advisory covers <=4.3.1 and that is the latest.
+    # Build-time only (@rollup/plugin-node-resolve in nitropack and unbuild). Drops out with rollup/plugins#2036.
+    - GHSA-gcqx-w48m-w2h4

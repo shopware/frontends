@@ -1,5 +1,15 @@
 # vue-starter-template
 
+## 0.1.4
+
+### Patch Changes
+
+- [#2724](https://github.com/shopware/frontends/pull/2724) [`c78188a`](https://github.com/shopware/frontends/commit/c78188ac6c95ae19b070f5ea3361a60f21dff281) Thanks [@patzick](https://github.com/patzick)! - Fix starter checkout guest orders and client-side validation
+
+  Checkout now validates email and address on submit even when the fields were never focused, so an empty form no longer hits the Store API. Guest checkout is the default again, with a "Continue as guest" control after "Create customer account", zip/state rules, and a single "Confirm and place order" action that creates the guest session then the order.
+
+  Point `devStorefrontUrl` at `https://demo-frontends.shopware.store/figma`, the only domain listed for the demo sales channel. Guest register still needs a URL that exists under **Sales Channel → Domains**; `getStorefrontUrl()` now falls back to a domain from the session context when the preferred URL is not listed, so checkout can reach `POST /checkout/order`.
+
 ## 0.1.3
 
 ### Patch Changes

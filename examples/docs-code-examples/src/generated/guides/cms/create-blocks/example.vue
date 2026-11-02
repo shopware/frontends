@@ -1,4 +1,4 @@
-<!-- components/cms/CmsBlockImageThreeColumn.vue -->
+<!-- app/components/cms/CmsBlockImageThreeColumn.vue -->
 <script setup lang="ts">
 import type { CmsBlockImageThreeColumn } from "@shopware/composables";
 

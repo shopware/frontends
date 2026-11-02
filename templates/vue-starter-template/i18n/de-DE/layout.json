@@ -36,7 +36,9 @@
       "sidebar": "Seitenleiste",
       "closeNotification": "Benachrichtigung schließen",
       "languageSwitcher": "Sprache ändern",
-      "currencySwitcher": "Währung ändern"
+      "currencySwitcher": "Währung ändern",
+      "guidedSetup": "Geführte Einrichtung",
+      "contentSidebar": "Seitenleiste des Inhalts"
     }
   }
 }

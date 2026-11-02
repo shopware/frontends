@@ -26,6 +26,7 @@ const route = useRoute();
       >
         <NuxtLink
           role="menuitem"
+          data-testid="header-navigation-link"
           :aria-haspopup="
             navigationElement.children?.length ? 'true' : undefined
           "

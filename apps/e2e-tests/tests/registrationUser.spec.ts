@@ -1,23 +1,18 @@
 import { faker } from "@faker-js/faker";
 
 import { expect, test } from "../fixtures";
-import { HomePage } from "../page-objects/HomePage";
-import { RegisterForm } from "../page-objects/RegisterPage";
 import { uniqueEmail } from "../utils/data-helpers";
 
 test.describe("Registration new user", { tag: "@frontends" }, () => {
-  let homePage: HomePage;
-  let registrationPage: RegisterForm;
-
-  // Before Hook
-  test.beforeEach(async ({ page }) => {
-    homePage = new HomePage(page);
-    registrationPage = new RegisterForm(page);
-
+  test.beforeEach(async ({ homePage }) => {
     await homePage.visitMainPage();
   });
 
-  test("Registration new user", async ({ page }) => {
+  test("Registration new user", async ({
+    page,
+    homePage,
+    registrationPage,
+  }) => {
     await homePage.clickOnSignIn();
     await homePage.openRegistrationPage();
     await registrationPage.fillCustomerData(
@@ -41,7 +36,11 @@ test.describe("Registration new user", { tag: "@frontends" }, () => {
     ).toBeVisible();
   });
 
-  test("Registration new user company", async ({ page }) => {
+  test("Registration new user company", async ({
+    page,
+    homePage,
+    registrationPage,
+  }) => {
     await homePage.clickOnSignIn();
     await homePage.openRegistrationPage();
     await registrationPage.fillCompanyData(

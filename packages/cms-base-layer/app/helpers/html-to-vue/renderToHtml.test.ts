@@ -44,6 +44,22 @@ describe("renderHtml", () => {
     expect(vnode.props?.class).toBeUndefined();
   });
 
+  it("passes the attributes of a tag as flat props", () => {
+    const vnode = render(
+      '<table><tr><td colspan="2" id="total" class="sum" style="color:red">1</td></tr></table>',
+    );
+    const table = (vnode.children as { children: unknown[] }[])[0];
+    const row = table?.children[0] as { children: unknown[] };
+    const cell = row.children[0] as { props: Record<string, unknown> };
+
+    expect(cell.props).toEqual({
+      colspan: "2",
+      id: "total",
+      class: "sum",
+      style: "color:red",
+    });
+  });
+
   it("keeps rendering the parsed children next to the container class", () => {
     const vnode = render("<h2>headline</h2>", {
       container: { type: "div", class: "cms-element-text" },

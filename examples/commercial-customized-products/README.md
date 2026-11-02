@@ -15,7 +15,7 @@ The example shows how to integrate a Vue.js project with the logic provided by C
 
 ## Setup
 
-1. [Setup](https://developer.shopware.com/frontends/getting-started/templates.html) your Vue template
+1. [Setup](https://developer.shopware.com/frontends/introduction/templates.html) your Vue template
 
 2. Prepare some customized products following the [documentation](https://docs.shopware.com/en/shopware-6-en/extensions/customproducts#add-template)
 
@@ -59,7 +59,9 @@ Available methods and properties provided by the composable function:
 
 `handleFileUpload` - helper for media type options, updates the state automatically
 
-Investigate more in the [component's source](https://github.com/shopware/frontends/blob/main/examples/commercial-customized-products/src/components/ProductCustomizedProductConfigurator.vue).
+`addToCart` always sends the product to `POST /customized-products/add-to-cart` together with its Custom Products template, so call it only when `isActive` is `true` and keep your regular add-to-cart action for every other product.
+
+Investigate more in the [component's source](https://github.com/shopware/frontends/blob/main/examples/commercial-customized-products/app/components/ProductCustomizedProductConfigurator.vue).
 
 ## Run for development
 

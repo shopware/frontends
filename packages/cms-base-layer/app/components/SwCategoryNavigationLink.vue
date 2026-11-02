@@ -6,7 +6,6 @@ import {
   urlIsAbsolute,
 } from "@shopware/helpers";
 import { computed } from "vue";
-import { RouterLink } from "vue-router";
 
 import { useUrlResolver } from "#imports";
 import type { Schemas } from "#shopware";
@@ -48,7 +47,7 @@ const hasChildren = computed(() => {
       class="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-start items-center gap-1"
     >
       <div class="flex-1 flex justify-start items-center gap-2.5">
-        <RouterLink
+        <NuxtLink
           v-if="!urlIsAbsolute(url.path)"
           :to="url"
           :class="[
@@ -56,7 +55,7 @@ const hasChildren = computed(() => {
           ]"
         >
           {{ getTranslatedProperty(navigationElement, "name") }}
-        </RouterLink>
+        </NuxtLink>
         <a
           v-else
           :href="url.path"
@@ -93,7 +92,7 @@ const hasChildren = computed(() => {
       class="self-stretch pl-4 py-1.5 inline-flex justify-start items-center gap-2"
     >
       <div class="py-0.5 flex-1 flex justify-start items-center gap-2.5">
-        <RouterLink
+        <NuxtLink
           v-if="!urlIsAbsolute(url.path)"
           :to="url"
           :class="[
@@ -102,7 +101,7 @@ const hasChildren = computed(() => {
           ]"
         >
           {{ getTranslatedProperty(navigationElement, "name") }}
-        </RouterLink>
+        </NuxtLink>
         <a
           v-else
           :href="url.path"

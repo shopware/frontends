@@ -1,3 +1,6 @@
+import { toValue } from "vue";
+import type { MaybeRefOrGetter } from "vue";
+
 import type { Schemas } from "#shopware";
 
 import type { ElementConfig } from "../types";
@@ -5,22 +8,24 @@ import type { ElementConfig } from "../types";
 /**
  * Composable to get cms element config
  *
+ * `getConfigValue` reads the element on every call, so it follows a `ref` or
+ * getter passed as `element`.
+ *
  * @category CMS (Shopping Experiences)
  */
 export function useCmsElementConfig<
   T extends Omit<Schemas["CmsSlot"], "config"> & {
     config: Record<string, ElementConfig<unknown> | undefined>;
   },
->(element: T) {
+>(element: MaybeRefOrGetter<T>) {
   const getConfigValue = <ELEMENT_CONFIG extends keyof T["config"]>(
     key: ELEMENT_CONFIG,
   ): NonNullable<T["config"][ELEMENT_CONFIG]>["value"] => {
-    if (!element?.config) {
+    const config = toValue(element)?.config;
+    if (!config) {
       return undefined as NonNullable<T["config"][ELEMENT_CONFIG]>["value"];
     }
-    return (
-      element.config[key]?.source !== "mapped" && element.config[key]?.value
-    );
+    return config[key]?.source !== "mapped" && config[key]?.value;
   };
 
   return {

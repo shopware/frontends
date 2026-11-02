@@ -105,20 +105,9 @@ A cart write is not a local mutation. `POST /checkout/cart/line-item`, `PATCH /c
 
 What the Store API does _not_ do is tell you which line item changed. There is no partial update to merge, so `useCart` simply replaces the shared cart value with the response. That is also why an extra `readCart get /checkout/cart` after a write is wasted work.
 
-Hover a type chip to inspect fields generated from the current Store API schema.
-
 <RecipeFlowDiagram label="Cart flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. **UI** — the customer adds a product, changes a quantity or removes a line item.
-2. **Composable** — `useAddToCart` or `useCartItem` delegates to the matching `useCart` method, which calls one line item operation through `apiClient.invoke` with the current `sw-context-token`.
-3. **Store API** — the cart is recalculated in the current sales channel context and returned in full.
-4. **Shared state** — `useCart` replaces the shared `swCart` value with that response.
-5. **Errors** — any `errors` from the same response are merged into `swCartErrors`, for a notification layer to consume once.
-6. **UI** — components read `cartItems`, `count`, `subtotal` and `totalPrice` from composables instead of keeping their own copy.
-
-You do not need to call `refreshCart()` after a write. Use it on the initial page load, or after the customer session changes. `useUser().login()` and `logout()` do fire `refreshCart()` themselves, but they do not await it — only `register()` does — so code that renders prices straight after a session change should `await refreshCart()` itself.
+You do not need to call `refreshCart()` after a write. Use it on the initial page load, or after the customer session changes. There is no separate create call: `GET /checkout/cart` returns a new, empty cart when the session has none yet. `useUser().login()` and `logout()` do fire `refreshCart()` themselves, but they do not await it — only `register()` does — so code that renders prices straight after a session change should `await refreshCart()` itself.
 
 ## Request Flow
 
@@ -409,7 +398,7 @@ Customer-specific prices, promotions and rules change with the customer context,
 
 ## Edge Cases
 
-- `count` only sums line items where `good` is `true`, so a promotion line item is visible in `cartItems` but does not raise the item count.
+- `count` only sums line items where `good` is `true`, so a promotion line item is visible in `cartItems` but does not raise the item count. It carries a negative price.
 - `subtotal` reads `cart.price.positionPrice` and `totalPrice` reads `cart.price.totalPrice`. They differ once shipping costs or promotions apply — do not compute either from the line items yourself.
 - A line item with `stackable: false` must not render a quantity input, and one with `removable: false` must not render a remove button. Both flags come from the cart response.
 - Adding a product that is already in the cart stacks onto the existing line item instead of creating a second one, so `cartItems.length` does not change. Do not decide whether an add succeeded by counting rows — read `count`.
@@ -447,7 +436,7 @@ Customer-specific prices, promotions and rules change with the customer context,
 ## Related Links
 
 - [Cart Errors recipe](cart-errors.html)
-- [Work with the cart](../../guides/e-commerce/cart.html)
-- [Checkout documentation](../../guides/e-commerce/checkout.html)
+- [Checkout and Order Placement recipe](checkout.html)
+- [Payment recipe](payment.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)

@@ -1,4 +1,4 @@
-<!-- components/{{ componentName }}.vue -->
+<!-- app/components/cms/{{ componentName }}.vue -->
 <script setup lang="ts">
 import { computed, useCmsBlock } from "#imports";
 import type { Schemas } from "#shopware";

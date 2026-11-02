@@ -85,20 +85,19 @@ The full reference is [Best practices: Caching](apps/docs/src/best-practices/cac
 The essentials for code changes:
 
 - **`cacheableReads` (request layer)** — an opt-in context flag (default
-  `false`) that switches a defined set of anonymous read composables from POST to
-  the cacheable GET variant of the Store API. Wired `nuxt.config`
+  `false`) that lets a defined set of anonymous reads use the cacheable GET
+  variant of the Store API. Wired `nuxt.config`
   (`shopware: { cacheableReads: true }`) → `createShopwareContext` →
-  `useShopwareContext()`. GET-over-POST is a Shopware platform decision: POST
+  `useCacheableRead()`. GET-over-POST is a Shopware platform decision: POST
   bodies are not HTTP-cacheable, so reads compress the Criteria into a
   `_criteria` query param via `encodeForQuery` from `@shopware/api-client/helpers`
   (JSON → gzip → base64url, matching the backend `RequestCriteriaBuilder`).
-  - When adding or editing a read composable, branch on `cacheableReads` and call
-    the GET route with `query: { _criteria: encodeForQuery(criteria) }`; keep the
-    POST variant as the `else`. Mutations always stay POST/PATCH. Where a GET
-    variant does not declare `_criteria` in the generated types yet, there is one
-    precedent for a local intersection type — `useCategorySearch.search`. Which
-    reads have already moved shifts as the platform ships GET variants, so read
-    that from the composables rather than from a list here.
+  - For a read, call `useCacheableRead().invokeRead` with the POST operation.
+    It picks GET or POST per request. Never branch on `cacheableReads`.
+  - Register new GET twins in `packages/composables/src/useCacheableRead/routes.ts`.
+    The coverage test there classifies them. `pnpm check:cacheable-reads` (a
+    root script, run by the Lint CI job on every PR) fails on any direct call
+    to a registered read or a GET twin. Mutations always stay POST/PATCH.
 - **`routeRules` (render layer)** — page-level caching lives in each template's
   `nuxt.config.ts`: `isr` for catalog/content, `ssr: false` for personalized
   routes (`/checkout`, `/account/**`), immutable `Cache-Control` for static
@@ -142,11 +141,12 @@ written there:
 - Unit tests (Vitest) live next to their sources as `*.test.ts`. `pnpm run
 coverage` exists only in `packages/composables`.
 - `pnpm run test:e2e` is `playwright test --grep @frontends` and takes its
-  target from `BASE_E2E_URL`. The specs navigate generically, so they run
-  against any storefront. CI runs them against `vue-starter-template` in
+  target from `BASE_E2E_URL`. The specs take catalogue data from the backend
+  but select on `vue-starter-template`'s test ids, so they run against the
+  starter and templates extending it, not `vue-demo-store`. CI runs them in
   `.github/workflows/e2e-starter-template.yml`, nightly and on manual dispatch
   rather than on pull requests; a failure notifies Slack, nothing is gated.
-- The `@accessibility` specs are template-agnostic and run the same way:
+- The `@accessibility` specs share those page objects and run the same way:
 
 ```bash
 cd apps/e2e-tests
@@ -178,12 +178,13 @@ BASE_E2E_URL=https://frontends-starter-template.vercel.app/ \
 
 ## Maintaining these files
 
-`AGENTS.md` is what agents read; Claude Code reads `CLAUDE.md`, so every
-`AGENTS.md` has a one-line `CLAUDE.md` beside it containing `@AGENTS.md` — add
-both together, or the file is invisible to it. The root pair is resident in
-every session; a nested one loads when an agent works in that directory.
+`AGENTS.md` is what agents read, Claude Code included (v2.1.277+), so no
+`CLAUDE.md` pointer sits beside it. Don't add any `CLAUDE.md` or
+`CLAUDE.local.md` — by default Claude Code reads that in place of every
+`AGENTS.md` beside or below it. The root file is resident in every session; a
+nested one loads when an agent works in that directory.
 
-**Keep the root pair under 200 lines.** Past that it costs more context and gets
+**Keep the root file under 200 lines.** Past that it costs more context and gets
 followed less, so the budget is a correctness rule, not tidiness. Nested files
 are bounded by relevance rather than context cost, which is why moving
 package-specific detail down out of this file is a real saving.

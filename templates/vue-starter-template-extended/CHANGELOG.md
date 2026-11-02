@@ -1,5 +1,12 @@
 # lumora-demo-store
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [[`c78188a`](https://github.com/shopware/frontends/commit/c78188ac6c95ae19b070f5ea3361a60f21dff281)]:
+  - vue-starter-template@0.1.4
+
 ## 0.0.5
 
 ### Patch Changes

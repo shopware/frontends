@@ -108,15 +108,6 @@ The five write operations return either the one address they touched or nothing 
 
 <RecipeFlowDiagram label="Customer addresses flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. The page calls `loadCustomerAddresses()` once to fill the shared list.
-2. `listAddress post /account/list-address` returns the addresses in `elements`.
-3. A form submit calls `createCustomerAddress(address)` or `updateCustomerAddress(address)`.
-4. The Store API answers with that single address, not with the list.
-5. The handler calls `loadCustomerAddresses()` again, because nothing else will.
-6. `setDefaultCustomerBillingAddress(id)` and `setDefaultCustomerShippingAddress(id)` are bodyless PATCH requests that need the same reload.
-
 Editing an address book entry needs nothing beyond that reload. Changing a default needs one more call, because the defaults live on the customer rather than on the address: `refreshSessionContext()`. It is the refresh that covers both consumers — see [State And Session](#state-and-session).
 
 ## Request Flow
@@ -535,6 +526,5 @@ Changing a default also changes the customer, so reloading the address list is n
 - [Login recipe](login.html)
 - [Customer Profile recipe](profile.html)
 - [Checkout recipe](../checkout/checkout.html)
-- [Checkout documentation](../../guides/e-commerce/checkout.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)

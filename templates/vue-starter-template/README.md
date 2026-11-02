@@ -16,9 +16,9 @@ A Nuxt storefront foundation with all Shopware Frontends packages pre-configured
 
 ## Requirements
 
-Go to [Documentation > Requirements](https://developer.shopware.com/frontends/framework/requirements.html) to see the details.
+Go to [Documentation > Requirements](https://developer.shopware.com/frontends/introduction/requirements.html) to see the details.
 
-Node `^22.19.0 || ^24.11.0 || >=26.0.0`, the range in `package.json`. This
+Node `^22.22.3 || ^24.15.0 || >=26.0.0`, the range in `package.json`. This
 repository uses pnpm.
 
 ## Install & Run
@@ -64,7 +64,7 @@ Two values must be set. `nuxt.config.ts` defaults them to the public demo shop, 
 
 ### If the storefront breaks against your instance
 
-`nuxt.config.ts` sets `cacheableReads: true`. That reads anonymous Store API data through cacheable GET routes instead of POST, so CDNs and browsers can cache the responses. The module default is `false`, and it needs a backend that supports the GET read routes and the `_criteria` query param. If yours does not, set it to `false`.
+`nuxt.config.ts` sets `cacheableReads: true`. Fresh guest sessions then read through cacheable GET routes. CDNs and browsers can cache those. Every other session uses POST, for example logged-in customers or a filled cart. The module default is `false`. It needs Shopware 6.7.6 or newer. On an older instance, set it to `false`.
 
 ## Generate your own API types
 

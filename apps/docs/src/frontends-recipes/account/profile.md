@@ -107,33 +107,22 @@ Build an account page that shows the logged-in customer and lets them change the
 
 `changeProfile post /account/change-profile` and `changeEmail post /account/change-email` both respond with a `SuccessResponse` and nothing else. `updatePersonalInfo()` and `updateEmail()` therefore return `Promise<void>` and leave the shared customer untouched. Refreshing it is your job, either with `refreshUser()` or by refreshing the whole context.
 
-Hover a type chip to inspect fields generated from the current Store API schema.
-
 <RecipeFlowDiagram label="Customer profile flow diagram" :steps="steps" />
-
-Read the diagram from left to right:
-
-1. The form is seeded from `useUser().user`, which already holds the customer from the context.
-2. `updatePersonalInfo()` or `updateEmail()` posts the changed fields.
-3. The Store API answers with a bare `SuccessResponse`.
-4. `refreshUser()` sends `readCustomer post /account/customer` and writes the customer into the shared value.
-5. The UI re-renders from `user` and the session flags computed over it.
-6. `convertGuest post /account/convert-guest` and `deleteCustomer delete /account/customer` are called through `apiClient.invoke`, followed by a context refresh.
 
 You do not need to call `refreshSessionContext()` after a profile or email change. The token and the sales channel are untouched, and `refreshUser()` already writes the fresh customer into the shared value. It writes only there, though: the customer copy inside the sales channel context keeps the old name until something refreshes it. That is harmless for a name, a salutation or an email address, and it is exactly why the [addresses recipe](addresses.html) reaches for `refreshSessionContext()` instead — the checkout reads its active addresses from that context. Keep the context refresh for `convertGuest` and `deleteCustomer` too, which change who the token resolves to.
 
 ## Request Flow
 
-| Step                     | Code                                                          | Store API                                                      | Type                                                                                                                                                                                    |
-| ------------------------ | ------------------------------------------------------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Load the salutations     | `fetchSalutations()`                                          | `POST /salutation`, or `GET /salutation` with `cacheableReads` | <SchemaTypeTooltip type-key='operations["readSalutation post /salutation"]["response"]' /> <SchemaTypeTooltip type-key='operations["readSalutationGet get /salutation"]["response"]' /> |
-| Change the profile       | `updatePersonalInfo(profile)`                                 | `POST /account/change-profile`                                 | <SchemaTypeTooltip type-key='operations["changeProfile post /account/change-profile"]["body"]' />                                                                                       |
-| Change the email address | `updateEmail(emailChange)`                                    | `POST /account/change-email`                                   | <SchemaTypeTooltip type-key='operations["changeEmail post /account/change-email"]["body"]' />                                                                                           |
-| Read the customer back   | `refreshUser()`                                               | `POST /account/customer`                                       | <SchemaTypeTooltip type-key='operations["readCustomer post /account/customer"]["response"]' />                                                                                          |
-| Convert a guest          | `apiClient.invoke("convertGuest …", { body: { password } })`  | `POST /account/convert-guest`                                  | <SchemaTypeTooltip type-key='operations["convertGuest post /account/convert-guest"]["body"]' />                                                                                         |
-| Delete the account       | `apiClient.invoke("deleteCustomer delete /account/customer")` | `DELETE /account/customer`                                     | none — the operation answers `204 No Content`                                                                                                                                           |
+| Step                     | Code                                                          | Store API                      | Type                                                                                                                                                                                    |
+| ------------------------ | ------------------------------------------------------------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Load the salutations     | `fetchSalutations()`                                          | `POST /salutation`             | <SchemaTypeTooltip type-key='operations["readSalutation post /salutation"]["response"]' /> <SchemaTypeTooltip type-key='operations["readSalutationGet get /salutation"]["response"]' /> |
+| Change the profile       | `updatePersonalInfo(profile)`                                 | `POST /account/change-profile` | <SchemaTypeTooltip type-key='operations["changeProfile post /account/change-profile"]["body"]' />                                                                                       |
+| Change the email address | `updateEmail(emailChange)`                                    | `POST /account/change-email`   | <SchemaTypeTooltip type-key='operations["changeEmail post /account/change-email"]["body"]' />                                                                                           |
+| Read the customer back   | `refreshUser()`                                               | `POST /account/customer`       | <SchemaTypeTooltip type-key='operations["readCustomer post /account/customer"]["response"]' />                                                                                          |
+| Convert a guest          | `apiClient.invoke("convertGuest …", { body: { password } })`  | `POST /account/convert-guest`  | <SchemaTypeTooltip type-key='operations["convertGuest post /account/convert-guest"]["body"]' />                                                                                         |
+| Delete the account       | `apiClient.invoke("deleteCustomer delete /account/customer")` | `DELETE /account/customer`     | none — the operation answers `204 No Content`                                                                                                                                           |
 
-The salutation row is the only one whose route depends on configuration. `useSalutations` switches to the cacheable GET variant when `shopware.cacheableReads` is set, and `vue-starter-template` sets it, so that is the request the supported template issues. Everything else on this page stays a POST: the writes are not cacheable, and `readCustomer` has no GET variant to switch to. See [Caching](../../best-practices/caching.html).
+Every request on this page is a POST. `useSalutations` has a cacheable GET variant under `shopware.cacheableReads`, which `vue-starter-template` sets. But `invokeRead` sends GET only for a fresh default guest, and this page always has a logged-in customer, see [Which sessions use GET](../../best-practices/caching.html#which-sessions-use-get). The writes are not cacheable, and `readCustomer` has no GET variant to switch to. See [Caching](../../best-practices/caching.html).
 
 `refreshUser()` accepts a `Criteria`, so associations the context does not carry — the full `addresses` list, the `salutation` entity — can be requested here rather than in a second call. The default addresses are a different case: `userDefaultBillingAddress` and `userDefaultShippingAddress` are computed straight off the context customer, so they are already there before you call anything.
 
@@ -154,7 +143,7 @@ Pick by scope — how much of the session the composable is about:
 
 - **Read** — `user`, `isLoggedIn`, `isCustomerSession`, `isGuestSession`, `defaultBillingAddressId`, `defaultShippingAddressId`, `userDefaultBillingAddress`, `userDefaultShippingAddress`, `userDefaultPaymentMethod`.
 - **Write** — `updatePersonalInfo`, `updateEmail`, and `refreshUser` to read the customer back afterwards.
-- **Resolve by id** — `loadCountry(id)` and `loadSalutation(id)` fill the `country` and `salutation` refs for a single entity. Both follow the same `cacheableReads` switch as `fetchSalutations()`.
+- **Resolve by id** — `loadCountry(id)` and `loadSalutation(id)` fill the `country` and `salutation` refs for a single entity. Both read through `invokeRead` like `fetchSalutations()`, so on this page they post too.
 
 Four things the generated reference will not tell you:
 
@@ -628,6 +617,5 @@ The three session flags are computed differently and are not interchangeable. `i
 - [Password Recovery and Change recipe](password.html)
 - [Customer Addresses recipe](addresses.html)
 - [Order History recipe](order-history.html)
-- [Login form page element](../../guides/page-elements/login-form.html)
 - [Composables reference](../../packages/composables/)
 - [API client package](../../packages/api-client.html)
