@@ -46,14 +46,12 @@ await setPaymentMethod({ id: paymentMethodId });
 
 ## Load the library
 
-Load the published browser bundle with a classic script tag so the library can read its own URL from `document.currentScript`. That URL is the ShopwarePayments host, and it has to serve both the bundle and `/api/storefront`.
-
-The host follows the format:
+Load the library with a `<script>` tag from either the production or the staging host:
 
 - **Production:** `headless.shopware-payments.services.shopware.io`
 - **Staging:** `headless.shopware-payments.staging-services.shopware.io`
 
-Exact version URLs are immutable, while version aliases such as `/headless/{majorVersion}/` and `/headless/latest/` are updated with each release. Therefore, **Subresource Integrity (SRI) hashes should only be used with exact version URLs**. Each [GitHub release](https://github.com/shopware/ShopwarePayments/releases) tagged `headless-v<version>` includes the production script tag and its integrity hash.
+Exact version URLs are immutable, while version aliases such as `/headless/{majorVersion}/` and `/headless/latest/` are updated with each release. Therefore, **Subresource Integrity (SRI) hashes should only be used with exact version URLs**.
 
 **Note:** While the major version remains `0`, minor releases may introduce breaking changes.
 
@@ -435,7 +433,7 @@ Each host element can be hydrated once. After a failed setup the element can be 
 
 ## Redirect payment methods
 
-Bancontact, EPS, BLIK, iDEAL, Przelewy24, and Klarna are Shopware redirect payments. Select the method, place the Shopware order, and call Store API `handle-payment` without `sp-id`. Follow the returned `redirectUrl`. These methods finish on that redirect, with no provider order id from this library.
+Bancontact, EPS, BLIK, iDEAL, Przelewy24, and Klarna do not require the JS library.
 
 ## Errors
 
