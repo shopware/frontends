@@ -17,10 +17,32 @@ import {
 
 const rootDir = path.resolve(__dirname, "..");
 
-const manifest: { templates: { id: string; supportLevel: string }[] } =
-  JSON.parse(
-    fs.readFileSync(path.join(rootDir, "templates/manifest.json"), "utf8"),
+type Template = { id: string; packageName: string; supportLevel: string };
+
+const manifest: { templates: Template[] } = JSON.parse(
+  fs.readFileSync(path.join(rootDir, "templates/manifest.json"), "utf8"),
+);
+
+function templateDependencies(template: Template): string[] {
+  const pkg = JSON.parse(
+    fs.readFileSync(
+      path.join(rootDir, "templates", template.id, "package.json"),
+      "utf8",
+    ),
   );
+  return Object.keys({ ...pkg.dependencies, ...pkg.devDependencies });
+}
+
+function usesComposables(template: Template): boolean {
+  return templateDependencies(template).some(
+    (name) =>
+      name === "@shopware/composables" ||
+      name === "@shopware/nuxt-module" ||
+      manifest.templates.some(
+        (other) => other.packageName === name && usesComposables(other),
+      ),
+  );
+}
 
 // deprecated templates, like vue-demo-store (#2667), are out of scope
 const scannedDirs = [
@@ -28,6 +50,7 @@ const scannedDirs = [
   "packages/cms-base-layer/app",
   ...manifest.templates
     .filter((template) => template.supportLevel !== "deprecated")
+    .filter(usesComposables)
     .map((template) => `templates/${template.id}`),
 ];
 
