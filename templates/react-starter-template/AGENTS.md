@@ -5,17 +5,6 @@ Next.js App Router storefront template for Shopware 6, the React counterpart of
 work, while routing, the session and CMS rendering do not exist yet.
 `supportLevel` in `templates/manifest.json` is authoritative.
 
-## Next.js docs
-
-Next.js ships docs that match the installed version in
-`node_modules/next/dist/docs/`. Read the relevant guide there before writing
-Next.js code: 16.3 differs from most training data (Cache Components,
-`proxy.ts` instead of `middleware.ts`, async request APIs).
-
-`agentRules` is `false` in `next.config.ts`, so `next dev` does not write its
-own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
-`AGENTS.md` files only.
-
 ## Store API
 
 - `platform/shopware/` is the only place that creates API clients

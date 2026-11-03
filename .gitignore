@@ -63,3 +63,4 @@ yarn-error.log*
 temp
 .temp
 .tsbuildinfo
+.claude/launch.json

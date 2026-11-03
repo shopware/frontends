@@ -8,16 +8,6 @@ packages:
 minimumReleaseAge: 4320 ## 3 days
 minimumReleaseAgeExclude:
   - "@shopware/*"
-  - "@next/env@16.4.4"
-  - "@next/swc-darwin-arm64@16.4.4"
-  - "@next/swc-darwin-x64@16.4.4"
-  - "@next/swc-linux-arm64-gnu@16.4.4"
-  - "@next/swc-linux-arm64-musl@16.4.4"
-  - "@next/swc-linux-x64-gnu@16.4.4"
-  - "@next/swc-linux-x64-musl@16.4.4"
-  - "@next/swc-win32-arm64-msvc@16.4.4"
-  - "@next/swc-win32-x64-msvc@16.4.4"
-  - next@16.4.4
 
 overrides:
   "@vercel/blob>undici": "^6.29.1"
