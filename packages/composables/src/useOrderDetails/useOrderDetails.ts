@@ -193,6 +193,8 @@ export function useOrderDetails(
     // "true", which fails the strict check on older versions, so they ignore it
     // and the request is retried with the body flag. Shopware returns a
     // paymentChangeable entry for the order when the flag is honored.
+    // The generated readOrder type omits query; keep the options in a variable
+    // so we can send the supported checkPromotion query parameter.
     const readOrderOptions = {
       body: params,
       query: {
