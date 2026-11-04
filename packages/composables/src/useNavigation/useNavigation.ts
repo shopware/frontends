@@ -1,8 +1,7 @@
-import { encodeForQuery } from "@shopware/api-client/helpers";
 import { computed, inject, provide, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
 
-import { useShopwareContext } from "#imports";
+import { useCacheableRead } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 /**
@@ -41,7 +40,7 @@ export function useNavigation(params?: {
 }): UseNavigationReturn {
   const type = params?.type || "main-navigation";
 
-  const { apiClient, cacheableReads } = useShopwareContext();
+  const { invokeRead } = useCacheableRead();
 
   const sharedElements: Ref<Schemas["NavigationRouteResponse"]> = inject(
     `swNavigation-${type}`,
@@ -55,39 +54,19 @@ export function useNavigation(params?: {
     params: operations["readNavigation post /navigation/{activeId}/{rootId}"]["body"],
   ) {
     try {
-      // `buildTree`/`depth` are dedicated GET query params, not part of `_criteria`.
-      const { buildTree, depth, ...criteria } = params;
-      const navigationResponse = cacheableReads
-        ? await apiClient.invoke(
-            "readNavigationGet get /navigation/{activeId}/{rootId}",
-            {
-              headers: {
-                "sw-include-seo-urls": true,
-              },
-              pathParams: {
-                activeId: type,
-                rootId: type,
-              },
-              query: {
-                _criteria: encodeForQuery(criteria),
-                buildTree,
-                depth,
-              },
-            },
-          )
-        : await apiClient.invoke(
-            "readNavigation post /navigation/{activeId}/{rootId}",
-            {
-              headers: {
-                "sw-include-seo-urls": true,
-              },
-              pathParams: {
-                activeId: type,
-                rootId: type,
-              },
-              body: params,
-            },
-          );
+      const navigationResponse = await invokeRead(
+        "readNavigation post /navigation/{activeId}/{rootId}",
+        {
+          headers: {
+            "sw-include-seo-urls": true,
+          },
+          pathParams: {
+            activeId: type,
+            rootId: type,
+          },
+          body: params,
+        },
+      );
 
       sharedElements.value = navigationResponse.data || [];
       return sharedElements.value;

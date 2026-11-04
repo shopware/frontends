@@ -10,31 +10,48 @@ minimumReleaseAgeExclude:
   - "@shopware/*"
 
 overrides:
-  "@vercel/blob>undici": "^6.28.0"
+  "@vercel/blob>undici": "^6.29.1"
   "@tiptap/pm@<3.30.5": 3.30.5
   esbuild: ^0.28.2
-  vite: ^8.2.1
+  vite: ^8.3.5
   "@vueuse/core": 14.4.0
   "@vueuse/shared": 14.4.0
   "@vueuse/metadata": 14.4.0
   "@vueuse/integrations": 14.4.0
-  vue: 3.5.42
-  "@vue/compiler-core": 3.5.42
-  "@vue/compiler-dom": 3.5.42
-  "@vue/compiler-sfc": 3.5.42
-  "@vue/compiler-ssr": 3.5.42
-  "@vue/reactivity": 3.5.42
-  "@vue/runtime-core": 3.5.42
-  "@vue/runtime-dom": 3.5.42
-  "@vue/server-renderer": 3.5.42
-  "@vue/shared": 3.5.42
+  vue: 3.5.44
+  "@vue/compiler-core": 3.5.44
+  "@vue/compiler-dom": 3.5.44
+  "@vue/compiler-sfc": 3.5.44
+  "@vue/compiler-ssr": 3.5.44
+  "@vue/reactivity": 3.5.44
+  "@vue/runtime-core": 3.5.44
+  "@vue/runtime-dom": 3.5.44
+  "@vue/server-renderer": 3.5.44
+  "@vue/shared": 3.5.44
   "@tiptap/core": 3.30.5
   "js-yaml@>=4.0.0 <4.3.2": 4.3.2
   "sharp@<0.35.5": 0.35.5
-  "astro@<7.2.8": 7.2.8
-  "@simple-git/argv-parser@<2.0.1": 2.0.1
+  "astro@<7.4.2": 7.4.2
   "tinypool@<2.1.2": 2.1.2
   "postcss-selector-parser@<7.1.6": 7.1.6
+  "undici@>=7.0.0 <7.30.1": 7.30.1
+  "undici@>=8.0.0 <8.12.2": 8.12.3
+  "fast-uri@<3.1.9": 3.1.9
+  "qs@<6.16.1": 6.16.1
+  "serialize-javascript@<7.1.3": 7.1.3
+  "zod@>=4.0.0 <4.6.6": 4.6.6
+  "follow-redirects@<1.16.1": 1.16.1
+  "launch-editor@<2.14.2": 2.14.2
+  "@nuxt/devtools@>=3.0.0 <3.4.3": ^3.4.3
+  "vue-i18n@<11.4.14": 11.4.16
+  "@intlify/core@<11.4.14": 11.4.16
+  "@intlify/core-base@<11.4.14": 11.4.16
+  "@intlify/shared@<11.4.14": 11.4.16
+  "seroval@<1.6.11": 1.6.12
+  "node-forge": 1.4.1
+  "follow-redirects": 1.16.2
+  "minimatch": 11.0.1
+  "glob": 14.0.2
 
 peerDependencyRules:
   ignoreMissing:
@@ -64,11 +81,8 @@ allowBuilds:
 # Advisories with no usable patched release yet. Drop each entry once its fix ships.
 auditConfig:
   ignoreGhsas:
-    # simple-git: fixed only in v4, which removed the default export @nuxt/devtools 3 imports (needs devtools 4, still beta). Dev-only, local git calls.
-    - GHSA-x6jw-m9v5-85vh
-    - GHSA-g4wm-2vf7-vfgr
-    - GHSA-858h-whjf-mvg5
     # node-forge: advisory names >=1.4.1, not published yet. Used by listhen for local dev HTTPS certs only.
     - GHSA-86w9-cpqp-85rv
-    # braces: advisory names >=3.0.4, not published yet. Only matches build-time glob patterns we write.
-    - GHSA-vfj7-8cjw-p6xm
+    # deepmerge: no patched release, the advisory covers <=4.3.1 and that is the latest.
+    # Build-time only (@rollup/plugin-node-resolve in nitropack and unbuild). Drops out with rollup/plugins#2036.
+    - GHSA-gcqx-w48m-w2h4
