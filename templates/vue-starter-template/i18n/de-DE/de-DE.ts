@@ -1,6 +1,7 @@
 import account from "./account.json";
 import cart from "./cart.json";
 import checkout from "./checkout.json";
+import errorPage from "./errorPage.json";
 import errors from "./errors.json";
 import form from "./form.json";
 import layout from "./layout.json";
@@ -19,6 +20,7 @@ export default {
   ...account,
   ...form,
   ...errors,
+  ...errorPage,
   ...layout,
   ...listing,
   ...wishlist,
