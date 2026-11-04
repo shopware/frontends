@@ -434,6 +434,42 @@ describe("nuxt-module plugin", () => {
     );
   });
 
+  it.each([
+    { ssr: true, useUserContextInSSR: false, ssrWithoutUserContext: true },
+    { ssr: true, useUserContextInSSR: true, ssrWithoutUserContext: false },
+    { ssr: false, useUserContextInSSR: false, ssrWithoutUserContext: false },
+  ])(
+    "sets ssrWithoutUserContext to $ssrWithoutUserContext for ssr $ssr and useUserContextInSSR $useUserContextInSSR",
+    async ({ ssr, useUserContextInSSR, ssrWithoutUserContext }) => {
+      useRuntimeConfigMock.mockReturnValue({
+        shopware: { ...SHOPWARE_CONFIG },
+        public: { shopware: { ...SHOPWARE_CONFIG, useUserContextInSSR } },
+      });
+
+      await runPlugin(createNuxtAppMock(ssr));
+
+      expect(createShopwareContextMock).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({ ssrWithoutUserContext }),
+      );
+    },
+  );
+
+  it.each([true, false])(
+    "provides the cart state app-wide (ssr %s)",
+    async (ssr) => {
+      if (!ssr) runOnClient();
+      const nuxtApp = createNuxtAppMock(ssr);
+
+      await runPlugin(nuxtApp);
+
+      expect(nuxtApp.vueApp.provide).toHaveBeenCalledWith(
+        "swCart",
+        expect.objectContaining({ value: undefined }),
+      );
+    },
+  );
+
   it("takes the browser branch when import.meta.server is false", async () => {
     runOnClient();
     useRuntimeConfigMock.mockReturnValue({

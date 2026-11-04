@@ -130,7 +130,7 @@ You do not need this composable on a CMS-driven product page whose layout contai
 
 The load row's `Type` cell is empty because there is nothing to type. That is the fact this whole recipe hangs on.
 
-The first row assumes the default configuration. With `shopware: { cacheableReads: true }` in `nuxt.config`, `useProductSearch` switches to `readProductDetailGet get /product/{productId}` and moves the criteria into a `_criteria` query parameter. The cross-selling rows do not change: the composable never calls the GET variant, and neither variant accepts criteria.
+The first row assumes the default configuration. With `shopware: { cacheableReads: true }` in `nuxt.config`, `useProductSearch` switches to `readProductDetailGet get /product/{productId}` for a fresh default guest and moves the criteria into a `_criteria` query parameter. The cross-selling rows do not change: the composable never calls the GET variant, and neither variant accepts criteria.
 
 ## Composables
 

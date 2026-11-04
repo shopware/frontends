@@ -113,7 +113,7 @@
           "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access)."
         }
       },
-      "node": ">=22.12.0",
+      "node": ">=22.23.4",
       "devPort": 4321,
       "buildCommand": "astro build",
       "devCommand": "astro dev",
