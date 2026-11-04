@@ -1,5 +1,5 @@
 ---
-"@shopware/composables": patch
+"@shopware/composables": minor
 ---
 
 Deprecate API that has no effect, to be removed in the next major release:
@@ -8,6 +8,5 @@ Deprecate API that has no effect, to be removed in the next major release:
 - `useProductAssociations`: the `associationContext` option and the `method` and `searchParams` params of `loadAssociations`. Both `options` and the `loadAssociations` params are now optional, so call `loadAssociations()`
 - `useProductConfigurator().isLoadingOptions` and `useSyncWishlist().isLoading`, which are never updated
 - `getDefaultApiParams`, which already logged a deprecation error, now carries the `@deprecated` tag as well
-- the unused, unexported `registerShopwareDevtools` and `useCmsElementProductBox`
 
-Also removes commented-out code. No runtime behaviour changes.
+Also removes commented-out code and the unused, unexported `registerShopwareDevtools` and `useCmsElementProductBox`, which drops the undeclared `@vue/devtools-api` import. No runtime behaviour changes.
