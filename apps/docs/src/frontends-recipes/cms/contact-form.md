@@ -42,7 +42,7 @@ const steps = [
     title: "UI",
     action: "Load the salutations",
     detail:
-      "The form takes a salutationId, not a label, so a salutation select needs the list. useSalutations fetches it on mount when it has not been fetched yet — so never on the server — and switches to the GET route when cacheableReads is enabled, which the starter ships on.",
+      "The form takes a salutationId, not a label, so a salutation select needs the list. useSalutations fetches it on mount when it has not been fetched yet — so never on the server — and switches to the GET route for a fresh guest when cacheableReads is enabled, which the starter ships on.",
     code: "const { getSalutations } = useSalutations()",
     state: "swSalutations",
     typeKeys: ['operations["readSalutation post /salutation"]["response"]'],
@@ -120,7 +120,7 @@ You do not get any identifier back. There is nothing to poll, nothing to look up
 | Submit the form         | `invoke("sendContactMail post /contact-form", { body })` | `POST /contact-form` | <SchemaTypeTooltip type-key='operations["sendContactMail post /contact-form"]["body"]' />  |
 | Read the result         | `data.individualSuccessMessage`                          | `POST /contact-form` | `never` in the generated types — see below                                                 |
 
-The salutation row has a second variant, and it is the one you will actually hit. With `cacheableReads` enabled, `useSalutations` calls <SchemaTypeTooltip type-key='operations["readSalutationGet get /salutation"]["response"]' /> over `GET /salutation` instead, so the list is HTTP-cacheable. The library default is off, but `vue-starter-template` ships `cacheableReads: true`, so in the supported starting point the salutation list arrives over `GET`. The payload is the same either way, and nothing in your form code changes.
+The salutation row has a second variant, and it is the one you will actually hit. With `cacheableReads` enabled, `useSalutations` calls <SchemaTypeTooltip type-key='operations["readSalutationGet get /salutation"]["response"]' /> over `GET /salutation` for a fresh default guest, so the list is HTTP-cacheable. The library default is off, but `vue-starter-template` ships `cacheableReads: true`, so in the supported starting point a guest gets the salutation list over `GET`. A logged-in customer still gets it over `POST`. The payload is the same either way, and nothing in your form code changes.
 
 The body also declares `slotId`, `cmsPageType` and `entityName`, and `slotId` is the one that matters most: it is how the backend finds the element's own `mailReceiver` and confirmation text. `navigationId` is described in the schema as an override of that configuration, not a replacement for it — send only `navigationId` and the mail goes to the shop's default address with an empty message. The component shipped in the CMS base layer sends only `navigationId`, so an element-level receiver configured in the administration never reaches the API.
 
@@ -147,7 +147,7 @@ Eight things the generated reference will not tell you:
 - `getConfigValue("title")` falls back to a hardcoded `"Contact"` in the shipped component, which `useCmsTranslations` cannot override, because the title uses `||`. `confirmationText` uses `??`, so it reaches the injected translation only when the element has no value for that key at all: a blank value in the administration renders an empty confirmation, and a config whose `source` is `"mapped"` renders the literal `false`.
 - `useCmsTranslations` is the reading side and cannot override anything — its whole body is `inject("cmsTranslations", {})`. The override is the opposite call, `provide("cmsTranslations", messages)`, which `vue-starter-template` makes in `app/app.vue`. `SwContactForm` merges the result with `defu` once during setup, so translations swapped after mount never reach an already-rendered form.
 - `useSalutations` fetches on mount when the list has **not been fetched yet** — the guard is `if (!_salutations.value)`, not a length check. `fetchSalutations` assigns `[]` on an empty response and `[]` is truthy, so a shop that genuinely returns zero salutations is never retried. `getSalutations` renders the unfetched and the fetched-empty state identically, which is what makes the two indistinguishable in a template.
-- `useSalutations` picks its route from `cacheableReads`: `readSalutationGet get /salutation` when the flag is on, `readSalutation post /salutation` when it is off.
+- `useSalutations` reads through `invokeRead`: `readSalutationGet get /salutation` for a fresh guest when the flag is on, `readSalutation post /salutation` otherwise.
 - `foreignKey` is a `ComputedRef<string>` that defaults to `""`, never `undefined`. That does not fail loudly — an empty `navigationId` is ignored and the call still answers `200`, despite the UUID pattern the schema declares for it. What you lose is silent: no category override is applied, so the element's own configuration stands when you thought a category's had won.
 - `useNavigationContext()` called with no argument only injects. Something upstream has to seed it, and in `vue-starter-template` the only thing that does is the catch-all route `app/pages/[...all].vue`. Outside that page's subtree — an explicit file route such as `app/pages/contact.vue`, or a layout — `foreignKey` is `""` on a perfectly resolved URL. There you pass the `SeoUrl` in yourself with `useNavigationContext(seoResult)`, or take `navigationId` as a prop, which is what `[...all].vue` already does for the pages below it.
 
@@ -564,7 +564,7 @@ Send both from an element override: `slotId` from `content.id`, which `CmsSlot` 
 
 ## Testing Checklist
 
-- The salutation select is populated from `readSalutationGet get /salutation` when `cacheableReads` is on, and from `readSalutation post /salutation` when it is off. Assert whichever your `nuxt.config` selects — `vue-starter-template` ships the flag on.
+- The salutation select is populated from `readSalutationGet get /salutation` for a fresh guest when `cacheableReads` is on, and from `readSalutation post /salutation` otherwise. Assert the route for the session you test. `vue-starter-template` ships the flag on.
 - The salutation select is inert until the list arrives, and the server-rendered HTML does not claim the list is empty.
 - Submitting calls `sendContactMail post /contact-form` exactly once.
 - The request body carries `slotId` from the element, so a receiver configured on the element is the one that gets the mail.

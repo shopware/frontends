@@ -7,7 +7,7 @@ WORKDIR /app
 
 ARG NUXT_PUBLIC_SHOPWARE_ENDPOINT=https://demo-frontends.shopware.store/store-api/
 ARG NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN=SWSCNWDGMUWZM0TLVUU0YKLQVW
-ARG NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=https://frontends-demo.vercel.app
+ARG NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=https://demo-frontends.shopware.store/figma
 ARG NUXT_SHOPWARE_ENDPOINT=
 
 ENV NUXT_PUBLIC_SHOPWARE_ENDPOINT=$NUXT_PUBLIC_SHOPWARE_ENDPOINT
@@ -32,7 +32,7 @@ WORKDIR /app
 
 ARG NUXT_PUBLIC_SHOPWARE_ENDPOINT=https://demo-frontends.shopware.store/store-api/
 ARG NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN=SWSCNWDGMUWZM0TLVUU0YKLQVW
-ARG NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=https://frontends-demo.vercel.app
+ARG NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL=https://demo-frontends.shopware.store/figma
 ARG NUXT_SHOPWARE_ENDPOINT=
 
 # Create tmp directory for runtime writes (mount as tmpfs when running read-only)

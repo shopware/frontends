@@ -1,0 +1,15 @@
+{
+  "errorPage": {
+    "404": "Wir können die gesuchte Seite nicht finden. Sie wurde möglicherweise verschoben oder existiert nicht mehr.",
+    "408": "Der Shop braucht zu lange, um zu antworten.",
+    "429": "Zu viele Anfragen auf einmal. Bitte warten Sie einen Moment und versuchen Sie es erneut.",
+    "500": "Hoppla, bei uns ist etwas schiefgelaufen.",
+    "502": "Der Shop konnte Ihre Anfrage nicht abschließen. Bitte versuchen Sie es in wenigen Sekunden erneut.",
+    "503": "Der Shop ist gerade ausgelastet. Bitte versuchen Sie es gleich noch einmal.",
+    "goBackHome": "Zurück zur Startseite",
+    "maintenance": {
+      "title": "Wartung",
+      "text": "Wir führen derzeit Wartungsarbeiten durch. Wir sind bald zurück."
+    }
+  }
+}

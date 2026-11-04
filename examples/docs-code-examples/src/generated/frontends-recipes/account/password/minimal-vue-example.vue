@@ -19,6 +19,7 @@ const heading = ref<HTMLElement | null>(null);
 
 const email = ref("");
 const isRecoveryRequested = ref(false);
+const recoveryError = ref("");
 
 const isHashChecked = ref(false);
 const isExpired = ref(false);
@@ -79,8 +80,17 @@ const checkHash = async () => {
       "getCustomerRecoveryIsExpired post /account/customer-recovery-is-expired",
       { body: { hash }, fetchOptions: { timeout: 10_000 } },
     );
-    // the flag sits inside an array_struct envelope, not on the response root
-    isExpired.value = !!recoveryResponse.data?.[0]?.isExpired;
+    // Shopware sends the flag at the root. The bundled type still has the
+    // older data[0] shape, so read both and treat neither as a failed check.
+    const response = recoveryResponse as typeof recoveryResponse & {
+      isExpired?: boolean;
+    };
+    const expired = response.isExpired ?? response.data?.[0]?.isExpired;
+    if (expired === undefined) {
+      isCheckFailed.value = true;
+    } else {
+      isExpired.value = expired;
+    }
   } catch (error) {
     // Only the API rejecting the hash means the link is dead. A dropped
     // connection or a 5xx says nothing about it, so offer a retry instead.
@@ -98,20 +108,25 @@ const requestRecoveryMail = async () => {
   if (isSubmitting.value) return;
   startSubmit();
 
+  recoveryError.value = "";
+
   try {
     await resetPassword({
       email: email.value,
       // resolved here, because setup also runs on the server, where there is no window
       storefrontUrl: getStorefrontUrl(),
     });
-  } catch (error) {
-    console.error(error);
-  } finally {
-    // Unconditional: the acknowledgement must not differ between a known and
-    // an unknown address, so it cannot depend on the response.
+    // Same wording for a known and an unknown address: the API already
+    // answered both with a success.
     isRecoveryRequested.value = true;
-    isSubmitting.value = false;
     await announce();
+  } catch (error) {
+    // A rejection is operational, not about the address, so say so and keep
+    // the form for another try.
+    console.error(error);
+    recoveryError.value = "We could not send the mail. Please try again.";
+  } finally {
+    isSubmitting.value = false;
   }
 };
 
@@ -301,6 +316,8 @@ onMounted(checkHash);
     </p>
 
     <form v-else @submit.prevent="requestRecoveryMail">
+      <p v-if="recoveryError" role="alert">{{ recoveryError }}</p>
+
       <label>
         Email
         <input v-model="email" type="email" autocomplete="email" required />
