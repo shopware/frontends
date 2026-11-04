@@ -74,23 +74,25 @@ function sourceFiles(dir: string): string[] {
 
 const getTwin = (post: string) => post.replace(/^(\w+) post /, "$1Get get ");
 
-// a registered POST read must go through invokeRead; no GET twin may be called
-// directly, because that sends GET for every session
-const forbiddenKeys = [
+// no GET twin may be called directly, because that sends GET for every session
+const twinKeys = [
   ...Object.keys(cacheableReadRoutes),
-  ...[...Object.keys(cacheableReadRoutes), ...Object.keys(postOnlyReads)].map(
-    getTwin,
-  ),
-];
+  ...Object.keys(postOnlyReads),
+].map(getTwin);
+
+// a registered POST read must go through invokeRead
+const forbiddenKeys = [...Object.keys(cacheableReadRoutes), ...twinKeys];
+
+const isServerFile = (file: string) => /[/\\]server[/\\]/.test(file);
 
 const quotes = ['"', "'", "`"];
 
-function findBypasses(source: string): string[] {
+function findBypasses(source: string, keys: string[]): string[] {
   const rest = source.replace(
     /(invokeRead\(|operations\[)\s*["'`][^"'`]+["'`]/g,
     "",
   );
-  const bypasses = forbiddenKeys.filter((key) =>
+  const bypasses = keys.filter((key) =>
     quotes.some((quote) => rest.includes(quote + key + quote)),
   );
   // a read of the flag, not the `cacheableReads: true` setting
@@ -107,9 +109,10 @@ const bypasses = scannedDirs
       .readFileSync(file, "utf8")
       // drop comment lines, so commented-out code does not count
       .replace(/^\s*(\/\/|\/\*|\*).*$/gm, "");
-    return findBypasses(source).map(
-      (key) => `${path.relative(rootDir, file)}: ${key}`,
-    );
+    return findBypasses(
+      source,
+      isServerFile(file) ? twinKeys : forbiddenKeys,
+    ).map((key) => `${path.relative(rootDir, file)}: ${key}`);
   });
 
 if (bypasses.length) {
