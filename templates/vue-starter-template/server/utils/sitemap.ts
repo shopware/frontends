@@ -33,10 +33,9 @@ export const listSitemapFiles = defineCachedFunction(
   async (): Promise<SitemapFile[]> => {
     const apiClient = createServerApiClient();
     const { endpoint } = getShopwareServerConfig();
-    const { data: languages } = useRuntimeConfig().public.shopware
-      .cacheableReads
-      ? await apiClient.invoke("readLanguagesGet get /language")
-      : await apiClient.invoke("readLanguages post /language");
+    const { data: languages } = await apiClient.invoke(
+      "readLanguages post /language",
+    );
 
     const results = await Promise.allSettled(
       languages.elements.map(async ({ id: languageId }) => {
