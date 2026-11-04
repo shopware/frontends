@@ -1,22 +1,17 @@
 import { getTranslatedProperty } from "@shopware/helpers";
 import { connection } from "next/server";
 
+import type { Schemas } from "#shopware";
 import { readNavigation } from "@/platform/shopware/reads/navigation";
 
 export async function MainCategories() {
   await connection();
 
-  const categories = await readNavigation("main-navigation", 1).catch(
-    (error: unknown) => {
-      console.error(
-        "[MainCategories] reading the main navigation failed",
-        error,
-      );
-      return null;
-    },
-  );
-
-  if (!categories) {
+  let categories: Schemas["NavigationRouteResponse"];
+  try {
+    categories = await readNavigation("main-navigation", 1);
+  } catch (error) {
+    console.error("[MainCategories] reading the main navigation failed", error);
     return (
       <p className="text-sm text-states-error">
         The Store API could not be reached.

@@ -8,7 +8,9 @@ import {
 
 /**
  * Fails when code calls a cacheable Store API read outside `invokeRead`, or
- * branches on the `cacheableReads` flag.
+ * branches on the `cacheableReads` flag. Next.js templates have no
+ * `invokeRead`, so there it fails when a cacheable read is called with POST
+ * instead of its GET twin.
  *
  * This is a root script, not a package test, so it runs on every PR. Turbo
  * only runs a package's tests when that package or a dependency changed, so
@@ -17,48 +19,41 @@ import {
 
 const rootDir = path.resolve(__dirname, "..");
 
-type Template = { id: string; packageName: string; supportLevel: string };
+type Template = { id: string; framework: string; supportLevel: string };
 
 const manifest: { templates: Template[] } = JSON.parse(
   fs.readFileSync(path.join(rootDir, "templates/manifest.json"), "utf8"),
 );
 
-function templateDependencies(template: Template): string[] {
-  const pkg = JSON.parse(
-    fs.readFileSync(
-      path.join(rootDir, "templates", template.id, "package.json"),
-      "utf8",
-    ),
-  );
-  return Object.keys({ ...pkg.dependencies, ...pkg.devDependencies });
-}
-
-function usesComposables(template: Template): boolean {
-  return templateDependencies(template).some(
-    (name) =>
-      name === "@shopware/composables" ||
-      name === "@shopware/nuxt-module" ||
-      manifest.templates.some(
-        (other) => other.packageName === name && usesComposables(other),
-      ),
-  );
-}
+const isNext = (template: Template) => template.framework === "next";
 
 // deprecated templates, like vue-demo-store (#2667), are out of scope
-const scannedDirs = [
+function templateDirs(include: (template: Template) => boolean): string[] {
+  return manifest.templates
+    .filter((template) => template.supportLevel !== "deprecated")
+    .filter(include)
+    .map((template) => `templates/${template.id}`);
+}
+
+const invokeReadDirs = [
   "packages/composables/src",
   "packages/cms-base-layer/app",
-  ...manifest.templates
-    .filter((template) => template.supportLevel !== "deprecated")
-    .filter(usesComposables)
-    .map((template) => `templates/${template.id}`),
+  ...templateDirs((template) => !isNext(template)),
 ];
+
+const nextDirs = templateDirs(isNext);
 
 // tests, generated types, the helper itself and the files that define the flag
 const skippedFiles =
   /\.(test|spec)\.ts$|\.d\.ts$|useCacheableRead[/\\]|createShopwareContext\.ts$|useShopwareContext\.ts$/;
 
-const skippedDirs = new Set(["node_modules", ".nuxt", ".output", "dist"]);
+const skippedDirs = new Set([
+  "node_modules",
+  ".nuxt",
+  ".next",
+  ".output",
+  "dist",
+]);
 
 function sourceFiles(dir: string): string[] {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
@@ -66,7 +61,7 @@ function sourceFiles(dir: string): string[] {
     if (entry.isDirectory()) {
       return skippedDirs.has(entry.name) ? [] : sourceFiles(file);
     }
-    return /\.(ts|vue|astro)$/.test(file) && !skippedFiles.test(file)
+    return /\.(tsx?|vue|astro)$/.test(file) && !skippedFiles.test(file)
       ? [file]
       : [];
   });
@@ -87,13 +82,41 @@ const isServerFile = (file: string) => /[/\\]server[/\\]/.test(file);
 
 const quotes = ['"', "'", "`"];
 
-function findBypasses(source: string, keys: string[]): string[] {
+const quotedKeys = (source: string, keys: string[]) =>
+  keys.filter((key) =>
+    quotes.some((quote) => source.includes(quote + key + quote)),
+  );
+
+function readSource(file: string): string {
+  return (
+    fs
+      .readFileSync(file, "utf8")
+      // drop comment lines, so commented-out code does not count
+      .replace(/^\s*(\/\/|\/\*|\*).*$/gm, "")
+  );
+}
+
+function scan(
+  dirs: string[],
+  findKeys: (source: string, file: string) => string[],
+): string[] {
+  return dirs
+    .flatMap((dir) => sourceFiles(path.join(rootDir, dir)))
+    .flatMap((file) =>
+      findKeys(readSource(file), file).map(
+        (key) => `${path.relative(rootDir, file)}: ${key}`,
+      ),
+    );
+}
+
+function findBypasses(source: string, file: string): string[] {
   const rest = source.replace(
     /(invokeRead\(|operations\[)\s*["'`][^"'`]+["'`]/g,
     "",
   );
-  const bypasses = keys.filter((key) =>
-    quotes.some((quote) => rest.includes(quote + key + quote)),
+  const bypasses = quotedKeys(
+    rest,
+    isServerFile(file) ? twinKeys : forbiddenKeys,
   );
   // a read of the flag, not the `cacheableReads: true` setting
   if (/\bcacheableReads\b(?!\s*\??:)/.test(source)) {
@@ -102,18 +125,11 @@ function findBypasses(source: string, keys: string[]): string[] {
   return bypasses;
 }
 
-const bypasses = scannedDirs
-  .flatMap((dir) => sourceFiles(path.join(rootDir, dir)))
-  .flatMap((file) => {
-    const source = fs
-      .readFileSync(file, "utf8")
-      // drop comment lines, so commented-out code does not count
-      .replace(/^\s*(\/\/|\/\*|\*).*$/gm, "");
-    return findBypasses(
-      source,
-      isServerFile(file) ? twinKeys : forbiddenKeys,
-    ).map((key) => `${path.relative(rootDir, file)}: ${key}`);
-  });
+const bypasses = scan(invokeReadDirs, findBypasses);
+
+const nextPostReads = scan(nextDirs, (source) =>
+  quotedKeys(source, Object.keys(cacheableReadRoutes)),
+);
 
 if (bypasses.length) {
   console.error("Cacheable reads called outside invokeRead:\n");
@@ -121,11 +137,22 @@ if (bypasses.length) {
     console.error(`  - ${bypass}`);
   }
   console.error(
-    "\nRegister the route in cacheableReadRoutes. Call invokeRead with its POST operation. Never branch on cacheableReads.",
+    "\nRegister the route in cacheableReadRoutes. Call invokeRead with its POST operation. Never branch on cacheableReads.\n",
   );
+}
+
+if (nextPostReads.length) {
+  console.error("Next.js templates calling a cacheable read with POST:\n");
+  for (const postRead of nextPostReads) {
+    console.error(`  - ${postRead}`);
+  }
+  console.error("\nCall the GET twin of the read instead.\n");
+}
+
+if (bypasses.length || nextPostReads.length) {
   process.exit(1);
 }
 
 console.log(
-  `Every cacheable read goes through invokeRead (${scannedDirs.length} dirs scanned).`,
+  `Every cacheable read goes through invokeRead (${invokeReadDirs.length} dirs scanned) or its GET twin (${nextDirs.length} Next.js dirs scanned).`,
 );

@@ -17,21 +17,10 @@ template.
 `--color-<token>` custom property and the matching utilities (`bg-*`, `text-*`,
 `border-*` and the rest).
 
-## CSS custom properties
-
-```css
-@import "@shopware/design-tokens/tokens.css";
-```
-
-`tokens.css` declares the same `--color-<token>` properties on `:root`, for
-projects without Tailwind CSS.
-
-## TypeScript and JSON
+## TypeScript
 
 ```ts
 import { colors, designTokenTheme } from "@shopware/design-tokens";
 ```
 
 `designTokenTheme` has the `{ colors }` shape a UnoCSS theme expects.
-`@shopware/design-tokens/tokens.json` holds the same values for tools that read
-JSON.

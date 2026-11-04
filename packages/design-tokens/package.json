@@ -1,7 +1,7 @@
 {
   "name": "@shopware/design-tokens",
   "version": "0.0.1",
-  "description": "Shopware Frontends design tokens as TypeScript, CSS custom properties, a Tailwind CSS v4 theme and JSON",
+  "description": "Shopware Frontends design tokens as TypeScript and a Tailwind CSS v4 theme",
   "author": "Shopware",
   "type": "module",
   "repository": {
@@ -34,9 +34,7 @@
         "default": "./dist/index.mjs"
       }
     },
-    "./tailwind.css": "./dist/tailwind.css",
-    "./tokens.css": "./dist/tokens.css",
-    "./tokens.json": "./dist/tokens.json"
+    "./tailwind.css": "./dist/tailwind.css"
   },
   "scripts": {
     "build": "unbuild",
@@ -48,9 +46,9 @@
   },
   "devDependencies": {
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
-    "@vitest/coverage-v8": "5.0.0",
+    "@vitest/coverage-v8": "5.0.5",
     "tsconfig": "workspace:*",
     "unbuild": "3.6.1",
-    "vitest": "5.0.0"
+    "vitest": "5.0.5"
   }
 }
