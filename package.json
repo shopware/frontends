@@ -24,6 +24,7 @@
     "test:bench": "turbo run test:bench -- --run",
     "test:e2e": "turbo run test:e2e",
     "check:templates": "esno scripts/checkTemplatesManifest.ts",
+    "check:cacheable-reads": "esno scripts/checkCacheableReads.ts",
     "format": "oxfmt --write .",
     "version": "changeset version",
     "postversion": "pnpm i && pnpm format && pnpm run versionReadme",
