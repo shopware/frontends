@@ -33,6 +33,14 @@ export default defineNuxtConfig({
         // the user's currency. Disable shared HTML cache/ISR for these pages.
         // useUserContextInSSR: true,
       },
+      // Proof of concept: registers storefront tools with the WebMCP browser
+      // API (app/plugins/webmcp.client.ts). "off" | "read_only" | "shopping".
+      // Override with NUXT_PUBLIC_WEB_MCP_MODE. Needs a WebMCP-capable browser
+      // (Chrome: chrome://flags/#enable-webmcp-testing); otherwise the tools
+      // are only reachable through window.__shopwareWebMcp in dev.
+      webMcp: {
+        mode: "shopping",
+      },
     },
   },
   compatibilityDate: "2025-04-15",

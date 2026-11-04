@@ -1,0 +1,48 @@
+{
+  "name": "@shopware/webmcp",
+  "version": "0.0.0",
+  "description": "Proof of concept: register Shopware storefront tools with the WebMCP browser API (document.modelContext)",
+  "author": "Shopware",
+  "type": "module",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shopware/frontends.git"
+  },
+  "keywords": [
+    "shopware",
+    "webmcp",
+    "agentic-commerce"
+  ],
+  "bugs": {
+    "url": "https://github.com/shopware/frontends/issues"
+  },
+  "license": "MIT",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    }
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "lint": "oxlint . && oxfmt --check .",
+    "lint:fix": "oxlint --fix . && oxfmt --write . && pnpm run typecheck",
+    "typecheck": "tsgo --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@shopware/api-client": "workspace:*",
+    "@shopware/helpers": "workspace:*"
+  },
+  "devDependencies": {
+    "@typescript/native-preview": "7.0.0-dev.20260205.1",
+    "happy-dom": "20.14.5",
+    "tsconfig": "workspace:*",
+    "vitest": "5.0.0"
+  }
+}
