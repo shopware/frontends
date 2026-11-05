@@ -25,6 +25,9 @@ test.describe("Sitemap", { tag: "@frontends" }, () => {
   test("sitemap.xml lists files on this host and they resolve", async ({
     request,
   }) => {
+    // Two waits of up to 45 s do not fit the default 60 s.
+    test.setTimeout(120_000);
+
     const index = await getWhenNotThrottled(request, "/sitemap.xml");
 
     expect(index.status()).toBe(200);
