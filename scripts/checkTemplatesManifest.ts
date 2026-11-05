@@ -19,7 +19,7 @@ import semver from "semver";
 type Template = {
   id: string;
   packageName: string;
-  framework: "nuxt" | "astro" | "vite";
+  framework: "nuxt" | "next" | "astro" | "vite";
   buildCommand: string;
   devCommand: string;
   node: string;
