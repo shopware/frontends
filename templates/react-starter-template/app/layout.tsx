@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import { Suspense } from "react";
-import type { ReactNode } from "react";
 
 import { MainNavigation } from "@/features/navigation/components/MainNavigation";
 import { StorefrontProviders } from "@/features/storefront/components/StorefrontProviders";
