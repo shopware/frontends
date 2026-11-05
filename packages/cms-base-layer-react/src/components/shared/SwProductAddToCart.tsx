@@ -3,12 +3,13 @@ import type { CSSProperties } from "react";
 import type { Schemas } from "#shopware";
 
 import type { CmsClientContext } from "../../context";
+import { prefixUrl } from "../../helpers/resolveUrl";
 import { SwProductAddToCartForm } from "./SwProductAddToCartForm";
 import { SwStockInfo } from "./SwStockInfo";
 
 export type SwProductAddToCartProps = {
   product: Schemas["Product"];
-  ctx: Pick<CmsClientContext, "translations">;
+  ctx: Pick<CmsClientContext, "translations" | "urlPrefix">;
   className?: string;
   style?: CSSProperties;
 };
@@ -28,6 +29,7 @@ export function SwProductAddToCart({
       minPurchase={product.minPurchase}
       maxPurchase={product.maxPurchase}
       purchaseSteps={product.purchaseSteps}
+      cartLink={prefixUrl("/checkout/cart", ctx.urlPrefix)}
       translations={ctx.translations}
       className={className}
       style={style}

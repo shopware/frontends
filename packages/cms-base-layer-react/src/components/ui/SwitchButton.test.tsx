@@ -14,8 +14,9 @@ describe("SwitchButton", () => {
       />,
     );
     expect(html.match(/<label/g)).toHaveLength(1);
-    expect(html).toContain('for="switch-shipping-free"');
-    expect(html).toContain('id="switch-shipping-free"');
+    const inputId = html.match(/<input[^>]*id="([^"]+)"/)?.[1];
+    expect(inputId).toBeTruthy();
+    expect(html).toContain(`for="${inputId}"`);
     expect(html).toContain('type="checkbox"');
     expect(html).toContain('role="switch"');
     expect(html).toContain('aria-checked="true"');

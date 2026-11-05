@@ -10,21 +10,21 @@ const availableFilters: ListingFilter[] = [
     code: "color",
     label: "Color",
     name: "Color",
-    options: [{ id: "red", translated: { name: "Red" } }],
+    options: [{ id: "red", name: "Red" }],
   },
   {
     id: "manufacturer",
     code: "manufacturer",
     label: "Manufacturer",
     name: "Manufacturer",
-    entities: [{ id: "acme", translated: { name: "Acme" } }],
+    entities: [{ id: "acme", name: "Acme" }],
   },
   {
     id: "categories",
     code: "categories",
     label: "categories",
     name: "categories",
-    entities: [{ id: "shoes", translated: { name: "Shoes" } }],
+    entities: [{ id: "shoes", name: "Shoes" }],
   },
 ];
 

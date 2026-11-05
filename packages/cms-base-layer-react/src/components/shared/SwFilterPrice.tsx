@@ -85,40 +85,36 @@ export function SwFilterPrice({
   });
 
   const pricesRef = useRef(prices);
+  useEffect(() => {
+    pricesRef.current = prices;
+  }, [prices]);
+
+  const timer = useRef<number | undefined>(undefined);
+  const hasPendingEmit = useRef(false);
   const emitRange = useCallback(() => {
+    window.clearTimeout(timer.current);
+    hasPendingEmit.current = false;
     const { min, max } = pricesRef.current;
     onSelectValueRef.current({ code: "price", value: { min, max } });
   }, []);
-
-  const timer = useRef<number | undefined>(undefined);
-  const clearPendingEmit = () => window.clearTimeout(timer.current);
-  const scheduleEmit = useCallback(() => {
-    window.clearTimeout(timer.current);
-    timer.current = window.setTimeout(emitRange, DEBOUNCE_MS);
-  }, [emitRange]);
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
-  const userChanged = useRef(false);
-  const previousPrices = useRef(prices);
-  useEffect(() => {
-    const previous = previousPrices.current;
-    previousPrices.current = prices;
-    pricesRef.current = prices;
-    if (!userChanged.current) return;
-    userChanged.current = false;
-    if (prices.min !== previous.min || prices.max !== previous.max) {
-      scheduleEmit();
-    }
-  }, [prices, scheduleEmit]);
-
-  const updateUserPrices = (update: (current: Prices) => Prices) => {
-    userChanged.current = true;
-    setPrices(update);
-  };
+  const applyPrices = useCallback(
+    (update: (current: Prices) => Prices) => {
+      const current = pricesRef.current;
+      const next = update(current);
+      if (next.min === current.min && next.max === current.max) return;
+      pricesRef.current = next;
+      setPrices(next);
+      hasPendingEmit.current = true;
+      window.clearTimeout(timer.current);
+      timer.current = window.setTimeout(emitRange, DEBOUNCE_MS);
+    },
+    [emitRange],
+  );
 
   const onInputBlur = () => {
-    clearPendingEmit();
-    emitRange();
+    if (hasPendingEmit.current) emitRange();
   };
 
   const [dragging, setDragging] = useState<DragType>(null);
@@ -129,8 +125,7 @@ export function SwFilterPrice({
 
   const clampThumb = useCallback(
     (type: "min" | "max", value: number) => {
-      userChanged.current = true;
-      setPrices((current) => {
+      applyPrices((current) => {
         if (type === "min") {
           return value >= rangeMin && value <= current.max
             ? { ...current, min: value }
@@ -141,7 +136,7 @@ export function SwFilterPrice({
           : current;
       });
     },
-    [rangeMin, rangeMax],
+    [applyPrices, rangeMin, rangeMax],
   );
 
   useEffect(() => {
@@ -256,7 +251,7 @@ export function SwFilterPrice({
                   value={prices.min}
                   onChange={(event) => {
                     const min = toInputNumber(event);
-                    updateUserPrices((current) => ({ ...current, min }));
+                    applyPrices((current) => ({ ...current, min }));
                   }}
                   onBlur={onInputBlur}
                   className="w-full bg-transparent border-none outline-hidden text-surface-on-surface text-sm font-normal leading-tight"
@@ -272,7 +267,7 @@ export function SwFilterPrice({
                   value={prices.max}
                   onChange={(event) => {
                     const max = toInputNumber(event);
-                    updateUserPrices((current) => ({ ...current, max }));
+                    applyPrices((current) => ({ ...current, max }));
                   }}
                   onBlur={onInputBlur}
                   className="w-full bg-transparent border-none outline-hidden text-surface-on-surface text-sm font-normal leading-tight"

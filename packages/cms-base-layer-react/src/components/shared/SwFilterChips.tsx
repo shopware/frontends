@@ -21,13 +21,7 @@ export type SwFilterChipsProps = {
 
 const getTranslatedName = (
   item: { translated?: { name?: string }; name?: string } | undefined,
-): string | null => {
-  if (!item) return null;
-  if ("translated" in item) {
-    return item.translated?.name || ("name" in item ? item.name : null) || null;
-  }
-  return null;
-};
+): string | null => item?.translated?.name || item?.name || null;
 
 function getActiveChips(
   filters: SwFilterChipsState,

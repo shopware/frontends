@@ -7,7 +7,7 @@ import type { CmsActions } from "../../actions/CmsActionsContext";
 import { BaseButton } from "../ui/BaseButton";
 import { IconButton } from "../ui/IconButton";
 import { WishlistIcon } from "../ui/WishlistIcon";
-import { notifyCartErrors } from "./cartNotifications";
+import { useAddToCart } from "./useAddToCart";
 
 export type SwProductCardWishlistTranslations = {
   addedToWishlist: string;
@@ -132,34 +132,19 @@ export function SwProductCardAddToCartButton({
   cartLink,
   translations,
 }: SwProductCardAddToCartButtonProps) {
-  const actions = useCmsActions();
-
-  async function addToCart() {
-    const result = await actions.addToCart({ productId });
-    const hasCartErrors = notifyCartErrors(
-      actions,
-      result.errors,
-      translations.errors,
-    );
-    if (hasCartErrors) return;
-    if (result.ok) {
-      actions.notify({
-        type: "success",
-        message: `${productName} ${translations.addedToCart}`,
-        action: { label: translations.viewCart, href: cartLink },
-      });
-      return;
-    }
-    if (result.message) {
-      actions.notify({ type: "error", message: result.message });
-    }
-  }
+  const { addToCart, isAdding } = useAddToCart({
+    productId,
+    productName,
+    cartLink,
+    messages: translations,
+  });
 
   return (
     <BaseButton
       variant="primary"
       size="medium"
       disabled={!available}
+      loading={isAdding}
       block
       data-testid="add-to-cart-button"
       data-product-id={productId}

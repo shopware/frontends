@@ -41,6 +41,7 @@ export function SwFilterCategories({
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const toggle = () => setIsFilterVisible((visible) => !visible);
   const idPrefix = useId();
+  const panelId = `${idPrefix}panel`;
 
   const categoryOptions = excludeRootCategory(filter.entities, rootCategoryId);
   const selectedIds = selectedFilters.categories ?? [];
@@ -61,7 +62,7 @@ export function SwFilterCategories({
             className="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-between items-center gap-1 cursor-pointer"
             onClick={toggle}
             aria-expanded={isFilterVisible}
-            aria-controls={filter.code}
+            aria-controls={panelId}
             aria-label={t.listing.categories}
           >
             <div className="flex-1 flex items-center gap-2.5">
@@ -88,7 +89,7 @@ export function SwFilterCategories({
 
       {(isFilterVisible || displayMode === "dropdown") && (
         <div
-          id={filter.code}
+          id={panelId}
           className="self-stretch flex flex-col justify-start items-start gap-4"
         >
           <fieldset className="self-stretch flex flex-col justify-start items-start gap-4">

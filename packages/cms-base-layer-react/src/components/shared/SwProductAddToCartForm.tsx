@@ -3,13 +3,12 @@
 import { useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 
-import { useCmsActions } from "../../actions/CmsActionsContext";
 import { cx } from "../../helpers/cx";
 import { withTranslationDefaults } from "../../translations";
 import type { CmsTranslations } from "../../translations";
 import { BaseButton } from "../ui/BaseButton";
-import { notifyCartErrors } from "./cartNotifications";
 import { SwQuantitySelect } from "./SwQuantitySelect";
+import { useAddToCart } from "./useAddToCart";
 
 export type SwProductAddToCartFormProps = {
   productId: string;
@@ -19,6 +18,7 @@ export type SwProductAddToCartFormProps = {
   minPurchase?: number;
   maxPurchase?: number;
   purchaseSteps?: number;
+  cartLink: string;
   translations?: CmsTranslations;
   children?: ReactNode;
   className?: string;
@@ -47,6 +47,7 @@ export function SwProductAddToCartForm({
   minPurchase,
   maxPurchase,
   purchaseSteps,
+  cartLink,
   translations: translationsInput,
   children,
   className,
@@ -56,39 +57,20 @@ export function SwProductAddToCartForm({
     translationsInput,
     translationDefaults,
   );
-  const actions = useCmsActions();
   const [quantity, setQuantity] = useState(1);
+  const { addToCart, isAdding } = useAddToCart({
+    productId,
+    productName,
+    cartLink,
+    messages: {
+      addedToCart: translations.product.addedToCart,
+      viewCart: translations.product.viewCart,
+      errors: translations.errors,
+    },
+  });
 
-  async function addToCart() {
-    try {
-      const result = await actions.addToCart({ productId, quantity });
-      setQuantity(1);
-      const hasCartErrors = notifyCartErrors(
-        actions,
-        result.errors,
-        translations.errors,
-      );
-      if (hasCartErrors) return;
-      if (!result.ok) {
-        if (result.message) {
-          actions.notify({ type: "error", message: result.message });
-        }
-        return;
-      }
-      actions.notify({
-        type: "success",
-        message: `${productName} ${translations.product.addedToCart}`,
-        action: {
-          label: translations.product.viewCart,
-          href: "/checkout/cart",
-        },
-      });
-    } catch (error) {
-      actions.notify({
-        type: "error",
-        message: error instanceof Error ? error.message : String(error),
-      });
-    }
+  async function handleAddToCart() {
+    if (await addToCart(quantity)) setQuantity(1);
   }
 
   return (
@@ -113,11 +95,12 @@ export function SwProductAddToCartForm({
           variant="primary"
           size="medium"
           disabled={!available}
+          loading={isAdding}
           block
           data-testid="add-to-cart-button"
           data-product-id={productId}
           onClick={() => {
-            void addToCart();
+            void handleAddToCart();
           }}
         >
           {translations.product.addToCart}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import type { CSSProperties, ChangeEvent } from "react";
 
 import { cx } from "../../helpers/cx";
@@ -38,6 +39,7 @@ export function SwProductListingPagination({
   style,
 }: SwProductListingPaginationProps) {
   const t = withTranslationDefaults(translations, translationDefaults);
+  const limitSelectId = useId();
 
   if (total <= 0) return null;
 
@@ -61,7 +63,7 @@ export function SwProductListingPagination({
 
       <div className="flex justify-center items-center gap-3 sm:gap-4">
         <label
-          htmlFor="limit"
+          htmlFor={limitSelectId}
           className="text-sm sm:text-base text-surface-on-surface"
           data-testid="listing-pagination-limit-label"
         >
@@ -69,7 +71,7 @@ export function SwProductListingPagination({
         </label>
         <div className="relative">
           <select
-            id="limit"
+            id={limitSelectId}
             name="limitchoices"
             value={limit}
             onChange={handleLimitChange}

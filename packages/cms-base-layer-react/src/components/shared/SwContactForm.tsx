@@ -127,6 +127,7 @@ export function SwContactForm({
 
   async function invokeSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (loading) return;
     touchAll();
     if (!isValid) return;
     setLoading(true);
@@ -328,6 +329,7 @@ export function SwContactForm({
             <button
               className="group relative flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-brand-primary hover:bg-brand-primary-hover focus:outline-hidden focus:ring-2 focus:ring-brand-primary disabled:opacity-75"
               type="submit"
+              disabled={loading}
             >
               {t.form.submit}
             </button>

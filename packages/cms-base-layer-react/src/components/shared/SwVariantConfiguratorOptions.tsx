@@ -85,7 +85,11 @@ export function SwVariantConfiguratorOptions({
       : getInitialSelection(optionGroups, optionIds);
   const selectedOptionIds = Object.values(selected);
 
+  const isBusy = isLoading || isPending;
+
   async function handleChange(group: SwVariantOptionGroup, optionId: string) {
+    if (isBusy) return;
+    const previous = selected;
     const next = { ...selected, [group.id]: optionId };
     setSelection({ productId, selected: next });
     setIsLoading(true);
@@ -96,8 +100,12 @@ export function SwVariantConfiguratorOptions({
         options: Object.values(next),
         switchedGroup: group.id,
       });
-      if (!allowRedirect || !variant) {
+      if (!allowRedirect) {
         onChange?.(variant);
+        return;
+      }
+      if (!variant) {
+        setSelection({ productId, selected: previous });
         return;
       }
       const path = prefixUrl(
@@ -107,6 +115,12 @@ export function SwVariantConfiguratorOptions({
       startTransition(() => {
         router.push(path);
       });
+    } catch (error) {
+      setSelection({ productId, selected: previous });
+      actions.notify({
+        type: "error",
+        message: error instanceof Error ? error.message : String(error),
+      });
     } finally {
       setIsLoading(false);
     }
@@ -114,7 +128,7 @@ export function SwVariantConfiguratorOptions({
 
   return (
     <div className={cx("relative flex flex-col", className)} style={style}>
-      {isLoading || isPending ? (
+      {isBusy ? (
         <div className="absolute inset-0 flex items-center justify-center z-10 bg-white/75">
           <SpinnerIcon
             data-testid="loading"
@@ -127,7 +141,7 @@ export function SwVariantConfiguratorOptions({
           <div className="text-sm text-gray-900 font-medium">
             {optionGroup.name}
           </div>
-          <fieldset className="mt-4 flex-1">
+          <fieldset className="mt-4 flex-1" disabled={isBusy}>
             <legend className="sr-only">
               {translations.product.chooseA} {optionGroup.name}
             </legend>

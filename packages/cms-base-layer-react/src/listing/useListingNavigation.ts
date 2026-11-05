@@ -1,7 +1,14 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo, useTransition } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useSyncExternalStore,
+  useTransition,
+} from "react";
 
 import {
   LISTING_DEFAULTS,
@@ -33,13 +40,43 @@ function toRecord(searchParams: URLSearchParams): ListingSearchParams {
   return record;
 }
 
+const pendingSources = new Set<symbol>();
+const pendingListeners = new Set<() => void>();
+
+function setSourcePending(source: symbol, pending: boolean) {
+  if (pendingSources.has(source) === pending) return;
+  if (pending) pendingSources.add(source);
+  else pendingSources.delete(source);
+  for (const listener of pendingListeners) listener();
+}
+
+function subscribeToPending(listener: () => void) {
+  pendingListeners.add(listener);
+  return () => {
+    pendingListeners.delete(listener);
+  };
+}
+
+const getPendingSnapshot = () => pendingSources.size > 0;
+const getPendingServerSnapshot = () => false;
+
 export function useListingNavigation(
   options: UseListingNavigationOptions = {},
 ) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [isPending, startTransition] = useTransition();
+  const [isNavigating, startTransition] = useTransition();
+  const [pendingSource] = useState(() => Symbol("listing-navigation"));
+  useEffect(() => {
+    setSourcePending(pendingSource, isNavigating);
+    return () => setSourcePending(pendingSource, false);
+  }, [pendingSource, isNavigating]);
+  const isPending = useSyncExternalStore(
+    subscribeToPending,
+    getPendingSnapshot,
+    getPendingServerSnapshot,
+  );
   const isProductSearch = !!options.isProductSearch;
 
   const state = useMemo(

@@ -34,10 +34,7 @@ export function StorefrontProviders({ children }: { children: ReactNode }) {
   }, []);
 
   const actions = useMemo<Partial<CmsActions>>(() => {
-    const notWired = async () => {
-      notify({ type: "warning", message: NOT_WIRED });
-      return { ok: false, message: NOT_WIRED };
-    };
+    const notWired = async () => ({ ok: false, message: NOT_WIRED });
     return {
       notify,
       addToCart: notWired,

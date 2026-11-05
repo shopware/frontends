@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import type { MouseEvent, ReactNode } from "react";
 
 import { cx } from "../../helpers/cx";
@@ -35,7 +35,7 @@ export function SwitchButton({
   }
 
   const inputName = name ?? "switch-button";
-  const inputId = `switch-${inputName}`;
+  const inputId = useId();
 
   const toggleState = (next?: boolean) => {
     if (disabled) return;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import type { FormEvent } from "react";
 
 import { useCmsActions } from "../../actions/CmsActionsContext";
@@ -130,20 +130,27 @@ export function SwProductReviewsForm({
   }
 
   async function submit() {
+    if (isLoading) return;
     setTouched(ALL_TOUCHED);
     if (errors.rating || errors.title || errors.review) return;
 
     setIsLoading(true);
-    const result = await actions
-      .submitProductReview({
+    let result: CmsReviewResult;
+    try {
+      result = await actions.submitProductReview({
         productId,
         title,
         content: review,
         points: rating ?? 0,
-      })
-      .catch(() => null);
-    setIsLoading(false);
-    if (!result) return;
+      });
+    } catch (error) {
+      setErrorMessages([
+        error instanceof Error ? error.message : String(error),
+      ]);
+      return;
+    } finally {
+      setIsLoading(false);
+    }
     if (!result.ok) {
       setErrorMessages(resolveErrorMessages(result));
       return;
@@ -161,6 +168,8 @@ export function SwProductReviewsForm({
     void submit();
   }
 
+  const titleId = useId();
+  const reviewId = useId();
   const currentRating = rating ?? 0;
   const ratingError = visibleError("rating");
   const titleError = visibleError("title");
@@ -235,13 +244,13 @@ export function SwProductReviewsForm({
       ) : null}
       <div>
         <label
-          htmlFor="title"
+          htmlFor={titleId}
           className="block mb-2 text-sm font-medium text-surface-on-surface"
         >
           {t.product.reviewsForm.title}
         </label>
         <input
-          id="title"
+          id={titleId}
           value={title}
           className={cx(
             INPUT_CLASS,
@@ -262,13 +271,13 @@ export function SwProductReviewsForm({
       </div>
       <div>
         <label
-          htmlFor="review"
+          htmlFor={reviewId}
           className="block mb-2 text-sm font-medium text-surface-on-surface"
         >
           {t.product.reviewsForm.review}
         </label>
         <textarea
-          id="review"
+          id={reviewId}
           value={review}
           className={cx(
             INPUT_CLASS,

@@ -28,6 +28,7 @@ export function SwFilterProperties({
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const toggle = () => setIsFilterVisible((visible) => !visible);
   const idPrefix = useId();
+  const panelId = `${idPrefix}panel`;
 
   const selectedIds =
     filter.code === "manufacturer"
@@ -52,7 +53,7 @@ export function SwFilterProperties({
             className="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-between items-center gap-1 cursor-pointer"
             onClick={toggle}
             aria-expanded={isFilterVisible}
-            aria-controls={filter.code}
+            aria-controls={panelId}
             aria-label={filter.label}
           >
             <div className="flex-1 flex items-center gap-2.5">
@@ -79,7 +80,7 @@ export function SwFilterProperties({
 
       {(isFilterVisible || displayMode === "dropdown") && (
         <div
-          id={filter.code}
+          id={panelId}
           className="self-stretch flex flex-col justify-start items-start gap-4"
         >
           <fieldset className="self-stretch flex flex-col justify-start items-start gap-4">

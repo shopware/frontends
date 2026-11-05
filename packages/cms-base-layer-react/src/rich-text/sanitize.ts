@@ -1,4 +1,9 @@
-import { FilterXSS, escapeAttrValue, getDefaultWhiteList } from "xss";
+import {
+  FilterXSS,
+  escapeAttrValue,
+  friendlyAttrValue,
+  getDefaultWhiteList,
+} from "xss";
 
 const EXTRA_ATTRIBUTES = [
   "class",
@@ -37,8 +42,8 @@ function buildWhiteList(): Record<string, string[]> {
 }
 
 function isRelativeOrSafeHref(value: string): boolean {
-  const trimmed = value.trim().toLowerCase();
-  const scheme = SCHEME_PATTERN.exec(trimmed)?.[0];
+  const compact = value.replace(/\s+/g, "").toLowerCase();
+  const scheme = SCHEME_PATTERN.exec(compact)?.[0];
   if (!scheme) return true;
   return SAFE_SCHEMES.includes(scheme);
 }
@@ -48,10 +53,11 @@ const filter = new FilterXSS({
   css: false,
   stripIgnoreTagBody: ["script", "style"],
   onTagAttr(_tag, name, value) {
-    if (name === "href" && isRelativeOrSafeHref(value)) {
-      return `href="${escapeAttrValue(value)}"`;
-    }
-    return undefined;
+    if (name !== "href") return undefined;
+    const decoded = friendlyAttrValue(value);
+    return isRelativeOrSafeHref(decoded)
+      ? `href="${escapeAttrValue(decoded)}"`
+      : "";
   },
   onIgnoreTagAttr(_tag, name, value) {
     if (name.startsWith("data-")) {

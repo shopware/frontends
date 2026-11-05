@@ -32,7 +32,8 @@ export function CmsElementImageGallerySlides({
 }: CmsElementImageGallerySlidesProps) {
   const slides = Children.toArray(children);
   const count = slides.length;
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [requestedIndex, setCurrentIndex] = useState(0);
+  const currentIndex = Math.min(requestedIndex, Math.max(count - 1, 0));
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 

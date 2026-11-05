@@ -54,7 +54,7 @@ export function SwProductListingFiltersHorizontal({
     isPending,
   } = useListingFilters({ filters, isProductSearch, currentSort });
 
-  const hasActiveFilter = (filter: { code: string }) => {
+  const hasActiveFilter = (filter: ListingFilter) => {
     if (filter.code === "manufacturer") {
       return selectedFilters.manufacturer.length > 0;
     }
@@ -73,7 +73,11 @@ export function SwProductListingFiltersHorizontal({
     if (filter.code === "shipping-free") {
       return selectedFilters["shipping-free"] !== undefined;
     }
-    return selectedFilters.properties.length > 0;
+    return (
+      filter.options?.some((option) =>
+        selectedFilters.properties.includes(option.id),
+      ) ?? false
+    );
   };
 
   return (

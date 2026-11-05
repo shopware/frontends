@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { ReactNode, TransitionEvent } from "react";
 
 import { cx } from "../../helpers/cx";
@@ -75,6 +75,7 @@ function SectionToggle({ title, open, testId, onToggle }: SectionToggleProps) {
 type PanelPhase = "closed" | "opening" | "open" | "closing";
 
 const PANEL_MAX_HEIGHT = "500px";
+const PANEL_TRANSITION_FALLBACK_MS = 400;
 const PANEL_MOTION = "overflow-hidden transition-all duration-300 ease-in-out";
 
 const panelPhaseClasses: Record<Exclude<PanelPhase, "closed">, string> = {
@@ -106,6 +107,14 @@ function SectionPanel({
     panel.style.maxHeight = PANEL_MAX_HEIGHT;
     void panel.offsetHeight;
     panel.style.maxHeight = "";
+  }, [phase]);
+
+  useEffect(() => {
+    if (phase !== "opening" && phase !== "closing") return;
+    const timer = window.setTimeout(() => {
+      setPhase(phase === "opening" ? "open" : "closed");
+    }, PANEL_TRANSITION_FALLBACK_MS);
+    return () => window.clearTimeout(timer);
   }, [phase]);
 
   if (phase === "closed") return null;
