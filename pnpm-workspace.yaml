@@ -18,6 +18,10 @@ minimumReleaseAgeExclude:
   - "@next/swc-win32-arm64-msvc@16.4.4"
   - "@next/swc-win32-x64-msvc@16.4.4"
   - next@16.4.4
+  - "@vitest/coverage-v8@5.1.0"
+  - "@vitest/mocker@5.1.0"
+  - "@vitest/spy@5.1.0"
+  - vitest@5.1.0
 
 overrides:
   "@vercel/blob>undici": "^6.29.1"
