@@ -27,9 +27,9 @@ of hardcoding a list or globbing `templates/`. `templates/manifest.schema.json`
 is its definition; the field meanings live there, not here.
 
 - **`vue-starter-template` is the supported starting point.**
-  **`vue-demo-store` is deprecated** (#2667) — it stays as a reference
-  implementation to read, and must never be offered as a base for new work.
-  `supportLevel` in the manifest is authoritative if this ever disagrees.
+  **`vue-demo-store` is deprecated** (#2667) — a reference to read, never a base
+  for new work. `supportLevel` in the manifest wins if this ever disagrees.
+  Before proposing a template, layer or package, answer `templates/README.md`.
 - Two ids do not match their package name: `astro` is `shopware-astro`,
   `vue-starter-template-extended` is `lumora-demo-store`. Filter pnpm workspaces
   on `packageName`, identify directories on `id`.
@@ -159,7 +159,6 @@ BASE_E2E_URL=https://frontends-starter-template.vercel.app/ \
 
 ## Pull requests
 
-- New template, layer, package or example? See [templates/README.md](templates/README.md).
 - Conventional Commits title (`feat:`, `fix:`, `docs:`, `chore:`).
 - A changeset is required for any change to a published package; commit the
   generated `.changeset/*.md` with your change.

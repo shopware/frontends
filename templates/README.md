@@ -21,13 +21,9 @@ Bug fixes, docs, chores and refactors skip the questions. They go where the code
 
 "The starter" is `templates/vue-starter-template`.
 
-`templates/manifest.json` lists what we ship today, with a `supportLevel` per entry. Every entry but the starter is not a shape these questions produce:
+`templates/manifest.json` lists what we ship today. Read `supportLevel` and `notes` there. Only the starter is a model for new work. `vue-starter-template-extended` (Lumora) is `supported` too, but it shows shop projects how to extend the starter as a Nuxt layer. It is not a shape these questions produce.
 
-- `vue-starter-template-extended` (Lumora) shows shop projects how to extend the starter as a Nuxt layer. It cannot leave the monorepo, so its entry is `scaffoldable: false` and its `notes` field says why. Shop projects can follow that pattern.
-- `astro` and `vue-vite-blank` show the API client outside Nuxt, not a storefront.
-- `vue-blank` is an empty Nuxt app with the packages installed. `vue-demo-store` is deprecated ([#2667](https://github.com/shopware/frontends/pull/2667)). Neither is a model for new work.
-
-If templates move to their own repository ([#2634](https://github.com/shopware/frontends/issues/2634), answer 6), the starter and Lumora move together.
+If templates move to their own repository (see "Must a template live in this monorepo?" in [#2634](https://github.com/shopware/frontends/issues/2634)), the starter and Lumora move together.
 
 ### 1. Store API logic, no UI, used by two apps?
 
@@ -41,9 +37,11 @@ Routes that only an extension adds, like SwagCommercial, answer no. That logic s
 
 ### 2. Non-Nuxt, or backend not ready?
 
-A non-Nuxt app cannot use our Nuxt layers, so `@shopware/cms-base-layer` cannot be reused there ([#2656](https://github.com/shopware/frontends/issues/2656)). For React and Next, [#2723](https://github.com/shopware/frontends/issues/2723) decides if a template is viable at all.
+Two different cases land here.
 
-"Backend not ready" means Shopware lacks the feature, or the demo backend cannot run it. Data you can seed yourself is not a blocker, see New template step 8. It matters here because every template runs against the public demo backend with no configuration. An example may need its own backend, like an installed payment plugin, and its README lists that.
+**Non-Nuxt:** the app cannot use our Nuxt layers, so `@shopware/cms-base-layer` cannot be reused there ([#2656](https://github.com/shopware/frontends/issues/2656)). For React and Next, [#2723](https://github.com/shopware/frontends/issues/2723) decides if a template is viable at all.
+
+**Backend not ready:** Shopware lacks the feature, or the demo backend cannot run it. Data you can seed yourself is not a blocker, see New template step 8. It matters here because every template runs against the public demo backend with no configuration. An example may need its own backend, like an installed payment plugin, and its README lists that.
 
 After the spike, answer the questions again and skip question 2. A non-Nuxt app never settles it. It stays in `templates/` with `supportLevel: example`, like `astro` or `vue-vite-blank`, or lives outside this repo until [#2723](https://github.com/shopware/frontends/issues/2723) says otherwise.
 
@@ -76,7 +74,7 @@ Answer no if the add-on must replace a starter page, route rule or composable. L
 - `routeRules` merge per pattern. On a pattern the app also sets, the app wins property by property, so a layer cannot relax that rule. A layer's more specific pattern does win for its own paths.
 - Layer order decides components and auto-imported composables.
 
-Adding any layer to the starter has a side effect. The starter pins its component dirs at `priority: 2` (`templates/vue-starter-template/nuxt.config.ts`). An extra layer can outrank them and replace same-named app components, and so can a local `layers/*` folder or a new `extends` entry. A new `extends` entry can even lift `@shopware/cms-base-layer` above the app's CMS overrides.
+Adding any layer to the starter has a side effect. The starter pins its component dirs at `priority: 2` (`templates/vue-starter-template/nuxt.config.ts`). Nuxt gives each layer's dirs `layerCount - index`, so `@shopware/cms-base-layer` sits at 2 today and ties with the app, which wins the tie. An `extends` entry placed after it, like one appended at the end, lifts it to 3. It then replaces the app's CMS overrides with no warning. A local `layers/*` folder can outrank the app the same way.
 
 ### 6. Every shop wants it by default?
 
@@ -100,19 +98,17 @@ A template is cheap to change but costly to keep in sync with the starter. A lay
 
 ## Example: B2B
 
-B2B is planned as its own template ([decision](https://github.com/shopware/frontends/issues/2657#issuecomment-5928341830)), pending sign-off in [#2634](https://github.com/shopware/frontends/issues/2634).
+B2B is planned as its own template ([decision](https://github.com/shopware/frontends/issues/2657#issuecomment-5928341830)). Status and bug-fix routing live in [#2657](https://github.com/shopware/frontends/issues/2657).
 
 Question 2 was open, because nobody had checked whether the demo backend runs the commercial B2B suite, and [#2657](https://github.com/shopware/frontends/issues/2657) asked whether B2B is a template or a Nuxt layer. So it started as a spike, which settled question 2 as no: the suite is there. The second pass answered yes to question 4. Login is required, and every page shows company prices, so the starter's shared page cache must be off everywhere.
 
 The B2B layer built in the spike showed why a layer does not fit:
 
-- A layer cannot switch off `cacheableReads`. The starter sets it in its own `shopware` options, and the app wins. A template can ship `false` itself, and `NUXT_PUBLIC_SHOPWARE_CACHEABLE_READS` overrides it at runtime.
+- A layer cannot make `cacheableReads: false` the default. The starter sets `true` in `runtimeConfig.public.shopware`, and the app wins. `NUXT_PUBLIC_SHOPWARE_CACHEABLE_READS=false` switches it off at runtime, but every deployment has to remember it, and forgetting it leaks guest prices. A template ships `false` itself.
 - A layer cannot relax the starter's `/**` ISR rule, by the precedence in question 5, and B2B needs the cache off on every path, so users silently see guest prices.
 - The starter's `/account` and `/checkout` pages win over the layer's pages, with no warning.
 
-Its bug fixes are separate parts. [#2803](https://github.com/shopware/frontends/issues/2803) and [#2804](https://github.com/shopware/frontends/issues/2804) go into `@shopware/composables`, [#2806](https://github.com/shopware/frontends/issues/2806) into the starter. Overriding `useUser` reaches every consumer, including `@shopware/cms-base-layer`, so those fixes go upstream.
-
-The quote logic leaves `@shopware/composables` and `@shopware/helpers` only after `examples/b2b-quote-management` and its docs move. `useB2bQuoteManagement` in composables and `canUseQuoteActions` in helpers will be deprecated first, so each package needs its own major.
+Its bug fixes are separate parts and go upstream first. Overriding `useUser` in a template reaches every consumer, including `@shopware/cms-base-layer`.
 
 ## Procedure
 
@@ -170,8 +166,8 @@ Then follow the steps for the shape.
 4. Fix shared bugs upstream first, and install `@shopware/*` from `canary`.
 5. Add the entry to `manifest.json` and run `pnpm run check:templates`.
 6. Make caching correct by default: `ssr: false` for personalized routes, and no personalized data in ISR HTML.
-7. Add an `AGENTS.md`, a CI build and a drift check against the starter. The drift check compares shared `nuxt.config.ts` keys and `@shopware/*` versions.
+7. Add an `AGENTS.md` and a CI build. A drift check against the starter (shared `nuxt.config.ts` keys and `@shopware/*` versions) is still to be built, see [#2868](https://github.com/shopware/frontends/issues/2868). Until then, review compares them by hand.
 8. Add a seed script if the demo backend lacks data, and keep it optional, see question 2. The README says what the missing data costs. For B2B that is signing in.
 9. Add a docs page under `apps/docs/src/introduction/templates/` and a section with a `<PageRef>` in `apps/docs/src/introduction/templates.md`.
 
-A template may also live in its own repository at the same bar ([#2634](https://github.com/shopware/frontends/issues/2634), answer 6). The registry cannot describe one yet: `manifest.schema.json` has no `repository` field and rejects extra ones, and `check:templates` wants a local `templates/<id>/`. So that needs a schema and checker change first. In-repo stays the default, so package changes are tested against the template in the same PR.
+A template may also live in its own repository at the same bar (see "Must a template live in this monorepo?" in [#2634](https://github.com/shopware/frontends/issues/2634)). The registry cannot describe one yet: `manifest.schema.json` has no `repository` field and rejects extra ones, and `check:templates` wants a local `templates/<id>/`. So that needs a schema and checker change first. In-repo stays the default, so package changes are tested against the template in the same PR.
