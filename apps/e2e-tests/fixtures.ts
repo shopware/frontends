@@ -30,10 +30,17 @@ export const ATTEMPT_LOG = "diagnostics/store-api-attempts.log";
  */
 export const MOCKED_STORE_API = { type: "mocked-store-api" };
 
+/**
+ * The demo backend's rate limit refills about once a minute. A retry starts
+ * at once, so it lands in the window the failed attempt drained.
+ */
+const RETRY_COOLDOWN_MS = 30_000;
+
 type Entry = Record<string, unknown>;
 
 /** Nitro logs neither, so without this a stall is just a locator timeout. */
 export const test = base.extend<{
+  retryCooldown: void;
   networkDiagnostics: void;
   storeApi: { value?: StoreApi };
   guidanceBanner: void;
@@ -49,6 +56,17 @@ export const test = base.extend<{
   myAccountPage: MyAccountPage;
   wishlistPage: WishlistPage;
 }>({
+  retryCooldown: [
+    // oxlint-disable-next-line no-empty-pattern
+    async ({}, use, testInfo) => {
+      if (testInfo.retry > 0) {
+        await new Promise((resolve) => setTimeout(resolve, RETRY_COOLDOWN_MS));
+      }
+      await use();
+    },
+    { auto: true, timeout: RETRY_COOLDOWN_MS + 10_000 },
+  ],
+
   networkDiagnostics: [
     async ({ page }, use, testInfo) => {
       if (

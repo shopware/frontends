@@ -79,7 +79,8 @@ jobs:
         id: e2e
         # No continue-on-error: the run has to fail for failed-job-check.yml to
         # notify. Nothing is gated on it, since this is scheduled only.
-        timeout-minutes: 25
+        # 13 min for the suite, plus a 30 s cool-down before every retry.
+        timeout-minutes: 30
         run: |
           cd apps/e2e-tests
           # pnpm forwards these straight through; `--` would swallow them.
