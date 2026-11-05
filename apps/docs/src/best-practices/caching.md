@@ -106,7 +106,7 @@ async function fetchCountries() {
 
 <!-- /automd -->
 
-Only routes in the `useCacheableRead` registry can use GET. A coverage test next to it fails when a read with a GET twin is not listed. A root check, `pnpm check:cacheable-reads`, runs on every pull request. It fails when code in the packages and templates it scans calls a listed route without `invokeRead`, or branches on `cacheableReads`.
+Only routes in the `useCacheableRead` registry can use GET. A coverage test next to it fails when a read with a GET twin is not listed. A root check, `pnpm check:cacheable-reads`, runs on every pull request. It fails when code in the packages and templates it scans calls a listed route without `invokeRead`, or branches on `cacheableReads`. Nitro server code cannot run the composable, so `server/` files may call the POST routes directly. Their GET twins stay forbidden there too.
 
 ### Which reads switch to GET
 
@@ -187,7 +187,7 @@ Because it is deterministic, identical criteria produce an identical `_criteria`
 
 ## Render layer: route rules (ISR, SWR, headers)
 
-Shopware Frontends configures page-level HTTP caching declaratively through Nuxt's [`routeRules`](https://nuxt.com/docs/api/nuxt-config#routerules), not through Nitro's handler-level cache APIs (`defineCachedEventHandler` / `cachedFunction` are not used in the templates). The keys are glob patterns: exact paths (`/`), prefix wildcards (`/account/**`), and extension globs (`/**/*.svg`). Nuxt merges all matching rules, with more specific patterns taking precedence.
+Shopware Frontends configures page-level HTTP caching declaratively through Nuxt's [`routeRules`](https://nuxt.com/docs/api/nuxt-config#routerules), not through Nitro's handler-level cache APIs (the one exception is the starter's sitemap proxy, which caches the backend's file list with `defineCachedFunction`). The keys are glob patterns: exact paths (`/`), prefix wildcards (`/account/**`), and extension globs (`/**/*.svg`). Nuxt merges all matching rules, with more specific patterns taking precedence.
 
 ### `isr` - Incremental Static Regeneration
 
