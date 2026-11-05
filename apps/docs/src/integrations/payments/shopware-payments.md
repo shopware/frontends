@@ -309,7 +309,7 @@ messages?.update({ amount: "49.99" });
 
 ## Apple Pay
 
-Add an `<apple-pay-button>` on the page. `applePay()` loads the Apple Pay script, or reuses a script tag or `ApplePaySession` the page already has. Register the storefront host under **Settings → Apple Pay**, download the association file from that screen, and serve it at `/.well-known/apple-developer-merchantid-domain-association` on that host. A headless app on its own domain needs its own registration. The Shopware storefront domain does not cover it.
+Add an `<apple-pay-button>` on the page. `applePay()` loads the Apple Pay script, or reuses a script tag the page already has. Safari's `ApplePaySession` does not skip that script, because the script defines `<apple-pay-button>`. Register the storefront host under **Settings → Apple Pay**, download the association file from that screen, and serve it at `/.well-known/apple-developer-merchantid-domain-association` on that host. A headless app on its own domain needs its own registration. The Shopware storefront domain does not cover it.
 
 Setup rejects with `NOT_ELIGIBLE` when the browser has no `ApplePaySession` version 4. `buttons()` funding stays `paypal` or `paylater`; Apple Pay goes through `applePay()`.
 
@@ -475,3 +475,9 @@ export { onError };
 ```
 
 <!-- /automd -->
+
+## Not supported yet
+
+::: warning
+**Pay upon Invoice (PUI)**, the **express button**, and **vaulting** are **not supported yet**. Support for them is coming soon.
+:::
