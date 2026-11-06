@@ -151,7 +151,7 @@ Pick by scope — where the product ref comes from, then what you do with it:
 
 Seven things the generated reference will not tell you:
 
-- `loadAssociations` declares an optional `params` argument with `method` and `searchParams`, and the implementation takes no parameters at all. Both are deprecated and discarded, so call `loadAssociations()`. `examples/product-detail-page` passes a full `associations` object inside `searchParams` that goes nowhere — treat it as a warning, not a pattern.
+- `loadAssociations` declares an optional `params` argument with `method` and `searchParams`, and the implementation takes no parameters at all. Both are deprecated and discarded, so call `loadAssociations()`.
 - `options.associationContext` is deprecated. It accepts `"cross-selling" | "reviews"`, but the implementation always calls the cross-selling operation. Passing `"reviews"` fetches cross-sellings. Use `useProductReviews` instead — see the [Product Reviews recipe](reviews.html).
 - The composable throws `[useProductAssociations]: Product is not provided.` during setup when the product ref is empty. It is a `throw` in the composable body, not a rejected promise, so it takes the whole component down — and on a server render it propagates to Nitro as a 500 for the entire route unless a `<NuxtErrorBoundary>` catches it. Resolve the product first.
 - Errors from the request are caught, logged to the console and swallowed. A resolved `loadAssociations()` is not proof that anything was fetched.
