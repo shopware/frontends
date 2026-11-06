@@ -6,7 +6,7 @@ import {
   getTranslatedProperty,
 } from "@shopware/helpers";
 import { defu } from "defu";
-import { computed, ref, unref } from "vue";
+import { computed, ref, unref, useId } from "vue";
 import type { ComputedRef } from "vue";
 
 import { useProductConfigurator, useRouter, useUrlResolver } from "#imports";
@@ -38,6 +38,7 @@ const emit =
   defineEmits<
     (e: "change", selected: Partial<Schemas["Product"]> | undefined) => void
   >();
+const instanceId = useId();
 const isLoading = ref<boolean>();
 const router = useRouter();
 const {
@@ -71,6 +72,66 @@ const onHandleChange = async () => {
   }
   isLoading.value = false;
 };
+
+const ARROW_KEYS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+let isArrowSelection = false;
+let uncommittedSelection:
+  | { groupName: string; committedOptionId: string | undefined }
+  | undefined;
+
+const onOptionKeydown = (event: KeyboardEvent) => {
+  if (ARROW_KEYS.includes(event.key)) {
+    isArrowSelection = true;
+    return;
+  }
+  if ((event.key === "Enter" || event.key === " ") && uncommittedSelection) {
+    event.preventDefault();
+    uncommittedSelection = undefined;
+    onHandleChange();
+  }
+};
+
+const onOptionKeyup = () => {
+  isArrowSelection = false;
+};
+
+const onOptionChange = (groupName: string, optionId: string) => {
+  if (isArrowSelection && allowRedirect) {
+    uncommittedSelection ??= {
+      groupName,
+      committedOptionId: getSelectedOptions.value[groupName],
+    };
+    handleChange(groupName, optionId);
+    return;
+  }
+  uncommittedSelection = undefined;
+  handleChange(groupName, optionId, onHandleChange);
+};
+
+const onOptionClick = (groupName: string, optionId: string) => {
+  if (
+    isArrowSelection ||
+    uncommittedSelection?.groupName !== groupName ||
+    getSelectedOptions.value[groupName] !== optionId
+  ) {
+    return;
+  }
+  uncommittedSelection = undefined;
+  onHandleChange();
+};
+
+const onGroupFocusout = (event: FocusEvent) => {
+  const group = event.currentTarget as HTMLElement;
+  if (group.contains(event.relatedTarget as Node | null)) return;
+  isArrowSelection = false;
+  if (uncommittedSelection?.committedOptionId) {
+    handleChange(
+      uncommittedSelection.groupName,
+      uncommittedSelection.committedOptionId,
+    );
+  }
+  uncommittedSelection = undefined;
+};
 </script>
 
 <template>
@@ -92,7 +153,7 @@ const onHandleChange = async () => {
       <div class="text-sm text-gray-900 font-medium">
         {{ getTranslatedProperty(optionGroup, "name") }}
       </div>
-      <fieldset class="mt-4 flex-1">
+      <fieldset class="mt-4 flex-1" @focusout="onGroupFocusout">
         <legend class="sr-only">
           {{ translations.product.chooseA }}
           {{ getTranslatedProperty(optionGroup, "name") }}
@@ -103,18 +164,21 @@ const onHandleChange = async () => {
             :key="option.id"
             data-testid="product-variant"
             :data-selected="isOptionSelected(option.id)"
-            class="group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 bg-white shadow-sm text-gray-900 cursor-pointer"
+            class="group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 sm:flex-1 bg-white shadow-sm text-gray-900 cursor-pointer has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-brand-primary has-[:focus-visible]:ring-offset-2"
             :class="{
               'border-3 border-brand-primary': isOptionSelected(option.id),
             }"
-            @click="
-              handleChange(
-                optionGroup.translated.name,
-                option.id,
-                onHandleChange,
-              )
-            "
           >
+            <input
+              type="radio"
+              class="sr-only"
+              :name="`variant-${instanceId}-${optionGroup.id}`"
+              :checked="isOptionSelected(option.id)"
+              @keydown="onOptionKeydown"
+              @keyup="onOptionKeyup"
+              @click="onOptionClick(optionGroup.translated.name, option.id)"
+              @change="onOptionChange(optionGroup.translated.name, option.id)"
+            />
             <p
               :id="`${option.id}-choice-label`"
               data-testid="product-variant-text"
