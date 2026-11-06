@@ -121,7 +121,7 @@ export function useWishlist(): UseWishlistReturn {
   const mergeWishlistProducts = async () => {
     if (itemsLocal.value?.length) {
       await mergeWishlistProductsSync(itemsLocal.value);
-      clearWishlist();
+      await clearWishlistLocal();
     }
     await getWishlistProductsSync();
   };
