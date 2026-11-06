@@ -3,6 +3,11 @@ import { describe, expect, it } from "vitest";
 import { getListingFiltersQuery } from "./getListingFiltersQuery";
 
 describe("getListingFiltersQuery", () => {
+  it("returns an empty object for missing filters", () => {
+    expect(getListingFiltersQuery(undefined as unknown as object)).toEqual({});
+    expect(getListingFiltersQuery(null as unknown as object)).toEqual({});
+  });
+
   it("joins array values with a pipe", () => {
     expect(
       getListingFiltersQuery({

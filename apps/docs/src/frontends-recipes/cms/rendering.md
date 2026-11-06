@@ -101,7 +101,7 @@ const steps = [
     title: "UI",
     action: "Set the meta tags",
     detail:
-      "getCmsMeta reads the meta fields off the entity, not off the CMS page. It takes the entity itself rather than a ref — the templates unwrap theirs inside useCmsHead — so it does not follow a replacement.",
+      "getCmsMeta reads the meta fields off the entity, not off the CMS page. Call it inside a computed so the head follows changes.",
     code: "const cmsMeta = computed(() => getCmsMeta(unref(category)))",
     state: "document head",
     typeKeys: [],

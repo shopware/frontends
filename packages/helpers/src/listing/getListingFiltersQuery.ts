@@ -12,7 +12,7 @@ export function getListingFiltersQuery<T extends object>(
 ): Record<string, unknown> {
   const query: Record<string, unknown> = {};
 
-  for (const [key, value] of Object.entries(filters)) {
+  for (const [key, value] of Object.entries(filters ?? {})) {
     if (Array.isArray(value)) {
       if (value.length) query[key] = value.join("|");
     } else if (value) {
