@@ -57,8 +57,9 @@ stubs. `supportLevel` in `templates/manifest.json` is authoritative.
   `CmsContext` built by `platform/cms/context.ts` (`createStorefrontCmsContext`,
   locale `en-GB`, currency from `/context`). Override a CMS component in
   `platform/cms/registry.ts` with `mergeCmsRegistries`, never by editing the
-  package. `app/globals.css` imports the package stylesheet and adds `@source`
-  for its `src`, otherwise Tailwind drops the component classes.
+  package. `app/globals.css` imports the package stylesheet, which registers
+  the package's `src` with `@source` itself; without that import Tailwind
+  drops the component classes.
 - Listing state lives in the URL (`manufacturer`, `properties`, `min-price`,
   `max-price`, `rating`, `shipping-free`, `order`, `limit`, `p`). When those
   params are present and the category layout contains a product listing,

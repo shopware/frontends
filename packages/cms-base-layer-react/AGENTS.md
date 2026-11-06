@@ -19,8 +19,11 @@ writing or changing the React one.
   never import from `.`, because that pulls server components into the
   client bundle.
 - `./styles.css` carries the rich-text rules and the `.cms-element-image`
-  rules. The consuming app imports it after `@import "tailwindcss"` and adds
-  `@source` for this package's `src` so Tailwind sees the class names.
+  rules, and registers `src` with `@source ".."` (resolved relative to the
+  stylesheet) plus an `@source inline` safelist for the visibility classes
+  `getCmsLayout` builds from CMS data at runtime. The consuming app only
+  imports it after `@import "tailwindcss"` and never points `@source` into
+  `node_modules`.
 - The package never calls the Store API. Everything a component renders comes
   from `content` (the CMS slot, block or section) or from `ctx`. Mutations go
   through the actions port in `src/actions/CmsActionsContext.tsx`; the app

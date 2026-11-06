@@ -1,3 +1,6 @@
+@source "..";
+@source inline("max-md:hidden md:max-lg:hidden lg:hidden");
+
 @utility max-w-screen-2xl {
   max-width: var(--breakpoint-2xl, 96rem);
 }

@@ -19,13 +19,14 @@ const nextConfig = {
 };
 ```
 
-Import the stylesheet after Tailwind and let Tailwind scan the package:
+Import the stylesheet after Tailwind. It registers the package's components
+as a Tailwind source, so their classes are generated without any path to
+`node_modules` in your CSS:
 
 ```css
 @import "tailwindcss";
 @import "@shopware/design-tokens/tailwind.css";
 @import "@shopware/cms-base-layer-react/styles.css";
-@source "../node_modules/@shopware/cms-base-layer-react/src";
 ```
 
 ## Render a page
