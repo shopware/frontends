@@ -1,4 +1,8 @@
-import { getListingFilters } from "@shopware/helpers";
+import {
+  getListingFilters,
+  getListingFiltersQuery,
+  getTotalPages,
+} from "@shopware/helpers";
 import { createInjectionState, createSharedComposable } from "@vueuse/core";
 import { computed, inject, provide, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
@@ -172,6 +176,8 @@ export type UseListingReturn = {
   resetFilters(): Promise<void>;
   /**
    * Change selected filters to the query object
+   *
+   * @deprecated Use `getListingFiltersQuery` from `@shopware/helpers` instead. Will be removed in the next major release.
    */
   filtersToQuery(
     filters: Schemas["ProductListingCriteria"],
@@ -431,7 +437,7 @@ export function createListingComposable({
   });
 
   const getTotalPagesCount = computed(() =>
-    Math.ceil(getTotal.value / getLimit.value),
+    getTotalPages(getTotal.value, getLimit.value),
   );
 
   const getSortingOrders = computed(() => {
@@ -558,28 +564,10 @@ export function createListingComposable({
     return search({ search: getCurrentFilters.value?.search || "" });
   };
 
-  const filtersToQuery = (filters: Schemas["ProductListingCriteria"]) => {
-    const queryObject: Record<string, unknown> = {};
-
-    for (const filter in filters) {
-      const currentFilter =
-        filters[filter as keyof Schemas["ProductListingCriteria"]];
-      if (currentFilter) {
-        if (Array.isArray(currentFilter) && currentFilter.length) {
-          queryObject[filter] = currentFilter.join("|");
-        } else if (!Array.isArray(currentFilter)) {
-          queryObject[filter] = currentFilter;
-        }
-      }
-    }
-
-    return queryObject;
-  };
-
   return {
     changeCurrentPage,
     changeCurrentSortingOrder,
-    filtersToQuery,
+    filtersToQuery: getListingFiltersQuery,
     getAvailableFilters,
     getCurrentFilters,
     getCurrentListing,
