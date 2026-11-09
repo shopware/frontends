@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getListingFiltersQuery } from "@shopware/helpers";
 import { computed, provide, reactive, watch } from "vue";
 import type { ComputedRef, UnwrapNestedRefs } from "vue";
 
@@ -6,12 +7,8 @@ import type { operations } from "#shopware";
 
 import ListingFilter from "./ListingFilter.vue";
 
-const {
-  filtersToQuery,
-  getCurrentFilters,
-  getCurrentSortingOrder,
-  getInitialFilters,
-} = useProductSearchListing();
+const { getCurrentFilters, getCurrentSortingOrder, getInitialFilters } =
+  useProductSearchListing();
 
 const route = useRoute();
 const router = useRouter();
@@ -105,7 +102,7 @@ const onOptionSelectToggle = async ({
   await router.push({
     query: {
       search: route.query.search,
-      ...filtersToQuery(searchCriteriaForRequest.value),
+      ...getListingFiltersQuery(searchCriteriaForRequest.value),
       ...(searchSelectedFilters.categories.size > 0
         ? { categories: [...searchSelectedFilters.categories].join("|") }
         : {}),
@@ -124,7 +121,7 @@ const clearFilters = async () => {
   await router.push({
     query: {
       search: route.query.search,
-      ...filtersToQuery(searchCriteriaForRequest.value),
+      ...getListingFiltersQuery(searchCriteriaForRequest.value),
     },
   });
 };
