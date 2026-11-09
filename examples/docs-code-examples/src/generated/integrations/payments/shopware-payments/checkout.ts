@@ -2,10 +2,10 @@ import { useCart, useSessionContext } from "#imports";
 
 import type { CartCheckout, PlacedOrderCheckout } from "./snippet-context";
 
-const { cart } = useCart();
+const { cart, refreshCart } = useCart();
 const { sessionContext } = useSessionContext();
 
-const currentCart = cart.value;
+const currentCart = cart.value ?? (await refreshCart());
 const context = sessionContext.value;
 
 if (!currentCart || !context) {

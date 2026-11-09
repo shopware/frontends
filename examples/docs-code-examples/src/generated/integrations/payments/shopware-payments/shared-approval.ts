@@ -13,14 +13,6 @@ const { refreshSessionContext } = useSessionContext();
 const { createOrder } = useCheckout();
 const { refreshCart } = useCart();
 
-function shopwareOrderId(order: object): string {
-  if ("id" in order && typeof order.id === "string" && order.id !== "") {
-    return order.id;
-  }
-
-  throw new Error("The Store API order response did not include an id");
-}
-
 async function onApprove(result: ApprovalResult) {
   if (result.contextToken) {
     apiClient.defaultHeaders["sw-context-token"] = result.contextToken;
@@ -29,17 +21,22 @@ async function onApprove(result: ApprovalResult) {
 
   const order = await createOrder();
   await refreshCart();
+  const orderId = order.id;
+  const finishUrl = `${window.location.origin}/checkout/success/${orderId}/paid`;
+  const errorUrl = `${window.location.origin}/checkout/success/${orderId}/unpaid`;
 
-  const response = await shopwarePayments.handlePayment({
-    orderId: shopwareOrderId(order),
-    providerOrderId: result.providerOrderId,
-    contextToken: result.contextToken,
-    finishUrl: `${window.location.origin}/checkout/success?order=${shopwareOrderId(order)}&success=true`,
-    errorUrl: `${window.location.origin}/checkout/success?order=${shopwareOrderId(order)}&success=false`,
-  });
-
-  if (response.redirectUrl) {
-    window.location.assign(response.redirectUrl);
+  try {
+    const response = await shopwarePayments.handlePayment({
+      orderId,
+      providerOrderId: result.providerOrderId,
+      contextToken: result.contextToken,
+      finishUrl,
+      errorUrl,
+    });
+    window.location.assign(response.redirectUrl || finishUrl);
+  } catch (error) {
+    console.error("ShopwarePayments could not handle the payment", error);
+    window.location.assign(errorUrl);
   }
 }
 
