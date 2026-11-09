@@ -51,8 +51,12 @@ const {
 const selectedOptions: ComputedRef = computed(() =>
   Object.values(unref(getSelectedOptions)),
 );
-const isOptionSelected = (optionId: string) =>
-  Object.values(getSelectedOptions.value).includes(optionId);
+const pendingSelection = ref<{ groupName: string; optionId: string }>();
+
+const isOptionSelected = (groupName: string, optionId: string) =>
+  pendingSelection.value?.groupName === groupName
+    ? pendingSelection.value.optionId === optionId
+    : Object.values(getSelectedOptions.value).includes(optionId);
 
 const onHandleChange = async () => {
   isLoading.value = true;
@@ -75,19 +79,22 @@ const onHandleChange = async () => {
 
 const ARROW_KEYS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
 let isArrowSelection = false;
-let uncommittedSelection:
-  | { groupName: string; committedOptionId: string | undefined }
-  | undefined;
+
+const commitPendingSelection = () => {
+  const pending = pendingSelection.value;
+  if (!pending) return;
+  pendingSelection.value = undefined;
+  handleChange(pending.groupName, pending.optionId, onHandleChange);
+};
 
 const onOptionKeydown = (event: KeyboardEvent) => {
   if (ARROW_KEYS.includes(event.key)) {
     isArrowSelection = true;
     return;
   }
-  if ((event.key === "Enter" || event.key === " ") && uncommittedSelection) {
+  if ((event.key === "Enter" || event.key === " ") && pendingSelection.value) {
     event.preventDefault();
-    uncommittedSelection = undefined;
-    onHandleChange();
+    commitPendingSelection();
   }
 };
 
@@ -97,40 +104,29 @@ const onOptionKeyup = () => {
 
 const onOptionChange = (groupName: string, optionId: string) => {
   if (isArrowSelection && allowRedirect) {
-    uncommittedSelection ??= {
-      groupName,
-      committedOptionId: getSelectedOptions.value[groupName],
-    };
-    handleChange(groupName, optionId);
+    pendingSelection.value = { groupName, optionId };
     return;
   }
-  uncommittedSelection = undefined;
+  pendingSelection.value = undefined;
   handleChange(groupName, optionId, onHandleChange);
 };
 
 const onOptionClick = (groupName: string, optionId: string) => {
   if (
     isArrowSelection ||
-    uncommittedSelection?.groupName !== groupName ||
-    getSelectedOptions.value[groupName] !== optionId
+    pendingSelection.value?.groupName !== groupName ||
+    pendingSelection.value.optionId !== optionId
   ) {
     return;
   }
-  uncommittedSelection = undefined;
-  onHandleChange();
+  commitPendingSelection();
 };
 
 const onGroupFocusout = (event: FocusEvent) => {
   const group = event.currentTarget as HTMLElement;
   if (group.contains(event.relatedTarget as Node | null)) return;
   isArrowSelection = false;
-  if (uncommittedSelection?.committedOptionId) {
-    handleChange(
-      uncommittedSelection.groupName,
-      uncommittedSelection.committedOptionId,
-    );
-  }
-  uncommittedSelection = undefined;
+  pendingSelection.value = undefined;
 };
 </script>
 
@@ -163,17 +159,24 @@ const onGroupFocusout = (event: FocusEvent) => {
             v-for="option in optionGroup.options"
             :key="option.id"
             data-testid="product-variant"
-            :data-selected="isOptionSelected(option.id)"
+            :data-selected="
+              isOptionSelected(optionGroup.translated.name, option.id)
+            "
             class="group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 sm:flex-1 bg-white shadow-sm text-gray-900 cursor-pointer has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-brand-primary has-[:focus-visible]:ring-offset-2"
             :class="{
-              'border-3 border-brand-primary': isOptionSelected(option.id),
+              'border-3 border-brand-primary': isOptionSelected(
+                optionGroup.translated.name,
+                option.id,
+              ),
             }"
           >
             <input
               type="radio"
               class="sr-only"
               :name="`variant-${instanceId}-${optionGroup.id}`"
-              :checked="isOptionSelected(option.id)"
+              :checked="
+                isOptionSelected(optionGroup.translated.name, option.id)
+              "
               @keydown="onOptionKeydown"
               @keyup="onOptionKeyup"
               @click="onOptionClick(optionGroup.translated.name, option.id)"
