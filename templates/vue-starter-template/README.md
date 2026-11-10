@@ -143,10 +143,16 @@ The public demo backend has no UCP. To try it against your own Shopware:
 
 2. If Shopware answers the proxied requests with its domain-mapping error, let it trust this server as a proxy: `SYMFONY_TRUSTED_PROXIES=127.0.0.1,::1` and `SYMFONY_TRUSTED_HEADERS=x-forwarded-for,x-forwarded-host,x-forwarded-proto,x-forwarded-port` in its environment. Shopware's MCP endpoint also checks the upstream `Host` header, so the hostname of the Store API endpoint must be one of Shopware's allowed MCP hosts.
 3. Point `.env` at that instance, see above, set `NUXT_PUBLIC_AGENTIC_HANDOFF_ENABLED=true` and run `pnpm dev`.
+4. Run the end-to-end checks against it. The storefront host has to be one of the sales channel's domains, or the UCP calls behind the proxy fail:
 
-In production, set `NUXT_AGENTIC_HANDOFF_STOREFRONT_HOSTS` to the shop's hosts. The proxy and the continue route answer only on those, so a request cannot pick the host Shopware builds `continue_url` from. All of those hosts must belong to the sales channel of the configured access key: discovery, the adopt route and the browser use that one channel.
+   ```bash
+   cd apps/e2e-tests
+   BASE_E2E_URL=http://localhost:3000/ pnpm exec playwright test tests/agenticHandoff --project=chromium
+   ```
 
-Behind a CDN or load balancer, Shopware sees the edge as the caller of every proxied request, so its MCP rate limit counts all agents as one. Host and protocol are read from the forwarding headers the edge sends.
+In production, set `NUXT_AGENTIC_HANDOFF_STOREFRONT_HOSTS` to the shop's hosts. Shopware resolves the sales channel from the host the proxy forwards, for discovery and for every UCP call, and builds `continue_url` from that channel's template. The proxy and the continue page answer only on the listed hosts, so a request cannot pick another channel. All of those hosts must belong to the sales channel of the configured access key: discovery, the adopt route and the browser use that one channel.
+
+Behind a CDN or load balancer, Shopware sees the edge as the caller of every proxied request, so its MCP rate limit counts all agents as one. Host and protocol are read from the forwarding headers the edge sends, so the edge has to replace the ones it receives, and it has to be the only way to reach this server.
 
 ## Learn more
 

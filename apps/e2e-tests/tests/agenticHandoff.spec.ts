@@ -67,6 +67,14 @@ async function sessionToken(context: BrowserContext) {
   return cookies.find((cookie) => cookie.name === "sw-context-token")?.value;
 }
 
+// The app sets the cookie once its first context call has answered.
+async function waitForSession(context: BrowserContext) {
+  await expect
+    .poll(() => sessionToken(context), { timeout: 30_000 })
+    .toBeTruthy();
+  return sessionToken(context);
+}
+
 test.describe("Agent checkout handoff", { tag: "@frontends" }, () => {
   let enabled = false;
 
@@ -88,6 +96,7 @@ test.describe("Agent checkout handoff", { tag: "@frontends" }, () => {
       expect(page.headers()["referrer-policy"]).toBe("no-referrer");
       expect(page.headers()["x-robots-tag"]).toBe("noindex, nofollow");
       expect(page.headers()["cache-control"]).toContain("no-store");
+      expect(page.headers()["surrogate-control"]).toBe("no-store");
     }
 
     const localized = await request.get(`/de-DE${CONTINUE}${UNKNOWN_TOKEN}`, {
@@ -96,6 +105,8 @@ test.describe("Agent checkout handoff", { tag: "@frontends" }, () => {
     expect(localized.status()).toBe(enabled ? 200 : 404);
     if (enabled) {
       expect(localized.headers()["referrer-policy"]).toBe("no-referrer");
+      expect(localized.headers()["cache-control"]).toContain("no-store");
+      expect(localized.headers()["surrogate-control"]).toBe("no-store");
     }
 
     const adopt = await request.post(`${CONTINUE}not-a-token`, {
@@ -158,8 +169,7 @@ test.describe("Agent checkout handoff", { tag: "@frontends" }, () => {
   test("keeping the cart leaves the session as it was", async ({ page }) => {
     test.skip(!enabled, "the handoff is off on this host");
     await page.goto("/");
-    const before = await sessionToken(page.context());
-    expect(before).toBeTruthy();
+    const before = await waitForSession(page.context());
 
     await page.goto(`${CONTINUE}${UNKNOWN_TOKEN}`);
     await expect(
@@ -173,8 +183,7 @@ test.describe("Agent checkout handoff", { tag: "@frontends" }, () => {
   test("a dead link leaves the session as it was", async ({ page }) => {
     test.skip(!enabled, "the handoff is off on this host");
     await page.goto("/");
-    const before = await sessionToken(page.context());
-    expect(before).toBeTruthy();
+    const before = await waitForSession(page.context());
 
     await page.goto(`${CONTINUE}${UNKNOWN_TOKEN}`);
     await page.getByRole("button", { name: "Continue with this cart" }).click();

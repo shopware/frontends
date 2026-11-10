@@ -199,6 +199,10 @@ export default defineNuxtConfig({
     "/.well-known/agent-card.json": uncached,
     "/ucp/**": uncached,
     "/checkout/continue/**": uncached,
+    // The same page under the locale prefixes. Route rules do not know
+    // about i18n, so each prefixed locale needs its own entry.
+    "/pl-PL/checkout/continue/**": uncached,
+    "/de-DE/checkout/continue/**": uncached,
     "/checkout": {
       ssr: false,
       headers: {
