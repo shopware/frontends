@@ -1,8 +1,9 @@
 // The confirm page is client-rendered, so its first response gets its headers
-// here, for the canonical path and the localized aliases alike: no caching, no
-// Referer carrying the token, no indexing. Off, or on a host that is not the
-// shop's, the page and the adopt route do not exist.
-const CONTINUE_PATH = /^\/(?:[a-z]{2}-[A-Z]{2}\/)?checkout\/continue\//;
+// here, on the canonical path and under any locale prefix: no caching, a
+// Referer without the token (strict-origin keeps the origin only, and keeps
+// the Origin header on the form post), no indexing. Off, or on a host that
+// is not the shop's, the page and the adopt route do not exist.
+const CONTINUE_PATH = /^\/(?:[^/]+\/)?checkout\/continue\//;
 
 export default defineEventHandler((event) => {
   if (!CONTINUE_PATH.test(event.path)) {
@@ -15,7 +16,7 @@ export default defineEventHandler((event) => {
 
   setResponseHeaders(event, {
     "Cache-Control": "no-store, private",
-    "Referrer-Policy": "no-referrer",
+    "Referrer-Policy": "strict-origin",
     "X-Robots-Tag": "noindex, nofollow",
   });
 });

@@ -8,8 +8,6 @@ definePageMeta({
 const route = useRoute();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
-const { isLoggedIn } = useUser();
-const { isEmpty } = useCart();
 
 if (!useRuntimeConfig().public.agenticHandoff.enabled) {
   throw createError({
@@ -32,7 +30,7 @@ if (!validToken) {
 
 useHead({
   meta: [
-    { name: "referrer", content: "no-referrer" },
+    { name: "referrer", content: "strict-origin" },
     { name: "robots", content: "noindex, nofollow" },
   ],
 });
@@ -45,14 +43,8 @@ useHead({
     <p class="text-lg text-surface-on-surface">
       {{ $t("cart.handoff.description") }}
     </p>
-    <p v-if="isLoggedIn || !isEmpty" class="mt-4 text-surface-on-surface">
-      {{
-        $t(
-          isLoggedIn
-            ? "cart.handoff.replacesSession"
-            : "cart.handoff.replacesCart",
-        )
-      }}
+    <p class="mt-4 text-surface-on-surface">
+      {{ $t("cart.handoff.replaces") }}
     </p>
     <form
       v-if="validToken"

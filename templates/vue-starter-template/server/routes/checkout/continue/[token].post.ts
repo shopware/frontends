@@ -9,14 +9,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, statusMessage: "Not Found" });
   }
 
-  // Only the continue page on this origin may adopt a token. Another site
-  // cannot post here on the buyer's behalf, and an agent cannot skip the page.
-  // Browsers without Sec-Fetch-Site still send Origin on a form post.
-  const site = getRequestHeader(event, "sec-fetch-site");
-  const sameOrigin = site
-    ? site === "same-origin"
-    : getRequestHeader(event, "origin") === getRequestedOrigin(event);
-  if (!sameOrigin) {
+  if (!isSameOriginPost(getRequestHeaders(event), getRequestedOrigin(event))) {
     throw createError({ statusCode: 403, statusMessage: "Forbidden" });
   }
 

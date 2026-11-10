@@ -18,8 +18,7 @@
       "unavailable": "The checkout from your AI assistant is no longer available. Please check your cart.",
       "title": "Continue with your assistant's cart?",
       "description": "Your AI assistant prepared a cart for this shop. Continue here to check it out.",
-      "replacesCart": "It replaces the cart you have in this browser.",
-      "replacesSession": "It replaces your current cart and signs you out.",
+      "replaces": "It replaces the cart in this browser and signs you out if you are signed in.",
       "continue": "Continue with this cart",
       "keepCart": "Keep my cart",
       "error": "The checkout from your AI assistant could not be loaded. Please try again."

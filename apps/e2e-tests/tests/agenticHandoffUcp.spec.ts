@@ -17,6 +17,8 @@ const MCP_PATH = "/ucp/mcp?toolsets=other";
 const UCP_LINK = '</.well-known/ucp>; rel="service-meta"';
 const CONTINUE_URL = /\/checkout\/continue\/([A-Za-z0-9]{32})$/;
 const CONTINUE_BUTTON = { name: "Continue with this cart" };
+const REPLACES_NOTICE =
+  "It replaces the cart in this browser and signs you out if you are signed in.";
 const SIGNED_IN =
   '[data-testid="header-account-button"][data-logged-in="true"]';
 
@@ -224,9 +226,7 @@ test.describe("Agent checkout handoff over UCP", { tag: "@frontends" }, () => {
 
     const other = await agentCheckout(request, baseURL ?? "");
     await page.goto(other.url);
-    await expect(
-      page.getByText("It replaces the cart you have in this browser."),
-    ).toBeVisible();
+    await expect(page.getByText(REPLACES_NOTICE)).toBeVisible();
     await page.getByRole("link", { name: "Keep my cart" }).click();
     await expect(page).toHaveURL(/\/checkout\/cart$/);
     await expect(page.getByText(own.title).first()).toBeVisible();
@@ -249,9 +249,7 @@ test.describe("Agent checkout handoff over UCP", { tag: "@frontends" }, () => {
 
     const { url, token, title } = await agentCheckout(request, baseURL ?? "");
     await page.goto(url);
-    await expect(
-      page.getByText("It replaces your current cart and signs you out."),
-    ).toBeVisible();
+    await expect(page.getByText(REPLACES_NOTICE)).toBeVisible();
 
     await page.getByRole("button", CONTINUE_BUTTON).click();
     await expect(page).toHaveURL(/\/checkout$/);

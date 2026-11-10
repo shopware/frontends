@@ -17,9 +17,11 @@ const SAME_ORIGIN = { "sec-fetch-site": "same-origin" };
 const UNKNOWN_TOKEN = "e2eHandoffUnknownToken0000000001";
 
 /**
- * The route turns a throttled Store API answer into a 502. The shared demo
- * backend rate-limits, so wait it out like the sitemap spec does.
+ * A throttled Store API answer is a 502 from the page or a 303 to the cart
+ * with handoff=error from the route. The shared demo backend rate-limits, so
+ * wait it out like the sitemap spec does.
  */
+const ERROR_LOCATION = "/checkout/cart?handoff=error";
 async function postWhenNotThrottled(
   request: APIRequestContext,
   url: string,
@@ -28,10 +30,11 @@ async function postWhenNotThrottled(
   let response: APIResponse | undefined;
   await expect(async () => {
     response = await request.post(url, { headers, maxRedirects: 0 });
-    expect(
-      [429, 502].includes(response.status()),
-      `${url} answered ${response.status()}`,
-    ).toBe(false);
+    const throttled =
+      [429, 502].includes(response.status()) ||
+      (response.status() === 303 &&
+        response.headers().location === ERROR_LOCATION);
+    expect(throttled, `${url} answered ${response.status()}`).toBe(false);
   }).toPass({ intervals: [5_000, 10_000, 20_000], timeout: 45_000 });
   return response as APIResponse;
 }
@@ -94,7 +97,7 @@ test.describe("Agent checkout handoff", { tag: "@frontends" }, () => {
     expect(page.status()).toBe(enabled ? 200 : 404);
     if (enabled) {
       // The page is client-rendered, so the server sets these.
-      expect(page.headers()["referrer-policy"]).toBe("no-referrer");
+      expect(page.headers()["referrer-policy"]).toBe("strict-origin");
       expect(page.headers()["x-robots-tag"]).toBe("noindex, nofollow");
       expect(page.headers()["cache-control"]).toContain("no-store");
       expect(page.headers()["surrogate-control"]).toBe("no-store");
@@ -105,7 +108,7 @@ test.describe("Agent checkout handoff", { tag: "@frontends" }, () => {
     });
     expect(localized.status()).toBe(enabled ? 200 : 404);
     if (enabled) {
-      expect(localized.headers()["referrer-policy"]).toBe("no-referrer");
+      expect(localized.headers()["referrer-policy"]).toBe("strict-origin");
       expect(localized.headers()["cache-control"]).toContain("no-store");
       expect(localized.headers()["surrogate-control"]).toBe("no-store");
     }
@@ -136,6 +139,27 @@ test.describe("Agent checkout handoff", { tag: "@frontends" }, () => {
     expect(response.headers()["set-cookie"] ?? "").not.toContain(
       "sw-context-token",
     );
+  });
+
+  test("a form post without Sec-Fetch-Site is judged by its Origin", async ({
+    request,
+    baseURL,
+  }) => {
+    test.skip(!enabled, "the handoff is off on this host");
+    const origin = new URL(baseURL ?? "").origin;
+    const own = await request.post(`${CONTINUE}not-a-token`, {
+      headers: { origin },
+      maxRedirects: 0,
+    });
+    expect(own.status()).toBe(303);
+    expect(own.headers().location).toBe("/checkout/cart?handoff=invalid");
+
+    // What a no-referrer page would send, and what a foreign site sends.
+    const foreign = await request.post(`${CONTINUE}not-a-token`, {
+      headers: { origin: "null" },
+      maxRedirects: 0,
+    });
+    expect(foreign.status()).toBe(403);
   });
 
   test("a malformed token is never adopted", async ({ request }) => {

@@ -150,7 +150,7 @@ The public demo backend has no UCP. To try it against your own Shopware:
    E2E_REQUIRE_UCP=1 BASE_E2E_URL=http://localhost:3000/ pnpm exec playwright test tests/agenticHandoff --project=chromium
    ```
 
-In production, set `NUXT_AGENTIC_HANDOFF_STOREFRONT_HOSTS` to the shop's hosts. Shopware resolves the sales channel from the host the proxy forwards, for discovery and for every UCP call, and builds `continue_url` from that channel's template. The proxy and the continue page answer only on the listed hosts, so a request cannot pick another channel. All of those hosts must belong to the sales channel of the configured access key: discovery, the adopt route and the browser use that one channel.
+In production, set `NUXT_AGENTIC_HANDOFF_STOREFRONT_HOSTS` to the shop's hosts. The server warns at startup while the handoff is on and the list is empty. Shopware resolves the sales channel from the host the proxy forwards, for discovery and for every UCP call, and builds `continue_url` from that channel's template. The proxy and the continue page answer only on the listed hosts, so a request cannot pick another channel. All of those hosts must belong to the sales channel of the configured access key: discovery, the adopt route and the browser use that one channel.
 
 Behind a CDN or load balancer, Shopware sees the edge as the caller of every proxied request, so its MCP rate limit counts all agents as one. Host and protocol are read from the forwarding headers the edge sends, so the edge has to replace the ones it receives, and it has to be the only way to reach this server.
 

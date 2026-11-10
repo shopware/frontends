@@ -18,8 +18,7 @@
       "unavailable": "Zamówienie rozpoczęte przez Twojego asystenta AI nie jest już dostępne. Sprawdź swój koszyk.",
       "title": "Kontynuować z koszykiem asystenta?",
       "description": "Twój asystent AI przygotował koszyk w tym sklepie. Dokończ zakup tutaj.",
-      "replacesCart": "Zastąpi on koszyk, który masz w tej przeglądarce.",
-      "replacesSession": "Zastąpi on Twój obecny koszyk i wyloguje Cię.",
+      "replaces": "Zastąpi on koszyk w tej przeglądarce, a jeśli jesteś zalogowany lub zalogowana, także Cię wyloguje.",
       "continue": "Kontynuuj z tym koszykiem",
       "keepCart": "Zachowaj mój koszyk",
       "error": "Nie udało się wczytać zamówienia od Twojego asystenta AI. Spróbuj ponownie."
