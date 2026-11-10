@@ -24,10 +24,23 @@ import {
 export const NETWORK_LOG = "diagnostics/network-failures.jsonl";
 export const ATTEMPT_LOG = "diagnostics/store-api-attempts.log";
 
+/**
+ * Add to a test that answers Store API calls with page.route. A mocked
+ * failure is not the backend's, so the network summary must not count it.
+ */
+export const MOCKED_STORE_API = { type: "mocked-store-api" };
+
+/**
+ * The demo backend's rate limit refills about once a minute. A retry starts
+ * at once, so it lands in the window the failed attempt drained.
+ */
+const RETRY_COOLDOWN_MS = 30_000;
+
 type Entry = Record<string, unknown>;
 
 /** Nitro logs neither, so without this a stall is just a locator timeout. */
 export const test = base.extend<{
+  retryCooldown: void;
   networkDiagnostics: void;
   storeApi: { value?: StoreApi };
   guidanceBanner: void;
@@ -43,8 +56,26 @@ export const test = base.extend<{
   myAccountPage: MyAccountPage;
   wishlistPage: WishlistPage;
 }>({
+  retryCooldown: [
+    // oxlint-disable-next-line no-empty-pattern
+    async ({}, use, testInfo) => {
+      if (testInfo.retry > 0) {
+        await new Promise((resolve) => setTimeout(resolve, RETRY_COOLDOWN_MS));
+      }
+      await use();
+    },
+    { auto: true, timeout: RETRY_COOLDOWN_MS + 10_000 },
+  ],
+
   networkDiagnostics: [
     async ({ page }, use, testInfo) => {
+      if (
+        testInfo.annotations.some(({ type }) => type === MOCKED_STORE_API.type)
+      ) {
+        await use();
+        return;
+      }
+
       // Chromium reports teardown cancellations as ERR_FAILED, not ERR_ABORTED.
       let tearingDown = false;
 
@@ -98,14 +129,19 @@ export const test = base.extend<{
       const recordErrorPage = async () => {
         try {
           const error = await page.evaluate(() => {
-            const status = Number(
-              document.querySelector("h1")?.textContent?.trim(),
-            );
+            // Nuxt's default page puts the message in an h2, the starter in
+            // the h1 after the code.
+            const [, code, rest] =
+              (document.querySelector("h1")?.textContent ?? "")
+                .replace(/\s+/g, " ")
+                .trim()
+                .match(/^(\d{3})(?!\d) ?(.*)$/) ?? [];
+            const status = Number(code);
             if (!Number.isInteger(status) || status < 400 || status > 599) {
               return null;
             }
             const message =
-              document.querySelector("h2")?.textContent?.trim() ?? null;
+              rest || document.querySelector("h2")?.textContent?.trim() || null;
             const cause =
               (document.body?.innerText ?? "").match(
                 /\[(?:GET|POST|PUT|PATCH|DELETE)\][^\n]{0,200}/,

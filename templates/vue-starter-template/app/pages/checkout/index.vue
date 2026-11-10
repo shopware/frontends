@@ -81,12 +81,6 @@ function restoreFocus(trigger: Element | null) {
   }
 }
 
-function focusFirstInvalid() {
-  nextTick(() => {
-    document.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
-  });
-}
-
 const isPlacingOrder = ref(false);
 
 async function validateCustomerForm() {

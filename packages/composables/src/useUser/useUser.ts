@@ -1,9 +1,9 @@
-import { encodeForQuery } from "@shopware/api-client/helpers";
 import { syncRefs } from "@vueuse/core";
 import { computed, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
 
 import {
+  useCacheableRead,
   useCart,
   useContext,
   useInternationalization,
@@ -131,7 +131,8 @@ export type UseUserReturn = {
  * @category Customer & Account
  */
 export function useUser(): UseUserReturn {
-  const { apiClient, cacheableReads } = useShopwareContext();
+  const { apiClient } = useShopwareContext();
+  const { invokeRead } = useCacheableRead();
   const { userFromContext, refreshSessionContext } = useSessionContext();
 
   const _user = useContext<Schemas["Customer"] | undefined>("customer");
@@ -237,13 +238,9 @@ export function useUser(): UseUserReturn {
         },
       ],
     };
-    const countries = cacheableReads
-      ? await apiClient.invoke("readCountryGet get /country", {
-          query: { _criteria: encodeForQuery(criteria) },
-        })
-      : await apiClient.invoke("readCountry post /country", {
-          body: criteria,
-        });
+    const countries = await invokeRead("readCountry post /country", {
+      body: criteria,
+    });
 
     country.value = countries.data.elements?.[0] ?? null;
     return countries.data;
@@ -261,13 +258,9 @@ export function useUser(): UseUserReturn {
         },
       ],
     };
-    const salutations = cacheableReads
-      ? await apiClient.invoke("readSalutationGet get /salutation", {
-          query: { _criteria: encodeForQuery(criteria) },
-        })
-      : await apiClient.invoke("readSalutation post /salutation", {
-          body: criteria,
-        });
+    const salutations = await invokeRead("readSalutation post /salutation", {
+      body: criteria,
+    });
     salutation.value = salutations.data.elements?.[0] ?? null;
     return salutations.data;
   }

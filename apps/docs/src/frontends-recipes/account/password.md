@@ -189,7 +189,7 @@ type SuccessResponse = Schemas["SuccessResponse"];
 
 <!-- /automd -->
 
-`RecoveryMailBody` is the type that makes the `storefrontUrl` requirement visible — it is required there and absent from all three other bodies. `RecoveryExpiredResponse` is the one worth expanding in the tooltip: it is an `array_struct` envelope, so the flag lives at `data[0].isExpired`. The example below annotates its two form objects with `RecoveryConfirmBody` and `ChangePasswordBody`, which is what makes `{ hash, ...resetForm }` self-evidently complete.
+`RecoveryMailBody` is the type that makes the `storefrontUrl` requirement visible: it is required there and absent from all three other bodies. `RecoveryExpiredResponse` is the one worth expanding in the tooltip, because it is out of date. Shopware sends the flag at the response root, as `{ "isExpired": true, "apiAlias": "array_struct" }`. The bundled type still shows the older `data[0].isExpired` shape, which shopware/shopware#20556 fixed upstream. The example below annotates its two form objects with `RecoveryConfirmBody` and `ChangePasswordBody`, which is what makes `{ hash, ...resetForm }` self-evidently complete.
 
 ## Minimal Vue Example
 
@@ -219,6 +219,7 @@ const heading = ref<HTMLElement | null>(null);
 
 const email = ref("");
 const isRecoveryRequested = ref(false);
+const recoveryError = ref("");
 
 const isHashChecked = ref(false);
 const isExpired = ref(false);
@@ -279,8 +280,17 @@ const checkHash = async () => {
       "getCustomerRecoveryIsExpired post /account/customer-recovery-is-expired",
       { body: { hash }, fetchOptions: { timeout: 10_000 } },
     );
-    // the flag sits inside an array_struct envelope, not on the response root
-    isExpired.value = !!recoveryResponse.data?.[0]?.isExpired;
+    // Shopware sends the flag at the root. The bundled type still has the
+    // older data[0] shape, so read both and treat neither as a failed check.
+    const response = recoveryResponse as typeof recoveryResponse & {
+      isExpired?: boolean;
+    };
+    const expired = response.isExpired ?? response.data?.[0]?.isExpired;
+    if (expired === undefined) {
+      isCheckFailed.value = true;
+    } else {
+      isExpired.value = expired;
+    }
   } catch (error) {
     // Only the API rejecting the hash means the link is dead. A dropped
     // connection or a 5xx says nothing about it, so offer a retry instead.
@@ -298,20 +308,25 @@ const requestRecoveryMail = async () => {
   if (isSubmitting.value) return;
   startSubmit();
 
+  recoveryError.value = "";
+
   try {
     await resetPassword({
       email: email.value,
       // resolved here, because setup also runs on the server, where there is no window
       storefrontUrl: getStorefrontUrl(),
     });
-  } catch (error) {
-    console.error(error);
-  } finally {
-    // Unconditional: the acknowledgement must not differ between a known and
-    // an unknown address, so it cannot depend on the response.
+    // Same wording for a known and an unknown address: the API already
+    // answered both with a success.
     isRecoveryRequested.value = true;
-    isSubmitting.value = false;
     await announce();
+  } catch (error) {
+    // A rejection is operational, not about the address, so say so and keep
+    // the form for another try.
+    console.error(error);
+    recoveryError.value = "We could not send the mail. Please try again.";
+  } finally {
+    isSubmitting.value = false;
   }
 };
 
@@ -501,6 +516,8 @@ onMounted(checkHash);
     </p>
 
     <form v-else @submit.prevent="requestRecoveryMail">
+      <p v-if="recoveryError" role="alert">{{ recoveryError }}</p>
+
       <label>
         Email
         <input v-model="email" type="email" autocomplete="email" required />
@@ -518,7 +535,7 @@ onMounted(checkHash);
 
 </CodeExample>
 
-The example puts all three states on one route so it stays readable. A real storefront splits them: the recovery-mail form and the in-account change are separate pages, and the confirm step lives on the route the recovery mail links to, whose path is configured in the Admin — `vue-demo-store` pins it with `definePageMeta({ path: "/account/recover/password" })`.
+The example puts all three states on one route so it stays readable. A real storefront splits them: the recovery-mail form and the in-account change are separate pages, and the confirm step lives on the route the recovery mail links to, whose path is configured in the Admin — `vue-starter-template` serves the default `/account/recover/password` from `app/pages/account/recover/password.vue`.
 
 Three choices in the markup are deliberate. The submit buttons carry `aria-disabled` rather than `disabled`, because a disabled control cannot hold focus — the customer who just pressed it would be thrown back to the top of the document, so the handlers guard on `isSubmitting` instead. The error paragraphs are `role="alert"` and sit inside the form, above the button, because by the time one renders the control has been re-enabled and focus is nowhere near it. And each `h1` is focusable, because the form holding focus unmounts on success — without moving focus to the heading, a screen reader never learns the request went through.
 
@@ -530,11 +547,11 @@ The recovery flow has no session at all. The hash in the mail link is the entire
 
 ## Edge Cases
 
-- `sendRecoveryMail` answers the same way for a known and an unknown address. Never render "no account with that address" — the API does not tell you, and saying it would leak who has an account. Set the acknowledgement unconditionally, so a rejected request does not become an observable difference either.
+- From Shopware 6.5.8.18, 6.6.10.3 and 6.7.0.0 on, `sendRecoveryMail` answers the same way for a known and an unknown address. Earlier releases answer an unknown address with 401 `CHECKOUT__CUSTOMER_NOT_FOUND`. Never render "no account with that address", because it would leak who has an account. A rejected request is a different matter: Shopware validates `storefrontUrl` and applies its rate limit before it looks the customer up, so a failure says nothing about the address. Show a generic error and keep the form instead of claiming a mail is on its way.
 - The recovery hash expires, which is the whole reason `getCustomerRecoveryIsExpired` exists. Check it before showing a form, or the customer fills in two fields for nothing.
 - Only a rejection from the API means the link is dead. A dropped connection or a 5xx says nothing about the hash, so treating every failure as expiry sends a customer back for a new mail they did not need — keep the two apart and offer a retry.
 - Nothing in the composables carries a request deadline. Configure `apiClientConfig.timeout` or pass one per call, or a hash check that never settles leaves the page on "Checking the link…" with no error and no way out.
-- `getCustomerRecoveryIsExpired` answers with an `array_struct` envelope: the flag is at `data[0].isExpired`, not on the response root. Reading it one level too high yields `undefined`, which is falsy — so a stale link renders the form as if it were valid.
+- `getCustomerRecoveryIsExpired` sends the flag at the response root, but the bundled type still puts it at `data[0].isExpired`. Read the root and fall back to `data[0]`. If neither is there, treat the check as failed. A missing flag is `undefined`, which is falsy, so reading it as "not expired" renders the form for a stale link.
 - `recoveryPassword post /account/recovery-password-confirm` requires `newPassword` **and** `newPasswordConfirm`. The server compares them, so a client-side check is a convenience, not the validation — which means a mismatch comes back as a rejection you have to map to the right field.
 - A completed reset does not log the customer in. Send them to the login form, or call `useUser().login()` yourself with the address and the new password.
 - `changePassword post /account/change-password` requires the current `password`. A wrong one is a normal rejection and belongs on the current-password field — read `error.details.errors?.[0]?.source?.pointer` to tell it apart from a rejected new password.
@@ -542,10 +559,10 @@ The recovery flow has no session at all. The hash in the mail link is the entire
 
 ## Common Mistakes
 
-- Do not tell the customer whether the address was found, and do not let a failed request say it for you.
+- Do not tell the customer whether the address was found, and do not let a failed request claim a mail was sent.
 - Do not call `getStorefrontUrl()` in the component body — resolve it in the submit handler.
 - Do not render the reset form before the hash check has answered.
-- Do not read `isExpired` off the response root. It is inside the `data` array.
+- Do not read `isExpired` only where the bundled type puts it. Shopware sends it at the response root.
 - Do not map every rejection to one message. A rejected password and a dead link need opposite actions from the customer, and `ApiClientError` covers both.
 - Do not disable the submit button while the request runs. It drops focus and never returns it; use `aria-disabled` and guard in the handler.
 - Do not treat the reset as a login. There is no session afterwards.
@@ -557,7 +574,7 @@ The recovery flow has no session at all. The hash in the mail link is the entire
 ## Testing Checklist
 
 - Submitting the forgotten-password form calls `sendRecoveryMail post /account/recovery-password` with a `storefrontUrl`.
-- An unknown address produces the same UI as a known one, and so does a rejected request.
+- An unknown address produces the same UI as a known one. A rejected request keeps the form and shows a generic error.
 - Opening a reset link calls `getCustomerRecoveryIsExpired post /account/customer-recovery-is-expired` before any form is rendered.
 - An expired hash renders the expiry message and no password form.
 - A hash check that fails on the transport renders a retry, not the expiry message.

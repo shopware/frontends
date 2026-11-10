@@ -24,6 +24,7 @@
     "test:bench": "turbo run test:bench -- --run",
     "test:e2e": "turbo run test:e2e",
     "check:templates": "esno scripts/checkTemplatesManifest.ts",
+    "check:cacheable-reads": "esno scripts/checkCacheableReads.ts",
     "format": "oxfmt --write .",
     "version": "changeset version",
     "postversion": "pnpm i && pnpm format && pnpm run versionReadme",
@@ -44,13 +45,13 @@
     "ajv": "^8.20.0",
     "automd": "0.4.3",
     "changelog-parser": "4.1.0",
-    "dotenv-cli": "11.0.0",
+    "dotenv-cli": "11.1.0",
     "esno": "4.8.0",
     "husky": "9.1.7",
     "oxfmt": "0.65.0",
     "oxlint": "1.80.0",
     "semver": "^7.8.5",
-    "turbo": "2.10.12"
+    "turbo": "2.11.10"
   },
   "engines": {
     "node": "^22.22.3 || ^24.15.0 || >=26.0.0"
