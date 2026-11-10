@@ -10,6 +10,9 @@ import { expect, test } from "../fixtures";
  * the public demo backend. Any other discovery failure fails the tests.
  */
 
+// Set E2E_REQUIRE_UCP=1 when the shop under test must have UCP. A skip then
+// becomes a failure, so a misconfigured shop cannot pass by skipping.
+const REQUIRE_UCP = process.env.E2E_REQUIRE_UCP === "1";
 const MCP_PATH = "/ucp/mcp?toolsets=other";
 const UCP_LINK = '</.well-known/ucp>; rel="service-meta"';
 const CONTINUE_URL = /\/checkout\/continue\/([A-Za-z0-9]{32})$/;
@@ -159,19 +162,25 @@ test.describe("Agent checkout handoff over UCP", { tag: "@frontends" }, () => {
     const home = await request.get("/");
     if (!(home.headers().link ?? "").includes(UCP_LINK)) {
       skipReason = "the handoff is off on this host";
-      return;
+    } else {
+      // 404 is a Shopware without the plugin. Anything else is a broken proxy.
+      const profile = await request.get("/.well-known/ucp");
+      if (profile.status() === 404) {
+        skipReason = "the Shopware behind the proxy has no UCP";
+      } else {
+        const body = (await profile.text()).slice(0, 300);
+        expect(
+          profile.status(),
+          `UCP discovery through the proxy answered ${profile.status()}: ${body}`,
+        ).toBe(200);
+      }
     }
-    // 404 is a Shopware without the plugin. Anything else is a broken proxy.
-    const profile = await request.get("/.well-known/ucp");
-    if (profile.status() === 404) {
-      skipReason = "the Shopware behind the proxy has no UCP";
-      return;
+    if (REQUIRE_UCP) {
+      expect(
+        skipReason,
+        `${skipReason}, and E2E_REQUIRE_UCP=1 says the shop must have UCP`,
+      ).toBeUndefined();
     }
-    const body = (await profile.text()).slice(0, 300);
-    expect(
-      profile.status(),
-      `UCP discovery through the proxy answered ${profile.status()}: ${body}`,
-    ).toBe(200);
   });
 
   test.beforeEach(({ baseURL }, testInfo) => {
