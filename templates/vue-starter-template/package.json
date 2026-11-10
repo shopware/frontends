@@ -24,7 +24,7 @@
     "lint": "oxlint . && oxfmt --check .",
     "lint:fix": "oxlint --fix . && oxfmt --write . && pnpm run typecheck",
     "typecheck": "nuxt prepare && nuxi typecheck",
-    "test": "vitest run",
+    "test": "nuxt prepare && vitest run",
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
