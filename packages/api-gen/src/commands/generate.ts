@@ -360,6 +360,11 @@ export function runTransformations(
     return constLiteralType;
   }
 
+  const openStringEnumType = createOpenStringEnumType(schemaObject);
+  if (openStringEnumType) {
+    return openStringEnumType;
+  }
+
   /**
    * Blob type is used for binary data
    */
@@ -445,6 +450,78 @@ function createConstLiteralType(schemaObject: SchemaObject) {
   }
 
   return undefined;
+}
+
+/**
+ * Open string enum: known values plus any other string, written in the schema as
+ * `anyOf` (or `oneOf`) of string `enum`/`const` branches and one plain string branch.
+ *
+ * openapi-typescript emits `"invoice" | "storno" | string`, which TypeScript collapses
+ * to `string`, losing autocompletion. `string & {}` keeps the literals visible to the
+ * editor while still accepting any string.
+ */
+function createOpenStringEnumType(schemaObject: SchemaObject) {
+  const composition =
+    ("anyOf" in schemaObject && schemaObject.anyOf) ||
+    ("oneOf" in schemaObject && schemaObject.oneOf);
+  if (!Array.isArray(composition)) {
+    return undefined;
+  }
+
+  const knownValues: string[] = [];
+  let isOpen = false;
+  let isNullable =
+    hasSchemaType(schemaObject, "null") ||
+    (schemaObject as { nullable?: boolean }).nullable === true;
+
+  for (const branch of composition) {
+    if (!branch || "$ref" in branch) {
+      return undefined;
+    }
+    if (Array.isArray(branch.enum)) {
+      for (const value of branch.enum) {
+        if (value === null) {
+          isNullable = true;
+        } else if (typeof value === "string") {
+          knownValues.push(value);
+        } else {
+          return undefined;
+        }
+      }
+    } else if ("const" in branch) {
+      if (branch.const === null) {
+        isNullable = true;
+      } else if (typeof branch.const === "string") {
+        knownValues.push(branch.const);
+      } else {
+        return undefined;
+      }
+    } else if (hasSchemaType(branch, "string")) {
+      isOpen = true;
+      isNullable ||= hasSchemaType(branch, "null");
+    } else if (branch.type === "null") {
+      isNullable = true;
+    } else {
+      return undefined;
+    }
+  }
+
+  if (!isOpen || !knownValues.length) {
+    return undefined;
+  }
+
+  return ts.factory.createUnionTypeNode([
+    ...[...new Set(knownValues)].map((value) =>
+      ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral(value)),
+    ),
+    ts.factory.createIntersectionTypeNode([
+      ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword),
+      ts.factory.createTypeLiteralNode([]),
+    ]),
+    ...(isNullable
+      ? [ts.factory.createLiteralTypeNode(ts.factory.createNull())]
+      : []),
+  ]);
 }
 
 function hasSchemaType(schemaObject: SchemaObject, type: string) {

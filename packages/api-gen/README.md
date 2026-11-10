@@ -35,6 +35,21 @@ deno install --dev npm:@shopware/api-gen
 
 Generator will create a new directory `api-types` with TypeScript schemas inside. Depending on the `apiType` parameter it will create `storeApiTypes.d.ts` or `adminApiTypes.d.ts` file.
 
+### Open string enums
+
+For a string field with known values that also accepts others (for example a type name plugins can extend), combine the known values with a plain string branch in `anyOf` (or `oneOf`):
+
+```json
+"typeName": {
+  "anyOf": [
+    { "type": "string", "enum": ["invoice", "delivery_note", "credit_note", "storno"] },
+    { "type": "string" }
+  ]
+}
+```
+
+The generator turns it into `"invoice" | "delivery_note" | "credit_note" | "storno" | (string & {})`, which accepts any string and still autocompletes the known ones. A plain `"invoice" | string` would collapse to `string`. `const` branches work instead of `enum` when each value needs its own `description`, and a `null` branch or `"type": ["string", "null"]` adds `| null`.
+
 ### Overriding
 
 If your instance contains inacurate or outdated OpenAPI specification, you can override it by creating a new file inside `api-types` directory::

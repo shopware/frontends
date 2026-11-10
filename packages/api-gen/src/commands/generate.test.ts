@@ -149,6 +149,92 @@ describe("generate transformations", () => {
     expect(astToString(ast)).toContain('apiAlias: "1";');
   });
 
+  it("keeps known values of an open string enum next to string & {}", () => {
+    expect(
+      printTypeNode(
+        runTransformations({
+          anyOf: [
+            { type: "string", enum: ["invoice", "storno"] },
+            { type: "string" },
+          ],
+        } as SchemaObject)!,
+      ),
+    ).toBe('"invoice" | "storno" | (string & {})');
+
+    expect(
+      printTypeNode(
+        runTransformations({
+          oneOf: [
+            { const: "invoice", description: "Invoice" },
+            { const: "storno" },
+            { type: ["string", "null"] },
+          ],
+        } as SchemaObject)!,
+      ),
+    ).toBe('"invoice" | "storno" | (string & {}) | null');
+  });
+
+  it("leaves closed enums and mixed compositions to openapi-typescript", () => {
+    expect(
+      runTransformations({
+        anyOf: [{ type: "string", enum: ["invoice"] }, { type: "number" }],
+      } as SchemaObject),
+    ).toBeUndefined();
+    expect(
+      runTransformations({
+        anyOf: [{ const: "invoice" }, { const: "storno" }],
+      } as SchemaObject),
+    ).toBeUndefined();
+    expect(
+      runTransformations({
+        anyOf: [
+          { $ref: "#/components/schemas/DocumentType" },
+          { type: "string" },
+        ],
+      } as SchemaObject),
+    ).toBeUndefined();
+  });
+
+  it("generates open string enum properties with autocompletion", async () => {
+    const ast = await openapiTS(
+      {
+        openapi: "3.1.0",
+        info: {
+          title: "Test schema",
+          version: "1.0.0",
+        },
+        paths: {},
+        components: {
+          schemas: {
+            Document: {
+              type: "object",
+              properties: {
+                typeName: {
+                  anyOf: [
+                    {
+                      type: "string",
+                      enum: ["invoice", "delivery_note"],
+                    },
+                    { type: "string" },
+                  ],
+                },
+              },
+            },
+          },
+        },
+      } as unknown as OpenAPI3,
+      {
+        version: 3,
+        exportType: true,
+        transform: runTransformations,
+      },
+    );
+
+    expect(astToString(ast)).toContain(
+      'typeName?: "invoice" | "delivery_note" | (string & {});',
+    );
+  });
+
   it("normalizes generated customFields properties", () => {
     const schema = `type GenericRecord =
   | never
