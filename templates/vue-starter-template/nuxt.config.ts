@@ -13,6 +13,19 @@ const viteServerWebSocketWorkaround = {
   },
 } as Record<string, unknown>;
 
+// Proxied to Shopware or carrying a session token (the continue route sets the
+// buyer's session cookie on a GET), so no layer may cache them: "isr" opts out
+// of the "/**" ISR on Vercel, "cache" of Nitro's cache on any preset, and the
+// headers of CDNs and browsers.
+const uncached = {
+  isr: false,
+  cache: false as const,
+  headers: {
+    "Cache-Control": "no-store, private",
+    "Surrogate-Control": "no-store",
+  },
+};
+
 export default defineNuxtConfig({
   extends: [
     "@shopware/composables/nuxt-layer",
@@ -22,6 +35,15 @@ export default defineNuxtConfig({
   runtimeConfig: {
     shopware: {
       endpoint: "",
+    },
+    agenticHandoff: {
+      // Origin of the Shopware instance running the agentic-commerce plugin.
+      // Empty: derived from the Store API endpoint by dropping "/store-api".
+      shopwareOrigin: "",
+      // Hosts this storefront answers on, comma separated, with a port where
+      // one is used ("shop.example.com,localhost:3000"). Empty trusts the
+      // request, which preview deployments need and production should not.
+      storefrontHosts: "",
     },
     public: {
       // Public URL of the storefront. /sitemap.xml builds its links from it.
@@ -167,6 +189,10 @@ export default defineNuxtConfig({
     "/sitemap.xml": {
       isr: false,
     },
+    "/.well-known/ucp": uncached,
+    "/.well-known/agent-card.json": uncached,
+    "/ucp/**": uncached,
+    "/checkout/continue/**": uncached,
     "/checkout": {
       ssr: false,
       headers: {

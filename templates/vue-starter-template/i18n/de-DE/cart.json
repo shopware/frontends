@@ -12,6 +12,10 @@
       "taxEstimation": "Steuern & Versandkosten werden beim Checkout berechnet.",
       "proceedToCheckout": "Zur Kasse",
       "goToShoppingCart": "Zum Warenkorb"
+    },
+    "handoff": {
+      "invalid": "Dieser Checkout-Link ist ungültig.",
+      "unavailable": "Der Checkout aus Ihrem KI-Assistenten ist nicht mehr verfügbar. Bitte prüfen Sie Ihren Warenkorb."
     }
   }
 }

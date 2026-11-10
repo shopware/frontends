@@ -12,6 +12,10 @@
       "taxEstimation": "Taxes & shipping estimated at checkout.",
       "proceedToCheckout": "Proceed to checkout",
       "goToShoppingCart": "Go to shopping cart"
+    },
+    "handoff": {
+      "invalid": "This checkout link is not valid.",
+      "unavailable": "The checkout from your AI assistant is no longer available. Please check your cart."
     }
   }
 }

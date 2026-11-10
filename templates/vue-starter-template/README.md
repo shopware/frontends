@@ -121,6 +121,29 @@ The template uses Nuxt route rules with ISR for public storefront pages, and set
 
 Nuxt and Nitro emit these headers. A CDN such as Fastly still has to be configured to respect them for HTML responses, and to bypass caching for responses that set cookies or depend on session-specific SSR.
 
+## Agent checkout handoff (UCP)
+
+Agents that shop without a browser, for example through the Store API MCP server of the [agentic-commerce plugin](https://github.com/shopware/agentic-commerce), build a cart over UCP and hand the buyer a `continue_url`. The template receives that link and continues the same cart in the shop.
+
+| Path                          | What it does                                                                                                                                |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/checkout/continue/{token}`  | Target of the UCP `continue_url`. Checks that the token still holds a cart, sets it as the `sw-context-token` cookie and opens `/checkout`. |
+| `/.well-known/ucp`, `/ucp/**` | Proxied to Shopware, so agents discover and call UCP on the shop's own domain. Shopware needs to trust this server as a proxy, see below.   |
+
+When a link cannot be used, the buyer lands on the cart with a notice. The public demo backend has no UCP, so nothing runs there. To try it against your own Shopware:
+
+1. Enable UCP on the sales channel and point its continue URL at this shop:
+
+   ```bash
+   bin/console ucp:setup --sales-channel=<name> --dev
+   bin/console ucp:config:set --sales-channel=<name> --continue-url-template='http://localhost:3000/checkout/continue/{checkoutId}'
+   ```
+
+2. If Shopware answers the proxied requests with its domain-mapping error, let it trust this server as a proxy: `SYMFONY_TRUSTED_PROXIES=127.0.0.1,::1` and `SYMFONY_TRUSTED_HEADERS=x-forwarded-for,x-forwarded-host,x-forwarded-proto,x-forwarded-port` in its environment.
+3. Point `.env` at that instance, see above, and run `pnpm dev`.
+
+In production, set `NUXT_AGENTIC_HANDOFF_STOREFRONT_HOSTS` to the shop's host, so a request cannot decide where `continue_url` points.
+
 ## Learn more
 
 - [Shopware Frontends documentation](https://developer.shopware.com/frontends/)
