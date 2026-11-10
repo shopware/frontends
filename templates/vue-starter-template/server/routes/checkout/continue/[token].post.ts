@@ -2,20 +2,9 @@
 // continueUrlTemplate = https://<storefront>/checkout/continue/{checkoutId}
 // The checkout id is the context token of the agent's cart, so continuing
 // the checkout means adopting that token as this browser's session.
+// handoff-page.ts has already answered 404 when the handoff is off or the
+// host is not the shop's, and set the no-store and no-referrer headers.
 export default defineEventHandler(async (event) => {
-  // The URL carries a session token: keep it out of caches, search indexes
-  // and the Referer of the next navigation.
-  setResponseHeaders(event, {
-    "Cache-Control": "no-store, private",
-    "Referrer-Policy": "no-referrer",
-    "X-Robots-Tag": "noindex, nofollow",
-  });
-
-  // Only on a configured storefront host, and only with the handoff on.
-  if (!isHandoffEnabled(event) || !isStorefrontHost(event)) {
-    throw createError({ statusCode: 404, statusMessage: "Not Found" });
-  }
-
   // Only the continue page on this origin may adopt a token. Another site
   // cannot post here on the buyer's behalf, and an agent cannot skip the page.
   if (getRequestHeader(event, "sec-fetch-site") !== "same-origin") {

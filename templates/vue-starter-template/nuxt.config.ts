@@ -41,8 +41,9 @@ export default defineNuxtConfig({
       // Empty: derived from the Store API endpoint by dropping "/store-api".
       shopwareOrigin: "",
       // Hosts this storefront answers on, comma separated, with a port where
-      // one is used ("shop.example.com,localhost:3000"). Empty trusts the
-      // request, which preview deployments need and production should not.
+      // one is used ("shop.example.com,localhost:3000"), all on the sales
+      // channel of the access key. Empty trusts the request, which preview
+      // deployments need and production should not.
       storefrontHosts: "",
     },
     public: {

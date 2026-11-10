@@ -130,11 +130,11 @@ Agents that shop without a browser, for example through the Store API MCP server
 | `/checkout/continue/{token}`                                  | Target of the UCP `continue_url`. Asks the buyer to confirm, then adopts the agent's cart as the session (`sw-context-token` cookie) and opens `/checkout`. |
 | `/.well-known/ucp`, `/.well-known/agent-card.json`, `/ucp/**` | Proxied to Shopware, so agents discover and call UCP on the shop's own domain. Shopware needs to trust this server as a proxy, see below.                   |
 
-All of it is off until `NUXT_PUBLIC_AGENTIC_HANDOFF_ENABLED=true` is set. The link opens a page that asks the buyer to continue with the agent's cart. Continuing replaces the browser's session: an existing cart goes away, and a signed-in customer is signed out. The page says so first. When a link cannot be used, the buyer lands on the cart with a notice.
+All of it is off until `NUXT_PUBLIC_AGENTIC_HANDOFF_ENABLED=true` is set. The link opens a page that asks the buyer to continue with the agent's cart. Continuing replaces the browser's session: an existing cart goes away, and a signed-in customer is signed out. The page says so first. When a link cannot be used, the buyer lands on the cart with a notice. The link stays usable as long as the agent's cart exists: the plugin puts the cart's own token in `continue_url` and does not issue single-use codes yet.
 
 The public demo backend has no UCP. To try it against your own Shopware:
 
-1. Enable UCP on the sales channel and point its continue URL at this shop:
+1. Enable UCP on the sales channel and point its continue URL at this shop. Shopware builds `continue_url` from that template, per sales channel:
 
    ```bash
    bin/console ucp:setup --sales-channel=<name> --dev
@@ -144,7 +144,9 @@ The public demo backend has no UCP. To try it against your own Shopware:
 2. If Shopware answers the proxied requests with its domain-mapping error, let it trust this server as a proxy: `SYMFONY_TRUSTED_PROXIES=127.0.0.1,::1` and `SYMFONY_TRUSTED_HEADERS=x-forwarded-for,x-forwarded-host,x-forwarded-proto,x-forwarded-port` in its environment. Shopware's MCP endpoint also checks the upstream `Host` header, so the hostname of the Store API endpoint must be one of Shopware's allowed MCP hosts.
 3. Point `.env` at that instance, see above, set `NUXT_PUBLIC_AGENTIC_HANDOFF_ENABLED=true` and run `pnpm dev`.
 
-In production, set `NUXT_AGENTIC_HANDOFF_STOREFRONT_HOSTS` to the shop's hosts. The proxy and the continue route answer only on those, so a request cannot pick the host Shopware builds `continue_url` from.
+In production, set `NUXT_AGENTIC_HANDOFF_STOREFRONT_HOSTS` to the shop's hosts. The proxy and the continue route answer only on those, so a request cannot pick the host Shopware builds `continue_url` from. All of those hosts must belong to the sales channel of the configured access key: discovery, the adopt route and the browser use that one channel.
+
+Behind a CDN or load balancer, Shopware sees the edge as the caller of every proxied request, so its MCP rate limit counts all agents as one. Host and protocol are read from the forwarding headers the edge sends.
 
 ## Learn more
 

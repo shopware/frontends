@@ -1,7 +1,11 @@
 import { request as httpRequest } from "node:http";
 import { request as httpsRequest } from "node:https";
 
-import type { APIRequestContext, APIResponse } from "@playwright/test";
+import type {
+  APIRequestContext,
+  APIResponse,
+  BrowserContext,
+} from "@playwright/test";
 
 import { expect, test } from "../fixtures";
 
@@ -58,6 +62,11 @@ function rawGet(baseURL: string, rawPath: string) {
   );
 }
 
+async function sessionToken(context: BrowserContext) {
+  const cookies = await context.cookies();
+  return cookies.find((cookie) => cookie.name === "sw-context-token")?.value;
+}
+
 test.describe("Agent checkout handoff", { tag: "@frontends" }, () => {
   let enabled = false;
 
@@ -67,14 +76,33 @@ test.describe("Agent checkout handoff", { tag: "@frontends" }, () => {
     enabled = (home.headers().link ?? "").includes(UCP_LINK);
   });
 
-  test("the adopt route exists only while the handoff is on", async ({
+  test("the continue page and route exist only while the handoff is on", async ({
     request,
   }) => {
-    const response = await request.post(`${CONTINUE}not-a-token`, {
+    const page = await request.get(`${CONTINUE}${UNKNOWN_TOKEN}`, {
+      maxRedirects: 0,
+    });
+    expect(page.status()).toBe(enabled ? 200 : 404);
+    if (enabled) {
+      // The page is client-rendered, so the server sets these.
+      expect(page.headers()["referrer-policy"]).toBe("no-referrer");
+      expect(page.headers()["x-robots-tag"]).toBe("noindex, nofollow");
+      expect(page.headers()["cache-control"]).toContain("no-store");
+    }
+
+    const localized = await request.get(`/de-DE${CONTINUE}${UNKNOWN_TOKEN}`, {
+      maxRedirects: 0,
+    });
+    expect(localized.status()).toBe(enabled ? 200 : 404);
+    if (enabled) {
+      expect(localized.headers()["referrer-policy"]).toBe("no-referrer");
+    }
+
+    const adopt = await request.post(`${CONTINUE}not-a-token`, {
       headers: SAME_ORIGIN,
       maxRedirects: 0,
     });
-    expect(response.status()).toBe(enabled ? 303 : 404);
+    expect(adopt.status()).toBe(enabled ? 303 : 404);
   });
 
   test("a traversal path under /ucp/ is not proxied", async ({ baseURL }) => {
@@ -127,18 +155,29 @@ test.describe("Agent checkout handoff", { tag: "@frontends" }, () => {
     );
   });
 
-  test("the page asks first and a dead link leaves the session alone", async ({
-    page,
-  }) => {
+  test("keeping the cart leaves the session as it was", async ({ page }) => {
     test.skip(!enabled, "the handoff is off on this host");
-    await page.goto(`${CONTINUE}${UNKNOWN_TOKEN}`);
-    const button = page.getByRole("button", {
-      name: "Continue with this cart",
-    });
-    await expect(button).toBeVisible();
-    await expect(page).toHaveURL(new RegExp(`${CONTINUE}${UNKNOWN_TOKEN}$`));
+    await page.goto("/");
+    const before = await sessionToken(page.context());
+    expect(before).toBeTruthy();
 
-    await button.click();
+    await page.goto(`${CONTINUE}${UNKNOWN_TOKEN}`);
+    await expect(
+      page.getByRole("button", { name: "Continue with this cart" }),
+    ).toBeVisible();
+    await page.getByRole("link", { name: "Keep my cart" }).click();
+    await expect(page).toHaveURL(/\/checkout\/cart$/);
+    expect(await sessionToken(page.context())).toBe(before);
+  });
+
+  test("a dead link leaves the session as it was", async ({ page }) => {
+    test.skip(!enabled, "the handoff is off on this host");
+    await page.goto("/");
+    const before = await sessionToken(page.context());
+    expect(before).toBeTruthy();
+
+    await page.goto(`${CONTINUE}${UNKNOWN_TOKEN}`);
+    await page.getByRole("button", { name: "Continue with this cart" }).click();
     await expect(
       page.getByText(
         "The checkout from your AI assistant is no longer available",
@@ -148,10 +187,7 @@ test.describe("Agent checkout handoff", { tag: "@frontends" }, () => {
       ),
     ).toBeVisible();
     await expect(page).toHaveURL(/\/checkout\/cart$/);
-    const cookies = await page.context().cookies();
-    expect(
-      cookies.find((cookie) => cookie.name === "sw-context-token")?.value,
-    ).not.toBe(UNKNOWN_TOKEN);
+    expect(await sessionToken(page.context())).toBe(before);
   });
 
   test("the cart explains a rejected link and cleans the URL", async ({
