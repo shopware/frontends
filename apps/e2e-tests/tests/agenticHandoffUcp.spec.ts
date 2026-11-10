@@ -5,11 +5,13 @@ import { expect, test } from "../fixtures";
 /**
  * The full agent journey against a Shopware with the agentic-commerce plugin:
  * an agent builds a cart and a checkout over UCP (MCP), through the
- * storefront's proxy, and the buyer continues it in the browser. Skips
- * where the shop has no UCP behind the proxy, like the public demo backend.
+ * storefront's proxy, and the buyer continues it in the browser. Skips where
+ * the handoff is off, or where the Shopware behind the proxy has no UCP, like
+ * the public demo backend. Any other discovery failure fails the tests.
  */
 
 const MCP_PATH = "/ucp/mcp?toolsets=other";
+const UCP_LINK = '</.well-known/ucp>; rel="service-meta"';
 const CONTINUE_URL = /\/checkout\/continue\/([A-Za-z0-9]{32})$/;
 const CONTINUE_BUTTON = { name: "Continue with this cart" };
 const SIGNED_IN =
@@ -93,9 +95,14 @@ class UcpAgent {
   }
 }
 
-/** Lets an agent build a cart and a checkout, and returns the buyer's link. */
-async function agentCheckout(request: APIRequestContext, origin: string) {
-  const agent = new UcpAgent(request, new URL(origin).origin);
+/**
+ * Lets an agent build a cart and a checkout, and returns the buyer's link.
+ * The link has to point at the storefront under test: the plugin builds it
+ * from the sales channel's template, and a wrong template is a real defect.
+ */
+async function agentCheckout(request: APIRequestContext, baseURL: string) {
+  const origin = new URL(baseURL).origin;
+  const agent = new UcpAgent(request, origin);
   await agent.connect();
 
   let product: Product | undefined;
@@ -129,11 +136,15 @@ async function agentCheckout(request: APIRequestContext, origin: string) {
     dryRun: false,
     payload: { cart_id: cart.data?.id, line_items: [] },
   });
-  const continueUrl = (created.data ?? created).continue_url ?? "";
-  const token = CONTINUE_URL.exec(continueUrl)?.[1];
-  expect(token, `unexpected continue_url ${continueUrl}`).toBeTruthy();
+  const url = (created.data ?? created).continue_url ?? "";
+  const token = CONTINUE_URL.exec(url)?.[1];
+  expect(token, `unexpected continue_url ${url}`).toBeTruthy();
+  expect(
+    new URL(url).origin,
+    `continue_url points at ${url}, not at this storefront. Check the sales channel's continue URL template.`,
+  ).toBe(origin);
 
-  return { path: `/checkout/continue/${token}`, token, title };
+  return { url, token, title };
 }
 
 async function sessionToken(context: BrowserContext) {
@@ -142,15 +153,29 @@ async function sessionToken(context: BrowserContext) {
 }
 
 test.describe("Agent checkout handoff over UCP", { tag: "@frontends" }, () => {
-  let ucp = false;
+  let skipReason: string | undefined;
 
   test.beforeAll(async ({ request }) => {
+    const home = await request.get("/");
+    if (!(home.headers().link ?? "").includes(UCP_LINK)) {
+      skipReason = "the handoff is off on this host";
+      return;
+    }
+    // 404 is a Shopware without the plugin. Anything else is a broken proxy.
     const profile = await request.get("/.well-known/ucp");
-    ucp = profile.status() === 200;
+    if (profile.status() === 404) {
+      skipReason = "the Shopware behind the proxy has no UCP";
+      return;
+    }
+    const body = (await profile.text()).slice(0, 300);
+    expect(
+      profile.status(),
+      `UCP discovery through the proxy answered ${profile.status()}: ${body}`,
+    ).toBe(200);
   });
 
   test.beforeEach(({ baseURL }, testInfo) => {
-    test.skip(!ucp, `no UCP behind the proxy on ${baseURL}`);
+    test.skip(Boolean(skipReason), `${skipReason} (${baseURL})`);
     // Three MCP calls plus a browser journey do not fit the default.
     testInfo.setTimeout(120_000);
   });
@@ -160,9 +185,9 @@ test.describe("Agent checkout handoff over UCP", { tag: "@frontends" }, () => {
     request,
     baseURL,
   }) => {
-    const { path, token, title } = await agentCheckout(request, baseURL ?? "");
+    const { url, token, title } = await agentCheckout(request, baseURL ?? "");
 
-    await page.goto(path);
+    await page.goto(url);
     await expect(page.getByRole("button", CONTINUE_BUTTON)).toBeVisible();
     expect(await sessionToken(page.context())).not.toBe(token);
 
@@ -172,7 +197,7 @@ test.describe("Agent checkout handoff over UCP", { tag: "@frontends" }, () => {
     expect(await sessionToken(page.context())).toBe(token);
 
     // The link stays valid. Opening it again changes nothing.
-    await page.goto(path);
+    await page.goto(url);
     await page.getByRole("button", CONTINUE_BUTTON).click();
     await expect(page).toHaveURL(/\/checkout$/);
     expect(await sessionToken(page.context())).toBe(token);
@@ -183,14 +208,13 @@ test.describe("Agent checkout handoff over UCP", { tag: "@frontends" }, () => {
     request,
     baseURL,
   }) => {
-    const origin = baseURL ?? "";
-    const own = await agentCheckout(request, origin);
-    await page.goto(own.path);
+    const own = await agentCheckout(request, baseURL ?? "");
+    await page.goto(own.url);
     await page.getByRole("button", CONTINUE_BUTTON).click();
     await expect(page).toHaveURL(/\/checkout$/);
 
-    const other = await agentCheckout(request, origin);
-    await page.goto(other.path);
+    const other = await agentCheckout(request, baseURL ?? "");
+    await page.goto(other.url);
     await expect(
       page.getByText("It replaces the cart you have in this browser."),
     ).toBeVisible();
@@ -214,8 +238,8 @@ test.describe("Agent checkout handoff over UCP", { tag: "@frontends" }, () => {
     await loginForm.login(customer.email, customer.password);
     await expect(page.locator(SIGNED_IN)).toHaveCount(1, { timeout: 30_000 });
 
-    const { path, token, title } = await agentCheckout(request, baseURL ?? "");
-    await page.goto(path);
+    const { url, token, title } = await agentCheckout(request, baseURL ?? "");
+    await page.goto(url);
     await expect(
       page.getByText("It replaces your current cart and signs you out."),
     ).toBeVisible();
