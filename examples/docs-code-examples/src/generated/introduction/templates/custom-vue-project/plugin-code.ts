@@ -13,7 +13,6 @@ export type ShopwareFrontendsOptions = {
   shopwareApiClient?: {
     timeout: number;
   };
-  enableDevtools?: boolean;
 };
 
 export default {
@@ -36,9 +35,7 @@ export default {
       },
     });
 
-    const shopwareContext = createShopwareContext(app, {
-      enableDevtools: !!options.enableDevtools,
-    });
+    const shopwareContext = createShopwareContext(app, {});
 
     app.provide("apiClient", apiClient);
     app.provide("shopware", shopwareContext);

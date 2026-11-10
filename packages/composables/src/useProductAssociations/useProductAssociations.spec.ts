@@ -138,6 +138,21 @@ describe("useProductAssociations", () => {
     expect(invokeOptions).not.toHaveProperty("headers");
   });
 
+  it("loads productAssociations without options and params", async () => {
+    const { vm, injections } = useSetup(() =>
+      useProductAssociations(computed(() => mockedProduct)),
+    );
+    injections.apiClient.invoke.mockResolvedValue({ data: mockedCrossSelling });
+
+    await vm.loadAssociations();
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledExactlyOnceWith(
+      "readProductCrossSellings post /product/{productId}/cross-selling",
+      { pathParams: { productId: mockedProduct.id } },
+    );
+    expect(vm.productAssociations).toStrictEqual(mockedCrossSelling);
+  });
+
   it("init without product should throw an error", () => {
     expect(() =>
       useSetup(() =>

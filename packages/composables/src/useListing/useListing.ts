@@ -197,7 +197,6 @@ export function useListing(params?: {
   const listingType = params?.listingType || "categoryListing";
   let categoryId = params?.categoryId || null;
 
-  // const { getDefaults } = useDefaults({ defaultsKey: contextName });
   const { apiClient } = useShopwareContext();
 
   let searchMethod: typeof listingType extends "productSearchListing"
@@ -250,7 +249,7 @@ export function useListing(params?: {
     searchMethod,
     searchDefaults:
       params?.defaultSearchCriteria ||
-      ({} as operations["searchPage post /search"]["body"]), //getDefaults(),
+      ({} as operations["searchPage post /search"]["body"]),
     initialListing: params?.initialListing,
   });
 }
@@ -317,32 +316,13 @@ export function createListingComposable({
   listingKey: string;
   initialListing?: Schemas["ProductListingResult"] | null;
 }): UseListingReturn {
-  // const COMPOSABLE_NAME = "createListingComposable";
-  // const contextName = COMPOSABLE_NAME;
-
-  // const router = useRouter();
-
-  // Handle CMS context to be able to show different breadcrumbs for different CMS pages.
-  // const { isVueComponent } = useVueContext();
-  // const cmsContext = isVueComponent && inject("swCmsContext", null);
-  // const cacheKey = cmsContext
-  //   ? `${contextName}(cms-${cmsContext})`
-  //   : contextName;
-
   const loading = ref(false);
   const loadingMore = ref(false);
 
-  // const { sharedRef } = useSharedState();
   const _storeInitialListing = inject<
     Ref<Schemas["ProductListingResult"] | null>
   >(`useListingInitial-${listingKey}`, ref(initialListing ?? null));
   provide(`useListingInitial-${listingKey}`, _storeInitialListing);
-  // const _storeInitialListing = sharedRef<Schemas["ProductListingResult"]>(
-  //   `${cacheKey}-initialListing-${listingKey}`
-  // );
-  // const _storeAppliedListing = sharedRef<Partial<Schemas["ProductListingResult"]>>(
-  //   `${cacheKey}-appliedListing-${listingKey}`
-  // );
   const _storeAppliedListing = inject<
     Ref<Schemas["ProductListingResult"] | null>
   >(`useListingApplied-${listingKey}`, ref(null));
@@ -399,7 +379,6 @@ export function createListingComposable({
       const q = criteria
         ? criteria
         : {
-            // ...router.currentRoute.query,
             p: getCurrentPage.value + 1,
           };
 
@@ -489,27 +468,6 @@ export function createListingComposable({
   });
 
   const getCurrentFilters = computed(() => {
-    // const currentFiltersResult: Schemas["ProductListingResult"]["currentFilters"] =
-    //   {};
-    // const currentFilters = {
-    //   ...getCurrentListing.value?.currentFilters,
-    //   // ...router.currentRoute.query,
-    // };
-    // Object.keys(currentFilters).forEach(
-    //   (objectKey: keyof Schemas["ProductListingResult"]["currentFilters"]) => {
-    //     if (!currentFilters[objectKey]) return;
-    //     if (objectKey === "navigationId") return;
-    //     if (objectKey === "price") {
-    //       if (currentFilters.price?.min)
-    //         currentFiltersResult.price.min = currentFilters[objectKey].min;
-    //       if (currentFilters[objectKey].max)
-    //         currentFiltersResult["max-price"] = currentFilters[objectKey].max;
-    //       return;
-    //     }
-    //     if (objectKey === "p") return;
-    //     currentFiltersResult[objectKey] = currentFilters[objectKey];
-    //   },
-    // );
     return getCurrentListing.value
       ?.currentFilters as Schemas["ProductListingResult"]["currentFilters"];
   });
