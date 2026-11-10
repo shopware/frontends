@@ -2,12 +2,21 @@
 // continueUrlTemplate = https://<storefront>/checkout/continue/{checkoutId}
 // The checkout id is the context token of the agent's cart, so continuing
 // the checkout means adopting that token as this browser's session.
-// handoff-page.ts has already answered 404 when the handoff is off or the
-// host is not the shop's, and set the no-store and no-referrer headers.
 export default defineEventHandler(async (event) => {
+  // handoff-page.ts answers the same way for the whole path. Checked again
+  // here, so this route never depends on a path pattern in another file.
+  if (!isHandoffEnabled(event) || !isStorefrontHost(event)) {
+    throw createError({ statusCode: 404, statusMessage: "Not Found" });
+  }
+
   // Only the continue page on this origin may adopt a token. Another site
   // cannot post here on the buyer's behalf, and an agent cannot skip the page.
-  if (getRequestHeader(event, "sec-fetch-site") !== "same-origin") {
+  // Browsers without Sec-Fetch-Site still send Origin on a form post.
+  const site = getRequestHeader(event, "sec-fetch-site");
+  const sameOrigin = site
+    ? site === "same-origin"
+    : getRequestHeader(event, "origin") === getRequestedOrigin(event);
+  if (!sameOrigin) {
     throw createError({ statusCode: 403, statusMessage: "Forbidden" });
   }
 
@@ -16,21 +25,33 @@ export default defineEventHandler(async (event) => {
     return sendRedirect(event, "/checkout/cart?handoff=invalid", 303);
   }
 
-  // Shopware answers an unknown token (expired, or rotated away by a guest
-  // registration or a placed order) with an empty cart. Adopting it would
-  // only replace the buyer's current cart with nothing.
   const apiClient = createServerApiClient({ contextToken: token });
+  let signedIn = false;
   let lineItemCount = 0;
   try {
-    const { data } = await apiClient.invoke("readCart get /checkout/cart");
-    lineItemCount = data.lineItems?.length ?? 0;
+    // Any Store API session with a cart would pass the cart check, and a
+    // session that is signed in would sign the buyer in to that account.
+    // An agent's cart is a guest session, so a customer means a planted link.
+    const context = await apiClient.invoke("readContext get /context");
+    signedIn = Boolean(context.data.customer);
+
+    // Shopware answers an unknown token (expired, or rotated away by a guest
+    // registration or a placed order) with an empty cart. Adopting it would
+    // only replace the buyer's current cart with nothing.
+    if (!signedIn) {
+      const cart = await apiClient.invoke("readCart get /checkout/cart");
+      lineItemCount = cart.data.lineItems?.length ?? 0;
+    }
   } catch (error) {
     // A backend failure is not an expired link. Say so, and leave a trace.
-    console.error("[agentic-handoff] could not read the agent's cart", error);
-    throw createError({ statusCode: 502, statusMessage: "Bad Gateway" });
+    console.error(
+      "[agentic-handoff] could not read the agent's session",
+      error,
+    );
+    return sendRedirect(event, "/checkout/cart?handoff=error", 303);
   }
 
-  if (lineItemCount === 0) {
+  if (signedIn || lineItemCount === 0) {
     return sendRedirect(event, "/checkout/cart?handoff=unavailable", 303);
   }
 

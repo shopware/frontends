@@ -21,7 +21,8 @@
       "replacesCart": "Er ersetzt den Warenkorb in diesem Browser.",
       "replacesSession": "Er ersetzt Ihren aktuellen Warenkorb und meldet Sie ab.",
       "continue": "Mit diesem Warenkorb fortfahren",
-      "keepCart": "Meinen Warenkorb behalten"
+      "keepCart": "Meinen Warenkorb behalten",
+      "error": "Der Checkout aus Ihrem KI-Assistenten konnte nicht geladen werden. Bitte versuchen Sie es erneut."
     }
   }
 }

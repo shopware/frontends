@@ -19,7 +19,16 @@ if (!useRuntimeConfig().public.agenticHandoff.enabled) {
   });
 }
 
+// The form posts only to a path built from a well-formed token. Anything else
+// gets the same notice the route would give it.
 const token = String(route.params.token ?? "");
+const validToken = CONTEXT_TOKEN_PATTERN.test(token);
+if (!validToken) {
+  await navigateTo({
+    path: localePath("/checkout/cart"),
+    query: { handoff: "invalid" },
+  });
+}
 
 useHead({
   meta: [
@@ -46,8 +55,9 @@ useHead({
       }}
     </p>
     <form
+      v-if="validToken"
       method="post"
-      :action="`/checkout/continue/${token}`"
+      :action="`/checkout/continue/${encodeURIComponent(token)}`"
       class="mt-10 flex flex-col sm:flex-row justify-center gap-4"
     >
       <button

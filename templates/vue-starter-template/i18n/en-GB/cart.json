@@ -21,7 +21,8 @@
       "replacesCart": "It replaces the cart you have in this browser.",
       "replacesSession": "It replaces your current cart and signs you out.",
       "continue": "Continue with this cart",
-      "keepCart": "Keep my cart"
+      "keepCart": "Keep my cart",
+      "error": "The checkout from your AI assistant could not be loaded. Please try again."
     }
   }
 }

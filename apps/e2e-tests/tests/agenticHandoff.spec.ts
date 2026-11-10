@@ -8,6 +8,7 @@ import type {
 } from "@playwright/test";
 
 import { expect, test } from "../fixtures";
+import { registerCustomer } from "../utils/store-api";
 
 const CONTINUE = "/checkout/continue/";
 const UCP_LINK = '</.well-known/ucp>; rel="service-meta"';
@@ -164,6 +165,85 @@ test.describe("Agent checkout handoff", { tag: "@frontends" }, () => {
     expect(response.headers()["set-cookie"] ?? "").not.toContain(
       "sw-context-token",
     );
+  });
+
+  test("a signed-in session's token is never adopted", async ({
+    page,
+    request,
+    storeApi,
+  }) => {
+    test.skip(!enabled, "the handoff is off on this host");
+    // A customer's session with a cart, built over the Store API the way a
+    // planted link would be. Adopting it would sign the buyer in there.
+    await page.goto("/");
+    await expect.poll(() => storeApi.value, { timeout: 30_000 }).toBeTruthy();
+    const customer = await registerCustomer(page, storeApi);
+    const { endpoint, accessKey } = storeApi.value as {
+      endpoint: string;
+      accessKey: string;
+    };
+    const headers = { "sw-access-key": accessKey };
+
+    const login = await page.request.post(`${endpoint}/account/login`, {
+      headers,
+      data: { username: customer.email, password: customer.password },
+    });
+    expect(login.ok(), `login answered ${login.status()}`).toBe(true);
+    const token = login.headers()["sw-context-token"] ?? "";
+    expect(token).toMatch(/^[A-Za-z0-9]{32}$/);
+
+    const products = await page.request.post(`${endpoint}/product`, {
+      headers,
+      data: {
+        limit: 1,
+        // A leaf product: a parent with variants cannot go into a cart.
+        filter: [
+          { type: "equals", field: "available", value: true },
+          { type: "equals", field: "childCount", value: 0 },
+        ],
+      },
+    });
+    const productId = (
+      (await products.json()) as { elements?: { id: string }[] }
+    ).elements?.[0]?.id;
+    expect(productId, "no available product to add").toBeTruthy();
+    const cart = await page.request.post(
+      `${endpoint}/checkout/cart/line-item`,
+      {
+        headers: { ...headers, "sw-context-token": token },
+        data: {
+          items: [{ type: "product", referencedId: productId, quantity: 1 }],
+        },
+      },
+    );
+    expect(
+      ((await cart.json()) as { lineItems?: unknown[] }).lineItems?.length,
+    ).toBe(1);
+
+    const response = await postWhenNotThrottled(
+      request,
+      `${CONTINUE}${token}`,
+      SAME_ORIGIN,
+    );
+    expect(response.status()).toBe(303);
+    expect(response.headers().location).toBe(
+      "/checkout/cart?handoff=unavailable",
+    );
+    expect(response.headers()["set-cookie"] ?? "").not.toContain(
+      "sw-context-token",
+    );
+  });
+
+  test("the page sends a malformed token to the cart", async ({ page }) => {
+    test.skip(!enabled, "the handoff is off on this host");
+    await page.goto(`${CONTINUE}not-a-token`);
+    await expect(
+      page.getByText("This checkout link is not valid."),
+    ).toBeVisible();
+    await expect(page).toHaveURL(/\/checkout\/cart$/);
+    await expect(
+      page.getByRole("button", { name: "Continue with this cart" }),
+    ).toHaveCount(0);
   });
 
   test("keeping the cart leaves the session as it was", async ({ page }) => {

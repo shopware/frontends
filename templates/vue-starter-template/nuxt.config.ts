@@ -13,10 +13,17 @@ const viteServerWebSocketWorkaround = {
   },
 } as Record<string, unknown>;
 
-// Proxied to Shopware or carrying a session token (the continue route sets the
-// buyer's session cookie on a GET), so no layer may cache them: "isr" opts out
-// of the "/**" ISR on Vercel, "cache" of Nitro's cache on any preset, and the
-// headers of CDNs and browsers.
+const defaultLocale = "en-GB";
+const locales = [
+  { code: "en-GB", language: "en-GB", file: "en-GB.ts" },
+  { code: "pl-PL", language: "pl-PL", file: "pl-PL.ts" },
+  { code: "de-DE", language: "de-DE", file: "de-DE.ts" },
+];
+
+// Proxied to Shopware or carrying a session token (the confirm page's POST
+// sets the buyer's session cookie), so no layer may cache them: "isr" opts
+// out of the "/**" ISR on Vercel, "cache" of Nitro's cache on any preset, and
+// the headers of CDNs and browsers.
 const uncached = {
   isr: false,
   cache: false as const,
@@ -25,6 +32,16 @@ const uncached = {
     "Surrogate-Control": "no-store",
   },
 };
+
+// The confirm page carries a session token in its URL and reads the session
+// in the browser: client-rendered and never cached, under every locale prefix
+// too, since route rules do not know about i18n.
+const continuePage = { ...uncached, ssr: false };
+const continuePageRules = Object.fromEntries(
+  locales
+    .filter((locale) => locale.code !== defaultLocale)
+    .map((locale) => [`/${locale.code}/checkout/continue/**`, continuePage]),
+);
 
 export default defineNuxtConfig({
   extends: [
@@ -134,27 +151,11 @@ export default defineNuxtConfig({
   ],
   i18n: {
     strategy: "prefix_except_default",
-    defaultLocale: "en-GB",
+    defaultLocale,
     detectBrowserLanguage: false,
     langDir: "./src/langs/",
     vueI18n: "config.ts",
-    locales: [
-      {
-        code: "en-GB",
-        language: "en-GB",
-        file: "en-GB.ts",
-      },
-      {
-        code: "pl-PL",
-        language: "pl-PL",
-        file: "pl-PL.ts",
-      },
-      {
-        code: "de-DE",
-        file: "de-DE.ts",
-        language: "de-DE",
-      },
-    ],
+    locales,
   },
   icon: {
     // Avoid bundling the full @iconify-json/carbon collection into Nitro (~1.1 MB).
@@ -198,11 +199,8 @@ export default defineNuxtConfig({
     "/.well-known/ucp": uncached,
     "/.well-known/agent-card.json": uncached,
     "/ucp/**": uncached,
-    "/checkout/continue/**": uncached,
-    // The same page under the locale prefixes. Route rules do not know
-    // about i18n, so each prefixed locale needs its own entry.
-    "/pl-PL/checkout/continue/**": uncached,
-    "/de-DE/checkout/continue/**": uncached,
+    "/checkout/continue/**": continuePage,
+    ...continuePageRules,
     "/checkout": {
       ssr: false,
       headers: {

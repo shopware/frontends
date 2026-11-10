@@ -49,6 +49,9 @@ jobs:
           # The template default is the demo store domain, which this sales
           # channel rejects. Template bug, tracked in #2585.
           NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL: https://demo-frontends.shopware.store/figma
+          # Runs the UCP handoff checks in their on state. The demo backend has
+          # no UCP, so the proxied discovery answers 404 and the UCP journey skips.
+          NUXT_PUBLIC_AGENTIC_HANDOFF_ENABLED: "true"
           # Records Store API calls made while rendering, which Playwright
           # cannot see. Test only.
           SSR_NETWORK_LOG: ${{ github.workspace }}/apps/e2e-tests/diagnostics/ssr-network.jsonl

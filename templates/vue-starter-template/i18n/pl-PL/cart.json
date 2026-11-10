@@ -21,7 +21,8 @@
       "replacesCart": "Zastąpi on koszyk, który masz w tej przeglądarce.",
       "replacesSession": "Zastąpi on Twój obecny koszyk i wyloguje Cię.",
       "continue": "Kontynuuj z tym koszykiem",
-      "keepCart": "Zachowaj mój koszyk"
+      "keepCart": "Zachowaj mój koszyk",
+      "error": "Nie udało się wczytać zamówienia od Twojego asystenta AI. Spróbuj ponownie."
     }
   }
 }

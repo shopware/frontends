@@ -1,45 +1,24 @@
 import type { H3Event } from "h3";
 
-// Served by the agentic-commerce plugin: the UCP profile, the A2A agent card,
-// and every UCP transport (REST, MCP, A2A, embedded, OAuth) under /ucp/.
-const UCP_PATHS = new Set(["/.well-known/ucp", "/.well-known/agent-card.json"]);
-const UCP_PATH_PREFIX = "/ucp/";
-
-// A UCP checkout id is the Shopware context token of the agent's cart:
-// 32 hex characters from the plugin, 32 alphanumerics once Shopware rotates it.
-export const CONTEXT_TOKEN_PATTERN = /^[A-Za-z0-9]{32}$/;
-
 // Off by default. A scaffold should neither proxy nor announce UCP until the
 // shop runs the plugin (NUXT_PUBLIC_AGENTIC_HANDOFF_ENABLED=true).
 export function isHandoffEnabled(event?: H3Event): boolean {
   return useRuntimeConfig(event).public.agenticHandoff.enabled === true;
 }
 
-export function isUcpPath(path: string): boolean {
-  const pathname = path.split("?", 1)[0] ?? "";
-
-  return UCP_PATHS.has(pathname) || pathname.startsWith(UCP_PATH_PREFIX);
-}
-
-// The path is checked after normalization, not as it arrives: "/ucp/%2e%2e/x"
-// starts with "/ucp/" but resolves to "/x" on the Shopware origin, and
-// "//host/x" resolves to another origin entirely. Returns null for anything
-// that is not a UCP path on the Shopware origin.
+// The UCP path of this request, mounted under the Shopware origin. The origin
+// may carry a path ("https://host/shop"), which is kept.
 export function resolveUcpTarget(event: H3Event): URL | null {
-  const origin = getShopwareOrigin(event);
+  const path = resolveUcpPath(event.path);
+  if (!path) {
+    return null;
+  }
 
-  let target: URL;
   try {
-    target = new URL(event.path, `${origin}/`);
+    return new URL(`${getShopwareOrigin(event)}${path}`);
   } catch {
     return null;
   }
-
-  if (target.origin !== new URL(origin).origin) {
-    return null;
-  }
-
-  return isUcpPath(target.pathname) ? target : null;
 }
 
 function getStorefrontHosts(event: H3Event): string[] {
@@ -51,6 +30,12 @@ function getStorefrontHosts(event: H3Event): string[] {
 
 export function getRequestedHost(event: H3Event): string {
   return getRequestHost(event, { xForwardedHost: true }).toLowerCase();
+}
+
+export function getRequestedOrigin(event: H3Event): string {
+  const protocol = getRequestProtocol(event, { xForwardedProto: true });
+
+  return `${protocol}://${getRequestedHost(event)}`;
 }
 
 // Shopware resolves the sales channel, and builds continue_url, the profile
