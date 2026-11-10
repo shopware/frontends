@@ -35,6 +35,13 @@ export default defineNuxtConfig({
         // the user's currency. Disable shared HTML cache/ISR for these pages.
         // useUserContextInSSR: true,
       },
+      apiClientConfig: {
+        // Retry failed requests to handle transient backend failures.
+        // The demo backend intermittently drops Store API calls.
+        retry: 3,
+        retryDelay: 500,
+        retryStatusCodes: [408, 429, 500, 502, 503, 504],
+      },
     },
   },
   compatibilityDate: "2025-04-15",

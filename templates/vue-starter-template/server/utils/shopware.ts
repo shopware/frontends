@@ -38,7 +38,7 @@ export function getShopwareServerConfig() {
 }
 
 /**
- * Headers and timeout for server-side Store API calls, from
+ * Headers, timeout, and retry options for server-side Store API calls, from
  * `runtimeConfig.apiClientConfig`. Like the plugin, each field falls back from
  * the private tier to the public one on its own. The deprecated
  * `shopware.apiClientConfig` is not read.
@@ -56,6 +56,10 @@ export function getServerApiClientOptions() {
     headers: privateConfig?.headers || publicConfig?.headers,
     timeout:
       toTimeout(privateConfig?.timeout) ?? toTimeout(publicConfig?.timeout),
+    retry: privateConfig?.retry ?? publicConfig?.retry,
+    retryDelay: privateConfig?.retryDelay ?? publicConfig?.retryDelay,
+    retryStatusCodes:
+      privateConfig?.retryStatusCodes ?? publicConfig?.retryStatusCodes,
   };
 }
 
@@ -65,12 +69,20 @@ export function getServerApiClientOptions() {
  */
 export function createServerApiClient() {
   const { endpoint, accessToken } = getShopwareServerConfig();
-  const { headers, timeout } = getServerApiClientOptions();
+  const { headers, timeout, retry, retryDelay, retryStatusCodes } =
+    getServerApiClientOptions();
+
+  const fetchOptions: Record<string, unknown> = {};
+  if (timeout !== undefined) fetchOptions.timeout = timeout;
+  if (retry !== undefined) fetchOptions.retry = retry;
+  if (retryDelay !== undefined) fetchOptions.retryDelay = retryDelay;
+  if (retryStatusCodes !== undefined)
+    fetchOptions.retryStatusCodes = retryStatusCodes;
 
   return createAPIClient<operations>({
     baseURL: endpoint,
     accessToken,
     defaultHeaders: headers,
-    ...(timeout === undefined ? {} : { fetchOptions: { timeout } }),
+    ...(Object.keys(fetchOptions).length > 0 ? { fetchOptions } : {}),
   });
 }

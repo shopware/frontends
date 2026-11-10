@@ -154,6 +154,20 @@ function setupShopwarePlugin(NuxtApp: ShopwarePluginNuxtApp): {
       "shopware.apiClientConfig",
     );
 
+  const retry = privateApiClientConfig?.retry ?? publicApiClientConfig?.retry;
+  const retryDelay =
+    privateApiClientConfig?.retryDelay ?? publicApiClientConfig?.retryDelay;
+  const retryStatusCodes =
+    privateApiClientConfig?.retryStatusCodes ??
+    publicApiClientConfig?.retryStatusCodes;
+
+  const fetchOptions: Record<string, unknown> = {};
+  if (timeout !== undefined) fetchOptions.timeout = timeout;
+  if (retry !== undefined) fetchOptions.retry = retry;
+  if (retryDelay !== undefined) fetchOptions.retryDelay = retryDelay;
+  if (retryStatusCodes !== undefined)
+    fetchOptions.retryStatusCodes = retryStatusCodes;
+
   const apiClient = createAPIClient({
     baseURL: shopwareEndpoint,
     accessToken: shopwareAccessToken,
@@ -163,7 +177,7 @@ function setupShopwarePlugin(NuxtApp: ShopwarePluginNuxtApp): {
     defaultHeaders:
       (NuxtApp.ssrContext && privateApiClientConfig?.headers) ||
       publicApiClientConfig?.headers,
-    ...(timeout === undefined ? {} : { fetchOptions: { timeout } }),
+    ...(Object.keys(fetchOptions).length > 0 ? { fetchOptions } : {}),
   });
 
   apiClient.hook("onContextChanged", (newContextToken) => {

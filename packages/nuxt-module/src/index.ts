@@ -145,6 +145,15 @@ export type ApiClientRuntimeConfig = {
   headers?: Record<string, string>;
   /** Milliseconds to wait for response headers. A numeric string is coerced. */
   timeout?: number | string;
+  /**
+   * Number of times to retry a request if it fails. Retries on network errors
+   * and configurable status codes (default: 408, 429, 500-599).
+   */
+  retry?: number;
+  /** Milliseconds to wait between retries. */
+  retryDelay?: number;
+  /** HTTP status codes that should trigger a retry. */
+  retryStatusCodes?: number[];
 };
 
 export type ShopwareNuxtOptions = {
