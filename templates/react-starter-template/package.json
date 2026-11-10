@@ -12,7 +12,7 @@
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "engines": {
-    "node": "^22.19.0 || ^24.11.0 || >=26.0.0"
+    "node": "^24.11.0 || >=26.0.0"
   },
   "dependencies": {
     "@shopware/api-client": "canary",
@@ -31,6 +31,6 @@
     "oxfmt": "0.76.0",
     "oxlint": "1.91.0",
     "tailwindcss": "4.3.4",
-    "typescript": "5.9.3"
+    "typescript": "7.0.2"
   }
 }
