@@ -11,7 +11,7 @@ const { formatLink } = useInternationalization(localePath);
 const { productAssociations, isLoading, loadAssociations } =
   useProductAssociations(
     computed(() => product),
-    { associationContext: "cross-selling", includeSeoUrls: true },
+    { includeSeoUrls: true },
   );
 
 const groups = computed(() =>
@@ -20,7 +20,7 @@ const groups = computed(() =>
 
 watch(
   () => product.id,
-  () => loadAssociations({ searchParams: {} }),
+  () => loadAssociations(),
   { immediate: import.meta.client },
 );
 </script>
