@@ -15,7 +15,13 @@
     },
     "handoff": {
       "invalid": "This checkout link is not valid.",
-      "unavailable": "The checkout from your AI assistant is no longer available. Please check your cart."
+      "unavailable": "The checkout from your AI assistant is no longer available. Please check your cart.",
+      "title": "Continue with your assistant's cart?",
+      "description": "Your AI assistant prepared a cart for this shop. Continue here to check it out.",
+      "replacesCart": "It replaces the cart you have in this browser.",
+      "replacesSession": "It replaces your current cart and signs you out.",
+      "continue": "Continue with this cart",
+      "keepCart": "Keep my cart"
     }
   }
 }

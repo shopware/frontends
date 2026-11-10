@@ -15,7 +15,13 @@
     },
     "handoff": {
       "invalid": "Ten link do zamówienia jest nieprawidłowy.",
-      "unavailable": "Zamówienie rozpoczęte przez Twojego asystenta AI nie jest już dostępne. Sprawdź swój koszyk."
+      "unavailable": "Zamówienie rozpoczęte przez Twojego asystenta AI nie jest już dostępne. Sprawdź swój koszyk.",
+      "title": "Kontynuować z koszykiem asystenta?",
+      "description": "Twój asystent AI przygotował koszyk w tym sklepie. Dokończ zakup tutaj.",
+      "replacesCart": "Zastąpi on koszyk, który masz w tej przeglądarce.",
+      "replacesSession": "Zastąpi on Twój obecny koszyk i wyloguje Cię.",
+      "continue": "Kontynuuj z tym koszykiem",
+      "keepCart": "Zachowaj mój koszyk"
     }
   }
 }

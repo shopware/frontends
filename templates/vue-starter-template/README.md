@@ -125,12 +125,14 @@ Nuxt and Nitro emit these headers. A CDN such as Fastly still has to be configur
 
 Agents that shop without a browser, for example through the Store API MCP server of the [agentic-commerce plugin](https://github.com/shopware/agentic-commerce), build a cart over UCP and hand the buyer a `continue_url`. The template receives that link and continues the same cart in the shop.
 
-| Path                          | What it does                                                                                                                                |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/checkout/continue/{token}`  | Target of the UCP `continue_url`. Checks that the token still holds a cart, sets it as the `sw-context-token` cookie and opens `/checkout`. |
-| `/.well-known/ucp`, `/ucp/**` | Proxied to Shopware, so agents discover and call UCP on the shop's own domain. Shopware needs to trust this server as a proxy, see below.   |
+| Path                                                          | What it does                                                                                                                                                |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/checkout/continue/{token}`                                  | Target of the UCP `continue_url`. Asks the buyer to confirm, then adopts the agent's cart as the session (`sw-context-token` cookie) and opens `/checkout`. |
+| `/.well-known/ucp`, `/.well-known/agent-card.json`, `/ucp/**` | Proxied to Shopware, so agents discover and call UCP on the shop's own domain. Shopware needs to trust this server as a proxy, see below.                   |
 
-When a link cannot be used, the buyer lands on the cart with a notice. The public demo backend has no UCP, so nothing runs there. To try it against your own Shopware:
+All of it is off until `NUXT_PUBLIC_AGENTIC_HANDOFF_ENABLED=true` is set. The link opens a page that asks the buyer to continue with the agent's cart. Continuing replaces the browser's session: an existing cart goes away, and a signed-in customer is signed out. The page says so first. When a link cannot be used, the buyer lands on the cart with a notice.
+
+The public demo backend has no UCP. To try it against your own Shopware:
 
 1. Enable UCP on the sales channel and point its continue URL at this shop:
 
@@ -139,10 +141,10 @@ When a link cannot be used, the buyer lands on the cart with a notice. The publi
    bin/console ucp:config:set --sales-channel=<name> --continue-url-template='http://localhost:3000/checkout/continue/{checkoutId}'
    ```
 
-2. If Shopware answers the proxied requests with its domain-mapping error, let it trust this server as a proxy: `SYMFONY_TRUSTED_PROXIES=127.0.0.1,::1` and `SYMFONY_TRUSTED_HEADERS=x-forwarded-for,x-forwarded-host,x-forwarded-proto,x-forwarded-port` in its environment.
-3. Point `.env` at that instance, see above, and run `pnpm dev`.
+2. If Shopware answers the proxied requests with its domain-mapping error, let it trust this server as a proxy: `SYMFONY_TRUSTED_PROXIES=127.0.0.1,::1` and `SYMFONY_TRUSTED_HEADERS=x-forwarded-for,x-forwarded-host,x-forwarded-proto,x-forwarded-port` in its environment. Shopware's MCP endpoint also checks the upstream `Host` header, so the hostname of the Store API endpoint must be one of Shopware's allowed MCP hosts.
+3. Point `.env` at that instance, see above, set `NUXT_PUBLIC_AGENTIC_HANDOFF_ENABLED=true` and run `pnpm dev`.
 
-In production, set `NUXT_AGENTIC_HANDOFF_STOREFRONT_HOSTS` to the shop's host, so a request cannot decide where `continue_url` points.
+In production, set `NUXT_AGENTIC_HANDOFF_STOREFRONT_HOSTS` to the shop's hosts. The proxy and the continue route answer only on those, so a request cannot pick the host Shopware builds `continue_url` from.
 
 ## Learn more
 

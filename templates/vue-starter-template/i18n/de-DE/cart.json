@@ -15,7 +15,13 @@
     },
     "handoff": {
       "invalid": "Dieser Checkout-Link ist ungültig.",
-      "unavailable": "Der Checkout aus Ihrem KI-Assistenten ist nicht mehr verfügbar. Bitte prüfen Sie Ihren Warenkorb."
+      "unavailable": "Der Checkout aus Ihrem KI-Assistenten ist nicht mehr verfügbar. Bitte prüfen Sie Ihren Warenkorb.",
+      "title": "Mit dem Warenkorb Ihres Assistenten fortfahren?",
+      "description": "Ihr KI-Assistent hat einen Warenkorb für diesen Shop vorbereitet. Fahren Sie hier mit dem Checkout fort.",
+      "replacesCart": "Er ersetzt den Warenkorb in diesem Browser.",
+      "replacesSession": "Er ersetzt Ihren aktuellen Warenkorb und meldet Sie ab.",
+      "continue": "Mit diesem Warenkorb fortfahren",
+      "keepCart": "Meinen Warenkorb behalten"
     }
   }
 }

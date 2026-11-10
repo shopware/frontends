@@ -9,6 +9,12 @@ const UCP_PATH_PREFIX = "/ucp/";
 // 32 hex characters from the plugin, 32 alphanumerics once Shopware rotates it.
 export const CONTEXT_TOKEN_PATTERN = /^[A-Za-z0-9]{32}$/;
 
+// Off by default. A scaffold should neither proxy nor announce UCP until the
+// shop runs the plugin (NUXT_PUBLIC_AGENTIC_HANDOFF_ENABLED=true).
+export function isHandoffEnabled(event?: H3Event): boolean {
+  return useRuntimeConfig(event).public.agenticHandoff.enabled === true;
+}
+
 export function isUcpPath(path: string): boolean {
   const pathname = path.split("?", 1)[0] ?? "";
 
@@ -43,26 +49,19 @@ function getStorefrontHosts(event: H3Event): string[] {
     .filter(Boolean);
 }
 
-// Shopware builds continue_url, the profile endpoints and the order permalink
-// from the host this proxy reports. Taking it from the request lets a spoofed
-// X-Forwarded-Host move those URLs to another domain, and continue_url carries
-// a session token. Configured hosts win; the first one is what agents see.
-export function getStorefrontHost(event: H3Event): string {
-  return (
-    getStorefrontHosts(event)[0] ??
-    getRequestHost(event, { xForwardedHost: true })
-  );
+export function getRequestedHost(event: H3Event): string {
+  return getRequestHost(event, { xForwardedHost: true }).toLowerCase();
 }
 
+// Shopware resolves the sales channel, and builds continue_url, the profile
+// endpoints and the order permalink, from the host this proxy forwards. The
+// host is taken from the request, so a spoofed X-Forwarded-Host could move
+// those URLs to another domain. The configured list limits it to the shop's
+// own hosts; an empty list trusts the request, which previews need.
 export function isStorefrontHost(event: H3Event): boolean {
   const hosts = getStorefrontHosts(event);
-  if (!hosts.length) {
-    return true;
-  }
 
-  return hosts.includes(
-    getRequestHost(event, { xForwardedHost: true }).toLowerCase(),
-  );
+  return !hosts.length || hosts.includes(getRequestedHost(event));
 }
 
 export function getShopwareOrigin(event: H3Event): string {

@@ -1,4 +1,4 @@
-// Target of the UCP continue_url. Configure the plugin with
+// Target of the form on the continue page. Configure the plugin with
 // continueUrlTemplate = https://<storefront>/checkout/continue/{checkoutId}
 // The checkout id is the context token of the agent's cart, so continuing
 // the checkout means adopting that token as this browser's session.
@@ -11,15 +11,20 @@ export default defineEventHandler(async (event) => {
     "X-Robots-Tag": "noindex, nofollow",
   });
 
-  // A continue_url only ever points at a configured storefront host. On any
-  // other host this route does not exist, so it never adopts a token there.
-  if (!isStorefrontHost(event)) {
+  // Only on a configured storefront host, and only with the handoff on.
+  if (!isHandoffEnabled(event) || !isStorefrontHost(event)) {
     throw createError({ statusCode: 404, statusMessage: "Not Found" });
+  }
+
+  // Only the continue page on this origin may adopt a token. Another site
+  // cannot post here on the buyer's behalf, and an agent cannot skip the page.
+  if (getRequestHeader(event, "sec-fetch-site") !== "same-origin") {
+    throw createError({ statusCode: 403, statusMessage: "Forbidden" });
   }
 
   const token = getRouterParam(event, "token") ?? "";
   if (!CONTEXT_TOKEN_PATTERN.test(token)) {
-    return sendRedirect(event, "/checkout/cart?handoff=invalid");
+    return sendRedirect(event, "/checkout/cart?handoff=invalid", 303);
   }
 
   // Shopware answers an unknown token (expired, or rotated away by a guest
@@ -30,22 +35,25 @@ export default defineEventHandler(async (event) => {
   try {
     const { data } = await apiClient.invoke("readCart get /checkout/cart");
     lineItemCount = data.lineItems?.length ?? 0;
-  } catch {
-    return sendRedirect(event, "/checkout/cart?handoff=unavailable");
+  } catch (error) {
+    // A backend failure is not an expired link. Say so, and leave a trace.
+    console.error("[agentic-handoff] could not read the agent's cart", error);
+    throw createError({ statusCode: 502, statusMessage: "Bad Gateway" });
   }
 
   if (lineItemCount === 0) {
-    return sendRedirect(event, "/checkout/cart?handoff=unavailable");
+    return sendRedirect(event, "/checkout/cart?handoff=unavailable", 303);
   }
 
-  // Same cookie the nuxt-module writes on context changes, so it has to stay
-  // readable from JavaScript.
+  // Same cookie, and same Secure rule, as the nuxt-module writes on context
+  // changes. It has to stay readable from JavaScript.
   setCookie(event, "sw-context-token", token, {
     path: "/",
     sameSite: "lax",
-    secure: getRequestProtocol(event, { xForwardedProto: true }) === "https",
+    secure:
+      useRuntimeConfig(event).public.shopware.endpoint.startsWith("https://"),
     maxAge: 60 * 60 * 24 * 365,
   });
 
-  return sendRedirect(event, "/checkout");
+  return sendRedirect(event, "/checkout", 303);
 });

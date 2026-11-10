@@ -46,6 +46,11 @@ export default defineNuxtConfig({
       storefrontHosts: "",
     },
     public: {
+      agenticHandoff: {
+        // Off by default. On, the continue page, the UCP proxy and the Link
+        // header are live. Turn it on once Shopware runs the plugin.
+        enabled: false,
+      },
       // Public URL of the storefront. /sitemap.xml builds its links from it.
       siteUrl: "",
       shopware: {
