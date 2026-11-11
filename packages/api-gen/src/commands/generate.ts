@@ -454,7 +454,9 @@ function createConstLiteralType(schemaObject: SchemaObject) {
 
 /**
  * Open string enum: known values plus any other string, written in the schema as
- * `anyOf` (or `oneOf`) of string `enum`/`const` branches and one plain string branch.
+ * `anyOf` of string `enum`/`const` branches and one plain string branch. `oneOf` is
+ * handled the same way, although validators reject known values there because they
+ * match two branches.
  *
  * openapi-typescript emits `"invoice" | "storno" | string`, which TypeScript collapses
  * to `string`, losing autocompletion. `string & {}` keeps the literals visible to the
@@ -470,14 +472,13 @@ function createOpenStringEnumType(schemaObject: SchemaObject) {
 
   const knownValues: string[] = [];
   let isOpen = false;
-  let isNullable =
-    hasSchemaType(schemaObject, "null") ||
-    (schemaObject as { nullable?: boolean }).nullable === true;
+  let isNullable = isNullableSchema(schemaObject);
 
   for (const branch of composition) {
     if (!branch || "$ref" in branch) {
       return undefined;
     }
+    isNullable ||= isNullableSchema(branch);
     if (Array.isArray(branch.enum)) {
       for (const value of branch.enum) {
         if (value === null) {
@@ -496,9 +497,9 @@ function createOpenStringEnumType(schemaObject: SchemaObject) {
       } else {
         return undefined;
       }
-    } else if (hasSchemaType(branch, "string")) {
+    } else if (isStringOrNullSchema(branch)) {
+      // the null part, if any, is already handled by isNullableSchema
       isOpen = true;
-      isNullable ||= hasSchemaType(branch, "null");
     } else if (branch.type === "null") {
       isNullable = true;
     } else {
@@ -522,6 +523,31 @@ function createOpenStringEnumType(schemaObject: SchemaObject) {
       ? [ts.factory.createLiteralTypeNode(ts.factory.createNull())]
       : []),
   ]);
+}
+
+/**
+ * `nullable: true` is the OpenAPI 3.0 form of `"type": [..., "null"]`.
+ */
+function isNullableSchema(schemaObject: SchemaObject) {
+  return (
+    hasSchemaType(schemaObject, "null") ||
+    (schemaObject as { nullable?: boolean }).nullable === true
+  );
+}
+
+/**
+ * `string`, or a type array of only `string` and `null`. `["string", "number"]`
+ * does not qualify, so its other members are not dropped from the result.
+ */
+function isStringOrNullSchema(schemaObject: SchemaObject) {
+  if (!Array.isArray(schemaObject.type)) {
+    return schemaObject.type === "string";
+  }
+  const types = schemaObject.type as readonly string[];
+  return (
+    types.includes("string") &&
+    types.every((type) => type === "string" || type === "null")
+  );
 }
 
 function hasSchemaType(schemaObject: SchemaObject, type: string) {

@@ -37,7 +37,7 @@ Generator will create a new directory `api-types` with TypeScript schemas inside
 
 ### Open string enums
 
-For a string field with known values that also accepts others (for example a type name plugins can extend), combine the known values with a plain string branch in `anyOf` (or `oneOf`):
+For a string field with known values that also accepts others (for example a type name plugins can extend), combine the known values with a plain string branch in `anyOf`. Do not use `oneOf`: a known value matches two branches, so `oneOf` rejects it.
 
 ```json
 "typeName": {
@@ -48,7 +48,7 @@ For a string field with known values that also accepts others (for example a typ
 }
 ```
 
-The generator turns it into `"invoice" | "delivery_note" | "credit_note" | "storno" | (string & {})`, which accepts any string and still autocompletes the known ones. A plain `"invoice" | string` would collapse to `string`. `const` branches work instead of `enum` when each value needs its own `description`, and a `null` branch or `"type": ["string", "null"]` adds `| null`.
+The generator turns it into `"invoice" | "delivery_note" | "credit_note" | "storno" | (string & {})`, which accepts any string and still autocompletes the known ones. A plain `"invoice" | string` would collapse to `string`. `const` branches work instead of `enum` when each value needs its own `description`, and a `null` branch or `"type": ["string", "null"]` adds `| null`. This applies to component schemas and object properties. A parameter, inline body or array `items` keeps plain `string`, so put the shape in `components.schemas` and `$ref` it there.
 
 ### Overriding
 

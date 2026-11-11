@@ -164,14 +164,50 @@ describe("generate transformations", () => {
     expect(
       printTypeNode(
         runTransformations({
-          oneOf: [
+          anyOf: [
             { const: "invoice", description: "Invoice" },
             { const: "storno" },
-            { type: ["string", "null"] },
+            { type: "string" },
+            { type: "null" },
           ],
         } as SchemaObject)!,
       ),
     ).toBe('"invoice" | "storno" | (string & {}) | null');
+  });
+
+  it("keeps null from type arrays and OpenAPI 3.0 nullable branches", () => {
+    expect(
+      printTypeNode(
+        runTransformations({
+          anyOf: [
+            { type: "string", enum: ["invoice"] },
+            { type: ["string", "null"] },
+          ],
+        } as SchemaObject)!,
+      ),
+    ).toBe('"invoice" | (string & {}) | null');
+
+    expect(
+      printTypeNode(
+        runTransformations({
+          anyOf: [
+            { type: "string", enum: ["invoice"] },
+            { type: "string", nullable: true },
+          ],
+        } as SchemaObject)!,
+      ),
+    ).toBe('"invoice" | (string & {}) | null');
+
+    expect(
+      printTypeNode(
+        runTransformations({
+          anyOf: [
+            { type: "string", enum: ["invoice"], nullable: true },
+            { type: "string" },
+          ],
+        } as SchemaObject)!,
+      ),
+    ).toBe('"invoice" | (string & {}) | null');
   });
 
   it("leaves closed enums and mixed compositions to openapi-typescript", () => {
@@ -183,6 +219,14 @@ describe("generate transformations", () => {
     expect(
       runTransformations({
         anyOf: [{ const: "invoice" }, { const: "storno" }],
+      } as SchemaObject),
+    ).toBeUndefined();
+    expect(
+      runTransformations({
+        anyOf: [
+          { type: "string", enum: ["invoice"] },
+          { type: ["string", "number"] },
+        ],
       } as SchemaObject),
     ).toBeUndefined();
     expect(
