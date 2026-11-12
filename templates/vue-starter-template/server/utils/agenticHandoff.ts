@@ -51,19 +51,23 @@ export function resolveUcpTarget(event: H3Event): URL | null {
   }
 }
 
-export function getRequestedHost(event: H3Event): string {
+// The host the request was made on, as a proxy in front forwarded it. Unlike
+// h3's getRequestHost it trusts X-Forwarded-Host and lowercases the result,
+// so it is only as good as the host list checked in isStorefrontHost.
+export function getForwardedHost(event: H3Event): string {
   return getRequestHost(event, { xForwardedHost: true }).toLowerCase();
 }
 
-export function getRequestedOrigin(event: H3Event): string {
+export function getForwardedOrigin(event: H3Event): string {
   const protocol = getRequestProtocol(event, { xForwardedProto: true });
 
-  return `${protocol}://${getRequestedHost(event)}`;
+  return `${protocol}://${getForwardedHost(event)}`;
 }
 
-// Only the continue page on this origin may adopt a token: another site cannot
-// post on the buyer's behalf, and an agent cannot skip the page. Browsers
-// without Sec-Fetch-Site still send Origin on a form post. A page served with
+// Only a form post from this origin may adopt a token, so another site cannot
+// post on the buyer's behalf. This protects browsers: a client that sets these
+// headers itself only sets a cookie in its own session. Browsers without
+// Sec-Fetch-Site still send Origin on a form post. A page served with
 // no-referrer would send "null", which is refused like any foreign origin.
 export function isSameOriginPost(
   headers: Record<string, string | undefined>,
@@ -90,7 +94,7 @@ export function isAllowedHost(host: string, storefrontHosts: string): boolean {
 
 export function isStorefrontHost(event: H3Event): boolean {
   return isAllowedHost(
-    getRequestedHost(event),
+    getForwardedHost(event),
     useRuntimeConfig(event).agenticHandoff.storefrontHosts,
   );
 }

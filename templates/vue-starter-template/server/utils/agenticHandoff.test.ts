@@ -1,7 +1,8 @@
-import { describe, expect, it } from "vitest";
+import type { H3Event } from "h3";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { CONTEXT_TOKEN_PATTERN } from "../../shared/utils/agenticHandoff";
 import {
+  getShopwareOrigin,
   isAllowedHost,
   isSameOriginPost,
   resolveUcpPath,
@@ -29,26 +30,6 @@ describe("resolveUcpPath", () => {
     "http://evil.test/ucp/x",
   ])("does not proxy %s", (path) => {
     expect(resolveUcpPath(path)).toBeNull();
-  });
-});
-
-describe("CONTEXT_TOKEN_PATTERN", () => {
-  it.each([
-    "0123456789abcdef0123456789abcdef",
-    "A1b2C3d4E5f6G7h8I9j0K1l2M3n4O5p6",
-  ])("accepts %s", (token) => {
-    expect(CONTEXT_TOKEN_PATTERN.test(token)).toBe(true);
-  });
-
-  it.each([
-    "",
-    "a".repeat(31),
-    "a".repeat(33),
-    `${"a".repeat(31)}-`,
-    `${"a".repeat(32)}\n`,
-    `../${"a".repeat(29)}`,
-  ])("refuses %j", (token) => {
-    expect(CONTEXT_TOKEN_PATTERN.test(token)).toBe(false);
   });
 });
 
@@ -97,5 +78,37 @@ describe("isSameOriginPost", () => {
     );
     expect(isSameOriginPost({ origin: "null" }, origin)).toBe(false);
     expect(isSameOriginPost({}, origin)).toBe(false);
+  });
+});
+
+describe("getShopwareOrigin", () => {
+  const event = {} as H3Event;
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("prefers the configured origin, without trailing slashes", () => {
+    vi.stubGlobal("useRuntimeConfig", () => ({
+      agenticHandoff: { shopwareOrigin: "https://shop.example.com/sub/" },
+    }));
+    vi.stubGlobal("getShopwareServerConfig", () => ({
+      endpoint: "https://api.example.com/store-api",
+      accessToken: "key",
+    }));
+
+    expect(getShopwareOrigin(event)).toBe("https://shop.example.com/sub");
+  });
+
+  it("derives the origin from the Store API endpoint, keeping a sub-path", () => {
+    vi.stubGlobal("useRuntimeConfig", () => ({
+      agenticHandoff: { shopwareOrigin: "" },
+    }));
+    vi.stubGlobal("getShopwareServerConfig", () => ({
+      endpoint: "https://api.example.com/shop/store-api/",
+      accessToken: "key",
+    }));
+
+    expect(getShopwareOrigin(event)).toBe("https://api.example.com/shop");
   });
 });

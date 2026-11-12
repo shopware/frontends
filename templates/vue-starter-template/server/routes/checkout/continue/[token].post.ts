@@ -1,3 +1,5 @@
+import { ApiClientError } from "@shopware/api-client";
+
 // Target of the form on the continue page. Configure the plugin with
 // continueUrlTemplate = https://<storefront>/checkout/continue/{checkoutId}
 // The checkout id is the context token of the agent's cart, so continuing
@@ -9,7 +11,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, statusMessage: "Not Found" });
   }
 
-  if (!isSameOriginPost(getRequestHeaders(event), getRequestedOrigin(event))) {
+  if (!isSameOriginPost(getRequestHeaders(event), getForwardedOrigin(event))) {
     throw createError({ statusCode: 403, statusMessage: "Forbidden" });
   }
 
@@ -24,7 +26,9 @@ export default defineEventHandler(async (event) => {
   try {
     // Any Store API session with a cart would pass the cart check, and a
     // session that is signed in would sign the buyer in to that account.
-    // An agent's cart is a guest session, so a customer means a planted link.
+    // An agent's cart stays a guest session until the plugin completes the
+    // checkout itself, which registers the guest and rotates the token. So a
+    // session with a customer did not come from an open agent checkout.
     const context = await apiClient.invoke("readContext get /context");
     signedIn = Boolean(context.data.customer);
 
@@ -36,10 +40,16 @@ export default defineEventHandler(async (event) => {
       lineItemCount = cart.data.lineItems?.length ?? 0;
     }
   } catch (error) {
-    // A backend failure is not an expired link. Say so, and leave a trace.
+    // A backend failure is not an expired link. Say so, and leave a trace
+    // without the response object: Shopware echoes the token in its headers.
+    const reason =
+      error instanceof ApiClientError
+        ? `${error.status} from ${error.url}: ${error.message}`
+        : error instanceof Error
+          ? error.message
+          : String(error);
     console.error(
-      "[agentic-handoff] could not read the agent's session",
-      error,
+      `[agentic-handoff] could not read the agent's session: ${reason}`,
     );
     return sendRedirect(event, "/checkout/cart?handoff=error", 303);
   }
