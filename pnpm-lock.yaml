@@ -43,7 +43,7 @@ overrides:
   '@intlify/core-base@<11.4.14': 11.4.16
   '@intlify/shared@<11.4.14': 11.4.16
   seroval@<1.6.11: 1.6.12
-  node-forge: 1.4.1
+  node-forge: 1.4.3
   follow-redirects: 1.16.2
   minimatch: 11.0.1
   glob: 14.0.2
@@ -10950,8 +10950,8 @@ packages:
     resolution: {integrity: sha512-dRB78srN/l6gqWulah9SrxeYnxeddIG30+GOqK/9OlLVyLg3HPnr6SqOWTWOXKRwC2eGYCkZ59NNuSgvSrpgOA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
-  node-forge@1.4.1:
-    resolution: {integrity: sha512-w5/MfWaeMrpR/5ba6fZyAUTLSuE6aYz7H/3cYrqwZEmf5eQS3IaaLgJt4MBv7HglGFWmV22K8h4U18RJQmw/ow==}
+  node-forge@1.4.3:
+    resolution: {integrity: sha512-P6wzfh6t70avmV8FrVEAd/36sOPJQ+hkaJVX1Laap9J/77m7M0eyozDvc8SwnDf4P7MP94gwbAAo0rg3YVXT+g==}
     engines: {node: '>= 6.13.0'}
 
   node-gyp-build@4.8.4:
@@ -27449,7 +27449,7 @@ snapshots:
       h3: 1.15.11
       http-shutdown: 1.2.2
       jiti: 2.7.0
-      node-forge: 1.4.1
+      node-forge: 1.4.3
       pathe: 2.0.3
       std-env: 4.3.0
       tinyclip: 0.1.15
@@ -27472,7 +27472,7 @@ snapshots:
       h3: 1.15.11
       http-shutdown: 1.2.2
       jiti: 2.7.0
-      node-forge: 1.4.1
+      node-forge: 1.4.3
       pathe: 2.0.3
       std-env: 4.3.0
       tinyclip: 0.1.15
@@ -28704,7 +28704,7 @@ snapshots:
       formdata-polyfill: 4.0.10
     optional: true
 
-  node-forge@1.4.1: {}
+  node-forge@1.4.3: {}
 
   node-gyp-build@4.8.4: {}
 
