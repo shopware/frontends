@@ -22,6 +22,8 @@ if (
   throw new Error("Shopware session is not ready for ShopwarePayments");
 }
 
+// This client keeps the token, currency, and sales channel below.
+// Call init() again when one of them changes, and render into new elements.
 const shopwarePayments: ShopwarePaymentsClient =
   await window.ShopwarePayments.init({
     // Shopware base URL, including a language prefix or subdirectory.

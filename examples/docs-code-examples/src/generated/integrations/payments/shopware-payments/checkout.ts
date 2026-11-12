@@ -13,8 +13,13 @@ if (!currentCart || !context) {
 }
 
 const cartCheckout: CartCheckout = {
-  cart: currentCart,
-  salesChannelContext: context,
+  // The library keeps this object and reads these fields again on each click.
+  get cart() {
+    return cart.value ?? currentCart;
+  },
+  get salesChannelContext() {
+    return sessionContext.value ?? context;
+  },
 };
 
 function placedOrderCheckout(order: object): PlacedOrderCheckout {

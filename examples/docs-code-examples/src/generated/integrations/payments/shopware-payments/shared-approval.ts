@@ -22,7 +22,7 @@ async function onApprove(result: ApprovalResult) {
   const order = await createOrder();
   await refreshCart();
   const orderId = order.id;
-  const finishUrl = `${window.location.origin}/checkout/success/${orderId}/paid`;
+  const finishUrl = `${window.location.origin}/checkout/success/${orderId}`;
   const errorUrl = `${window.location.origin}/checkout/success/${orderId}/unpaid`;
 
   try {
