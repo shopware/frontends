@@ -149,6 +149,212 @@ describe("generate transformations", () => {
     expect(astToString(ast)).toContain('apiAlias: "1";');
   });
 
+  it("keeps known values of an open string enum next to string & {}", () => {
+    expect(
+      printTypeNode(
+        runTransformations({
+          anyOf: [
+            { type: "string", enum: ["invoice", "storno"] },
+            { type: "string" },
+          ],
+        } as SchemaObject)!,
+      ),
+    ).toBe('"invoice" | "storno" | (string & {})');
+
+    expect(
+      printTypeNode(
+        runTransformations({
+          anyOf: [
+            { const: "invoice", description: "Invoice" },
+            { const: "storno" },
+            { type: "string" },
+            { type: "null" },
+          ],
+        } as SchemaObject)!,
+      ),
+    ).toBe('"invoice" | "storno" | (string & {}) | null');
+  });
+
+  it("keeps null from type arrays and OpenAPI 3.0 nullable branches", () => {
+    expect(
+      printTypeNode(
+        runTransformations({
+          anyOf: [
+            { type: "string", enum: ["invoice"] },
+            { type: ["string", "null"] },
+          ],
+        } as SchemaObject)!,
+      ),
+    ).toBe('"invoice" | (string & {}) | null');
+
+    expect(
+      printTypeNode(
+        runTransformations({
+          anyOf: [
+            { type: "string", enum: ["invoice"] },
+            { type: "string", nullable: true },
+          ],
+        } as SchemaObject)!,
+      ),
+    ).toBe('"invoice" | (string & {}) | null');
+
+    expect(
+      printTypeNode(
+        runTransformations({
+          anyOf: [
+            { type: "string", enum: ["invoice"], nullable: true },
+            { type: "string" },
+          ],
+        } as SchemaObject)!,
+      ),
+    ).toBe('"invoice" | (string & {}) | null');
+  });
+
+  it.each([
+    [
+      "the parent is nullable",
+      {
+        anyOf: [{ type: "string", enum: ["invoice"] }, { type: "string" }],
+        nullable: true,
+      },
+    ],
+    [
+      "an enum lists null",
+      { anyOf: [{ enum: ["invoice", null] }, { type: "string" }] },
+    ],
+    [
+      "a const is null",
+      {
+        anyOf: [{ const: "invoice" }, { const: null }, { type: "string" }],
+      },
+    ],
+  ])("adds | null when %s", (_, schema) => {
+    expect(printTypeNode(runTransformations(schema as SchemaObject)!)).toBe(
+      '"invoice" | (string & {}) | null',
+    );
+  });
+
+  it("treats oneOf like anyOf", () => {
+    expect(
+      printTypeNode(
+        runTransformations({
+          oneOf: [{ const: "invoice" }, { type: "string" }],
+        } as SchemaObject)!,
+      ),
+    ).toBe('"invoice" | (string & {})');
+  });
+
+  it.each([
+    [
+      "a non-string branch",
+      { anyOf: [{ type: "string", enum: ["invoice"] }, { type: "number" }] },
+    ],
+    [
+      "no open string branch",
+      { anyOf: [{ const: "invoice" }, { const: "storno" }] },
+    ],
+    ["no known values", { anyOf: [{ type: "string" }, { type: "null" }] }],
+    [
+      "a numeric enum value",
+      { anyOf: [{ enum: ["invoice", 1] }, { type: "string" }] },
+    ],
+    [
+      "a numeric const",
+      { anyOf: [{ const: "invoice" }, { const: 1 }, { type: "string" }] },
+    ],
+    [
+      "a type array with non-string members",
+      {
+        anyOf: [
+          { type: "string", enum: ["invoice"] },
+          { type: ["string", "number"] },
+        ],
+      },
+    ],
+    [
+      "a $ref branch",
+      {
+        anyOf: [
+          { const: "invoice" },
+          { $ref: "#/components/schemas/DocumentType", type: "string" },
+        ],
+      },
+    ],
+    [
+      "a boolean schema branch",
+      { anyOf: [{ const: "invoice" }, true, { type: "string" }] },
+    ],
+    [
+      "a binary string branch",
+      {
+        anyOf: [{ const: "invoice" }, { type: "string", format: "binary" }],
+      },
+    ],
+    [
+      "a sibling enum",
+      {
+        anyOf: [{ const: "invoice" }, { type: "string" }],
+        enum: ["invoice"],
+      },
+    ],
+    [
+      "a sibling allOf",
+      {
+        anyOf: [{ const: "invoice" }, { type: "string" }],
+        allOf: [{ minLength: 1 }],
+      },
+    ],
+    [
+      "both anyOf and oneOf",
+      {
+        anyOf: [{ const: "invoice" }, { type: "string" }],
+        oneOf: [{ type: "string" }, { type: "integer" }],
+      },
+    ],
+  ])("leaves the schema to openapi-typescript for %s", (_, schema) => {
+    expect(runTransformations(schema as SchemaObject)).toBeUndefined();
+  });
+
+  it("generates open string enum properties with autocompletion", async () => {
+    const ast = await openapiTS(
+      {
+        openapi: "3.1.0",
+        info: {
+          title: "Test schema",
+          version: "1.0.0",
+        },
+        paths: {},
+        components: {
+          schemas: {
+            Document: {
+              type: "object",
+              properties: {
+                typeName: {
+                  anyOf: [
+                    {
+                      type: "string",
+                      enum: ["invoice", "delivery_note"],
+                    },
+                    { type: "string" },
+                  ],
+                },
+              },
+            },
+          },
+        },
+      } as unknown as OpenAPI3,
+      {
+        version: 3,
+        exportType: true,
+        transform: runTransformations,
+      },
+    );
+
+    expect(astToString(ast)).toContain(
+      'typeName?: "invoice" | "delivery_note" | (string & {});',
+    );
+  });
+
   it("normalizes generated customFields properties", () => {
     const schema = `type GenericRecord =
   | never
