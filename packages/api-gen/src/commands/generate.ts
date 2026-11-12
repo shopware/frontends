@@ -461,8 +461,18 @@ function createConstLiteralType(schemaObject: SchemaObject) {
  * openapi-typescript emits `"invoice" | "storno" | string`, which TypeScript collapses
  * to `string`, losing autocompletion. `string & {}` keeps the literals visible to the
  * editor while still accepting any string.
+ *
+ * The result replaces the whole field type, so schemas with keywords it would drop
+ * (a sibling `enum` or `allOf`, or both `anyOf` and `oneOf`) are left to openapi-typescript.
  */
 function createOpenStringEnumType(schemaObject: SchemaObject) {
+  if (
+    "enum" in schemaObject ||
+    "allOf" in schemaObject ||
+    ("anyOf" in schemaObject && "oneOf" in schemaObject)
+  ) {
+    return undefined;
+  }
   const composition =
     ("anyOf" in schemaObject && schemaObject.anyOf) ||
     ("oneOf" in schemaObject && schemaObject.oneOf);
@@ -475,7 +485,8 @@ function createOpenStringEnumType(schemaObject: SchemaObject) {
   let isNullable = isNullableSchema(schemaObject);
 
   for (const branch of composition) {
-    if (!branch || "$ref" in branch) {
+    // boolean schemas (`true`/`false`) are valid branches in OpenAPI 3.1
+    if (!branch || typeof branch !== "object" || "$ref" in branch) {
       return undefined;
     }
     isNullable ||= isNullableSchema(branch);
@@ -497,7 +508,7 @@ function createOpenStringEnumType(schemaObject: SchemaObject) {
       } else {
         return undefined;
       }
-    } else if (isStringOrNullSchema(branch)) {
+    } else if (isOpenStringBranch(branch)) {
       // the null part, if any, is already handled by isNullableSchema
       isOpen = true;
     } else if (branch.type === "null") {
@@ -536,10 +547,14 @@ function isNullableSchema(schemaObject: SchemaObject) {
 }
 
 /**
- * `string`, or a type array of only `string` and `null`. `["string", "number"]`
- * does not qualify, so its other members are not dropped from the result.
+ * The open branch of an open string enum: `string`, or a type array of only `string`
+ * and `null`. `["string", "number"]` does not qualify, so its other members are not
+ * dropped from the result, and neither does `format: "binary"`, which becomes `Blob`.
  */
-function isStringOrNullSchema(schemaObject: SchemaObject) {
+function isOpenStringBranch(schemaObject: SchemaObject) {
+  if (schemaObject.format === "binary") {
+    return false;
+  }
   if (!Array.isArray(schemaObject.type)) {
     return schemaObject.type === "string";
   }

@@ -210,33 +210,109 @@ describe("generate transformations", () => {
     ).toBe('"invoice" | (string & {}) | null');
   });
 
-  it("leaves closed enums and mixed compositions to openapi-typescript", () => {
+  it.each([
+    [
+      "the parent is nullable",
+      {
+        anyOf: [{ type: "string", enum: ["invoice"] }, { type: "string" }],
+        nullable: true,
+      },
+    ],
+    [
+      "an enum lists null",
+      { anyOf: [{ enum: ["invoice", null] }, { type: "string" }] },
+    ],
+    [
+      "a const is null",
+      {
+        anyOf: [{ const: "invoice" }, { const: null }, { type: "string" }],
+      },
+    ],
+  ])("adds | null when %s", (_, schema) => {
+    expect(printTypeNode(runTransformations(schema as SchemaObject)!)).toBe(
+      '"invoice" | (string & {}) | null',
+    );
+  });
+
+  it("treats oneOf like anyOf", () => {
     expect(
-      runTransformations({
-        anyOf: [{ type: "string", enum: ["invoice"] }, { type: "number" }],
-      } as SchemaObject),
-    ).toBeUndefined();
-    expect(
-      runTransformations({
-        anyOf: [{ const: "invoice" }, { const: "storno" }],
-      } as SchemaObject),
-    ).toBeUndefined();
-    expect(
-      runTransformations({
+      printTypeNode(
+        runTransformations({
+          oneOf: [{ const: "invoice" }, { type: "string" }],
+        } as SchemaObject)!,
+      ),
+    ).toBe('"invoice" | (string & {})');
+  });
+
+  it.each([
+    [
+      "a non-string branch",
+      { anyOf: [{ type: "string", enum: ["invoice"] }, { type: "number" }] },
+    ],
+    [
+      "no open string branch",
+      { anyOf: [{ const: "invoice" }, { const: "storno" }] },
+    ],
+    ["no known values", { anyOf: [{ type: "string" }, { type: "null" }] }],
+    [
+      "a numeric enum value",
+      { anyOf: [{ enum: ["invoice", 1] }, { type: "string" }] },
+    ],
+    [
+      "a numeric const",
+      { anyOf: [{ const: "invoice" }, { const: 1 }, { type: "string" }] },
+    ],
+    [
+      "a type array with non-string members",
+      {
         anyOf: [
           { type: "string", enum: ["invoice"] },
           { type: ["string", "number"] },
         ],
-      } as SchemaObject),
-    ).toBeUndefined();
-    expect(
-      runTransformations({
+      },
+    ],
+    [
+      "a $ref branch",
+      {
         anyOf: [
-          { $ref: "#/components/schemas/DocumentType" },
-          { type: "string" },
+          { const: "invoice" },
+          { $ref: "#/components/schemas/DocumentType", type: "string" },
         ],
-      } as SchemaObject),
-    ).toBeUndefined();
+      },
+    ],
+    [
+      "a boolean schema branch",
+      { anyOf: [{ const: "invoice" }, true, { type: "string" }] },
+    ],
+    [
+      "a binary string branch",
+      {
+        anyOf: [{ const: "invoice" }, { type: "string", format: "binary" }],
+      },
+    ],
+    [
+      "a sibling enum",
+      {
+        anyOf: [{ const: "invoice" }, { type: "string" }],
+        enum: ["invoice"],
+      },
+    ],
+    [
+      "a sibling allOf",
+      {
+        anyOf: [{ const: "invoice" }, { type: "string" }],
+        allOf: [{ minLength: 1 }],
+      },
+    ],
+    [
+      "both anyOf and oneOf",
+      {
+        anyOf: [{ const: "invoice" }, { type: "string" }],
+        oneOf: [{ type: "string" }, { type: "integer" }],
+      },
+    ],
+  ])("leaves the schema to openapi-typescript for %s", (_, schema) => {
+    expect(runTransformations(schema as SchemaObject)).toBeUndefined();
   });
 
   it("generates open string enum properties with autocompletion", async () => {
