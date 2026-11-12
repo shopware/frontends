@@ -62,7 +62,7 @@ overrides:
   "@intlify/core-base@<11.4.14": 11.4.16
   "@intlify/shared@<11.4.14": 11.4.16
   "seroval@<1.6.11": 1.6.12
-  "node-forge": 1.4.1
+  "node-forge": 1.4.3
   "follow-redirects": 1.16.2
   "minimatch": 11.0.1
   "glob": 14.0.2
