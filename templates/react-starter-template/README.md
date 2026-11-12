@@ -35,6 +35,12 @@ To use your own instance, copy `.env.template` to `.env` and set:
 Both are read on the server at request time, so one build can serve several
 environments.
 
+### Minimum Shopware version
+
+Use Shopware 6.7.6.0 or newer. Reads send their Criteria as a compressed
+`_criteria` GET query parameter, which the Store API accepts from 6.7.6.0 on,
+and the template has no POST fallback.
+
 ## Type generation
 
 The Store API types come from `@shopware/api-client`. To include the endpoints

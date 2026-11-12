@@ -1,3 +1,4 @@
+import { getTotalPages } from "@shopware/helpers";
 import { computed, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
 
@@ -75,9 +76,9 @@ export function useCustomerOrders(): UseCustomerOrdersReturn {
 
   const currentPage = computed(() => currentPaginationPage.value);
 
-  const totalPages = computed(() => {
-    return Math.ceil(totalOrderItemsCount.value / limit.value);
-  });
+  const totalPages = computed(() =>
+    getTotalPages(totalOrderItemsCount.value, limit.value),
+  );
 
   return {
     orders,

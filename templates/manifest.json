@@ -119,7 +119,7 @@
           "description": "Sales Channel access token (Shopware admin: Settings > Sales Channel > API access). Read on the server at request time."
         }
       },
-      "node": "^22.19.0 || ^24.11.0 || >=26.0.0",
+      "node": "^24.11.0 || >=26.0.0",
       "devPort": 3000,
       "buildCommand": "next build",
       "devCommand": "next dev",

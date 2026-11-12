@@ -32,7 +32,13 @@ stubs. `supportLevel` in `templates/manifest.json` is authoritative.
   and no POST fallback. Where the generated GET type does not declare
   `_criteria` yet (category, landing page), the read widens the query type
   locally, the precedent being `useCategorySearch.search` in composables.
-  Let a failed read throw so the failure is not cached; the calling
+  `pnpm check:cacheable-reads` fails on a call to any POST operation
+  registered in `cacheableReadRoutes`
+  (`packages/composables/src/useCacheableRead/routes.ts`).
+- A `'use cache'` read is keyed on its arguments only. Everything that changes
+  the response — language, currency, sales channel, a context token — must be an
+  argument, or the cache serves one visitor's response to another.
+- Let a failed read throw so the failure is not cached; the calling
   component handles it (`notFoundOn404` in `platform/shopware/errors.ts`).
 - Import Store API types from `#shopware` (`shopware.d.ts`) with `import type`
   only. Point that file at `./api-types/storeApiTypes` after running
@@ -82,6 +88,11 @@ stubs. `supportLevel` in `templates/manifest.json` is authoritative.
 
 ## Rules the code does not show
 
+- Cache Components are on. A catalog route must never read `cookies()` or
+  `headers()`: that silently makes the route dynamic, and its HTML stops being
+  cacheable.
+- `agentRules: false` in `next.config.ts` stops `next dev` from generating its
+  own agent rules into this file.
 - Colors come from `@shopware/design-tokens` (`tailwind.css`, `@theme static`).
   The class names match the Vue templates (`bg-brand-primary`,
   `text-surface-on-surface`), so markup ports between them. Add or change a
