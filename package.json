@@ -41,7 +41,7 @@
     "@changesets/changelog-github": "1.0.1",
     "@changesets/cli": "3.0.3",
     "@oxc-parser/binding-wasm32-wasi": "0.147.0",
-    "@types/changelog-parser": "2.8.4",
+    "@types/changelog-parser": "4.1.0",
     "ajv": "^8.20.0",
     "automd": "0.4.3",
     "changelog-parser": "4.1.0",
