@@ -48,7 +48,7 @@ export function SwCategoryNavigationLink({
     <button
       type="button"
       onClick={onToggle}
-      className="w-6 h-6 relative flex items-center justify-center bg-transparent cursor-pointer focus:outline-hidden"
+      className="w-6 h-6 relative flex items-center justify-center bg-transparent cursor-pointer"
       aria-label={isExpanded ? "Collapse" : "Expand"}
     >
       <ChevronDownIcon

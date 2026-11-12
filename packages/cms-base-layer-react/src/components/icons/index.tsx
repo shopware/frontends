@@ -41,11 +41,6 @@ export const ChevronDownIcon = carbon(
   <path d="M16 22L6 12l1.4-1.4l8.6 8.6l8.6-8.6L26 12z" />,
 );
 
-export const ChevronUpIcon = carbon(
-  "chevron-up",
-  <path d="m16 10l10 10l-1.4 1.4l-8.6-8.6l-8.6 8.6L6 20z" />,
-);
-
 export const ChevronLeftIcon = carbon(
   "chevron-left",
   <path d="M10 16L20 6l1.4 1.4l-8.6 8.6l8.6 8.6L20 26z" />,
@@ -92,20 +87,6 @@ export const FavoriteIcon = carbon(
 export const FavoriteFilledIcon = carbon(
   "favorite-filled",
   <path d="M22.5 4c-2 0-3.9.8-5.3 2.2L16 7.4l-1.1-1.1c-2.9-3-7.7-3-10.6-.1l-.1.1c-3 3-3 7.8 0 10.8L16 29l11.8-11.9c3-3 3-7.8 0-10.8C26.4 4.8 24.5 4 22.5 4" />,
-);
-
-export const ShoppingCartIcon = carbon(
-  "shopping-cart",
-  <>
-    <circle cx="10" cy="28" r="2" />
-    <circle cx="24" cy="28" r="2" />
-    <path d="M28 7H5.82L5 2.8A1 1 0 0 0 4 2H0v2h3.18L7 23.2a1 1 0 0 0 1 .8h18v-2H8.82L8 18h18a1 1 0 0 0 1-.78l2-9A1 1 0 0 0 28 7m-2.8 9H7.62l-1.4-7h20.53Z" />
-  </>,
-);
-
-export const CheckmarkIcon = carbon(
-  "checkmark",
-  <path d="m13 24l-9-9l1.414-1.414L13 21.171L26.586 7.586L28 9z" />,
 );
 
 export function CheckCircleIcon({ className, ...props }: IconProps) {

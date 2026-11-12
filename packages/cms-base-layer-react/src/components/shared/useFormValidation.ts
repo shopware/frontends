@@ -1,15 +1,23 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
-import { validateForm } from "./formValidation";
-import type { FormErrors, FormRules } from "./formValidation";
+import {
+  firstInvalidField,
+  isRequiredField,
+  validateForm,
+} from "./formValidation";
+import type { FormRules } from "./formValidation";
+
+export type FormField = {
+  ref: (element: HTMLElement | null) => void;
+  error: string | undefined;
+  required: boolean;
+  onBlur: () => void;
+};
 
 export type UseFormValidationReturn<VALUES extends object> = {
-  errors: FormErrors<VALUES>;
-  isValid: boolean;
-  touch: (key: keyof VALUES) => void;
-  touchAll: () => void;
-  hasError: (key: keyof VALUES) => boolean;
-  errorMessage: (key: keyof VALUES) => string | undefined;
+  field: (key: keyof VALUES) => FormField;
+  validateAll: () => boolean;
+  reset: () => void;
 };
 
 export function useFormValidation<VALUES extends object>(
@@ -18,23 +26,34 @@ export function useFormValidation<VALUES extends object>(
 ): UseFormValidationReturn<VALUES> {
   const [touched, setTouched] = useState<{ [KEY in keyof VALUES]?: true }>({});
   const [submitted, setSubmitted] = useState(false);
+  const elements = useRef<{ [KEY in keyof VALUES]?: HTMLElement | null }>({});
 
   const errors = validateForm(values, rules);
-  const isValid = Object.keys(errors).length === 0;
+  const firstInvalid = firstInvalidField(errors);
 
-  const touch = (key: keyof VALUES) => {
-    setTouched((current) =>
-      current[key] ? current : { ...current, [key]: true },
-    );
+  const field = (key: keyof VALUES): FormField => ({
+    ref: (element) => {
+      elements.current[key] = element;
+    },
+    error: submitted || touched[key] ? errors[key] : undefined,
+    required: isRequiredField(rules, key),
+    onBlur: () =>
+      setTouched((current) =>
+        current[key] ? current : { ...current, [key]: true },
+      ),
+  });
+
+  const validateAll = () => {
+    setSubmitted(true);
+    if (firstInvalid === undefined) return true;
+    elements.current[firstInvalid]?.focus();
+    return false;
   };
 
-  const touchAll = () => setSubmitted(true);
+  const reset = () => {
+    setTouched({});
+    setSubmitted(false);
+  };
 
-  const hasError = (key: keyof VALUES) =>
-    (submitted || touched[key] === true) && errors[key] !== undefined;
-
-  const errorMessage = (key: keyof VALUES) =>
-    hasError(key) ? errors[key] || undefined : undefined;
-
-  return { errors, isValid, touch, touchAll, hasError, errorMessage };
+  return { field, validateAll, reset };
 }

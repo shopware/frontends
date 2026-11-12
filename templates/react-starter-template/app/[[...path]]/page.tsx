@@ -1,9 +1,14 @@
 import type { ListingSearchParams } from "@shopware/cms-base-layer-react";
-import { getTranslatedProperty } from "@shopware/helpers";
+import {
+  getCategoryImageUrl,
+  getCmsMeta,
+  getSmallestThumbnailUrl,
+} from "@shopware/helpers";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
+import type { Schemas } from "#shopware";
 import { DetailPage } from "@/features/cms/components/DetailPage";
 import { LandingPage } from "@/features/cms/components/LandingPage";
 import { NavigationPage } from "@/features/cms/components/NavigationPage";
@@ -12,13 +17,19 @@ import { readCategory } from "@/platform/shopware/reads/category";
 import { readLandingPage } from "@/platform/shopware/reads/landingPage";
 import { readProductDetail } from "@/platform/shopware/reads/product";
 import { resolveSeoPath } from "@/platform/shopware/reads/seoUrl";
+import type { ResolvedRoute } from "@/platform/shopware/reads/seoUrl";
 
 type CatchAllPageProps = {
-  params: Promise<{ path: string[] }>;
+  params: Promise<{ path?: string[] }>;
   searchParams: Promise<ListingSearchParams>;
 };
 
-function toPathname(segments: string[]): string {
+type CmsPageEntity =
+  | Schemas["Category"]
+  | Schemas["LandingPage"]
+  | Schemas["Product"];
+
+function toPathname(segments: string[] = []): string {
   return `/${segments.join("/")}`;
 }
 
@@ -42,45 +53,65 @@ async function ResolvedPage({ params, searchParams }: CatchAllPageProps) {
   }
 }
 
+async function readRouteEntity(
+  route: ResolvedRoute,
+): Promise<CmsPageEntity | null> {
+  switch (route.routeName) {
+    case "frontend.navigation.page":
+      return readCategory(route.foreignKey);
+    case "frontend.detail.page":
+      return (await readProductDetail(route.foreignKey)).product;
+    case "frontend.landing.page":
+      return readLandingPage(route.foreignKey);
+    default:
+      return null;
+  }
+}
+
+function getOpenGraphImage(entity: CmsPageEntity): string | undefined {
+  if (entity.apiAlias === "product") {
+    return (
+      getSmallestThumbnailUrl(entity.openGraphMedia) ||
+      getSmallestThumbnailUrl(entity.cover?.media)
+    );
+  }
+  if (entity.apiAlias === "category") {
+    return getCategoryImageUrl(entity) || undefined;
+  }
+  return undefined;
+}
+
+function toMetadata(entity: CmsPageEntity): Metadata {
+  const meta = getCmsMeta(entity);
+  const title = meta.metaTitle || meta.title;
+  const description = meta.metaDescription || undefined;
+  const image = getOpenGraphImage(entity);
+  return {
+    title,
+    description,
+    keywords: meta.keywords || undefined,
+    openGraph: {
+      type: "website",
+      title,
+      description,
+      images: image ? [image] : undefined,
+    },
+  };
+}
+
 export async function generateMetadata({
   params,
 }: CatchAllPageProps): Promise<Metadata> {
   const { path } = await params;
-  const route = await resolveSeoPath(toPathname(path)).catch(() => null);
-  if (!route) return {};
+  if (!path?.length) return {};
 
   try {
-    if (route.routeName === "frontend.navigation.page") {
-      const category = await readCategory(route.foreignKey);
-      return {
-        title:
-          getTranslatedProperty(category, "metaTitle") ||
-          getTranslatedProperty(category, "name"),
-        description: getTranslatedProperty(category, "metaDescription"),
-      };
-    }
-    if (route.routeName === "frontend.detail.page") {
-      const { product } = await readProductDetail(route.foreignKey);
-      return {
-        title:
-          getTranslatedProperty(product, "metaTitle") ||
-          getTranslatedProperty(product, "name"),
-        description: getTranslatedProperty(product, "metaDescription"),
-      };
-    }
-    if (route.routeName === "frontend.landing.page") {
-      const landingPage = await readLandingPage(route.foreignKey);
-      return {
-        title:
-          getTranslatedProperty(landingPage, "metaTitle") ||
-          getTranslatedProperty(landingPage, "name"),
-        description: getTranslatedProperty(landingPage, "metaDescription"),
-      };
-    }
+    const route = await resolveSeoPath(toPathname(path));
+    const entity = route && (await readRouteEntity(route));
+    return entity ? toMetadata(entity) : {};
   } catch {
     return {};
   }
-  return {};
 }
 
 export default function CatchAllPage(props: CatchAllPageProps) {

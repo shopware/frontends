@@ -10,6 +10,11 @@ import { withTranslationDefaults } from "../../translations";
 import type { CmsTranslations } from "../../translations";
 import { ExclamationCircleIcon, ReviewStarIcon, SpinnerIcon } from "../icons";
 import { BaseButton } from "../ui/BaseButton";
+import { getActionFailureMessages } from "./actionNotifications";
+import { FormError } from "./formParts";
+import { fieldAria, fieldErrorId, minLength, required } from "./formValidation";
+import type { FormRules } from "./formValidation";
+import { useFormValidation } from "./useFormValidation";
 
 export type SwProductReviewsFormProps = {
   productId: string;
@@ -55,36 +60,24 @@ const translationDefaults: ReviewsFormTranslations = {
   errors: {},
 };
 
-const TITLE_MIN_LENGTH = 5;
-const REVIEW_MIN_LENGTH = 40;
 const REVIEW_ALREADY_EXISTS_CODE = "VIOLATION::ENTITY_EXISTS";
-const REQUIRED_MESSAGE = "Value is required";
 const STAR_VALUES = [1, 2, 3, 4, 5];
 const STAR_CLASS =
   "cursor-pointer hover:opacity-80 transition-opacity active:scale-95 focus:outline-hidden focus:ring-2 focus:ring-brand-primary rounded text-surface-on-surface-variant";
 const INPUT_CLASS =
   "block w-full px-3 py-2.5 md:py-2 border rounded-md text-base md:text-sm text-surface-on-surface bg-surface-surface placeholder:text-surface-on-surface-variant focus:outline-hidden focus:ring-2 focus:ring-outline-outline";
 
-type Field = "rating" | "title" | "review";
+const ERROR_CLASS = "pt-1 text-sm text-states-error";
 
-type Touched = Record<Field, boolean>;
+type ReviewValues = { rating: number | null; title: string; review: string };
 
-const UNTOUCHED: Touched = { rating: false, title: false, review: false };
-const ALL_TOUCHED: Touched = { rating: true, title: true, review: true };
+const INITIAL_VALUES: ReviewValues = { rating: null, title: "", review: "" };
 
-function minLengthMessage(min: number): string {
-  return `This field should be at least ${min} characters long`;
-}
-
-function validateText(value: string, minLength: number): string | undefined {
-  if (!value.trim().length) return REQUIRED_MESSAGE;
-  if (value.length < minLength) return minLengthMessage(minLength);
-  return undefined;
-}
-
-function validateRating(value: number | null): string | undefined {
-  return value === null ? REQUIRED_MESSAGE : undefined;
-}
+const RULES: FormRules<ReviewValues> = {
+  rating: [required],
+  title: [required, minLength(5)],
+  review: [required, minLength(40)],
+};
 
 export function SwProductReviewsForm({
   productId,
@@ -94,31 +87,16 @@ export function SwProductReviewsForm({
   const t = withTranslationDefaults(translations, translationDefaults);
   const actions = useCmsActions();
 
-  const [rating, setRating] = useState<number | null>(null);
-  const [title, setTitle] = useState("");
-  const [review, setReview] = useState("");
-  const [touched, setTouched] = useState<Touched>(UNTOUCHED);
+  const [values, setValues] = useState(INITIAL_VALUES);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
+  const { field, validateAll, reset } = useFormValidation(values, RULES);
 
-  const errors: Record<Field, string | undefined> = {
-    rating: validateRating(rating),
-    title: validateText(title, TITLE_MIN_LENGTH),
-    review: validateText(review, REVIEW_MIN_LENGTH),
-  };
-
-  function visibleError(field: Field): string | undefined {
-    return touched[field] ? errors[field] : undefined;
-  }
-
-  function touch(field: Field) {
-    setTouched((current) => ({ ...current, [field]: true }));
-  }
+  const patch = (changes: Partial<ReviewValues>) =>
+    setValues((current) => ({ ...current, ...changes }));
 
   function resolveErrorMessages(result: CmsReviewResult): string[] {
-    const violations =
-      result.violations ?? (result.message ? [{ detail: result.message }] : []);
-    return violations.flatMap(({ code, detail }) => {
+    const messages = (result.violations ?? []).flatMap(({ code, detail }) => {
       const message =
         (code ? t.errors[code] : undefined) ??
         (code === REVIEW_ALREADY_EXISTS_CODE
@@ -127,26 +105,25 @@ export function SwProductReviewsForm({
         detail;
       return message ? [message] : [];
     });
+    return messages.length
+      ? messages
+      : getActionFailureMessages(result, { messages: t.errors });
   }
 
   async function submit() {
-    if (isLoading) return;
-    setTouched(ALL_TOUCHED);
-    if (errors.rating || errors.title || errors.review) return;
-
+    if (isLoading || !validateAll()) return;
     setIsLoading(true);
     let result: CmsReviewResult;
     try {
       result = await actions.submitProductReview({
         productId,
-        title,
-        content: review,
-        points: rating ?? 0,
+        title: values.title,
+        content: values.review,
+        points: values.rating ?? 0,
       });
     } catch (error) {
-      setErrorMessages([
-        error instanceof Error ? error.message : String(error),
-      ]);
+      console.error("[CMS] action failed", error);
+      setErrorMessages(getActionFailureMessages({}));
       return;
     } finally {
       setIsLoading(false);
@@ -155,10 +132,8 @@ export function SwProductReviewsForm({
       setErrorMessages(resolveErrorMessages(result));
       return;
     }
-    setRating(null);
-    setTitle("");
-    setReview("");
-    setTouched(UNTOUCHED);
+    setValues(INITIAL_VALUES);
+    reset();
     setErrorMessages([]);
     onSuccess?.();
   }
@@ -168,12 +143,13 @@ export function SwProductReviewsForm({
     void submit();
   }
 
+  const ratingId = useId();
   const titleId = useId();
   const reviewId = useId();
-  const currentRating = rating ?? 0;
-  const ratingError = visibleError("rating");
-  const titleError = visibleError("title");
-  const reviewError = visibleError("review");
+  const currentRating = values.rating ?? 0;
+  const { ref: ratingRef, error: ratingError } = field("rating");
+  const { ref: titleRef, ...titleField } = field("title");
+  const { ref: reviewRef, ...reviewField } = field("review");
 
   return (
     <form className="flex flex-col gap-4 md:gap-5 relative" onSubmit={onSubmit}>
@@ -194,19 +170,22 @@ export function SwProductReviewsForm({
             className="flex flex-row gap-2"
             role="group"
             aria-label={t.product.reviewsForm.rating}
+            aria-describedby={ratingError ? fieldErrorId(ratingId) : undefined}
           >
             {STAR_VALUES.map((value) => {
               const filled = value <= currentRating;
               return (
                 <button
                   key={`star-${value}`}
+                  ref={value === 1 ? ratingRef : undefined}
                   type="button"
+                  aria-pressed={value === currentRating}
                   aria-label={`Rate ${value} out of 5 stars`}
                   className={STAR_CLASS}
                   data-testid={
                     filled ? "review-filled-star" : "review-empty-star"
                   }
-                  onClick={() => setRating(value)}
+                  onClick={() => patch({ rating: value })}
                 >
                   <ReviewStarIcon
                     filled={filled}
@@ -218,15 +197,18 @@ export function SwProductReviewsForm({
               );
             })}
           </div>
-          {ratingError ? (
-            <span className="pt-1 text-sm text-states-error">
-              {ratingError}
-            </span>
-          ) : null}
+          <FormError
+            id={ratingId}
+            error={ratingError}
+            className={ERROR_CLASS}
+          />
         </div>
       </div>
       {errorMessages.length ? (
-        <div className="p-3 mb-4 bg-surface-surface-container border border-states-error rounded-md flex gap-2 md:gap-3 items-start">
+        <div
+          role="alert"
+          className="p-3 mb-4 bg-surface-surface-container border border-states-error rounded-md flex gap-2 md:gap-3 items-start"
+        >
           <div className="w-5 h-5 text-states-error flex-shrink-0 mt-0.5">
             <ExclamationCircleIcon width={20} height={20} aria-label="Error" />
           </div>
@@ -250,11 +232,13 @@ export function SwProductReviewsForm({
           {t.product.reviewsForm.title}
         </label>
         <input
+          {...fieldAria(titleId, titleField)}
           id={titleId}
-          value={title}
+          ref={titleRef}
+          value={values.title}
           className={cx(
             INPUT_CLASS,
-            titleError
+            titleField.error
               ? "border-states-error focus:ring-states-error"
               : "border-outline-outline",
           )}
@@ -262,12 +246,14 @@ export function SwProductReviewsForm({
           placeholder={t.product.reviewsForm.titlePlaceholder}
           disabled={isLoading}
           data-testid="review-title-input"
-          onChange={(event) => setTitle(event.target.value)}
-          onBlur={() => touch("title")}
+          onChange={(event) => patch({ title: event.target.value })}
+          onBlur={titleField.onBlur}
         />
-        {titleError ? (
-          <span className="pt-1 text-sm text-states-error">{titleError}</span>
-        ) : null}
+        <FormError
+          id={titleId}
+          error={titleField.error}
+          className={ERROR_CLASS}
+        />
       </div>
       <div>
         <label
@@ -277,24 +263,28 @@ export function SwProductReviewsForm({
           {t.product.reviewsForm.review}
         </label>
         <textarea
+          {...fieldAria(reviewId, reviewField)}
           id={reviewId}
-          value={review}
+          ref={reviewRef}
+          value={values.review}
           className={cx(
             INPUT_CLASS,
             "min-h-32 md:min-h-40",
-            reviewError
+            reviewField.error
               ? "border-states-error focus:ring-states-error"
               : "border-outline-outline",
           )}
           placeholder={t.product.reviewsForm.reviewPlaceholder}
           disabled={isLoading}
           data-testid="review-text-input"
-          onChange={(event) => setReview(event.target.value)}
-          onBlur={() => touch("review")}
+          onChange={(event) => patch({ review: event.target.value })}
+          onBlur={reviewField.onBlur}
         />
-        {reviewError ? (
-          <span className="pt-1 text-sm text-states-error">{reviewError}</span>
-        ) : null}
+        <FormError
+          id={reviewId}
+          error={reviewField.error}
+          className={ERROR_CLASS}
+        />
       </div>
       <BaseButton
         type="submit"

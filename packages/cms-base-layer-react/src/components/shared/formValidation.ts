@@ -13,6 +13,7 @@ export type FormErrors<VALUES extends object> = {
 
 export const REQUIRED_MESSAGE = "Value is required";
 export const EMAIL_MESSAGE = "Value is not a valid email address";
+export const IS_TRUE_MESSAGE = "This field must be checked";
 
 export function minLengthMessage(min: number): string {
   return `This field should be at least ${min} characters long`;
@@ -58,7 +59,7 @@ export function minLength(min: number): FormValidator {
 
 export const isTrue: FormValidator = {
   validate: (value) => value === true,
-  message: "",
+  message: IS_TRUE_MESSAGE,
 };
 
 export function validateForm<VALUES extends object>(
@@ -75,4 +76,32 @@ export function validateForm<VALUES extends object>(
     if (failing) errors[key] = failing.message;
   }
   return errors;
+}
+
+export function firstInvalidField<VALUES extends object>(
+  errors: FormErrors<VALUES>,
+): keyof VALUES | undefined {
+  return (Object.keys(errors) as Array<keyof VALUES>)[0];
+}
+
+export function isRequiredField<VALUES extends object>(
+  rules: FormRules<VALUES>,
+  key: keyof VALUES,
+): boolean {
+  return rules[key]?.includes(required) ?? false;
+}
+
+export function fieldErrorId(id: string): string {
+  return `${id}-error`;
+}
+
+export function fieldAria(
+  id: string,
+  { error, required }: { error?: string; required: boolean },
+) {
+  return {
+    "aria-invalid": error !== undefined,
+    "aria-required": required,
+    "aria-describedby": error === undefined ? undefined : fieldErrorId(id),
+  };
 }

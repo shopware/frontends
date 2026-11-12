@@ -24,7 +24,8 @@ stubs. `supportLevel` in `templates/manifest.json` is authoritative.
   users.
 - Reads live in `platform/shopware/reads/`. Each is a `'use cache'` function
   that creates its own anonymous client and sets a `cacheLife` profile from
-  `next.config.ts` (`catalog`, `listing`, `seo`, `reference`) and an `sw:` tag.
+  `next.config.ts` (`catalog`, `listing`, `seo`, `reference`; the navigation
+  read uses the built-in `hours`) and an `sw:` tag.
   When an endpoint has a GET variant (an `operations` key of the form
   `<operationId>Get get <path>`), the read uses it and sends its criteria as
   `query: { _criteria: encodeForQuery(criteria) }`. POST is only for endpoints
@@ -38,24 +39,39 @@ stubs. `supportLevel` in `templates/manifest.json` is authoritative.
 - A `'use cache'` read is keyed on its arguments only. Everything that changes
   the response — language, currency, sales channel, a context token — must be an
   argument, or the cache serves one visitor's response to another.
-- Let a failed read throw so the failure is not cached; the calling
-  component handles it (`notFoundOn404` in `platform/shopware/errors.ts`).
+- Let a failed read throw so the failure is not cached. An error that leaves
+  a `'use cache'` function reaches the caller as a plain `Error` carrying only
+  a `digest`: no `ApiClientError`, no `status`. So a read turns a Store API
+  404 into `notFound()` itself, with `.catch(notFoundOn404)`
+  (`platform/shopware/errors.ts`) on the `invoke` call. A `catch` in the
+  calling component can no longer tell a 404 from a 500.
 - Import Store API types from `#shopware` (`shopware.d.ts`) with `import type`
   only. Point that file at `./api-types/storeApiTypes` after running
   `loadSchema` and `generate-types` to get the types of your own instance.
 
 ## Routing and CMS
 
-- `app/[...path]/page.tsx` resolves every storefront URL in a server
-  component: `/` maps to the sales channel's navigation category, technical
-  paths (`/navigation/{id}`, `/detail/{id}`, `/landingPage/{id}`) are parsed
-  with `getRouteFromPathInfo`, everything else is looked up in `/seo-url` with
-  both the plain path and the path with a trailing slash. The result is
-  dispatched to `features/cms/components/{NavigationPage,DetailPage,LandingPage}`.
+- `app/[[...path]]/page.tsx` resolves every storefront URL in a server
+  component, the home page included: `/` maps to the sales channel's
+  navigation category, technical paths (`/navigation/{id}`, `/detail/{id}`,
+  `/landingPage/{id}`) are parsed with `getRouteFromPathInfo`, everything
+  else is looked up in `/seo-url` with both the plain path and the path with
+  a trailing slash. The result is dispatched to
+  `features/cms/components/{NavigationPage,DetailPage,LandingPage}`.
+  `generateMetadata` in the same file builds title, description, keywords
+  and Open Graph tags from the resolved entity; the home page keeps the
+  layout's default title.
+- `app/error.tsx` and `app/not-found.tsx` render inside the root layout, so
+  the header stays when a read fails or a path does not resolve.
 - A miss calls `notFound()` inside a `<Suspense>` boundary, which streams a
   200 with `noindex`, not a real 404. Real 301/404/503 status codes need the
   lookup in `proxy.ts`; that is a later stage, do not try to fix it in the
   page.
+- Listing params from the URL are validated before they reach the Store API
+  (`buildListingQueryParams`): `limit` and `p` must be positive integers and
+  `limit` is capped at 100, because the Store API answers 400 above its
+  `max_limit`. A page past the last one is a Store API 404 and renders the
+  not-found page.
 - `skipTrailingSlashRedirect` is on because Shopware category paths end with
   `/`. The catch-all receives the segments without that slash, which is why
   the SEO lookup tries both spellings.
@@ -75,8 +91,9 @@ stubs. `supportLevel` in `templates/manifest.json` is authoritative.
 - Reading `searchParams` or calling `connection()` makes a subtree dynamic, so
   it always happens inside a `<Suspense>` (`PageSkeleton` is the fallback).
   Catalog routes must never read `cookies()` or `headers()`.
-- The home page calls `connection()` before its reads so `next build` does
-  not need the Store API. Prerendering at build time is a later decision.
+- `next build` does not need the Store API: the catch-all awaits `params`
+  and `searchParams` and the header calls `connection()`, so every read runs
+  at request time. Prerendering at build time is a later decision.
 
 ## Session and actions
 

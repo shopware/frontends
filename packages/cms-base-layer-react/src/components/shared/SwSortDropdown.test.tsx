@@ -15,7 +15,7 @@ const sortOptions: ListingSortOption[] = [
 ];
 
 describe("SwSortDropdown", () => {
-  it("renders the Sort toggle with a menu of menuitems", async () => {
+  it("renders the Sort toggle with a menu of radio menuitems", async () => {
     const html = await renderToHtml(
       <SwSortDropdown
         sortOptions={sortOptions}
@@ -27,7 +27,9 @@ describe("SwSortDropdown", () => {
     expect(html).toContain('aria-haspopup="true"');
     expect(html).toContain('aria-expanded="false"');
     expect(html).toContain('role="menu"');
-    expect(html.match(/role="menuitem"/g)).toHaveLength(2);
+    expect(html.match(/role="menuitemradio"/g)).toHaveLength(2);
+    expect(html.match(/aria-checked="true"/g)).toHaveLength(1);
+    expect(html.match(/aria-checked="false"/g)).toHaveLength(1);
     expect(html).toContain("Price ascending");
     expect(html).toContain("focus:outline-hidden");
     expect(html).not.toContain("outline-none");

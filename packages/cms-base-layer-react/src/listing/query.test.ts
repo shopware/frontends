@@ -1,13 +1,19 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  MAX_LISTING_LIMIT,
   buildListingQuery,
   buildListingQueryParams,
   createEmptyFilterState,
+  getListingHref,
   getVisibleListingFilters,
   hasActiveFilters,
   hasListingQuery,
   parseListingState,
+  toggleFilterValue,
+  withFilters,
+  withLimit,
+  withOrder,
 } from "./query";
 
 describe("parseListingState", () => {
@@ -112,6 +118,96 @@ describe("buildListingQueryParams", () => {
         { limit: 24, order: "name-asc" },
       ),
     ).toEqual({ limit: 24, order: "price-asc" });
+  });
+});
+
+describe("listing URL contract", () => {
+  const params = {
+    manufacturer: "a|b",
+    properties: "c|d",
+    "min-price": "10",
+    "max-price": "99",
+    rating: "4",
+    "shipping-free": "true",
+    order: "name-desc",
+    limit: "24",
+    p: "3",
+  };
+
+  it("writes every key the Vue layer and the e2e suite use", () => {
+    expect(buildListingQuery(parseListingState(params)).toString()).toBe(
+      "manufacturer=a%7Cb&properties=c%7Cd&min-price=10&max-price=99&rating=4&shipping-free=true&order=name-desc&limit=24&p=3",
+    );
+  });
+
+  it("sends every key to the Store API", () => {
+    expect(buildListingQueryParams(params)).toEqual({
+      manufacturer: "a|b",
+      properties: "c|d",
+      "min-price": 10,
+      "max-price": 99,
+      rating: 4,
+      "shipping-free": true,
+      order: "name-desc",
+      limit: 24,
+      p: 3,
+    });
+  });
+
+  it.each(["0", "-1", "1.5", "abc", ""])(
+    "ignores limit and page %j instead of sending them to the Store API",
+    (value) => {
+      expect(buildListingQueryParams({ limit: value, p: value })).toEqual({});
+    },
+  );
+
+  it("caps the limit at the Store API maximum", () => {
+    expect(buildListingQueryParams({ limit: "500" })).toEqual({
+      limit: MAX_LISTING_LIMIT,
+    });
+  });
+});
+
+describe("listing state transitions", () => {
+  const state = parseListingState({
+    manufacturer: "a",
+    order: "name-asc",
+    limit: "24",
+    p: "3",
+    search: "chair",
+  });
+
+  it("adds and removes a toggled filter value", () => {
+    const added = toggleFilterValue(state.filters, "manufacturer", "b");
+    expect(added.manufacturer).toEqual(["a", "b"]);
+    expect(toggleFilterValue(added, "manufacturer", "a").manufacturer).toEqual([
+      "b",
+    ]);
+    expect(state.filters.manufacturer).toEqual(["a"]);
+  });
+
+  it("drops the page when filters or sorting change", () => {
+    expect(withFilters(state, createEmptyFilterState()).page).toBeUndefined();
+    expect(withOrder(state, "price-asc")).toMatchObject({
+      order: "price-asc",
+      page: undefined,
+    });
+  });
+
+  it("goes back to the first page when the page size changes", () => {
+    expect(withLimit(state, 48)).toMatchObject({ limit: 48, page: 1 });
+  });
+
+  it("keeps the search term only on the search listing", () => {
+    expect(getListingHref("/search", state, { isProductSearch: true })).toBe(
+      "/search?manufacturer=a&order=name-asc&search=chair&limit=24&p=3",
+    );
+    expect(getListingHref("/Chairs/", state)).toBe(
+      "/Chairs/?manufacturer=a&order=name-asc&limit=24&p=3",
+    );
+    expect(
+      getListingHref("/Chairs/", { filters: createEmptyFilterState() }),
+    ).toBe("/Chairs/");
   });
 });
 

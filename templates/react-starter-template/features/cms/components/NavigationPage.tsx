@@ -7,7 +7,6 @@ import type { ListingSearchParams } from "@shopware/cms-base-layer-react";
 import { getProductListingFromCmsPage } from "@shopware/helpers";
 
 import { createStorefrontCmsContext } from "@/platform/cms/context";
-import { notFoundOn404 } from "@/platform/shopware/errors";
 import { readCategory } from "@/platform/shopware/reads/category";
 import { readNavigation } from "@/platform/shopware/reads/navigation";
 import { readProductListing } from "@/platform/shopware/reads/productListing";
@@ -21,7 +20,7 @@ export async function NavigationPage({
   navigationId,
   searchParams,
 }: NavigationPageProps) {
-  const category = await readCategory(navigationId).catch(notFoundOn404);
+  const category = await readCategory(navigationId);
   const cmsPage = category.cmsPage;
 
   const needsListing =

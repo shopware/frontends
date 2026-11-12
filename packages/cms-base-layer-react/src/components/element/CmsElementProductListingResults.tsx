@@ -56,7 +56,11 @@ export function CmsElementProductListingResults({
   useEffect(() => {
     if (isPending || !scrollAfterUpdate.current) return;
     scrollAfterUpdate.current = false;
-    productListElement.current?.scrollIntoView({ behavior: "smooth" });
+    productListElement.current?.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+    });
   }, [isPending]);
 
   const changePage = (page: number) => {

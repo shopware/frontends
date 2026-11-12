@@ -10,6 +10,8 @@ export const LISTING_DEFAULTS = {
   order: "name-asc",
 } as const;
 
+export const MAX_LISTING_LIMIT = 100;
+
 export type ListingDefaults = {
   limit: number;
   page: number;
@@ -27,6 +29,13 @@ export const toNumber = (value: string | undefined): number | undefined => {
   if (value === undefined || value === "") return undefined;
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : undefined;
+};
+
+const toPositiveInt = (value: string | undefined): number | undefined => {
+  const parsed = toNumber(value);
+  return parsed !== undefined && Number.isInteger(parsed) && parsed > 0
+    ? parsed
+    : undefined;
 };
 
 export type ListingFilterState = {
@@ -83,8 +92,8 @@ export function parseListingState(params: ListingSearchParams): ListingState {
   return {
     filters: parseListingFilters(params),
     order: firstQueryValue(params.order),
-    limit: toNumber(firstQueryValue(params.limit)),
-    page: toNumber(firstQueryValue(params.p)),
+    limit: toPositiveInt(firstQueryValue(params.limit)),
+    page: toPositiveInt(firstQueryValue(params.p)),
     search: firstQueryValue(params.search),
   };
 }
@@ -132,6 +141,54 @@ export function buildListingQuery(
   return query;
 }
 
+export type ToggleableFilterCode = "manufacturer" | "properties" | "categories";
+
+export function toggleFilterValue(
+  filters: ListingFilterState,
+  code: ToggleableFilterCode,
+  value: string,
+): ListingFilterState {
+  const current = filters[code];
+  return {
+    ...filters,
+    [code]: current.includes(value)
+      ? current.filter((entry) => entry !== value)
+      : [...current, value],
+  };
+}
+
+export const withFilters = (
+  state: ListingState,
+  filters: ListingFilterState,
+): ListingState => ({ ...state, filters, page: undefined });
+
+export const withOrder = (
+  state: ListingState,
+  order: string,
+): ListingState => ({
+  ...state,
+  order,
+  page: undefined,
+});
+
+export const withLimit = (
+  state: ListingState,
+  limit: number,
+): ListingState => ({
+  ...state,
+  limit,
+  page: LISTING_DEFAULTS.page,
+});
+
+export function getListingHref(
+  pathname: string,
+  state: ListingState,
+  options: { isProductSearch?: boolean } = {},
+): string {
+  const queryString = buildListingQuery(state, options).toString();
+  return queryString ? `${pathname}?${queryString}` : pathname;
+}
+
 export type ListingQueryParams = Pick<
   NonNullable<
     operations["readProductListingGet get /product-listing/{categoryId}"]["query"]
@@ -156,7 +213,7 @@ export function buildListingQueryParams(
   const limit = state.limit ?? defaults.limit;
   const page = state.page ?? defaults.page;
   const order = state.order ?? defaults.order;
-  if (limit !== undefined) query.limit = limit;
+  if (limit !== undefined) query.limit = Math.min(limit, MAX_LISTING_LIMIT);
   if (page !== undefined) query.p = page;
   if (order !== undefined) query.order = order;
 

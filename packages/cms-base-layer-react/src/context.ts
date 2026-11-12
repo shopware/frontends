@@ -1,4 +1,5 @@
 import type { BackgroundImageOptions } from "@shopware/helpers";
+import { defu } from "defu";
 
 import type { Schemas } from "#shopware";
 
@@ -52,8 +53,7 @@ export type CmsClientContext = {
   translations: CmsTranslations;
 };
 
-export type CmsContext = CmsClientContext & {
-  registry: CmsRegistry;
+export type CmsPageData = {
   product?: Schemas["Product"];
   category?: Schemas["Category"];
   landingPage?: Schemas["LandingPage"];
@@ -61,39 +61,31 @@ export type CmsContext = CmsClientContext & {
   listing?: Schemas["ProductListingResult"];
 };
 
-export type CreateCmsContextInput = {
-  registry: CmsRegistry;
-  routeName?: CmsRouteName;
-  foreignKey?: string;
-  urlPrefix?: string;
-  locale?: string;
-  currencyCode?: string;
-  taxState?: "gross" | "net";
-  navigationCategoryId?: string;
-  isLoggedIn?: boolean;
-  isProductSearch?: boolean;
-  config?: CmsConfigInput;
-  translations?: CmsTranslations;
-  product?: Schemas["Product"];
-  category?: Schemas["Category"];
-  landingPage?: Schemas["LandingPage"];
-  navigation?: Schemas["Category"][];
-  listing?: Schemas["ProductListingResult"];
-};
+export type CmsContext = CmsClientContext &
+  CmsPageData & { registry: CmsRegistry };
+
+export type CreateCmsContextInput = CmsPageData &
+  Partial<
+    Pick<
+      CmsClientContext,
+      | "routeName"
+      | "foreignKey"
+      | "urlPrefix"
+      | "locale"
+      | "currencyCode"
+      | "taxState"
+      | "navigationCategoryId"
+      | "isLoggedIn"
+      | "isProductSearch"
+      | "translations"
+    >
+  > & {
+    registry: CmsRegistry;
+    config?: CmsConfigInput;
+  };
 
 export function resolveCmsConfig(input: CmsConfigInput = {}): CmsConfig {
-  return {
-    imagePlaceholder: {
-      ...defaultCmsConfig.imagePlaceholder,
-      ...input.imagePlaceholder,
-    },
-    backgroundImage: {
-      ...defaultCmsConfig.backgroundImage,
-      ...input.backgroundImage,
-    },
-    lcpImagePreload: input.lcpImagePreload ?? defaultCmsConfig.lcpImagePreload,
-    imageSizes: { ...defaultCmsConfig.imageSizes, ...input.imageSizes },
-  };
+  return defu(input, defaultCmsConfig) as CmsConfig;
 }
 
 export function createCmsContext(input: CreateCmsContextInput): CmsContext {

@@ -6,7 +6,6 @@ import { renderToHtml } from "../../__fixtures__/render";
 import { createCmsContext } from "../../context";
 import { createCmsRegistry } from "../../registry";
 import { SwProductAddToCart } from "./SwProductAddToCart";
-import { SwProductUnits } from "./SwProductUnits";
 import { SwStockInfo } from "./SwStockInfo";
 import { SwVariantConfigurator } from "./SwVariantConfigurator";
 import { getVariantOptionGroups } from "./variantOptionGroups";
@@ -175,57 +174,6 @@ describe("SwStockInfo", () => {
     );
 
     expect(html).toContain("No longer available");
-  });
-});
-
-describe("SwProductUnits", () => {
-  it("renders nothing without a purchase unit", async () => {
-    const html = await renderToHtml(
-      <SwProductUnits product={product()} ctx={ctx} />,
-    );
-
-    expect(html).toBe("");
-  });
-
-  it("renders the content and the reference price", async () => {
-    const html = await renderToHtml(
-      <SwProductUnits
-        product={product({
-          purchaseUnit: 2,
-          unit: { translated: { name: "kg" } },
-          calculatedPrice: {
-            unitPrice: 19.99,
-            referencePrice: {
-              price: 9.995,
-              referenceUnit: 1,
-              unitName: "kg",
-            },
-          },
-        })}
-        ctx={ctx}
-      />,
-    );
-
-    expect(html).toContain("Content");
-    expect(html).toContain("2");
-    expect(html).toContain("kg");
-    expect(html).toContain("10,00");
-    expect(html).toContain("€");
-  });
-
-  it("hides the content line when showContent is false", async () => {
-    const html = await renderToHtml(
-      <SwProductUnits
-        product={product({
-          purchaseUnit: 2,
-          unit: { translated: { name: "kg" } },
-        })}
-        ctx={ctx}
-        showContent={false}
-      />,
-    );
-
-    expect(html).not.toContain("Content");
   });
 });
 

@@ -5,6 +5,7 @@ import type {
   CmsActions,
   CmsNotification,
 } from "@shopware/cms-base-layer-react/client";
+import Link from "next/link";
 import { useCallback, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
@@ -30,7 +31,7 @@ export function StorefrontProviders({ children }: { children: ReactNode }) {
     setToasts((current) => [...current, { ...notification, id }]);
     setTimeout(() => {
       setToasts((current) => current.filter((toast) => toast.id !== id));
-    }, 5000);
+    }, notification.timeout ?? 5000);
   }, []);
 
   const actions = useMemo<Partial<CmsActions>>(() => {
@@ -54,7 +55,7 @@ export function StorefrontProviders({ children }: { children: ReactNode }) {
       {children}
       <div
         aria-live="polite"
-        className="pointer-events-none fixed right-4 bottom-4 z-50 flex max-w-sm flex-col gap-2"
+        className="fixed right-4 bottom-4 z-50 flex max-w-sm flex-col gap-2"
       >
         {toasts.map((toast) => (
           <p
@@ -63,6 +64,11 @@ export function StorefrontProviders({ children }: { children: ReactNode }) {
             className={`rounded-md px-4 py-3 text-sm shadow-lg ${TOAST_CLASSES[toast.type]}`}
           >
             {toast.message}
+            {toast.action && (
+              <Link href={toast.action.href} className="ml-2 underline">
+                {toast.action.label}
+              </Link>
+            )}
           </p>
         ))}
       </div>

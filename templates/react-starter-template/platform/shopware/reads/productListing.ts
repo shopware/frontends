@@ -5,6 +5,7 @@ import { cacheLife, cacheTag } from "next/cache";
 import type { Schemas } from "#shopware";
 
 import { createShopwareClient } from "../client";
+import { notFoundOn404 } from "../errors";
 
 export async function readProductListing(
   categoryId: string,
@@ -14,14 +15,13 @@ export async function readProductListing(
   cacheLife("listing");
   cacheTag(`sw:category:${categoryId}`);
 
-  const response = await createShopwareClient().invoke(
-    "readProductListingGet get /product-listing/{categoryId}",
-    {
+  const response = await createShopwareClient()
+    .invoke("readProductListingGet get /product-listing/{categoryId}", {
       headers: { "sw-include-seo-urls": true },
       pathParams: { categoryId },
       query,
-    },
-  );
+    })
+    .catch(notFoundOn404);
 
   return response.data;
 }

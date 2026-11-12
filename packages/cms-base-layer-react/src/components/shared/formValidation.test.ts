@@ -2,8 +2,12 @@ import { describe, expect, it } from "vitest";
 
 import {
   EMAIL_MESSAGE,
+  IS_TRUE_MESSAGE,
   REQUIRED_MESSAGE,
   email,
+  fieldAria,
+  firstInvalidField,
+  isRequiredField,
   isTrue,
   minLength,
   minLengthMessage,
@@ -59,11 +63,12 @@ describe("minLength", () => {
 });
 
 describe("isTrue", () => {
-  it("accepts only true and carries no message", () => {
+  it("accepts only true and carries a message", () => {
     expect(isTrue.validate(true)).toBe(true);
     expect(isTrue.validate(false)).toBe(false);
     expect(isTrue.validate("true")).toBe(false);
-    expect(isTrue.message).toBe("");
+    expect(isTrue.message).toBe(IS_TRUE_MESSAGE);
+    expect(IS_TRUE_MESSAGE).not.toBe("");
   });
 });
 
@@ -83,7 +88,7 @@ describe("validateForm", () => {
     expect(errors).toEqual({
       email: REQUIRED_MESSAGE,
       firstName: minLengthMessage(3),
-      checkbox: "",
+      checkbox: IS_TRUE_MESSAGE,
     });
   });
 
@@ -103,5 +108,65 @@ describe("validateForm", () => {
     );
 
     expect(errors).toEqual({});
+  });
+});
+
+describe("firstInvalidField", () => {
+  const rules = {
+    firstName: [required, minLength(3)],
+    email: [required, email],
+    checkbox: [required, isTrue],
+  };
+
+  it("picks the first failing field in rule order, not value order", () => {
+    const values = { checkbox: false, email: "nope", firstName: "John" };
+
+    expect(firstInvalidField(validateForm(values, rules))).toBe("email");
+    expect(
+      firstInvalidField(validateForm({ ...values, firstName: "" }, rules)),
+    ).toBe("firstName");
+  });
+
+  it("returns undefined when every field is valid", () => {
+    expect(
+      firstInvalidField(
+        validateForm(
+          { checkbox: true, email: "john@example.com", firstName: "John" },
+          rules,
+        ),
+      ),
+    ).toBeUndefined();
+  });
+});
+
+describe("isRequiredField", () => {
+  it("is true only for fields whose rules include required", () => {
+    const rules = { email: [required, email], phone: [minLength(3)] };
+
+    expect(isRequiredField(rules, "email")).toBe(true);
+    expect(isRequiredField(rules, "phone")).toBe(false);
+    expect(
+      isRequiredField<{ email: string; name: string }>(rules, "name"),
+    ).toBe(false);
+  });
+});
+
+describe("fieldAria", () => {
+  it("points an invalid field at its error element", () => {
+    expect(
+      fieldAria("f1", { error: REQUIRED_MESSAGE, required: true }),
+    ).toEqual({
+      "aria-invalid": true,
+      "aria-required": true,
+      "aria-describedby": "f1-error",
+    });
+  });
+
+  it("leaves a valid field without a description", () => {
+    expect(fieldAria("f1", { required: false })).toEqual({
+      "aria-invalid": false,
+      "aria-required": false,
+      "aria-describedby": undefined,
+    });
   });
 });

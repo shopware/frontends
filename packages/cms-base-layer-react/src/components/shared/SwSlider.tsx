@@ -108,6 +108,7 @@ export function SwSlider({
   const navigationArrowsValue = navigationArrows || "none";
   const navigationDotsValue = navigationDots || "none";
 
+  const sliderRef = useRef<HTMLDivElement>(null);
   const imageSliderRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [trackStyle, setTrackStyle] = useState<CSSProperties | undefined>(
@@ -259,7 +260,10 @@ export function SwSlider({
 
   useEffect(() => {
     if (!autoplay || !isReady) return;
-    const interval = setInterval(next, autoSlideInterval);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const interval = setInterval(() => {
+      if (!sliderRef.current?.matches(":hover, :focus-within")) next();
+    }, autoSlideInterval);
     return () => clearInterval(interval);
   }, [autoSlideInterval, autoplay, isReady, next]);
 
@@ -354,6 +358,7 @@ export function SwSlider({
 
   return (
     <div
+      ref={sliderRef}
       className={cx(
         "relative overflow-hidden h-full",
         navigationArrowsValue === "outside" && "px-10",
@@ -375,7 +380,7 @@ export function SwSlider({
           ref={trackRef}
           data-ssr-slider={ssrBreakpoints ? sliderId : undefined}
           className={cx(
-            "flex",
+            "sw-slider-track flex",
             displayModeValue === "contain" &&
               verticalAlignValue === "center" &&
               "items-center",
@@ -392,6 +397,11 @@ export function SwSlider({
             <div
               key={item.key}
               data-index={item.index}
+              inert={
+                isReady &&
+                (item.index < activeSlideIndex ||
+                  item.index >= activeSlideIndex + visible)
+              }
               style={{
                 width: slideWidth,
                 padding: `0 ${gap}`,

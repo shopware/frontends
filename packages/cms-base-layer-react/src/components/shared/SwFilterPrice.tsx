@@ -1,21 +1,20 @@
 "use client";
 
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type {
   ChangeEvent,
   KeyboardEvent,
   MouseEvent as ReactMouseEvent,
 } from "react";
 
-import { cx } from "../../helpers/cx";
 import { withTranslationDefaults } from "../../translations";
 import type { CmsTranslations } from "../../translations";
-import { ChevronDownIcon } from "../icons";
 import type {
   ListingFilter,
   ListingFilterChangeEvent,
   ListingFilterDisplayMode,
 } from "./listingFilterTypes";
+import { SwFilterAccordion } from "./SwFilterAccordion";
 
 export type SwFilterPriceProps = {
   filter: ListingFilter;
@@ -75,9 +74,6 @@ export function SwFilterPrice({
     setPreviousSyncKey(syncKey);
     setPrices(initialPrices());
   }
-
-  const [isFilterVisible, setIsFilterVisible] = useState(false);
-  const toggle = () => setIsFilterVisible((visible) => !visible);
 
   const onSelectValueRef = useRef(onSelectValue);
   useEffect(() => {
@@ -201,112 +197,77 @@ export function SwFilterPrice({
   const minPercent = toPercent(prices.min);
   const maxPercent = toPercent(prices.max);
   const widthPercent = maxPercent - minPercent;
-  const panelId = useId();
 
   return (
-    <div className="self-stretch flex flex-col justify-start items-start gap-4">
-      {displayMode === "accordion" && (
-        <div className="self-stretch flex flex-col justify-center items-center">
-          <button
-            type="button"
-            className="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-between items-center gap-1 cursor-pointer"
-            onClick={toggle}
-            aria-expanded={isFilterVisible}
-            aria-controls={panelId}
-          >
-            <div className="flex-1 flex items-center gap-2.5">
-              <div className="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left">
-                {filter.label}
-              </div>
-            </div>
-            <span
-              className="flex items-center justify-center"
-              aria-hidden="true"
-            >
-              <ChevronDownIcon
-                width={24}
-                height={24}
-                className={cx(
-                  "transition-transform",
-                  isFilterVisible && "rotate-180",
-                )}
-              />
-            </span>
-          </button>
-        </div>
-      )}
-
-      {(isFilterVisible || displayMode === "dropdown") && (
-        <div
-          id={panelId}
-          className="self-stretch flex flex-col justify-start items-start gap-2.5"
-        >
-          <div className="self-stretch flex flex-col justify-start items-start gap-1">
-            <div className="self-stretch inline-flex justify-between items-center gap-2">
-              <div className="w-16 h-10 px-2 py-1 rounded-lg outline outline-1 outline-offset-[-1px] outline-outline-outline-variant inline-flex flex-col justify-center items-start gap-2.5">
-                <input
-                  type="number"
-                  placeholder={t.listing.min}
-                  aria-label={t.listing.min}
-                  value={prices.min}
-                  onChange={(event) => {
-                    const min = toInputNumber(event);
-                    applyPrices((current) => ({ ...current, min }));
-                  }}
-                  onBlur={onInputBlur}
-                  className="w-full bg-transparent border-none outline-hidden text-surface-on-surface text-sm font-normal leading-tight"
-                  min={filter.min}
-                  max={prices.max}
-                />
-              </div>
-              <div className="w-16 h-10 px-2 py-1 rounded-lg outline outline-1 outline-offset-[-1px] outline-outline-outline-variant inline-flex flex-col justify-center items-start gap-2.5">
-                <input
-                  type="number"
-                  placeholder={t.listing.max}
-                  aria-label={t.listing.max}
-                  value={prices.max}
-                  onChange={(event) => {
-                    const max = toInputNumber(event);
-                    applyPrices((current) => ({ ...current, max }));
-                  }}
-                  onBlur={onInputBlur}
-                  className="w-full bg-transparent border-none outline-hidden text-surface-on-surface text-sm font-normal leading-tight"
-                  min={prices.min}
-                  max={filter.max}
-                />
-              </div>
-            </div>
-            <div
-              ref={sliderElement}
-              className="relative w-64 h-10 mt-2 mx-auto flex items-center select-none"
-            >
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-2 bg-surface-surface-container-highest rounded-full" />
-              <div
-                className="absolute top-1/2 -translate-y-1/2 h-2 bg-surface-surface-primary rounded-full"
-                style={{ left: `${minPercent}%`, width: `${widthPercent}%` }}
-              />
-              <button
-                type="button"
-                aria-label={t.listing.min}
-                className="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-brand-primary rounded-full shadow-[2px_2px_10px_0px_rgba(0,0,0,0.15)] cursor-pointer touch-none"
-                style={{ left: `calc(${minPercent}% - 10px)` }}
-                onMouseDown={onMouseDownThumb("min")}
-                onTouchStart={() => startDrag("min")}
-                onKeyDown={onThumbKeyDown("min")}
-              />
-              <button
-                type="button"
-                aria-label={t.listing.max}
-                className="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-brand-primary rounded-full shadow-[2px_2px_10px_0px_rgba(0,0,0,0.15)] cursor-pointer touch-none"
-                style={{ left: `calc(${maxPercent}% - 10px)` }}
-                onMouseDown={onMouseDownThumb("max")}
-                onTouchStart={() => startDrag("max")}
-                onKeyDown={onThumbKeyDown("max")}
-              />
-            </div>
+    <SwFilterAccordion
+      label={filter.label}
+      displayMode={displayMode}
+      panelClassName="self-stretch flex flex-col justify-start items-start gap-2.5"
+    >
+      <div className="self-stretch flex flex-col justify-start items-start gap-1">
+        <div className="self-stretch inline-flex justify-between items-center gap-2">
+          <div className="w-16 h-10 px-2 py-1 rounded-lg outline outline-1 outline-offset-[-1px] outline-outline-outline-variant focus-within:outline-2 focus-within:outline-brand-primary inline-flex flex-col justify-center items-start gap-2.5">
+            <input
+              type="number"
+              placeholder={t.listing.min}
+              aria-label={t.listing.min}
+              value={prices.min}
+              onChange={(event) => {
+                const min = toInputNumber(event);
+                applyPrices((current) => ({ ...current, min }));
+              }}
+              onBlur={onInputBlur}
+              className="w-full bg-transparent border-none outline-hidden text-surface-on-surface text-sm font-normal leading-tight"
+              min={filter.min}
+              max={prices.max}
+            />
+          </div>
+          <div className="w-16 h-10 px-2 py-1 rounded-lg outline outline-1 outline-offset-[-1px] outline-outline-outline-variant focus-within:outline-2 focus-within:outline-brand-primary inline-flex flex-col justify-center items-start gap-2.5">
+            <input
+              type="number"
+              placeholder={t.listing.max}
+              aria-label={t.listing.max}
+              value={prices.max}
+              onChange={(event) => {
+                const max = toInputNumber(event);
+                applyPrices((current) => ({ ...current, max }));
+              }}
+              onBlur={onInputBlur}
+              className="w-full bg-transparent border-none outline-hidden text-surface-on-surface text-sm font-normal leading-tight"
+              min={prices.min}
+              max={filter.max}
+            />
           </div>
         </div>
-      )}
-    </div>
+        <div
+          ref={sliderElement}
+          className="relative w-64 h-10 mt-2 mx-auto flex items-center select-none"
+        >
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-2 bg-surface-surface-container-highest rounded-full" />
+          <div
+            className="absolute top-1/2 -translate-y-1/2 h-2 bg-surface-surface-primary rounded-full"
+            style={{ left: `${minPercent}%`, width: `${widthPercent}%` }}
+          />
+          <button
+            type="button"
+            aria-label={t.listing.min}
+            className="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-brand-primary rounded-full shadow-[2px_2px_10px_0px_rgba(0,0,0,0.15)] cursor-pointer touch-none"
+            style={{ left: `calc(${minPercent}% - 10px)` }}
+            onMouseDown={onMouseDownThumb("min")}
+            onTouchStart={() => startDrag("min")}
+            onKeyDown={onThumbKeyDown("min")}
+          />
+          <button
+            type="button"
+            aria-label={t.listing.max}
+            className="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-brand-primary rounded-full shadow-[2px_2px_10px_0px_rgba(0,0,0,0.15)] cursor-pointer touch-none"
+            style={{ left: `calc(${maxPercent}% - 10px)` }}
+            onMouseDown={onMouseDownThumb("max")}
+            onTouchStart={() => startDrag("max")}
+            onKeyDown={onThumbKeyDown("max")}
+          />
+        </div>
+      </div>
+    </SwFilterAccordion>
   );
 }

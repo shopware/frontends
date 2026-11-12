@@ -97,3 +97,14 @@
     display: none;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .sw-slider-track,
+  [class*="transition"] {
+    transition: none !important;
+  }
+
+  [class*="animate-pulse"] {
+    animation: none !important;
+  }
+}

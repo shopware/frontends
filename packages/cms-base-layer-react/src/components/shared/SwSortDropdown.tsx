@@ -37,14 +37,14 @@ export function SwSortDropdown({
   const getMenuItems = () =>
     Array.from(
       menuElement.current?.querySelectorAll<HTMLButtonElement>(
-        '[role="menuitem"]',
+        '[role="menuitemradio"]',
       ) ?? [],
     );
 
   useEffect(() => {
     if (!isSortMenuOpen) return;
     menuElement.current
-      ?.querySelector<HTMLButtonElement>('[role="menuitem"]')
+      ?.querySelector<HTMLButtonElement>('[role="menuitemradio"]')
       ?.focus();
   }, [isSortMenuOpen]);
 
@@ -105,6 +105,7 @@ export function SwSortDropdown({
           id={menuButtonId}
           aria-expanded={isSortMenuOpen}
           aria-haspopup="true"
+          data-testid="listing-sort-button"
           className="inline-flex justify-center items-center gap-2 rounded font-bold transition-colors focus:outline-hidden focus:ring-2 focus:ring-offset-2 px-4 py-3 text-base bg-transparent text-surface-on-surface-variant hover:text-surface-on-surface focus:ring-surface-on-surface group pr-0"
         >
           <span className="inline-flex items-center gap-1">
@@ -141,10 +142,14 @@ export function SwSortDropdown({
                   sorting.key === currentSort
                     ? "font-medium text-surface-on-surface"
                     : "text-surface-on-surface-variant",
-                  "block w-full text-left px-4 py-2 text-sm bg-transparent hover:bg-surface-surface-container focus:outline-hidden focus:bg-surface-surface-container",
+                  "block w-full text-left px-4 py-2 text-sm bg-transparent hover:bg-surface-surface-container focus:bg-surface-surface-container focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-primary",
                 )}
-                role="menuitem"
+                role="menuitemradio"
+                aria-checked={sorting.key === currentSort}
                 tabIndex={-1}
+                data-testid="listing-sort-option"
+                data-sort-key={sorting.key}
+                data-selected={sorting.key === currentSort}
               >
                 {sorting.translated?.label}
               </button>

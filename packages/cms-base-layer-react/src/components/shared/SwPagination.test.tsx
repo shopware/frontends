@@ -33,19 +33,29 @@ describe("SwPagination", () => {
     expect(html).toContain(">10</button>");
   });
 
-  it("rounds the right corner on the last page and uses the translations", async () => {
+  it("rounds the right corner on the last page", async () => {
+    const html = await renderToHtml(
+      <SwPagination total={2} current={2} onChangePage={() => {}} />,
+    );
+
+    expect(html).toContain("rounded-r-md");
+    expect(html).not.toContain("Next");
+    expect(html).toContain('<span class="sr-only">Page </span>');
+  });
+
+  it("uses the translations for the previous and next controls", async () => {
     const html = await renderToHtml(
       <SwPagination
-        total={2}
-        current={2}
+        total={10}
+        current={5}
         translations={{ listing: { previous: "Zurück", next: "Weiter" } }}
         onChangePage={() => {}}
       />,
     );
 
-    expect(html).toContain("rounded-r-md");
-    expect(html).not.toContain("Zurück");
-    expect(html).not.toContain("Weiter");
-    expect(html).toContain('<span class="sr-only">Page </span>');
+    expect(html).toContain("Zurück");
+    expect(html).toContain("Weiter");
+    expect(html).not.toContain("Previous");
+    expect(html).not.toContain("Next");
   });
 });

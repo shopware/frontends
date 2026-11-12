@@ -12,6 +12,7 @@ import type {
   CmsElementManufacturerLogo as CmsElementManufacturerLogoContent,
 } from "../../types";
 import { CmsMedia } from "../ui/CmsMedia";
+import { CmsElementImageGallery3dPlaceholder } from "./CmsElementImageGallery3dPlaceholder";
 
 const translations = {
   cms: {
@@ -31,62 +32,6 @@ export type CmsElementImageProps = CmsComponentProps<
 > & {
   imageGallery?: boolean;
 };
-
-function CmsElementImage3dPlaceholder() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
-      width="552"
-      height="383"
-      viewBox="0 0 552 383"
-    >
-      <defs>
-        <g
-          id="icons-default-placeholder"
-          fill="none"
-          fillRule="evenodd"
-          opacity=".65"
-        >
-          <rect
-            width="333.061"
-            height="499.591"
-            x="84.659"
-            y="-82.663"
-            fill="#E9EBF2"
-            fillRule="nonzero"
-            transform="rotate(-89.862 251.19 167.132)"
-          ></rect>
-          <g transform="translate(51 49)">
-            <rect
-              width="333.06"
-              height="499.59"
-              x="83.983"
-              y="-83.234"
-              fill="#DADDE5"
-              fillRule="nonzero"
-              transform="rotate(-90 250.513 166.561)"
-            ></rect>
-            <polygon
-              fill="#E9EBF2"
-              points="137.18 333.1 500.31 333.1 500.31 302.36 322.15 110.42"
-            ></polygon>
-            <circle cx="113.04" cy="65.68" r="35.9" fill="#F5F7FC"></circle>
-            <polygon
-              fill="#F5F7FC"
-              points="219.88 157.3 73.85 333.1 383.05 333.1"
-            ></polygon>
-          </g>
-        </g>
-      </defs>
-      <use
-        xlinkHref="#icons-default-placeholder"
-        fill="#758CA3"
-        fillRule="evenodd"
-      ></use>
-    </svg>
-  );
-}
 
 export function CmsElementImage({
   content,
@@ -142,7 +87,7 @@ export function CmsElementImage({
       </video>
     );
   } else if (isSpatial(media)) {
-    child = <CmsElementImage3dPlaceholder />;
+    child = <CmsElementImageGallery3dPlaceholder />;
   } else {
     child = (
       <CmsMedia

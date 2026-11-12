@@ -33,8 +33,6 @@ export type {
   ProductPriceContext,
   SwListingProductPriceProps,
 } from "./components/shared/SwListingProductPrice";
-export { SwProductPrice } from "./components/shared/SwProductPrice";
-export type { SwProductPriceProps } from "./components/shared/SwProductPrice";
 export { SwSharedPrice } from "./components/shared/SwSharedPrice";
 export type { SwSharedPriceProps } from "./components/shared/SwSharedPrice";
 export { SwProductRating } from "./components/shared/SwProductRating";
@@ -116,13 +114,11 @@ export {
   buildListingQuery,
   buildListingQueryParams,
   createEmptyFilterState,
-  firstQueryValue,
   getVisibleListingFilters,
   hasActiveFilters,
   hasListingQuery,
   parseListingFilters,
   parseListingState,
-  toNumber,
 } from "./listing/query";
 export type {
   ListingDefaults,

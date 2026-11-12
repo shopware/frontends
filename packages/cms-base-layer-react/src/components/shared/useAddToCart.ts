@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 
 import { useCmsActions } from "../../actions/CmsActionsContext";
-import { notifyCartErrors } from "./cartNotifications";
+import { notifyActionError, notifyActionFailure } from "./actionNotifications";
 
 export type AddToCartMessages = {
   addedToCart: string;
@@ -36,13 +36,8 @@ export function useAddToCart({
       const result = await actions.addToCart(
         quantity === undefined ? { productId } : { productId, quantity },
       );
-      if (notifyCartErrors(actions, result.errors, messages.errors)) {
-        return false;
-      }
-      if (!result.ok) {
-        if (result.message) {
-          actions.notify({ type: "error", message: result.message });
-        }
+      if (!result.ok || result.errors?.length) {
+        notifyActionFailure(actions, result, { messages: messages.errors });
         return false;
       }
       actions.notify({
@@ -52,10 +47,7 @@ export function useAddToCart({
       });
       return true;
     } catch (error) {
-      actions.notify({
-        type: "error",
-        message: error instanceof Error ? error.message : String(error),
-      });
+      notifyActionError(actions, error, { messages: messages.errors });
       return false;
     } finally {
       inFlight.current = false;

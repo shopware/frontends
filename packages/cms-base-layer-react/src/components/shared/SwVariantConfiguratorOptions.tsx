@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useId, useState, useTransition } from "react";
-import type { CSSProperties } from "react";
+import { useId, useRef, useState, useTransition } from "react";
+import type { CSSProperties, FocusEvent, KeyboardEvent } from "react";
 
 import { useCmsActions } from "../../actions/CmsActionsContext";
 import type { CmsVariantResult } from "../../actions/CmsActionsContext";
@@ -11,7 +11,9 @@ import { prefixUrl } from "../../helpers/resolveUrl";
 import { withTranslationDefaults } from "../../translations";
 import type { CmsTranslations } from "../../translations";
 import { SpinnerIcon } from "../icons";
+import { notifyActionError } from "./actionNotifications";
 import type { SwVariantOptionGroup } from "./variantOptionGroups";
+import { getVariantOptionKeyAction } from "./variantOptionKeyboard";
 
 export type SwVariantConfiguratorOptionsProps = {
   productId: string;
@@ -84,6 +86,16 @@ export function SwVariantConfiguratorOptions({
       ? selection.selected
       : getInitialSelection(optionGroups, optionIds);
   const selectedOptionIds = Object.values(selected);
+  const [pendingSelection, setPendingSelection] = useState<{
+    groupId: string;
+    optionId: string;
+  }>();
+  const isArrowSelection = useRef(false);
+
+  const isOptionSelected = (groupId: string, optionId: string) =>
+    pendingSelection?.groupId === groupId
+      ? pendingSelection.optionId === optionId
+      : selectedOptionIds.includes(optionId);
 
   const isBusy = isLoading || isPending;
 
@@ -117,14 +129,36 @@ export function SwVariantConfiguratorOptions({
       });
     } catch (error) {
       setSelection({ productId, selected: previous });
-      actions.notify({
-        type: "error",
-        message: error instanceof Error ? error.message : String(error),
-      });
+      notifyActionError(actions, error);
     } finally {
       setIsLoading(false);
     }
   }
+
+  const commitSelection = (group: SwVariantOptionGroup, optionId: string) => {
+    setPendingSelection(undefined);
+    void handleChange(group, optionId);
+  };
+
+  const handleKeyDown = (
+    event: KeyboardEvent<HTMLInputElement>,
+    group: SwVariantOptionGroup,
+  ) => {
+    const action = getVariantOptionKeyAction(event.key, !!pendingSelection);
+    if (action === "mark") {
+      isArrowSelection.current = true;
+    } else if (action === "commit" && pendingSelection) {
+      event.preventDefault();
+      commitSelection(group, pendingSelection.optionId);
+    }
+  };
+
+  const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
+    const group = event.currentTarget.closest("fieldset");
+    if (group?.contains(event.relatedTarget)) return;
+    isArrowSelection.current = false;
+    setPendingSelection(undefined);
+  };
 
   return (
     <div className={cx("relative flex flex-col", className)} style={style}>
@@ -141,19 +175,20 @@ export function SwVariantConfiguratorOptions({
           <div className="text-sm text-gray-900 font-medium">
             {optionGroup.name}
           </div>
-          <fieldset className="mt-4 flex-1" disabled={isBusy}>
+          <fieldset className="mt-4 flex-1" aria-busy={isBusy}>
             <legend className="sr-only">
               {translations.product.chooseA} {optionGroup.name}
             </legend>
             <div className="flex gap-3">
               {optionGroup.options.map((option) => {
-                const isSelected = selectedOptionIds.includes(option.id);
+                const isSelected = isOptionSelected(optionGroup.id, option.id);
                 return (
                   <label
                     key={option.id}
                     data-testid="product-variant"
+                    data-selected={isSelected}
                     className={cx(
-                      "group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-hidden sm:flex-1 bg-white shadow-xs text-gray-900 cursor-pointer",
+                      "group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 sm:flex-1 bg-white shadow-xs text-gray-900 cursor-pointer has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-brand-primary has-[:focus-visible]:ring-offset-2",
                       isSelected && "border-[3px] border-brand-primary",
                     )}
                   >
@@ -163,8 +198,28 @@ export function SwVariantConfiguratorOptions({
                       name={`${radioGroupId}${optionGroup.id}`}
                       value={option.id}
                       checked={isSelected}
+                      onKeyDown={(event) => handleKeyDown(event, optionGroup)}
+                      onKeyUp={() => {
+                        isArrowSelection.current = false;
+                      }}
+                      onBlur={handleBlur}
+                      onClick={() => {
+                        if (
+                          !isArrowSelection.current &&
+                          pendingSelection?.optionId === option.id
+                        ) {
+                          commitSelection(optionGroup, option.id);
+                        }
+                      }}
                       onChange={() => {
-                        void handleChange(optionGroup, option.id);
+                        if (isArrowSelection.current && allowRedirect) {
+                          setPendingSelection({
+                            groupId: optionGroup.id,
+                            optionId: option.id,
+                          });
+                          return;
+                        }
+                        commitSelection(optionGroup, option.id);
                       }}
                     />
                     <p

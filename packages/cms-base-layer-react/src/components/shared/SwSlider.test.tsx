@@ -27,6 +27,7 @@ describe("SwSlider", () => {
     expect(html).toContain('aria-label="Previous slide"');
     expect(html).toContain('aria-label="Go to slide 3"');
     expect(html).toContain("bg-white/20");
+    expect(html).not.toContain("inert");
   });
 
   it("renders without clones when loop is off", async () => {

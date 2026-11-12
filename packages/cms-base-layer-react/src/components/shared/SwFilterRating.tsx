@@ -1,14 +1,14 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useState } from "react";
 
-import { cx } from "../../helpers/cx";
-import { ChevronDownIcon, StarFilledIcon, StarIcon } from "../icons";
+import { StarFilledIcon, StarIcon } from "../icons";
 import type {
   ListingFilter,
   ListingFilterChangeEvent,
   ListingFilterDisplayMode,
 } from "./listingFilterTypes";
+import { SwFilterAccordion } from "./SwFilterAccordion";
 
 export type SwFilterRatingProps = {
   filter: ListingFilter;
@@ -27,9 +27,6 @@ export function SwFilterRating({
 }: SwFilterRatingProps) {
   const [isHoverActive, setIsHoverActive] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(0);
-  const [isFilterVisible, setIsFilterVisible] = useState(false);
-  const panelId = useId();
-  const toggle = () => setIsFilterVisible((visible) => !visible);
 
   const displayedScore = isHoverActive
     ? hoveredIndex
@@ -46,69 +43,31 @@ export function SwFilterRating({
   };
 
   return (
-    <div className="self-stretch flex flex-col justify-start items-start gap-4">
-      {displayMode === "accordion" && (
-        <div className="self-stretch flex flex-col justify-center items-center">
-          <button
-            type="button"
-            className="self-stretch py-3 border-b border-outline-outline-variant inline-flex justify-between items-center gap-1 cursor-pointer"
-            onClick={toggle}
-            aria-expanded={isFilterVisible}
-            aria-controls={panelId}
-          >
-            <div className="flex-1 flex items-center gap-2.5">
-              <div className="flex-1 text-surface-on-surface text-base font-bold leading-normal text-left">
-                {filter.label}
-              </div>
-            </div>
-            <span
-              className="flex items-center justify-center"
-              aria-hidden="true"
+    <SwFilterAccordion label={filter.label} displayMode={displayMode}>
+      <div className="flex flex-row items-center gap-2 mt-2">
+        {STARS.map((index) => {
+          const Star = displayedScore >= index ? StarFilledIcon : StarIcon;
+          return (
+            <button
+              key={index}
+              type="button"
+              className="h-6 w-6 cursor-pointer"
+              aria-pressed={selectedFilters.rating === index}
+              aria-label={`${index} star${index !== 1 ? "s" : ""}`}
+              onMouseLeave={() => setIsHoverActive(false)}
+              onBlur={() => setIsHoverActive(false)}
+              onMouseOver={() => hoverRating(index)}
+              onFocus={() => hoverRating(index)}
+              onClick={() => {
+                hoverRating(index);
+                onChangeRating(index);
+              }}
             >
-              <ChevronDownIcon
-                width={24}
-                height={24}
-                className={cx(
-                  "transition-transform",
-                  isFilterVisible && "rotate-180",
-                )}
-              />
-            </span>
-          </button>
-        </div>
-      )}
-
-      {(isFilterVisible || displayMode === "dropdown") && (
-        <div
-          id={panelId}
-          className="self-stretch flex flex-col justify-start items-start gap-4"
-        >
-          <div className="flex flex-row items-center gap-2 mt-2">
-            {STARS.map((index) => {
-              const Star = displayedScore >= index ? StarFilledIcon : StarIcon;
-              return (
-                <button
-                  key={index}
-                  type="button"
-                  className="h-6 w-6 cursor-pointer"
-                  aria-pressed={selectedFilters.rating === index}
-                  aria-label={`${index} star${index !== 1 ? "s" : ""}`}
-                  onMouseLeave={() => setIsHoverActive(false)}
-                  onBlur={() => setIsHoverActive(false)}
-                  onMouseOver={() => hoverRating(index)}
-                  onFocus={() => hoverRating(index)}
-                  onClick={() => {
-                    hoverRating(index);
-                    onChangeRating(index);
-                  }}
-                >
-                  <Star className="h-6 w-6" aria-hidden="true" />
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
-    </div>
+              <Star className="h-6 w-6" aria-hidden="true" />
+            </button>
+          );
+        })}
+      </div>
+    </SwFilterAccordion>
   );
 }
