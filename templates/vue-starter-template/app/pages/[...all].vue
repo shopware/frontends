@@ -74,6 +74,21 @@ const { routeName, foreignKey } = useNavigationContext(
   navigationContext as Ref<Schemas["SeoUrl"] | null>,
 );
 
+// Tell the WebMCP plugin which product or category the shopper is looking at.
+const webMcpPageContext = useWebMcpPageContext();
+watch(
+  [routeName, foreignKey],
+  ([name, id]) => {
+    webMcpPageContext.value =
+      name === "frontend.detail.page" && id
+        ? { productId: id }
+        : name === "frontend.navigation.page" && id
+          ? { categoryId: id }
+          : {};
+  },
+  { immediate: true },
+);
+
 const componentName = computed(() =>
   routeName.value ? pascalCase(routeName.value) : null,
 );
