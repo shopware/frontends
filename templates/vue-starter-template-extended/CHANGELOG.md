@@ -1,5 +1,13 @@
 # lumora-demo-store
 
+## 0.0.7
+
+### Patch Changes
+
+- [#2835](https://github.com/shopware/frontends/pull/2835) [`22c1b4f`](https://github.com/shopware/frontends/commit/22c1b4fb2a34e351ff4e84e7f198cfc306f9fb5f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Support Nuxt 4.6. `@shopware/nuxt-module` and `@shopware/cms-base-layer` now depend on `@nuxt/kit` 4.6.1, and the Nuxt plugin types `ssrContext.event` from `NuxtSSRContext`, so it type-checks on both Nuxt 4.5 and 4.6. The Nuxt templates require Node `^22.22.3 || ^24.15.0 || >=26.0.0`, the range Nuxt 4.6 supports. `@shopware/unocss-design-tokens-layer` no longer re-exports its generated `.nuxt/imports` from `index.d.ts`, which pulled server routes into the shared type context of apps extending the layer.
+- Updated dependencies [[`fa598c8`](https://github.com/shopware/frontends/commit/fa598c84e4d72ff4b7dc50547ea2412bc424b491), [`0b5de57`](https://github.com/shopware/frontends/commit/0b5de57fe1149212fd7274b6f530495a245742b5), [`22c1b4f`](https://github.com/shopware/frontends/commit/22c1b4fb2a34e351ff4e84e7f198cfc306f9fb5f), [`2d3987c`](https://github.com/shopware/frontends/commit/2d3987c201db2f437af2785eed7948e958399cda), [`43a035f`](https://github.com/shopware/frontends/commit/43a035fa60a73f554ac4de9da7abd6fce9892288)]:
+  - vue-starter-template@0.2.0
+
 ## 0.0.6
 
 ### Patch Changes

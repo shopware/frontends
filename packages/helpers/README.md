@@ -125,14 +125,16 @@ Returns an empty string if `src` is falsy. Returns the original `src` if URL par
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/helpers/CHANGELOG.md)
 
-### Latest changes: 1.8.0
+### Latest changes: 1.9.0
 
 ### Minor Changes
 
-- [#2574](https://github.com/shopware/frontends/pull/2574) [`2ddf156`](https://github.com/shopware/frontends/commit/2ddf156805b2941fe2069e78453fb3c4eb6d44ac) Thanks [@mkucmus](https://github.com/mkucmus)! - Add `getCategoryFilterAggregations()` and `getCategoryFilterPostFilter()` to request category aggregations for product listings and filter by category without reducing the aggregations. `excludeRootCategory()` drops the sales channel entry point from the category entities, and the `CATEGORY_AGGREGATION_NAME` / `CATEGORY_COUNTS_AGGREGATION_NAME` / `CATEGORY_PARENTS_AGGREGATION_NAME` constants are exported for consumers that build the aggregations themselves.
+- [#2875](https://github.com/shopware/frontends/pull/2875) [`fa598c8`](https://github.com/shopware/frontends/commit/fa598c84e4d72ff4b7dc50547ea2412bc424b491) Thanks [@mateuszfl](https://github.com/mateuszfl)! - Resolve the technical URL of a standalone CMS layout, `/page/cms/<id>` (Shopware's `frontend.cms.page.full` route). Layouts that are not assigned to a category or landing page, like the legal pages from the basic information settings, have no SEO URL, and Shopware links them by this path, for example in `llms.txt` served through `/store-api/sales-channel-file/{fileName}`. `getRouteFromPathInfo` and `isTechnicalPath` now recognise the `/page/cms/` prefix, and `vue-starter-template` renders it with the new global `FrontendCmsPageFull` component, which loads the layout from `readCms post /cms/{id}` and marks the page `noindex`.
 
-  `getListingFilters` (`@beta`) merges the `categories` and `categories-counts` response aggregations into a single `categories` filter with a product count per category. This changes the shape of that filter for listings that already requested a `categories` aggregation: the entities are sorted by count (highest first) instead of keeping the response order, each entity gains a `count`, the filter no longer carries the aggregation's `apiAlias`, and `categories-counts` is no longer returned as a filter of its own.
+- [#2668](https://github.com/shopware/frontends/pull/2668) [`2202e1c`](https://github.com/shopware/frontends/commit/2202e1cec2b7d72260ed115940386c6793523676) Thanks [@mateuszfl](https://github.com/mateuszfl)! - Support SEO URLs of headless (API type) sales channels. Since shopware/shopware#17991 headless sales channels persist their SEO URLs against the `store-api.*` route family (`store-api.product.detail`, `store-api.category.detail`, `store-api.landing-page.detail`). `useNavigationSearch().resolvePath()` now maps those route names to their `frontend.*` equivalents, so page resolution works unchanged on a headless sales channel. The new `getFrontendRouteName` helper in `@shopware/helpers` exposes the same mapping for custom resolvers.
 
-### Patch Changes
+- [#2851](https://github.com/shopware/frontends/pull/2851) [`43a035f`](https://github.com/shopware/frontends/commit/43a035fa60a73f554ac4de9da7abd6fce9892288) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add three helpers that were previously only available inside composables:
 
-- [#2598](https://github.com/shopware/frontends/pull/2598) [`204c8f4`](https://github.com/shopware/frontends/commit/204c8f45f737e724db6d00b80c5faef8ddb77cb4) Thanks [@dependabot](https://github.com/apps/dependabot)! - Fix Nuxt plugin injection typing for Nuxt 4.5 and maintenance mode error handling.
+  - `getListingFiltersQuery(filters)` turns listing criteria into URL query params. Arrays are joined with `|`, and empty arrays and falsy values are left out. It is what `useListing().filtersToQuery` does, now usable outside a component.
+  - `getCmsMeta(entity)` returns the translated `title`, `metaTitle`, `metaDescription` and `keywords` of a category, product or landing page, with an empty string for a missing field.
+  - `getTotalPages(total, limit)` returns the page count, or `0` when `limit` is not a positive number.

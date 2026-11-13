@@ -590,16 +590,8 @@ headers["sw-language-id"]; // "my-language-id"
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-client/CHANGELOG.md)
 
-### Latest changes: 1.7.0
+### Latest changes: 1.8.0
 
 ### Minor Changes
 
-- [#2702](https://github.com/shopware/frontends/pull/2702) [`44ece9d`](https://github.com/shopware/frontends/commit/44ece9dac2e4d0248c2270f7eff496c258632f5b) Thanks [@mkucmus](https://github.com/mkucmus)! - Added `isTimeoutError()` to tell a request that ran into `fetchOptions.timeout` apart from other errors. Such a request rejects without an HTTP status, so `instanceof ApiClientError` does not match it. The request may already have reached the API and been processed, so the server-side outcome is unknown, and a mutation must not be retried without checking.
-
-  A per-request `signal` no longer switches off `timeout`. Both are combined, so whichever fires first aborts the request. Before, ofetch ignored `timeout` as soon as a `signal` was set. Combining needs `AbortSignal.any`, so runtimes without it keep the old behaviour. The admin client forwards the signal and timeout to its token refresh as well.
-
-  A `timeout` is now validated before it is used. It is rounded up to whole milliseconds and capped at the largest value a timer can hold, and a value that is not a finite positive number is ignored instead of failing the request. A per-request `timeout: undefined` now falls back to the client timeout instead of dropping it.
-
-### Patch Changes
-
-- [#2708](https://github.com/shopware/frontends/pull/2708) [`4b43e64`](https://github.com/shopware/frontends/commit/4b43e64a8d78be6eca1f8d9c24140e046193af41) Thanks [@patzick](https://github.com/patzick)! - Add `WithApiOverrides` to merge local operation or schema overlays onto the types shipped with the client.
+- [#2720](https://github.com/shopware/frontends/pull/2720) [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789) Thanks [@mkucmus](https://github.com/mkucmus)! - Header names now merge case-insensitively. A header set to `""` is removed from the request. A response to a request with an empty `sw-context-token` never changes the client's token. The Store API `invoke` types `sw-context-token` as a header of every operation. Added `mergeRequestHeaders` and its `RequestHeaders` type to `@shopware/api-client/helpers`. It takes boolean header values and returns strings. Exported the `ClientHeaders` and `ClientHeadersProxy` types. Dropped the `defu` dependency.
