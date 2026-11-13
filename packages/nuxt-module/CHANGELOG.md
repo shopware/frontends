@@ -1,5 +1,23 @@
 # @shopware/nuxt-module
 
+## 1.6.1
+
+### Patch Changes
+
+- [#2835](https://github.com/shopware/frontends/pull/2835) [`22c1b4f`](https://github.com/shopware/frontends/commit/22c1b4fb2a34e351ff4e84e7f198cfc306f9fb5f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Support Nuxt 4.6. `@shopware/nuxt-module` and `@shopware/cms-base-layer` now depend on `@nuxt/kit` 4.6.1, and the Nuxt plugin types `ssrContext.event` from `NuxtSSRContext`, so it type-checks on both Nuxt 4.5 and 4.6. The Nuxt templates require Node `^22.22.3 || ^24.15.0 || >=26.0.0`, the range Nuxt 4.6 supports. `@shopware/unocss-design-tokens-layer` no longer re-exports its generated `.nuxt/imports` from `index.d.ts`, which pulled server routes into the shared type context of apps extending the layer.
+
+- [#2850](https://github.com/shopware/frontends/pull/2850) [`5374dfd`](https://github.com/shopware/frontends/commit/5374dfd32614e264028b0a83d060919427307f3d) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Stop passing the deprecated `enableDevtools` option to `createShopwareContext`. No runtime behaviour changes.
+
+- [#2859](https://github.com/shopware/frontends/pull/2859) [`2c1e574`](https://github.com/shopware/frontends/commit/2c1e574187a80692addb866db96882ef4acbebda) Thanks [@mkucmus](https://github.com/mkucmus)! - Align the `@nuxt/kit` dependency with the Nuxt 4.6.2 bump. The advisories themselves (GHSA-vjh5-4x84-xrqp, GHSA-xfq5-w38q-pc2x) are fixed by `nuxt` and `@nuxt/nitro-server` 4.6.2; `@nuxt/kit` is not an affected package.
+
+- [#2864](https://github.com/shopware/frontends/pull/2864) [`b4b2f3b`](https://github.com/shopware/frontends/commit/b4b2f3b78653ac87608803f21faae4080f57344c) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Update `@nuxt/kit` to 4.6.3.
+
+- [#2720](https://github.com/shopware/frontends/pull/2720) [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789) Thanks [@mkucmus](https://github.com/mkucmus)! - The cart state is now app-wide. The plugin sets `ssrWithoutUserContext` for server renders without a visitor session.
+- Updated dependencies [[`fa598c8`](https://github.com/shopware/frontends/commit/fa598c84e4d72ff4b7dc50547ea2412bc424b491), [`5374dfd`](https://github.com/shopware/frontends/commit/5374dfd32614e264028b0a83d060919427307f3d), [`43a035f`](https://github.com/shopware/frontends/commit/43a035fa60a73f554ac4de9da7abd6fce9892288), [`4f0f33b`](https://github.com/shopware/frontends/commit/4f0f33b9fcb66c5a6bacf86400fa6d82f68e064f), [`eba2d99`](https://github.com/shopware/frontends/commit/eba2d996327d28c7f22025c848a3728d4d5fd3bf), [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789), [`2202e1c`](https://github.com/shopware/frontends/commit/2202e1cec2b7d72260ed115940386c6793523676), [`43a035f`](https://github.com/shopware/frontends/commit/43a035fa60a73f554ac4de9da7abd6fce9892288), [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789), [`037ffa9`](https://github.com/shopware/frontends/commit/037ffa97e3fdeec3a7dc896cb6a5b401e4b5f481)]:
+  - @shopware/helpers@1.9.0
+  - @shopware/composables@1.15.0
+  - @shopware/api-client@1.8.0
+
 ## 1.6.0
 
 ### Minor Changes

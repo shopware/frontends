@@ -1,5 +1,21 @@
 # vue-starter-template
 
+## 0.2.0
+
+### Minor Changes
+
+- [#2875](https://github.com/shopware/frontends/pull/2875) [`fa598c8`](https://github.com/shopware/frontends/commit/fa598c84e4d72ff4b7dc50547ea2412bc424b491) Thanks [@mateuszfl](https://github.com/mateuszfl)! - Resolve the technical URL of a standalone CMS layout, `/page/cms/<id>` (Shopware's `frontend.cms.page.full` route). Layouts that are not assigned to a category or landing page, like the legal pages from the basic information settings, have no SEO URL, and Shopware links them by this path, for example in `llms.txt` served through `/store-api/sales-channel-file/{fileName}`. `getRouteFromPathInfo` and `isTechnicalPath` now recognise the `/page/cms/` prefix, and `vue-starter-template` renders it with the new global `FrontendCmsPageFull` component, which loads the layout from `readCms post /cms/{id}` and marks the page `noindex`.
+
+### Patch Changes
+
+- [#2825](https://github.com/shopware/frontends/pull/2825) [`0b5de57`](https://github.com/shopware/frontends/commit/0b5de57fe1149212fd7274b6f530495a245742b5) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add `data-testid` and `data-*` state attributes to the wishlist toggle, variant options, sort dropdown, pagination and top navigation, so e2e tests no longer depend on translated text or CSS classes. Sort options are now `menuitemradio` items with `aria-checked`, so screen readers announce the active sort.
+
+- [#2835](https://github.com/shopware/frontends/pull/2835) [`22c1b4f`](https://github.com/shopware/frontends/commit/22c1b4fb2a34e351ff4e84e7f198cfc306f9fb5f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Support Nuxt 4.6. `@shopware/nuxt-module` and `@shopware/cms-base-layer` now depend on `@nuxt/kit` 4.6.1, and the Nuxt plugin types `ssrContext.event` from `NuxtSSRContext`, so it type-checks on both Nuxt 4.5 and 4.6. The Nuxt templates require Node `^22.22.3 || ^24.15.0 || >=26.0.0`, the range Nuxt 4.6 supports. `@shopware/unocss-design-tokens-layer` no longer re-exports its generated `.nuxt/imports` from `index.d.ts`, which pulled server routes into the shared type context of apps extending the layer.
+
+- [#2834](https://github.com/shopware/frontends/pull/2834) [`2d3987c`](https://github.com/shopware/frontends/commit/2d3987c201db2f437af2785eed7948e958399cda) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Give the Guided setup banner `<aside>` an accessible name and translate the CMS sidebar label, using the new `layout.ariaLabels.guidedSetup` and `layout.ariaLabels.contentSidebar` keys in en-GB, de-DE and pl-PL, so the category page passes the axe `landmark-unique` rule.
+
+- [#2851](https://github.com/shopware/frontends/pull/2851) [`43a035f`](https://github.com/shopware/frontends/commit/43a035fa60a73f554ac4de9da7abd6fce9892288) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - `useCmsHead` reads the entity's title and meta fields with `getCmsMeta` from `@shopware/helpers` instead of the deprecated `useCmsMeta`, and the demo store's listing filters build the query with `getListingFiltersQuery` instead of the deprecated `useListing().filtersToQuery`. The rendered head tags and URLs are unchanged.
+
 ## 0.1.4
 
 ### Patch Changes

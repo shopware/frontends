@@ -1,5 +1,19 @@
 # @shopware/helpers
 
+## 1.9.0
+
+### Minor Changes
+
+- [#2875](https://github.com/shopware/frontends/pull/2875) [`fa598c8`](https://github.com/shopware/frontends/commit/fa598c84e4d72ff4b7dc50547ea2412bc424b491) Thanks [@mateuszfl](https://github.com/mateuszfl)! - Resolve the technical URL of a standalone CMS layout, `/page/cms/<id>` (Shopware's `frontend.cms.page.full` route). Layouts that are not assigned to a category or landing page, like the legal pages from the basic information settings, have no SEO URL, and Shopware links them by this path, for example in `llms.txt` served through `/store-api/sales-channel-file/{fileName}`. `getRouteFromPathInfo` and `isTechnicalPath` now recognise the `/page/cms/` prefix, and `vue-starter-template` renders it with the new global `FrontendCmsPageFull` component, which loads the layout from `readCms post /cms/{id}` and marks the page `noindex`.
+
+- [#2668](https://github.com/shopware/frontends/pull/2668) [`2202e1c`](https://github.com/shopware/frontends/commit/2202e1cec2b7d72260ed115940386c6793523676) Thanks [@mateuszfl](https://github.com/mateuszfl)! - Support SEO URLs of headless (API type) sales channels. Since shopware/shopware#17991 headless sales channels persist their SEO URLs against the `store-api.*` route family (`store-api.product.detail`, `store-api.category.detail`, `store-api.landing-page.detail`). `useNavigationSearch().resolvePath()` now maps those route names to their `frontend.*` equivalents, so page resolution works unchanged on a headless sales channel. The new `getFrontendRouteName` helper in `@shopware/helpers` exposes the same mapping for custom resolvers.
+
+- [#2851](https://github.com/shopware/frontends/pull/2851) [`43a035f`](https://github.com/shopware/frontends/commit/43a035fa60a73f554ac4de9da7abd6fce9892288) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add three helpers that were previously only available inside composables:
+
+  - `getListingFiltersQuery(filters)` turns listing criteria into URL query params. Arrays are joined with `|`, and empty arrays and falsy values are left out. It is what `useListing().filtersToQuery` does, now usable outside a component.
+  - `getCmsMeta(entity)` returns the translated `title`, `metaTitle`, `metaDescription` and `keywords` of a category, product or landing page, with an empty string for a missing field.
+  - `getTotalPages(total, limit)` returns the page count, or `0` when `limit` is not a positive number.
+
 ## 1.8.0
 
 ### Minor Changes

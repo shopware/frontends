@@ -166,52 +166,37 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.14.0
+### Latest changes: 1.15.0
 
 ### Minor Changes
 
-- [#2785](https://github.com/shopware/frontends/pull/2785) [`74a477b`](https://github.com/shopware/frontends/commit/74a477bfa88e3c518d3a0336e4d301c823122ba8) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - `useCmsElementConfig` accepts a `ref` or a getter. `getConfigValue` reads the element on every call, so a component that passes `() => props.content` follows a new `content` instead of the one it was set up with. Passing a plain object works as before.
+- [#2850](https://github.com/shopware/frontends/pull/2850) [`5374dfd`](https://github.com/shopware/frontends/commit/5374dfd32614e264028b0a83d060919427307f3d) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Deprecate API that has no effect, to be removed in the next major release:
 
-- [#2785](https://github.com/shopware/frontends/pull/2785) [`74a477b`](https://github.com/shopware/frontends/commit/74a477bfa88e3c518d3a0336e4d301c823122ba8) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add the `CmsBlockCategoryHeading`, `CmsBlockVideo`, `CmsBlockAppRenderer`, `CmsElementCategoryName`, `CmsElementVideo` and `MediaDisplayMode` types.
+  - `createShopwareContext`: the `enableDevtools` option and the `state` property of the returned plugin
+  - `useProductAssociations`: the `associationContext` option and the `method` and `searchParams` params of `loadAssociations`. Both `options` and the `loadAssociations` params are now optional, so call `loadAssociations()`
+  - `useProductConfigurator().isLoadingOptions` and `useSyncWishlist().isLoading`, which are never updated
+  - `getDefaultApiParams`, which already logged a deprecation error, now carries the `@deprecated` tag as well
 
-- [#2774](https://github.com/shopware/frontends/pull/2774) [`5961f55`](https://github.com/shopware/frontends/commit/5961f55b9f7cebad626cc073ae0bf857aa26f91b) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Let the CMS tree lookups follow a changing `content`, and fix `resolveCmsComponent().isResolved`
+  Also removes commented-out code and the unused, unexported `registerShopwareDevtools` and `useCmsElementProductBox`, which drops the undeclared `@vue/devtools-api` import. No runtime behaviour changes.
 
-  **`useCmsSection` and `useCmsBlock` accept a `ref` or a getter.** Both took a plain object and closed over it, so `getPositionContent()` and `getSlotContent()` kept reading the tree captured at setup: a component receiving a new `content` prop had to remount to see it, and calling the function again did not help. Both now accept `MaybeRefOrGetter` and resolve it with `toValue()` on every call.
+- [#2720](https://github.com/shopware/frontends/pull/2720) [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789) Thanks [@mkucmus](https://github.com/mkucmus)! - Added `useCacheableRead().invokeRead`. It uses the cacheable GET route only for a fresh default guest. That GET has no `sw-context-token`. Other sessions stay POST. Branching on `useShopwareContext().cacheableReads` is deprecated. Keep reads that `invokeRead` does not take on POST. New `createShopwareContext` option: `ssrWithoutUserContext`. A category read over GET now sends its listing params as plain query params, so `limit` is no longer dropped.
 
-  Passing a plain object still works exactly as before, so nothing has to change. To benefit, pass a getter and read the lookups through a `computed`:
-
-  ```ts
-  const { getSlotContent } = useCmsBlock(() => props.content);
-  const leftContent = computed(() => getSlotContent("left"));
-  ```
-
-  The returned `section` and `block` are still the value read when the composable was called, so they do not follow a replacement — use the source you passed in when you need that.
-
-  **`resolveCmsComponent().isResolved` now means resolved.** It compared the resolved value with `content.type`, while Vue's `resolveComponent` returns the _component name_ when nothing is registered — two strings that never match, so `isResolved` was `true` even when nothing resolved, and code guarding a fallback with `!isResolved` never ran. It is now derived from `resolvedComponent !== undefined`. Check `resolvedComponent` directly if you want the component itself.
-
-  The `resolved` field, which appears only when resolving throws, is now marked `@deprecated`. It always equals `isResolved`, so read that instead.
-
-  Note what is not fixed here: `getSlotContent()` still returns `undefined` at runtime for a slot the block does not carry, while its return type promises a value. The signature stays as it is because correcting it would be a breaking type change; the JSDoc now says so, and callers should keep guarding on the result.
+- [#2668](https://github.com/shopware/frontends/pull/2668) [`2202e1c`](https://github.com/shopware/frontends/commit/2202e1cec2b7d72260ed115940386c6793523676) Thanks [@mateuszfl](https://github.com/mateuszfl)! - Support SEO URLs of headless (API type) sales channels. Since shopware/shopware#17991 headless sales channels persist their SEO URLs against the `store-api.*` route family (`store-api.product.detail`, `store-api.category.detail`, `store-api.landing-page.detail`). `useNavigationSearch().resolvePath()` now maps those route names to their `frontend.*` equivalents, so page resolution works unchanged on a headless sales channel. The new `getFrontendRouteName` helper in `@shopware/helpers` exposes the same mapping for custom resolvers.
 
 ### Patch Changes
 
-- [#2731](https://github.com/shopware/frontends/pull/2731) [`46d6daa`](https://github.com/shopware/frontends/commit/46d6daade81e3d9e443f3badfeba2ca0e2751477) Thanks [@patzick](https://github.com/patzick)! - Add an optional notification action (label + link) so add-to-cart toasts can offer a "View cart" shortcut, and keep those toasts visible a little longer.
+- [#2851](https://github.com/shopware/frontends/pull/2851) [`43a035f`](https://github.com/shopware/frontends/commit/43a035fa60a73f554ac4de9da7abd6fce9892288) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - `useListing().filtersToQuery`, `useCmsMeta` and the page counts of `useListing`, `useWishlist` and `useCustomerOrders` now use the new `getListingFiltersQuery`, `getCmsMeta` and `getTotalPages` helpers from `@shopware/helpers`. The only behaviour change: with a limit of `0` or less, the page count is now `0` instead of `Infinity` or `NaN`.
 
-- [#2799](https://github.com/shopware/frontends/pull/2799) [`7dbca8b`](https://github.com/shopware/frontends/commit/7dbca8bf8bca1225b365bc03e4dbc07d3764c2e1) Thanks [@mkucmus](https://github.com/mkucmus)! - `useCategorySearch().search()` with `withCmsAssociations: true` now requests the CMS associations. Before, it nested them one level too deep, so the backend ignored them.
+  Deprecated, to be removed in the next major release:
 
-- [#2724](https://github.com/shopware/frontends/pull/2724) [`c78188a`](https://github.com/shopware/frontends/commit/c78188ac6c95ae19b070f5ea3361a60f21dff281) Thanks [@patzick](https://github.com/patzick)! - Fall back `getStorefrontUrl()` to a sales channel domain
+  - `useListing().filtersToQuery`: use `getListingFiltersQuery` from `@shopware/helpers`
+  - `useCmsMeta`: use `getCmsMeta` from `@shopware/helpers`
 
-  `useUser().register()` injects `storefrontUrl` from `getStorefrontUrl()`. Shopware rejects that value unless it matches a **Sales Channel → Domains** entry, so guest checkout against the public demo (`devStorefrontUrl` pointing at the starter Vercel host) never reached `POST /checkout/order`.
+- [#2791](https://github.com/shopware/frontends/pull/2791) [`4f0f33b`](https://github.com/shopware/frontends/commit/4f0f33b9fcb66c5a6bacf86400fa6d82f68e064f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Point the README and JSDoc documentation links at the Frontends Recipes that replaced the redirected guides
 
-  `getStorefrontUrl()` now uses the preferred URL when it is one of the current sales channel domains, and otherwise the domain for the active language (or the first configured domain).
+- [#2843](https://github.com/shopware/frontends/pull/2843) [`eba2d99`](https://github.com/shopware/frontends/commit/eba2d996327d28c7f22025c848a3728d4d5fd3bf) Thanks [@grenzenlos-digital](https://github.com/grenzenlos-digital)! - Send `checkPromotion` as a query parameter when loading order details, so Shopware 6.7.7+ calculates `paymentChangeable`. When the order has no `paymentChangeable` entry, retry once with the flag in the request body, so Shopware 6.6 and 6.7.0-6.7.6 keep working.
 
-- [#2700](https://github.com/shopware/frontends/pull/2700) [`0df4c17`](https://github.com/shopware/frontends/commit/0df4c17b18ec38fc4d0c33f1cb6396f8f532a65d) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Refresh the cart after `register()`
-
-  `useUser().register()` changed the session context without refreshing the cart, while `login()` and `logout()` both did. Registration is the first point at which the backend learns the customer's billing country, which drives tax rates, shipping surcharges and customer-group prices, so the cart totals held in `useCart()` could stay at their pre-registration values while the order was placed at the recalculated ones.
-
-  `register()` now awaits `refreshCart()` after `refreshSessionContext()`, so a caller that awaits `register()` cannot observe the pre-registration totals afterwards. Note this makes `register()` resolve slightly later than before, and a failing cart refresh now rejects `register()` even though the customer was created — the same property `refreshSessionContext()` on the preceding line already had.
-
-  `login()` and `logout()` still call `refreshCart()` without awaiting it and are unchanged here.
-
-- Updated dependencies [[`44ece9d`](https://github.com/shopware/frontends/commit/44ece9dac2e4d0248c2270f7eff496c258632f5b), [`4b43e64`](https://github.com/shopware/frontends/commit/4b43e64a8d78be6eca1f8d9c24140e046193af41)]:
-  - @shopware/api-client@1.7.0
+- [#2849](https://github.com/shopware/frontends/pull/2849) [`037ffa9`](https://github.com/shopware/frontends/commit/037ffa97e3fdeec3a7dc896cb6a5b401e4b5f481) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - `useWishlist().mergeWishlistProducts()` now clears the local (localStorage) wishlist after merging it into the customer's wishlist. Before, it cleared the API wishlist instead: the local items stayed and were merged again on every login, and products the sync store still held from earlier in the session were removed from the customer's wishlist on the server.
+- Updated dependencies [[`fa598c8`](https://github.com/shopware/frontends/commit/fa598c84e4d72ff4b7dc50547ea2412bc424b491), [`2202e1c`](https://github.com/shopware/frontends/commit/2202e1cec2b7d72260ed115940386c6793523676), [`43a035f`](https://github.com/shopware/frontends/commit/43a035fa60a73f554ac4de9da7abd6fce9892288), [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789)]:
+  - @shopware/helpers@1.9.0
+  - @shopware/api-client@1.8.0

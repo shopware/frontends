@@ -1,5 +1,36 @@
 # @shopware/cms-base-layer
 
+## 4.1.1
+
+### Patch Changes
+
+- [#2720](https://github.com/shopware/frontends/pull/2720) [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789) Thanks [@mkucmus](https://github.com/mkucmus)! - `CmsElementProductDescriptionReviews` loads reviews with `useCacheableRead().invokeRead`.
+
+- [#2859](https://github.com/shopware/frontends/pull/2859) [`2c1e574`](https://github.com/shopware/frontends/commit/2c1e574187a80692addb866db96882ef4acbebda) Thanks [@mkucmus](https://github.com/mkucmus)! - Align the `@nuxt/kit` dependency with the Nuxt 4.6.2 bump. The advisories themselves (GHSA-vjh5-4x84-xrqp, GHSA-xfq5-w38q-pc2x) are fixed by `nuxt` and `@nuxt/nitro-server` 4.6.2; `@nuxt/kit` is not an affected package.
+
+- [#2864](https://github.com/shopware/frontends/pull/2864) [`b4b2f3b`](https://github.com/shopware/frontends/commit/b4b2f3b78653ac87608803f21faae4080f57344c) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Update `@nuxt/kit` to 4.6.3 and `vue` to 3.5.44, the minimum Nuxt 4.6.3 requires.
+
+- [#2834](https://github.com/shopware/frontends/pull/2834) [`2d3987c`](https://github.com/shopware/frontends/commit/2d3987c201db2f437af2785eed7948e958399cda) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Give the `CmsSectionSidebar` `<aside>` an accessible name so pages with more than one complementary landmark pass the axe `landmark-unique` rule. New translation key: `layout.ariaLabels.contentSidebar` (default "Content sidebar"). Add it to your locale files.
+
+- [#2791](https://github.com/shopware/frontends/pull/2791) [`4f0f33b`](https://github.com/shopware/frontends/commit/4f0f33b9fcb66c5a6bacf86400fa6d82f68e064f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Point the README and JSDoc documentation links at the Frontends Recipes that replaced the redirected guides
+
+- [#2825](https://github.com/shopware/frontends/pull/2825) [`0b5de57`](https://github.com/shopware/frontends/commit/0b5de57fe1149212fd7274b6f530495a245742b5) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add `data-testid` and `data-*` state attributes to the wishlist toggle, variant options, sort dropdown, pagination and top navigation, so e2e tests no longer depend on translated text or CSS classes. Sort options are now `menuitemradio` items with `aria-checked`, so screen readers announce the active sort.
+
+- [#2835](https://github.com/shopware/frontends/pull/2835) [`22c1b4f`](https://github.com/shopware/frontends/commit/22c1b4fb2a34e351ff4e84e7f198cfc306f9fb5f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Support Nuxt 4.6. `@shopware/nuxt-module` and `@shopware/cms-base-layer` now depend on `@nuxt/kit` 4.6.1, and the Nuxt plugin types `ssrContext.event` from `NuxtSSRContext`, so it type-checks on both Nuxt 4.5 and 4.6. The Nuxt templates require Node `^22.22.3 || ^24.15.0 || >=26.0.0`, the range Nuxt 4.6 supports. `@shopware/unocss-design-tokens-layer` no longer re-exports its generated `.nuxt/imports` from `index.d.ts`, which pulled server routes into the shared type context of apps extending the layer.
+
+- [#2816](https://github.com/shopware/frontends/pull/2816) [`b6c09e5`](https://github.com/shopware/frontends/commit/b6c09e53ff457c3552ac4f159a6d5072538373e5) Thanks [@mkucmus](https://github.com/mkucmus)! - Add `data-testid` attributes to the reviews section header (`product-reviews-tab`) and the review success message (`review-success-message`) in `CmsElementProductDescriptionReviews`.
+
+- [#2832](https://github.com/shopware/frontends/pull/2832) [`be8b48c`](https://github.com/shopware/frontends/commit/be8b48c5d6b767b6d965c081329ac89b57af1f56) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Make `SwVariantConfigurator` keyboard and screen-reader accessible. Each option group is now a native radio group: every option renders a visually hidden `<input type="radio">` inside its label, so options can be reached with Tab, changed with the arrow keys, and announced with their selected state. The focused option shows a visible focus ring, and the label exposes `data-selected`.
+
+  Each radio group's `name` is scoped to the component instance, so two configurators on one page that share a property group such as "Size" no longer merge into one group.
+
+  With `allowRedirect` (the default), an option picked with the arrow keys only updates the selection; the redirect to the variant happens on Enter or Space, or on click. If focus leaves the option group before that, the selection reverts to the loaded product (no option, if none was selected), so the selected option always matches the product that Add to cart uses. Without `allowRedirect`, every change still emits `change` immediately.
+
+- Updated dependencies [[`fa598c8`](https://github.com/shopware/frontends/commit/fa598c84e4d72ff4b7dc50547ea2412bc424b491), [`5374dfd`](https://github.com/shopware/frontends/commit/5374dfd32614e264028b0a83d060919427307f3d), [`43a035f`](https://github.com/shopware/frontends/commit/43a035fa60a73f554ac4de9da7abd6fce9892288), [`4f0f33b`](https://github.com/shopware/frontends/commit/4f0f33b9fcb66c5a6bacf86400fa6d82f68e064f), [`eba2d99`](https://github.com/shopware/frontends/commit/eba2d996327d28c7f22025c848a3728d4d5fd3bf), [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789), [`2202e1c`](https://github.com/shopware/frontends/commit/2202e1cec2b7d72260ed115940386c6793523676), [`43a035f`](https://github.com/shopware/frontends/commit/43a035fa60a73f554ac4de9da7abd6fce9892288), [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789), [`037ffa9`](https://github.com/shopware/frontends/commit/037ffa97e3fdeec3a7dc896cb6a5b401e4b5f481)]:
+  - @shopware/helpers@1.9.0
+  - @shopware/composables@1.15.0
+  - @shopware/api-client@1.8.0
+
 ## 4.1.0
 
 ### Minor Changes
