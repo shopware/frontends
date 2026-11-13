@@ -31,6 +31,15 @@
         },
         "NUXT_PUBLIC_SITE_URL": {
           "description": "Optional. Public URL of the storefront, e.g. https://your-shop.com. /sitemap.xml builds its links from it instead of the request host."
+        },
+        "NUXT_PUBLIC_AGENTIC_HANDOFF_ENABLED": {
+          "description": "Optional. true turns on the UCP checkout handoff for the agentic-commerce plugin: the /checkout/continue page, the UCP proxy and the Link header."
+        },
+        "NUXT_AGENTIC_HANDOFF_STOREFRONT_HOSTS": {
+          "description": "Optional. Hosts this storefront answers on, comma separated, for the UCP checkout handoff. Set it in production, so a request cannot choose where continue_url points."
+        },
+        "NUXT_AGENTIC_HANDOFF_SHOPWARE_ORIGIN": {
+          "description": "Optional. Origin of the Shopware instance running the agentic-commerce plugin, without /store-api/. Defaults to the Store API endpoint without that suffix."
         }
       },
       "node": "^22.22.3 || ^24.15.0 || >=26.0.0",
@@ -78,6 +87,15 @@
         },
         "NUXT_PUBLIC_SITE_URL": {
           "description": "Optional. Public URL of the storefront, e.g. https://your-shop.com. /sitemap.xml builds its links from it instead of the request host."
+        },
+        "NUXT_PUBLIC_AGENTIC_HANDOFF_ENABLED": {
+          "description": "Optional. true turns on the UCP checkout handoff for the agentic-commerce plugin: the /checkout/continue page, the UCP proxy and the Link header."
+        },
+        "NUXT_AGENTIC_HANDOFF_STOREFRONT_HOSTS": {
+          "description": "Optional. Hosts this storefront answers on, comma separated, for the UCP checkout handoff. Set it in production, so a request cannot choose where continue_url points."
+        },
+        "NUXT_AGENTIC_HANDOFF_SHOPWARE_ORIGIN": {
+          "description": "Optional. Origin of the Shopware instance running the agentic-commerce plugin, without /store-api/. Defaults to the Store API endpoint without that suffix."
         }
       },
       "node": "^22.22.3 || ^24.15.0 || >=26.0.0",

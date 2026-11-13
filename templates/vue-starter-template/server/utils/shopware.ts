@@ -60,16 +60,18 @@ export function getServerApiClientOptions() {
 }
 
 /**
- * Store API client for server routes. It carries no customer session, so use
- * it only for data that is the same for every visitor.
+ * Store API client for server routes. Without `contextToken` it carries no
+ * customer session, so use it only for data that is the same for every
+ * visitor.
  */
-export function createServerApiClient() {
+export function createServerApiClient(options: { contextToken?: string } = {}) {
   const { endpoint, accessToken } = getShopwareServerConfig();
   const { headers, timeout } = getServerApiClientOptions();
 
   return createAPIClient<operations>({
     baseURL: endpoint,
     accessToken,
+    contextToken: options.contextToken,
     defaultHeaders: headers,
     ...(timeout === undefined ? {} : { fetchOptions: { timeout } }),
   });

@@ -42,7 +42,7 @@
       "outputs": []
     },
     "test": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "nuxt-prepare"],
       "outputs": []
     },
     "test:watch": {
