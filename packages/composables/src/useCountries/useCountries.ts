@@ -1,9 +1,8 @@
-import { encodeForQuery } from "@shopware/api-client/helpers";
 import { defu } from "defu";
 import { computed, inject, onMounted, provide, ref } from "vue";
 import type { ComputedRef } from "vue";
 
-import { useShopwareContext } from "#imports";
+import { useCacheableRead } from "#imports";
 import type { Schemas, operations } from "#shopware";
 
 export type UseCountriesReturn = {
@@ -29,7 +28,7 @@ export type UseCountriesReturn = {
 export function useCountries(
   criteria?: Schemas["Criteria"],
 ): UseCountriesReturn {
-  const { apiClient, cacheableReads } = useShopwareContext();
+  const { invokeRead } = useCacheableRead();
 
   const _sharedCountries = inject("swCountries", ref());
   provide("swCountries", _sharedCountries);
@@ -41,13 +40,9 @@ export function useCountries(
         states: {},
       },
     } as Schemas["Criteria"]);
-    const result = cacheableReads
-      ? await apiClient.invoke("readCountryGet get /country", {
-          query: { _criteria: encodeForQuery(queryCriteria) },
-        })
-      : await apiClient.invoke("readCountry post /country", {
-          body: queryCriteria,
-        });
+    const result = await invokeRead("readCountry post /country", {
+      body: queryCriteria,
+    });
     _sharedCountries.value = result.data.elements;
     return result.data;
   }

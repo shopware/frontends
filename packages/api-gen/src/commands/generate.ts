@@ -360,6 +360,11 @@ export function runTransformations(
     return constLiteralType;
   }
 
+  const openStringEnumType = createOpenStringEnumType(schemaObject);
+  if (openStringEnumType) {
+    return openStringEnumType;
+  }
+
   /**
    * Blob type is used for binary data
    */
@@ -445,6 +450,119 @@ function createConstLiteralType(schemaObject: SchemaObject) {
   }
 
   return undefined;
+}
+
+/**
+ * Open string enum: known values plus any other string, written in the schema as
+ * `anyOf` of string `enum`/`const` branches and one plain string branch. `oneOf` is
+ * handled the same way, although validators reject known values there because they
+ * match two branches.
+ *
+ * openapi-typescript emits `"invoice" | "storno" | string`, which TypeScript collapses
+ * to `string`, losing autocompletion. `string & {}` keeps the literals visible to the
+ * editor while still accepting any string.
+ *
+ * The result replaces the whole field type, so schemas with keywords it would drop
+ * (a sibling `enum` or `allOf`, or both `anyOf` and `oneOf`) are left to openapi-typescript.
+ */
+function createOpenStringEnumType(schemaObject: SchemaObject) {
+  if (
+    "enum" in schemaObject ||
+    "allOf" in schemaObject ||
+    ("anyOf" in schemaObject && "oneOf" in schemaObject)
+  ) {
+    return undefined;
+  }
+  const composition =
+    ("anyOf" in schemaObject && schemaObject.anyOf) ||
+    ("oneOf" in schemaObject && schemaObject.oneOf);
+  if (!Array.isArray(composition)) {
+    return undefined;
+  }
+
+  const knownValues: string[] = [];
+  let isOpen = false;
+  let isNullable = isNullableSchema(schemaObject);
+
+  for (const branch of composition) {
+    // boolean schemas (`true`/`false`) are valid branches in OpenAPI 3.1
+    if (!branch || typeof branch !== "object" || "$ref" in branch) {
+      return undefined;
+    }
+    isNullable ||= isNullableSchema(branch);
+    if (Array.isArray(branch.enum)) {
+      for (const value of branch.enum) {
+        if (value === null) {
+          isNullable = true;
+        } else if (typeof value === "string") {
+          knownValues.push(value);
+        } else {
+          return undefined;
+        }
+      }
+    } else if ("const" in branch) {
+      if (branch.const === null) {
+        isNullable = true;
+      } else if (typeof branch.const === "string") {
+        knownValues.push(branch.const);
+      } else {
+        return undefined;
+      }
+    } else if (isOpenStringBranch(branch)) {
+      // the null part, if any, is already handled by isNullableSchema
+      isOpen = true;
+    } else if (branch.type === "null") {
+      isNullable = true;
+    } else {
+      return undefined;
+    }
+  }
+
+  if (!isOpen || !knownValues.length) {
+    return undefined;
+  }
+
+  return ts.factory.createUnionTypeNode([
+    ...[...new Set(knownValues)].map((value) =>
+      ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral(value)),
+    ),
+    ts.factory.createIntersectionTypeNode([
+      ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword),
+      ts.factory.createTypeLiteralNode([]),
+    ]),
+    ...(isNullable
+      ? [ts.factory.createLiteralTypeNode(ts.factory.createNull())]
+      : []),
+  ]);
+}
+
+/**
+ * `nullable: true` is the OpenAPI 3.0 form of `"type": [..., "null"]`.
+ */
+function isNullableSchema(schemaObject: SchemaObject) {
+  return (
+    hasSchemaType(schemaObject, "null") ||
+    (schemaObject as { nullable?: boolean }).nullable === true
+  );
+}
+
+/**
+ * The open branch of an open string enum: `string`, or a type array of only `string`
+ * and `null`. `["string", "number"]` does not qualify, so its other members are not
+ * dropped from the result, and neither does `format: "binary"`, which becomes `Blob`.
+ */
+function isOpenStringBranch(schemaObject: SchemaObject) {
+  if (schemaObject.format === "binary") {
+    return false;
+  }
+  if (!Array.isArray(schemaObject.type)) {
+    return schemaObject.type === "string";
+  }
+  const types = schemaObject.type as readonly string[];
+  return (
+    types.includes("string") &&
+    types.every((type) => type === "string" || type === "null")
+  );
 }
 
 function hasSchemaType(schemaObject: SchemaObject, type: string) {

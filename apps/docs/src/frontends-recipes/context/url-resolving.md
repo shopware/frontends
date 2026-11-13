@@ -64,7 +64,7 @@ const steps = [
     title: "Store API",
     action: "Look the path up",
     detail:
-      "A SEO path is matched on seoPathInfo with the leading slash removed. A technical path like /detail/<id> is matched on pathInfo instead. With cacheableReads enabled the same filter travels as a _criteria query parameter on the GET route.",
+      "A SEO path is matched on seoPathInfo with the leading slash removed. A technical path like /detail/<id> is matched on pathInfo instead. With cacheableReads enabled, a fresh guest sends the same filter as a _criteria query parameter on the GET route.",
     code: 'apiClient.invoke("readSeoUrl post /seo-url", { body: criteria })',
     state: "sw-context-token",
     typeKeys: ['operations["readSeoUrl post /seo-url"]["body"]'],
@@ -120,7 +120,7 @@ Serve every shop URL from one catch-all route: resolve the path to an entity, re
 
 ## Shopware Flow
 
-`readSeoUrl post /seo-url` is an entity search over SEO URLs. `useNavigationSearch().resolvePath(path)` filters it on `seoPathInfo` for a normal path and on `pathInfo` for a technical one — `/navigation/<id>`, `/detail/<id>` or `/landingPage/<id>`.
+`readSeoUrl post /seo-url` is an entity search over SEO URLs. `useNavigationSearch().resolvePath(path)` filters it on `seoPathInfo` for a normal path and on `pathInfo` for a technical one — `/navigation/<id>`, `/detail/<id>`, `/landingPage/<id>` or `/page/cms/<id>`.
 
 Two paths never reach that request. `/` is answered from the session context, using the sales channel's `navigationCategoryId` and a hardcoded `frontend.navigation.page` route name. And when nothing matches, `getRouteFromPathInfo` derives a route name and an id from the technical prefix, producing a synthetic `SeoUrl` rather than a 404.
 
@@ -139,7 +139,7 @@ You do not need one route per page type, and you do not fetch the entity in the 
 | Fetch a product page  | `useProductSearch().search(id, { withCmsAssociations: true })`  | `POST /product/{productId}`          | <SchemaTypeTooltip type-key='operations["readProductDetail post /product/{productId}"]["body"]' />        |
 | Fetch a landing page  | `useLandingSearch().search(id, { withCmsAssociations: true })`  | `POST /landing-page/{landingPageId}` | <SchemaTypeTooltip type-key='operations["readLandingPage post /landing-page/{landingPageId}"]["body"]' /> |
 
-The methods in that column are the defaults. With `cacheableReads` enabled — `vue-starter-template` sets it under `runtimeConfig.public.shopware`, and `shopware: { cacheableReads: true }` is the equivalent module-option form — `resolvePath`, `useCategorySearch().search` and `useProductSearch().search` call their GET variants instead, with the same criteria compressed into a `_criteria` query parameter: `readSeoUrlGet get /seo-url`, `readCategoryGet get /category/{navigationId}` and `readProductDetailGet get /product/{productId}`. The filters, the fallback and the redirect are identical; only the transport changes. `useLandingSearch` has no GET branch and always posts. See [Caching](../../best-practices/caching.html) for what that buys you.
+The methods in that column are the defaults. With `cacheableReads` enabled — `vue-starter-template` sets it under `runtimeConfig.public.shopware`, and `shopware: { cacheableReads: true }` is the equivalent module-option form — `resolvePath`, `useCategorySearch().search` and `useProductSearch().search` call their GET variants for a fresh default guest, with the same criteria compressed into a `_criteria` query parameter: `readSeoUrlGet get /seo-url`, `readCategoryGet get /category/{navigationId}` and `readProductDetailGet get /product/{productId}`. The filters, the fallback and the redirect are identical; only the transport changes. Other sessions still post, see [Which sessions use GET](../../best-practices/caching.html#which-sessions-use-get). `useLandingSearch` has no GET branch and always posts. See [Caching](../../best-practices/caching.html) for what that buys you.
 
 `useUrlResolver().resolveUrl` is not part of the resolution chain despite the name. It puts the application's URL prefix in front of a CMS-authored internal navigation link and leaves everything else untouched.
 
@@ -333,7 +333,7 @@ The resolution is provided, not fetched twice. `useNavigationContext(seoUrl)` wr
 
 `resolvePath("/")` depends on the session context being loaded. It reads `sessionContext.salesChannel.navigationCategoryId`, so the home page cannot resolve before the root has seeded the context — and the id it returns changes with the sales channel, not with the route.
 
-The lookup itself carries `sw-context-token` like any Store API call, but it changes nothing on the session. Whether it travels as a POST body or as a `_criteria` query parameter is decided once by `cacheableReads` in `nuxt.config.ts`, not per call.
+The lookup changes nothing on the session. Whether it travels as a POST body or as a `_criteria` query parameter is decided per call. GET needs `cacheableReads` in `nuxt.config.ts` and a fresh default guest session. The POST carries `sw-context-token` like any Store API call. The GET carries none.
 
 `useUrlResolver().getUrlPrefix()` reads an injected `urlPrefix` with `""` as its default. Nothing in the composable provides it; the application does — `vue-starter-template` calls `provide("urlPrefix", prefix)` in `app.vue`, which is how the locale prefix reaches CMS components that render internal links.
 
@@ -341,13 +341,14 @@ The lookup itself carries `sw-context-token` like any Store API call, but it cha
 
 - `resolvePath("/")` issues no request. Debugging a wrong home page means looking at the session context, not at the SEO URL table.
 - A SEO path is filtered with the leading slash removed (`path.substring(1)`), a technical path with its trailing slash removed by `normalizePath`. Sending the wrong form matches nothing.
-- With `cacheableReads: true` the lookup is `readSeoUrlGet get /seo-url`, so a network assertion or a proxy rule written against `POST /seo-url` sees nothing.
-- `getRouteFromPathInfo` recognises exactly three prefixes: `/navigation/`, `/detail/` and `/landingPage/`. It returns `null` when the remainder is empty or contains another slash.
+- With `cacheableReads: true`, a fresh guest's lookup is `readSeoUrlGet get /seo-url`, so a network assertion or a proxy rule written against `POST /seo-url` sees nothing for that guest.
+- `getRouteFromPathInfo` recognises exactly four prefixes: `/navigation/`, `/detail/`, `/landingPage/` and `/page/cms/`. It returns `null` when the remainder is empty or contains another slash.
+- `/page/cms/<id>` is a standalone CMS layout, Shopware's `frontend.cms.page.full` route. Layouts that are not assigned to a category or landing page, like the legal pages from the basic information settings, have no SEO URL, so this path always resolves through the fallback. Shopware links them this way, for example in `llms.txt`. `vue-starter-template` renders them with `FrontendCmsPageFull`, which loads the layout through `readCms post /cms/{id}` and marks the page `noindex`, as the Storefront does.
 - The fallback resolution is synthetic: it has a `routeName` and a `foreignKey` and no `seoPathInfo`. `getCanonicalPathForTechnicalPath` returns `null` for it, so no redirect happens.
 - `getCanonicalPathForTechnicalPath` also returns `null` for SEO paths and for a mapping whose target is itself technical. Only a genuine technical-to-SEO mapping produces a redirect.
 - The redirect uses `301`. Getting the condition wrong caches the wrong target in browsers and CDNs.
 - `routeName` is pascal-cased into a component name, and `resolveComponent` only finds components registered `global: true`. It returns the name string rather than throwing when nothing matches, which is why the example compares the result against the name and turns a miss into a `404`.
-- The generated `SeoUrl` type limits `routeName` to the three names Shopware ships — `frontend.detail.page`, `frontend.navigation.page` and `frontend.landing.page` — and `vue-starter-template` has one global component for each. The schema describes the field as a route registered in the application's router, though, so a route name outside that set, such as one an extension registers, has no page component and ends in the same `404` until you add one.
+- The generated `SeoUrl` type limits `routeName` to the three names Shopware ships — `frontend.detail.page`, `frontend.navigation.page` and `frontend.landing.page` — and `vue-starter-template` has one global component for each, plus `FrontendCmsPageFull` for the `/page/cms/<id>` fallback. The schema describes the field as a route registered in the application's router, though, so a route name outside that set, such as one an extension registers, has no page component and ends in the same `404` until you add one.
 - Headless (API type) sales channels store their SEO URLs under `store-api.*` route names: `store-api.product.detail`, `store-api.category.detail` and `store-api.landing-page.detail`. `resolvePath` maps them to their `frontend.*` equivalents, so the same page components serve both sales channel types. If you query `/seo-url` yourself, apply the same mapping with `getFrontendRouteName` from `@shopware/helpers`.
 - `resolveUrl` throws `URL Input too long` for input over 2083 characters. That is a deliberate guard against a polynomial regular expression, not a validation error to surface.
 - `resolveUrl` only touches URLs matching `[a-zA-Z0-9]+/navigation/[a-zA-Z0-9]+` and returns everything else unchanged — including a `/detail/<id>` link, and including `/navigation/<id>` itself, which has no segment before the slash for the pattern to match and so never gets the prefix.
@@ -363,7 +364,7 @@ The lookup itself carries `sw-context-token` like any Store API call, but it cha
 - Do not use a `302` for the canonical redirect. The helper's contract is a permanent mapping.
 - Do not add one Nuxt route per page type. The `routeName` selects the component.
 - Do not fetch the entity in the catch-all route. Pass the `foreignKey` down.
-- Do not assume the lookup is a POST. Read `cacheableReads` before asserting on the request in a test or a cache rule.
+- Do not assume the lookup is always a POST, or always a GET. Check `cacheableReads` and the session before asserting on the request in a test or a cache rule.
 - Do not surface `URL Input too long` to the customer. It is an internal guard.
 - Do not rely on `resolveUrl` to prefix arbitrary links. It handles navigation links only.
 - Do not let a failed lookup fall into the `404` branch. Read `error` from `useAsyncData` first and answer with a `5xx`, or a backend outage returns `404` for the whole catalogue and crawlers de-index it.
@@ -375,7 +376,7 @@ The lookup itself carries `sw-context-token` like any Store API call, but it cha
 - Opening `/` resolves to `frontend.navigation.page` without any `/seo-url` request.
 - A SEO path issues one `/seo-url` lookup filtered on `seoPathInfo` without the leading slash.
 - A technical path issues one `/seo-url` lookup filtered on `pathInfo`.
-- The lookup uses the GET route when `cacheableReads` is enabled and the POST route when it is not.
+- The lookup uses the GET route for a fresh guest when `cacheableReads` is enabled, and the POST route after login or when the flag is off.
 - A technical path with a SEO mapping redirects once with a `301` to the canonical path.
 - A technical path without a SEO mapping renders the page directly, with no redirect.
 - An unknown path throws a 404 rather than rendering an empty component.
