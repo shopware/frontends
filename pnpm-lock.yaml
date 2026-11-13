@@ -61,9 +61,6 @@ importers:
       '@oxc-parser/binding-wasm32-wasi':
         specifier: 0.147.0
         version: 0.147.0
-      '@types/changelog-parser':
-        specifier: 2.8.4
-        version: 2.8.4
       ajv:
         specifier: ^8.20.0
         version: 8.20.0
@@ -7367,9 +7364,6 @@ packages:
 
   '@types/chai@5.2.3':
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
-
-  '@types/changelog-parser@2.8.4':
-    resolution: {integrity: sha512-lCjy5pdZr+PmGMUSnn/z1BPWb3ADiGXjwbKdLa6EnvZ+dY6815Ak65VWstOIq/x3mqEwdvmv+/2ExRElEEcXMw==}
 
   '@types/deep-eql@4.0.2':
     resolution: {integrity: sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw==}
@@ -23209,8 +23203,6 @@ snapshots:
     dependencies:
       '@types/deep-eql': 4.0.2
       assertion-error: 2.0.1
-
-  '@types/changelog-parser@2.8.4': {}
 
   '@types/deep-eql@4.0.2': {}
 
