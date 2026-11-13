@@ -10,7 +10,7 @@ head:
     - name: og:image
       content: "https://frontends-og-image.vercel.app/Best%20practices:%20**Prerendering**.png?fontSize=110px"
 nav:
-  position: 30
+  position: 35
 ---
 
 # Prerendering
@@ -21,7 +21,7 @@ Yes, and it is a mode of the starter rather than a separate template. Nothing in
 
 The starter resolves every storefront URL through one `app/pages/[...all].vue`, which asks the Shopware CMS what to render, so it is reasonable to expect a generator to have no route list to crawl. In practice `nuxt generate` turns the crawler on and seeds it with `/`, Nitro follows the links in each rendered page, and the catch-all renders whatever it is given.
 
-Crawling proves the catch-all works. It does not give you the catalog. Listing pagination renders as buttons that call `router.push`, not as links, so nothing past the first page of a category is discoverable. A product reachable only through pagination is not discovered unless some other crawlable link points at it. When you need complete product, category and locale coverage, supply the route list yourself from the backend or a sitemap.
+Crawling proves the catch-all works. It does not give you the catalog. Listing pagination renders as buttons that call `router.push`, not as links, so nothing past the first page of a category is discoverable. A product reachable only through pagination is not discovered unless some other crawlable link points at it. When you need complete product, category and locale coverage, supply the route list yourself. Shopware's [sitemap](../guides/features/sitemap.md) files are a ready source. They list the product, category and CMS pages of the sales channel. Their URLs are built from the sales channel domain, so use the paths.
 
 ## Configuration
 
@@ -74,8 +74,12 @@ Pages are a snapshot. Any price, stock or catalog change invalidates them until 
 
 Prerendering does not extend to the parts of the starter that are already client-only. `/checkout`, `/account` and `/wishlist` are set to `ssr: false` in `routeRules` because they are personalized, and they stay client-rendered in a static build too.
 
-`ssr: false` turns off server rendering of the content, not the file. Those routes still get an HTML shell, which the browser fills in. What needs a host fallback is any URL with no file of its own, such as a product that was never prerendered. Publish `.output/public`, configure that fallback, and test a direct request rather than only a click through from the homepage.
+`ssr: false` turns off server rendering of the content, not the file. While the crawler is on, Nuxt adds every static page to the prerender list, so `/checkout` and `/account/login` still get an HTML shell that the browser fills in. Two cases get no file. A dynamic route, such as an order details page, never does. And once you set `crawlLinks: false`, a static page gets one only if you list it in `routes`.
+
+Any URL with no file of its own needs a host fallback. That goes for an order details page as much as for a product that was never prerendered. `nuxt generate` writes `200.html` for this: an empty app shell that renders the requested URL in the browser. Publish `.output/public`, point the host's fallback at `/200.html`, and test a direct request rather than only a click through from the homepage.
 
 The `isr` rule the starter ships does nothing on a static host. There is no server to revalidate, so pages change when you generate again and not before.
+
+The same goes for the starter's `/sitemap.xml` and `/sitemap/**`. They are server routes, so a static build has them only if you list `/sitemap.xml` and every sitemap file path in `routes`. Set `NUXT_PUBLIC_SITE_URL` for that build. Without it the index links to `http://localhost`.
 
 Running this as a mode costs no separate template. What it does add is owning a route list, deciding what triggers a regenerate, configuring the host, and smoke testing the output.

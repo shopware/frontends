@@ -203,7 +203,7 @@ export default defineNuxtConfig({
   telemetry: false,
   experimental: {
     // Deliberate for this ISR deployment. `nuxt generate` warns (NUXT_B7015)
-    // because a static build wants it on. See best-practices/prerendering.md
+    // because a static build wants it on. See https://developer.shopware.com/frontends/best-practices/prerendering.html
     payloadExtraction: false,
   },
 });
