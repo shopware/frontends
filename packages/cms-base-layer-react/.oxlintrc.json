@@ -1,0 +1,21 @@
+{
+  "$schema": "../../node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "jsx-a11y", "typescript", "unicorn", "oxc"],
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "react/rules-of-hooks": "error",
+    "jsx-a11y/autocomplete-valid": "off",
+    "jsx-a11y/prefer-tag-over-role": "off"
+  },
+  "overrides": [
+    {
+      "files": ["src/components/element/CmsElementImage.tsx"],
+      "rules": {
+        "jsx-a11y/media-has-caption": "off"
+      }
+    }
+  ],
+  "ignorePatterns": ["node_modules", "coverage"]
+}

@@ -39,8 +39,7 @@ environments.
 
 Use Shopware 6.7.6.0 or newer. Reads send their Criteria as a compressed
 `_criteria` GET query parameter, which the Store API accepts from 6.7.6.0 on,
-and the template has no POST fallback. The navigation read sends no Criteria,
-so it also works on 6.6.
+and the template has no POST fallback.
 
 ## Type generation
 
