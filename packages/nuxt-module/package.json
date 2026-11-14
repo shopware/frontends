@@ -51,7 +51,7 @@
     "js-cookie": "3.0.7"
   },
   "devDependencies": {
-    "@nuxt/schema": "4.6.3",
+    "@nuxt/schema": "4.6.4",
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
     "nuxt": "4.6.3",
     "tsconfig": "workspace:*",
