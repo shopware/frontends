@@ -58,7 +58,7 @@
     "xss": "1.0.15"
   },
   "devDependencies": {
-    "@nuxt/schema": "4.6.3",
+    "@nuxt/schema": "4.6.4",
     "@types/three": "0.182.0",
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
     "@vitest/coverage-v8": "5.0.5",
