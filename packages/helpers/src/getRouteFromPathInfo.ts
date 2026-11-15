@@ -2,6 +2,9 @@ const TECHNICAL_ROUTE_MAP = {
   "/navigation/": "frontend.navigation.page",
   "/detail/": "frontend.detail.page",
   "/landingPage/": "frontend.landing.page",
+  // standalone CMS layout, e.g. a legal page from the basic information
+  // settings. Layouts have no SEO URLs, so this path is always the fallback.
+  "/page/cms/": "frontend.cms.page.full",
 } as const;
 
 export type RouteNameFromPathInfo =
