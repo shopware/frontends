@@ -44,6 +44,8 @@ describe("email", () => {
     expect(email.validate("john@")).toBe(false);
     expect(email.validate("john@example")).toBe(false);
     expect(email.validate("john doe@example.com")).toBe(false);
+    expect(email.validate("jo[h]n@example.com")).toBe(false);
+    expect(email.validate("jo\\hn@example.com")).toBe(false);
   });
 });
 

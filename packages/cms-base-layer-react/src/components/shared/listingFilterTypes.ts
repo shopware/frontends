@@ -23,7 +23,7 @@ export type ListingFilterValue =
   | number
   | boolean
   | undefined
-  | { min: number; max: number };
+  | { min?: number; max?: number };
 
 export type ListingFilterChangeEvent = {
   code: string;

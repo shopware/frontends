@@ -158,7 +158,8 @@ use `getCmsTranslate(text, { count })`.
   `product-box-product-name-link`, `add-to-cart-button`, `product-variant`,
   `listing-filter-{code}`, `listing-pagination-limit-select`, `loading`).
 - `border-brand-primary` on the selected variant option.
-- Native `<select>` elements for the page-size and sort controls.
+- A native `<select>` for the page-size control. The sort control is a
+  button with a `menuitemradio` menu, as in Vue (`SwSortDropdown`).
 
 ## Tooling
 

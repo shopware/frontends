@@ -59,7 +59,10 @@ export function useListingFilters({
       toggleFilterValue(code, String(value));
     } else if (code === "price") {
       const { min, max } = toPriceRange(value);
-      setPriceRange(min, max);
+      setPriceRange(
+        min ?? selectedFilters["min-price"],
+        max ?? selectedFilters["max-price"],
+      );
     } else if (code === "rating") {
       setRating(toOptionalNumber(value));
     } else if (code === "shipping-free") {

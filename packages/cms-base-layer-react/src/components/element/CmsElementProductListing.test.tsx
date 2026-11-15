@@ -22,6 +22,22 @@ vi.mock("next/navigation", () => ({
   useSearchParams: () => new URLSearchParams(),
 }));
 
+const useListingNavigationSpy = vi.hoisted(() => vi.fn());
+
+vi.mock("../../listing/useListingNavigation", async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import("../../listing/useListingNavigation")>();
+  return {
+    ...actual,
+    useListingNavigation: (
+      ...args: Parameters<typeof actual.useListingNavigation>
+    ) => {
+      useListingNavigationSpy(...args);
+      return actual.useListingNavigation(...args);
+    },
+  };
+});
+
 function product(id: string, name: string): Schemas["Product"] {
   return {
     id,
@@ -129,5 +145,20 @@ describe("CmsElementProductListing", () => {
     );
 
     expect(html).toContain("Keine Produkte");
+  });
+
+  it("keeps the search params on the search listing", async () => {
+    useListingNavigationSpy.mockClear();
+
+    await renderToHtml(
+      <CmsElementProductListing
+        content={content(listing())}
+        ctx={createCmsContext({ registry, isProductSearch: true })}
+      />,
+    );
+
+    expect(useListingNavigationSpy).toHaveBeenCalledWith({
+      isProductSearch: true,
+    });
   });
 });
