@@ -23,7 +23,7 @@ By default, the broadcasting feature is disabled in the Vue-Demo template. To en
 
 1. Open the `nuxt.config.ts` file in your project.
 2. Locate the broadcasting configuration setting.
-3. Set the `broadcasting` property to `true` as shown below:
+3. Set the `broadcasting` property under `runtimeConfig.public` to `true` as shown below:
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/features/broadcasting/enabling-broadcasting-in-vue-demo-template.ts" code lang="typescript" no-name -->
 
@@ -33,7 +33,9 @@ import { defineNuxtConfig } from "nuxt/config";
 export default defineNuxtConfig({
   // Other configurations...
   runtimeConfig: {
-    broadcasting: false,
+    public: {
+      broadcasting: true,
+    },
   },
 });
 ```
