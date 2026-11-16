@@ -28,8 +28,8 @@
     "@types/node": "24.19.0",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "oxfmt": "0.76.0",
-    "oxlint": "1.91.0",
+    "oxfmt": "0.78.0",
+    "oxlint": "1.93.0",
     "tailwindcss": "4.3.4",
     "typescript": "7.0.2"
   }

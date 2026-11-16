@@ -18,7 +18,7 @@ In order to follow this guide properly, we recommend that you get familiar with 
 
 - [Payment Flow in Shopware 6](https://developer.shopware.com/docs/concepts/commerce/checkout-concept/payments)
 - [Payment API](https://shopware.stoplight.io/docs/store-api/8218801e50fe5-handling-the-payment)
-  :::
+:::
 
 This guide shows how to integrate **Braintree Credit Card** payments using the [Shopware Braintree App](https://github.com/shopware/braintree-app) in a headless frontend.
 
