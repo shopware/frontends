@@ -38,7 +38,7 @@ export function CmsNoComponent({ content }: CmsNoComponentProps) {
   )}`;
 
   const aiPrompt = [
-    `Create a React server component \`${expectedComponentName}.tsx\` for a Shopware Frontends headless storefront built with @shopware/cms-base-layer-react.`,
+    `Create a React server component \`${expectedComponentName}.tsx\` for a Shopware Frontends headless storefront built with the Next.js react-starter-template.`,
     "",
     `This component renders the CMS ${kind} type: "${content.type}" (apiAlias: "${content.apiAlias}").`,
     "",
@@ -46,8 +46,8 @@ export function CmsNoComponent({ content }: CmsNoComponentProps) {
     `- Accept \`content: ${SCHEMA_BY_KIND[kind]}\`, \`ctx: CmsContext\`, \`className\` and \`style\` props (CmsComponentProps)`,
     `- Spread \`className\` and \`style\` onto the root element`,
     `- Render the data for CMS ${kind} type "${content.type}"`,
-    `- Follow patterns from the existing components in packages/cms-base-layer-react/src/components/${kind}/`,
-    `- Register it in the CMS registry under ${REGISTRY_KEY_BY_KIND[kind]}["${content.type}"] with mergeCmsRegistries`,
+    `- Follow patterns from the existing components in cms/components/${kind}/`,
+    `- Register it in the CMS registry under ${REGISTRY_KEY_BY_KIND[kind]}["${content.type}"] with mergeCmsRegistries in platform/cms/registry.ts`,
     "",
     `The full content prop for this ${kind} is:`,
     JSON.stringify(content, null, 2),

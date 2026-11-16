@@ -5,11 +5,11 @@ export default defineConfig({
     environment: "node",
     coverage: {
       enabled: true,
-      include: ["src/**/*.{ts,tsx}"],
+      include: ["cms/**/*.{ts,tsx}"],
       exclude: [
-        "src/**/*.test.{ts,tsx}",
-        "src/types/**",
-        "src/__fixtures__/**",
+        "cms/**/*.test.{ts,tsx}",
+        "cms/types/**",
+        "cms/__fixtures__/**",
       ],
     },
   },

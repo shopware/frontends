@@ -1,32 +1,27 @@
-# @shopware/cms-base-layer-react
+# cms/
 
-React Server Components for Shopware Shopping Experiences (CMS) pages. It is
-the React counterpart of `@shopware/cms-base-layer` and is consumed by
-`templates/react-starter-template`. Every section, block and element exists
-there as a Vue single-file component; this package ports them one to one, so
-read the Vue file at `packages/cms-base-layer/app/components/**` before
-writing or changing the React one.
+React Server Components for Shopware Shopping Experiences (CMS) pages, the
+React counterpart of `@shopware/cms-base-layer`. Every section, block and
+element exists there as a Vue single-file component; this directory ports
+them one to one, so read the Vue file at
+`packages/cms-base-layer/app/components/**` before writing or changing the
+React one.
 
-## What the package is
+## Entry points
 
-- It ships TypeScript source (`src/`), no build. Next.js compiles it: Turbopack
-  transpiles workspace packages on its own, and an npm install needs
-  `transpilePackages: ["@shopware/cms-base-layer-react"]`.
-- `.` (`src/index.ts`) is the server-safe API: `CmsPage`, the registry, the
-  context, helpers and the default registry. `./client` (`src/client.ts`)
+- `@/cms` (`index.ts`) is the server-safe API: `CmsPage`, the registry, the
+  context, helpers and the default registry. `@/cms/client` (`client.ts`)
   holds everything a client component may import: the actions port, listing
   navigation, translations and formatting helpers. A client component must
-  never import from `.`, because that pulls server components into the
+  never import from `@/cms`, because that pulls server components into the
   client bundle.
-- `./styles.css` carries the rich-text rules and the `.cms-element-image`
-  rules, and registers `src` with `@source ".."` (resolved relative to the
-  stylesheet) plus an `@source inline` safelist for the visibility classes
-  `getCmsLayout` builds from CMS data at runtime. The consuming app only
-  imports it after `@import "tailwindcss"` and never points `@source` into
-  `node_modules`.
-- The package never calls the Store API. Everything a component renders comes
+- `assets/styles.css` carries the rich-text rules and the
+  `.cms-element-image` rules, plus an `@source inline` safelist for the
+  visibility classes `getCmsLayout` builds from CMS data at runtime.
+  `app/globals.css` imports it after `@import "tailwindcss"`.
+- Nothing here calls the Store API. Everything a component renders comes
   from `content` (the CMS slot, block or section) or from `ctx`. Mutations go
-  through the actions port in `src/actions/CmsActionsContext.tsx`; the app
+  through the actions port in `actions/CmsActionsContext.tsx`; the app
   provides the implementation with `<CmsActionsProvider>`.
 
 ## Resolution: a registry instead of `resolveComponent`
@@ -40,11 +35,11 @@ registry.blocks["image-text"];
 registry.elements["product-listing"];
 ```
 
-`src/registry.default.ts` wires every component of this package and is the
+`registry.default.ts` wires every component here and is the
 contract for file and export names: block `image-text` lives in
-`src/components/block/CmsBlockImageText.tsx` and exports
+`components/block/CmsBlockImageText.tsx` and exports
 `CmsBlockImageText`; element `product-listing` lives in
-`src/components/element/CmsElementProductListing.tsx` and exports
+`components/element/CmsElementProductListing.tsx` and exports
 `CmsElementProductListing`. The name is `getCmsComponentName(content)`, the
 same `pascalCase("Cms-<Kind>-<type>")` rule as Vue. An app overrides a
 component with `mergeCmsRegistries(defaultCmsRegistry, { blocks: { "image-text": MyBlock } })`.
@@ -55,11 +50,11 @@ nothing in production, like `CmsGenericBlock.vue`.
 ## Component contract
 
 Every section, block and element is a function component of
-`CmsComponentProps<CONTENT>` (`src/registry.ts`):
+`CmsComponentProps<CONTENT>` (`registry.ts`):
 
-- `content` — the typed CMS node (`src/types`, ported from
+- `content` — the typed CMS node (`types/`, ported from
   `@shopware/composables`).
-- `ctx` — `CmsContext` (`src/context.ts`). It replaces Vue's `inject`:
+- `ctx` — `CmsContext` (`context.ts`). It replaces Vue's `inject`:
   `cms-block-slot-count` → `ctx.slotCount`, `cms-image-sizes` →
   `ctx.imageSizes`, `cms-section-layout` → `ctx.sectionLayout`, `urlPrefix` →
   `ctx.urlPrefix`, `cmsTranslations` → `ctx.translations`, the current
@@ -92,7 +87,7 @@ its config with `getConfigValue(content, "displayMode")`, which returns
   (it carries the registry, which is functions); pass `toClientContext(ctx)`
   or the individual values. Never pass whole entities when an id and a few
   fields are enough; the RSC payload carries every prop.
-- A client island reaches the app through `useCmsActions()` from `./client`
+- A client island reaches the app through `useCmsActions()` from `@/cms/client`
   (add to cart, wishlist, variant lookup, forms, reviews, notifications).
   Without a provider it gets `notImplementedCmsActions`, which warns and
   returns `{ ok: false }`. `findVariant` receives `parentId` next to the
@@ -101,7 +96,7 @@ its config with `getConfigValue(content, "displayMode")`, which returns
   error codes (`messageKey` + `params`) that the islands translate through
   the `errors.*` message tree, as the Vue cart notifications do.
 - Listing filters, sorting and pagination keep their state in the URL with
-  `useListingNavigation()` from `./client`. The query contract is the one the
+  `useListingNavigation()` from `@/cms/client`. The query contract is the one the
   Vue layer and the e2e suite use: `manufacturer`, `properties` and
   `categories` joined with `|`, `min-price`, `max-price`, `rating`,
   `shipping-free`, `order`, `limit`, `p`. The app re-reads the listing from
@@ -110,7 +105,7 @@ its config with `getConfigValue(content, "displayMode")`, which returns
 
 ## Images, links, prices, text
 
-- Render media with `CmsMedia` (`src/components/ui/CmsMedia.tsx`): a plain
+- Render media with `CmsMedia` (`components/ui/CmsMedia.tsx`): a plain
   `<img>` with the thumbnail `srcSet` from `getSrcSetForMedia` and `sizes`
   from `ctx.imageSizes`. There is no `next/image` and no image optimizer.
 - Internal links use `next/link`. Build hrefs with `getProductUrl` and
@@ -142,13 +137,13 @@ use `getCmsTranslate(text, { count })`.
   the Vue layer; the tokens come from `@shopware/design-tokens`.
 - Vue `<style scoped>` blocks become Tailwind classes, using arbitrary
   variants for descendant rules (`[&_.cms-element-image]:rounded-full`). Do
-  not add CSS files per component; `src/assets/styles.css` is the only
+  not add CSS files per component; `assets/styles.css` is the only
   stylesheet.
 - UnoCSS shorthands that Tailwind v4 lacks need the v4 spelling:
   `text-10` → `text-[10px]`, `border-1` → `border`, `border-3` →
   `border-[3px]`, `max-w-screen-2xl` stays (it is a `@utility` in
   `styles.css`).
-- Icons are inline SVG components under `src/components/icons/`. Carbon icons
+- Icons are inline SVG components under `components/icons/`. Carbon icons
   (`i-carbon-*` in Vue) get their path data from `@iconify-json/carbon`.
 
 ## Contracts to keep
@@ -163,7 +158,7 @@ use `getCmsTranslate(text, { count })`.
 
 ## Tooling
 
-- `pnpm --filter @shopware/cms-base-layer-react typecheck|lint|test`.
+- `pnpm --filter react-starter-template typecheck|lint|test`.
 - Tests are Vitest in the `node` environment. Pure helpers get unit tests;
   server components render through `react-dom/server` with
   `renderToReadableStream` (async components are supported there). Client
