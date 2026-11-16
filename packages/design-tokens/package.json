@@ -1,6 +1,6 @@
 {
   "name": "@shopware/design-tokens",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Shopware Frontends design tokens as TypeScript and a Tailwind CSS v4 theme",
   "author": "Shopware",
   "type": "module",
