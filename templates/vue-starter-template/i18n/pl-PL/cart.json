@@ -12,6 +12,16 @@
       "taxEstimation": "Podatki & koszty wysyłki będą obliczone przy płatności.",
       "proceedToCheckout": "Przejdź do kasy",
       "goToShoppingCart": "Przejdź do koszyka"
+    },
+    "handoff": {
+      "invalid": "Ten link do zamówienia jest nieprawidłowy.",
+      "unavailable": "Zamówienie rozpoczęte przez Twojego asystenta AI nie jest już dostępne. Sprawdź swój koszyk.",
+      "title": "Kontynuować z koszykiem asystenta?",
+      "description": "Twój asystent AI przygotował koszyk w tym sklepie. Dokończ zakup tutaj.",
+      "replaces": "Zastąpi on koszyk w tej przeglądarce, a jeśli jesteś zalogowany lub zalogowana, także Cię wyloguje.",
+      "continue": "Kontynuuj z tym koszykiem",
+      "keepCart": "Zachowaj mój koszyk",
+      "error": "Nie udało się wczytać zamówienia od Twojego asystenta AI. Spróbuj ponownie."
     }
   }
 }

@@ -13,6 +13,36 @@ const viteServerWebSocketWorkaround = {
   },
 } as Record<string, unknown>;
 
+const defaultLocale = "en-GB";
+const locales = [
+  { code: "en-GB", language: "en-GB", file: "en-GB.ts" },
+  { code: "pl-PL", language: "pl-PL", file: "pl-PL.ts" },
+  { code: "de-DE", language: "de-DE", file: "de-DE.ts" },
+];
+
+// Proxied to Shopware or carrying a session token (the confirm page's POST
+// sets the buyer's session cookie), so no layer may cache them: "isr" opts
+// out of the "/**" ISR on Vercel, "cache" of Nitro's cache on any preset, and
+// the headers of CDNs and browsers.
+const uncached = {
+  isr: false,
+  cache: false as const,
+  headers: {
+    "Cache-Control": "no-store, private",
+    "Surrogate-Control": "no-store",
+  },
+};
+
+// The confirm page carries a session token in its URL and reads the session
+// in the browser: client-rendered and never cached, under every locale prefix
+// too, since route rules do not know about i18n.
+const continuePage = { ...uncached, ssr: false };
+const continuePageRules = Object.fromEntries(
+  locales
+    .filter((locale) => locale.code !== defaultLocale)
+    .map((locale) => [`/${locale.code}/checkout/continue/**`, continuePage]),
+);
+
 export default defineNuxtConfig({
   extends: [
     "@shopware/composables/nuxt-layer",
@@ -23,7 +53,22 @@ export default defineNuxtConfig({
     shopware: {
       endpoint: "",
     },
+    agenticHandoff: {
+      // Origin of the Shopware instance running the agentic-commerce plugin.
+      // Empty: derived from the Store API endpoint by dropping "/store-api".
+      shopwareOrigin: "",
+      // Hosts this storefront answers on, comma separated, with a port where
+      // one is used ("shop.example.com,localhost:3000"), all on the sales
+      // channel of the access key. Empty trusts the request, which preview
+      // deployments need and production should not.
+      storefrontHosts: "",
+    },
     public: {
+      agenticHandoff: {
+        // Off by default. On, the continue page, the UCP proxy and the Link
+        // header are live. Turn it on once Shopware runs the plugin.
+        enabled: false,
+      },
       // Public URL of the storefront. /sitemap.xml builds its links from it.
       siteUrl: "",
       shopware: {
@@ -106,27 +151,11 @@ export default defineNuxtConfig({
   ],
   i18n: {
     strategy: "prefix_except_default",
-    defaultLocale: "en-GB",
+    defaultLocale,
     detectBrowserLanguage: false,
     langDir: "./src/langs/",
     vueI18n: "config.ts",
-    locales: [
-      {
-        code: "en-GB",
-        language: "en-GB",
-        file: "en-GB.ts",
-      },
-      {
-        code: "pl-PL",
-        language: "pl-PL",
-        file: "pl-PL.ts",
-      },
-      {
-        code: "de-DE",
-        file: "de-DE.ts",
-        language: "de-DE",
-      },
-    ],
+    locales,
   },
   icon: {
     // Avoid bundling the full @iconify-json/carbon collection into Nitro (~1.1 MB).
@@ -167,6 +196,11 @@ export default defineNuxtConfig({
     "/sitemap.xml": {
       isr: false,
     },
+    "/.well-known/ucp": uncached,
+    "/.well-known/agent-card.json": uncached,
+    "/ucp/**": uncached,
+    "/checkout/continue/**": continuePage,
+    ...continuePageRules,
     "/checkout": {
       ssr: false,
       headers: {

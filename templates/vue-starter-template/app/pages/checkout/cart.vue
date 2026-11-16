@@ -7,6 +7,20 @@ const { cartItems, subtotal, removeItemById, changeProductQuantity, isEmpty } =
   useCart();
 const localePath = useLocalePath();
 const { formatLink } = useInternationalization(localePath);
+const route = useRoute();
+const router = useRouter();
+const { pushWarning } = useNotifications();
+const { t } = useI18n();
+
+// The UCP continue route sends the buyer here when an agent's checkout link
+// cannot be used. Tell them why, then drop the parameter from the URL.
+const handoffReasons = ["invalid", "unavailable", "error"];
+onMounted(() => {
+  const reason = route.query.handoff;
+  if (typeof reason !== "string" || !handoffReasons.includes(reason)) return;
+  pushWarning(t(`cart.handoff.${reason}`), { persistent: true });
+  router.replace({ query: { ...route.query, handoff: undefined } });
+});
 
 function handleRemoveItem(id: string) {
   removeItemById(id);

@@ -121,6 +121,39 @@ The template uses Nuxt route rules with ISR for public storefront pages, and set
 
 Nuxt and Nitro emit these headers. A CDN such as Fastly still has to be configured to respect them for HTML responses, and to bypass caching for responses that set cookies or depend on session-specific SSR.
 
+## Agent checkout handoff (UCP)
+
+Agents that shop without a browser, for example through the Store API MCP server of the [agentic-commerce plugin](https://github.com/shopware/agentic-commerce), build a cart over UCP and hand the buyer a `continue_url`. The template receives that link and continues the same cart in the shop.
+
+| Path                                                          | What it does                                                                                                                                                |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/checkout/continue/{token}`                                  | Target of the UCP `continue_url`. Asks the buyer to confirm, then adopts the agent's cart as the session (`sw-context-token` cookie) and opens `/checkout`. |
+| `/.well-known/ucp`, `/.well-known/agent-card.json`, `/ucp/**` | Proxied to Shopware, so agents discover and call UCP on the shop's own domain. Shopware needs to trust this server as a proxy, see below.                   |
+
+All of it is off until `NUXT_PUBLIC_AGENTIC_HANDOFF_ENABLED=true` is set. The link opens a page that asks the buyer to continue with the agent's cart. Continuing replaces the browser's session: an existing cart goes away, and a signed-in customer is signed out. The page says so first. A link whose session is signed in to a customer account is refused, so a link cannot sign the buyer in to someone else's account. When a link cannot be used, or the shop cannot be reached, the buyer lands on the cart with a notice. The link stays usable as long as the agent's cart exists: the plugin puts the cart's own token in `continue_url` and does not issue single-use codes yet.
+
+The public demo backend has no UCP. To try it against your own Shopware:
+
+1. Enable UCP on the sales channel and point its continue URL at this shop. Shopware builds `continue_url` from that template, per sales channel:
+
+   ```bash
+   bin/console ucp:setup --sales-channel=<name> --dev
+   bin/console ucp:config:set --sales-channel=<name> --continue-url-template='http://localhost:3000/checkout/continue/{checkoutId}'
+   ```
+
+2. If Shopware answers the proxied requests with its domain-mapping error, let it trust this server as a proxy: `SYMFONY_TRUSTED_PROXIES=127.0.0.1,::1` and `SYMFONY_TRUSTED_HEADERS=x-forwarded-for,x-forwarded-host,x-forwarded-proto,x-forwarded-port` in its environment. Shopware's MCP endpoint also checks the upstream `Host` header, so the hostname of the Store API endpoint must be one of Shopware's allowed MCP hosts.
+3. Point `.env` at that instance, see above, set `NUXT_PUBLIC_AGENTIC_HANDOFF_ENABLED=true` and run `pnpm dev`.
+4. Run the end-to-end checks against it. The storefront host has to be one of the sales channel's domains, or the UCP calls behind the proxy fail. `E2E_REQUIRE_UCP=1` makes the UCP journey fail instead of skip when the shop turns out to have no UCP:
+
+   ```bash
+   cd apps/e2e-tests
+   E2E_REQUIRE_UCP=1 BASE_E2E_URL=http://localhost:3000/ pnpm exec playwright test tests/agenticHandoff --project=chromium
+   ```
+
+In production, set `NUXT_AGENTIC_HANDOFF_STOREFRONT_HOSTS` to the shop's hosts. The server warns at startup while the handoff is on and the list is empty. Shopware resolves the sales channel from the host the proxy forwards, for discovery and for every UCP call, and builds `continue_url` from that channel's template. The proxy and the continue page answer only on the listed hosts, so a request cannot pick another channel. All of those hosts must belong to the sales channel of the configured access key: discovery, the adopt route and the browser use that one channel.
+
+Behind a CDN or load balancer, Shopware sees the edge as the caller of every proxied request, so its MCP rate limit counts all agents as one. Host and protocol are read from the forwarding headers the edge sends, so the edge has to replace the ones it receives, and it has to be the only way to reach this server.
+
 ## Learn more
 
 - [Shopware Frontends documentation](https://developer.shopware.com/frontends/)

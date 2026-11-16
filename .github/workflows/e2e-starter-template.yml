@@ -15,8 +15,24 @@ concurrency:
 
 jobs:
   run-storefront-e2e:
-    name: E2E against vue-starter-template
+    name: E2E against vue-starter-template (${{ matrix.leg }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      # One leg at a time: both share the rate-limited demo backend.
+      max-parallel: 1
+      matrix:
+        include:
+          # The whole suite, with the template as it ships: no handoff.
+          - leg: defaults
+            handoff: "false"
+            specs: ""
+          # Only the handoff checks, with the handoff on. The demo backend has
+          # no UCP, so the proxied discovery answers 404 and the UCP journey
+          # skips.
+          - leg: handoff-on
+            handoff: "true"
+            specs: tests/agenticHandoff
     # Above the step timeout below, so a slow run fails on the step.
     timeout-minutes: 45
     env:
@@ -49,6 +65,7 @@ jobs:
           # The template default is the demo store domain, which this sales
           # channel rejects. Template bug, tracked in #2585.
           NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL: https://demo-frontends.shopware.store/figma
+          NUXT_PUBLIC_AGENTIC_HANDOFF_ENABLED: ${{ matrix.handoff }}
           # Records Store API calls made while rendering, which Playwright
           # cannot see. Test only.
           SSR_NETWORK_LOG: ${{ github.workspace }}/apps/e2e-tests/diagnostics/ssr-network.jsonl
@@ -86,7 +103,7 @@ jobs:
           # pnpm forwards these straight through; `--` would swallow them.
           # One worker: the specs share one rate-limited backend, so parallel
           # workers starve each other. Measured 5 passing at 4 workers vs 8.
-          pnpm run test:e2e --project=chromium --reporter=github,html --workers=1
+          pnpm run test:e2e ${{ matrix.specs }} --project=chromium --reporter=github,html --workers=1
 
       # Nitro logs neither, so without this a backend problem is just a timeout.
       - name: Report network failures
@@ -99,7 +116,7 @@ jobs:
         if: always()
         run: |
           cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
-          `test:e2e` against vue-starter-template: **${{ steps.e2e.outcome }}**
+          `test:e2e` against vue-starter-template (${{ matrix.leg }}): **${{ steps.e2e.outcome }}**
 
           Scheduled only, so nothing is gated on this. A failure notifies
           Slack through failed-job-check.yml. The suite is expected to pass;
@@ -115,7 +132,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.leg }}
           # Self-contained: the html reporter already bundles traces and viewer.
           path: |
             apps/e2e-tests/playwright-report
