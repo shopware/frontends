@@ -90,8 +90,6 @@ For a page object to be as readable as possible, you must follow the below struc
 ```ts
 import type { Locator, Page } from "@playwright/test";
 
-import { readonly } from "#imports";
-
 export class LoginForm {
   // Define selectors.
   readonly page: Page;
@@ -169,7 +167,7 @@ test("failed login", async ({ page }) => {
   await Promise.all([await page.click("[data-testid='login-submit-button']")]);
 
   await expect(
-    page.locator("data-testid='login-errors-container']"),
+    page.locator("[data-testid='login-errors-container']"),
   ).toBeVisible();
 });
 ```

@@ -1,7 +1,5 @@
 import type { Locator, Page } from "@playwright/test";
 
-import { readonly } from "#imports";
-
 export class LoginForm {
   // Define selectors.
   readonly page: Page;

@@ -229,7 +229,7 @@ export default defineNuxtConfig({
 
 <!-- /automd -->
 
-The `vue-starter-template` uses a shorter 60-minute window. The source comment captures the trade-off: increase it for mostly-static storefronts, decrease it for frequently updated content.
+The `vue-starter-template` uses a 24-hour window, as shown above. The following example uses a shorter 60-minute window. Its comment captures the trade-off: increase it for mostly-static storefronts, decrease it for frequently updated content.
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/isr-incremental-static-regeneration-2.ts" code lang="ts" no-name -->
 

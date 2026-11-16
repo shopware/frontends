@@ -46,12 +46,12 @@ Example of request's payload with media association included, to avoid an empty 
 
 Media objects can be used in many places, such as:
 
-- CMS objects (containing [CmsElementImage](https://github.com/shopware/frontends/blob/main/packages/composables/src/types/cmsElementTypes.ts#L71) element)
+- CMS objects (containing [CmsElementImage](https://github.com/shopware/frontends/blob/main/packages/composables/src/types/cmsElementTypes.ts#L76) element)
 - Product (cover image, image gallery, attributes in type media, etc.)
 - Category (main image, ...)
 - ...
 
-Regardless the outer container (see [ProductMedia](https://github.com/shopware/frontends/blob/main/packages/types/shopware-6-client/models/content/product/ProductMedia.d.ts#L8) as example) an image object can be wrapped with, the inner structure is reflected in type definition at [Media](https://github.com/shopware/frontends/blob/main/packages/types/shopware-6-client/models/content/media/Media.d.ts#L23)
+Regardless the outer container (see [ProductMedia](https://github.com/shopware/frontends/blob/40d8fbdb6eaf35cf21756ccb4c875784eb4677cf/packages/api-client/api-types/storeApiTypes.d.ts#L4765) as example) an image object can be wrapped with, the inner structure is reflected in type definition at [Media](https://github.com/shopware/frontends/blob/40d8fbdb6eaf35cf21756ccb4c875784eb4677cf/packages/api-client/api-types/storeApiTypes.d.ts#L2342)
 
 Let's have a look what's inside:
 

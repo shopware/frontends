@@ -61,21 +61,21 @@ The composables are a set of Vue.js composition functions that can be used in an
 <div class="flex mt--4 mb-4 gap-2">
     <img src="../.assets/framework-icons/typescript.png" alt="This package depends on Typescript" title="This package depends on Typescript" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" />
     <img src="../.assets/framework-icons/vue.png" alt="This package depends on Vue.js 3" title="This package depends on Vue.js 3" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" />
-    <img src="../.assets/framework-icons/nuxt.png" alt="This package depends on Nuxt 3" title="This package depends on Nuxt 3" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" /> | <a href="https://www.npmjs.com/package/@shopware/nuxt-module" target="_blank">@shopware/nuxt-module</a>
+    <img src="../.assets/framework-icons/nuxt.png" alt="This package depends on Nuxt 4" title="This package depends on Nuxt 4" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" /> | <a href="https://www.npmjs.com/package/@shopware/nuxt-module" target="_blank">@shopware/nuxt-module</a>
 </div>
 
-The Nuxt 3 module allows you to set up a Nuxt 3 project with Shopware Frontends. It provides the [composables](#composables) and [api-client](#api-client) packages.
+The Nuxt module allows you to set up a Nuxt project with Shopware Frontends. It provides the [composables](#composables) and [api-client](#api-client) packages.
 
 If you want to use these packages with a different Vue.js framework, see the guide for using Shopware Frontends in a [custom project](../introduction/templates/custom-vue-project).
 
-<PageRef page="../packages/nuxt-module.html" title="Nuxt3 Module Reference" sub="Documentation about setup and basic usage" />
+<PageRef page="../packages/nuxt-module.html" title="Nuxt Module Reference" sub="Documentation about setup and basic usage" />
 
 ## cms-base
 
 <div class="flex mt--4 mb-4 gap-2">
     <img src="../.assets/framework-icons/typescript.png" alt="This package depends on Typescript" title="This package depends on Typescript" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" />
     <img src="../.assets/framework-icons/vue.png" alt="This package depends on Vue.js 3" title="This package depends on Vue.js 3" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" />
-    <img src="../.assets/framework-icons/nuxt.png" alt="This package depends on Nuxt 3" title="This package depends on Nuxt 3" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" />
+    <img src="../.assets/framework-icons/nuxt.png" alt="This package depends on Nuxt 4" title="This package depends on Nuxt 4" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" />
     <img src="../.assets/framework-icons/tailwind.png" alt="This package depends on UnoCSS / Tailwind.css" title="This package depends on UnoCSS / Tailwind.css" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" /> | <a href="https://www.npmjs.com/package/@shopware/cms-base-layer" target="_blank">@shopware/cms-base-layer</a>
 </div>
 
