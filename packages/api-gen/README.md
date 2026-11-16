@@ -424,9 +424,15 @@ await split({
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.5.3
+### Latest changes: 1.6.0
+
+### Minor Changes
+
+- [#2874](https://github.com/shopware/frontends/pull/2874) [`411d673`](https://github.com/shopware/frontends/commit/411d67334615c301d61ea75ce6a9aa7b89424f3d) Thanks [@patzick](https://github.com/patzick)! - Generate open string enums with autocompletion. A schema that combines string `enum` or `const` branches with a plain `string` branch in `anyOf` (`oneOf` is handled the same way) now becomes `"invoice" | "storno" | (string & {})` instead of a union that TypeScript collapses to `string`.
+
+  Regenerated types can narrow: a `Record` or mapped type keyed by such a field now requires every known value, so use `Partial<Record<…>>` there.
 
 ### Patch Changes
 
-- Updated dependencies [[`44ece9d`](https://github.com/shopware/frontends/commit/44ece9dac2e4d0248c2270f7eff496c258632f5b), [`4b43e64`](https://github.com/shopware/frontends/commit/4b43e64a8d78be6eca1f8d9c24140e046193af41)]:
-  - @shopware/api-client@1.7.0
+- Updated dependencies [[`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789)]:
+  - @shopware/api-client@1.8.0
