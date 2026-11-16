@@ -1,8 +1,8 @@
 import "server-only";
-import type { ListingQueryParams } from "@shopware/cms-base-layer-react";
 import { cacheLife, cacheTag } from "next/cache";
 
 import type { Schemas } from "#shopware";
+import type { ListingQueryParams } from "@/cms";
 
 import { createShopwareClient } from "../client";
 import { notFoundOn404 } from "../errors";

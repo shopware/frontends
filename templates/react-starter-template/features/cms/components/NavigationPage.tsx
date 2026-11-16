@@ -1,11 +1,7 @@
-import {
-  CmsPage,
-  buildListingQueryParams,
-  hasListingQuery,
-} from "@shopware/cms-base-layer-react";
-import type { ListingSearchParams } from "@shopware/cms-base-layer-react";
 import { getProductListingFromCmsPage } from "@shopware/helpers";
 
+import { CmsPage, buildListingQueryParams, hasListingQuery } from "@/cms";
+import type { ListingSearchParams } from "@/cms";
 import { createStorefrontCmsContext } from "@/platform/cms/context";
 import { readCategory } from "@/platform/shopware/reads/category";
 import { readNavigation } from "@/platform/shopware/reads/navigation";

@@ -1,12 +1,13 @@
 import "server-only";
 import { encodeForQuery } from "@shopware/api-client/helpers";
-import type { CmsRouteName } from "@shopware/cms-base-layer-react";
 import {
   getFrontendRouteName,
   getRouteFromPathInfo,
   isTechnicalPath,
 } from "@shopware/helpers";
 import { cacheLife, cacheTag } from "next/cache";
+
+import type { CmsRouteName } from "@/cms";
 
 import { createShopwareClient } from "../client";
 import { readSalesChannelContext } from "./context";

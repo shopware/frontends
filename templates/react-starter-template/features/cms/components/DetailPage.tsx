@@ -1,5 +1,4 @@
-import { CmsPage } from "@shopware/cms-base-layer-react";
-
+import { CmsPage } from "@/cms";
 import { createStorefrontCmsContext } from "@/platform/cms/context";
 import { readProductDetail } from "@/platform/shopware/reads/product";
 

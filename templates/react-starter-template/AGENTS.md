@@ -11,6 +11,8 @@ stubs. `supportLevel` in `templates/manifest.json` is authoritative.
   Nothing outside it creates a client.
 - `features/<area>/components/` holds the UI of one area. A component imports a
   read from `platform/shopware/reads/` and never calls the Store API itself.
+- `cms/` renders Shopping Experiences pages, the port of `cms-base-layer`.
+  `cms/AGENTS.md` holds its rules.
 
 ## Store API
 
@@ -78,13 +80,13 @@ stubs. `supportLevel` in `templates/manifest.json` is authoritative.
 - `skipTrailingSlashRedirect` is on because Shopware category paths end with
   `/`. The catch-all receives the segments without that slash, which is why
   the SEO lookup tries both spellings.
-- CMS pages render through `@shopware/cms-base-layer-react`: `CmsPage` with a
-  `CmsContext` built by `platform/cms/context.ts` (`createStorefrontCmsContext`,
-  locale `en-GB`, currency from `/context`). Override a CMS component in
-  `platform/cms/registry.ts` with `mergeCmsRegistries`, never by editing the
-  package. `app/globals.css` imports the package stylesheet, which registers
-  the package's `src` with `@source` itself; without that import Tailwind
-  drops the component classes.
+- CMS pages render through `cms/` (`@/cms`): `CmsPage` with a `CmsContext`
+  built by `platform/cms/context.ts` (`createStorefrontCmsContext`, locale
+  `en-GB`, currency from `/context`). To replace a default component, register
+  your own in `platform/cms/registry.ts` with `mergeCmsRegistries`.
+  `app/globals.css` imports `cms/assets/styles.css`, which carries the
+  rich-text rules and the `@source inline` safelist for the visibility classes
+  built from CMS data; without that import those classes are dropped.
 - Listing state lives in the URL (`manufacturer`, `properties`, `min-price`,
   `max-price`, `rating`, `shipping-free`, `order`, `limit`, `p`). When those
   params are present and the category layout contains a product listing,
@@ -120,7 +122,5 @@ stubs. `supportLevel` in `templates/manifest.json` is authoritative.
 - The template reads `@shopware/design-tokens` from its build output, and
   `unbuild --stub` does not work in Next.js client bundles. After changing the
   package, rebuild it: `pnpm --filter @shopware/design-tokens build`.
-  `@shopware/cms-base-layer-react` ships source, so its edits are live.
-- `@shopware/design-tokens` and `@shopware/cms-base-layer-react` are linked
-  with `workspace:*` until they are published, which is why the template is
-  not scaffoldable yet.
+- `@shopware/design-tokens` is linked with `workspace:*` until it is
+  published, which is why the template is not scaffoldable yet.

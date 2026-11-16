@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "@shopware/design-tokens/tailwind.css";
-@import "@shopware/cms-base-layer-react/styles.css";
+@import "../cms/assets/styles.css";
 
 @theme inline {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;

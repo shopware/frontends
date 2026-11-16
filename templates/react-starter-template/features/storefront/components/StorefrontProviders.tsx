@@ -1,13 +1,11 @@
 "use client";
 
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
-import type {
-  CmsActions,
-  CmsNotification,
-} from "@shopware/cms-base-layer-react/client";
 import Link from "next/link";
 import { useCallback, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
+
+import { CmsActionsProvider } from "@/cms/client";
+import type { CmsActions, CmsNotification } from "@/cms/client";
 
 const NOT_WIRED =
   "Cart, wishlist and forms are not connected to a session yet.";

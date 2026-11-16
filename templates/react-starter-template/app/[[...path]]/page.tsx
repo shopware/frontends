@@ -1,4 +1,3 @@
-import type { ListingSearchParams } from "@shopware/cms-base-layer-react";
 import {
   getCategoryImageUrl,
   getCmsMeta,
@@ -9,6 +8,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import type { Schemas } from "#shopware";
+import type { ListingSearchParams } from "@/cms";
 import { CmsLayoutPage } from "@/features/cms/components/CmsLayoutPage";
 import { DetailPage } from "@/features/cms/components/DetailPage";
 import { LandingPage } from "@/features/cms/components/LandingPage";
