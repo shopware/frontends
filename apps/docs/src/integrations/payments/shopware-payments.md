@@ -57,7 +57,7 @@ Load `/headless/latest/` for the newest release. **0.0.4** is the minimum for th
 
 **Note:** While the major version remains `0`, minor releases may introduce breaking changes.
 
-`data-shop-id` is Shopware's app shop id (`core.app.shopIdV2` id, or `core.app.shopId` on older versions). `init({ shopId })` overrides the attribute when both are set.
+`data-shop-id` is this shop's app shop id. A logged-in customer can get it from the Store API: send `POST /store-api/app-system/ShopwarePayments/generate-token`. The response includes `shopId`. The same request returns a JWT for the app server, which the page does not need. Server operators can also read it with `bin/console system:config:get core.app.shopIdV2` and copy the `id` value. Shops that still store the previous key return it from `bin/console system:config:get core.app.shopId`; copy `value` from that output. `init({ shopId })` overrides the attribute when both are set.
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/shopware-payments/load-the-library.html" code lang="html" no-name -->
 
@@ -180,12 +180,13 @@ export { cartCheckout, placedOrderCheckout };
 
 <!-- /automd -->
 
-`placedOrderCheckout` wraps a Shopware order the page already has, such as a payment started again from the customer account. Pass that object as `checkout`. That repeated payment is usually a failed or cancelled transaction. Store API `handle-payment` only pays a transaction that is still `open`. Any other state returns no `redirectUrl` and never calls ShopwarePayments, so the shopper lands on `finishUrl` and the approval is not captured. `onApprovePlacedOrder` calls `orderSetPayment post /order/payment` with the ShopwarePayments method id before `handlePayment()`. Core reopens the last transaction when the method and amount still match, and otherwise adds a new open transaction. The method has to allow payment after the order. The same handler fits the other payment surfaces. Wallet and card setup reject subscription data with `UNSUPPORTED_CAPABILITY`.
+`placedOrderCheckout` wraps a Shopware order the page already has, such as a payment started again from the customer account. Pass that order object as `checkout`. The library's create-order request requires `currency.isoCode`, `billingAddress.country.iso`, `deliveries[].shippingOrderAddress.country.iso`, `lineItems`, `transactions`, and `orderCustomer`. The default order tree in `useOrderDetails()` loads line items, transactions, and deliveries, but not `currency` or any address country. `loadPlacedOrder` in the example names `currency`, `orderCustomer`, `billingAddress.country`, and `deliveries.shippingOrderAddress.country`. `addresses.country` fills the address list the detail page reads, so it does not satisfy the billing check. That repeated payment is usually a failed or cancelled transaction. Store API `handle-payment` only pays a transaction that is still `open`. Any other state returns no `redirectUrl` and never calls ShopwarePayments, so the shopper lands on `finishUrl` and the approval is not captured. `onApprovePlacedOrder` calls `orderSetPayment post /order/payment` with the ShopwarePayments method id before `handlePayment()`. Core reopens the last transaction when the method and amount still match, and otherwise adds a new open transaction. The method has to allow payment after the order. The same handler fits the other payment surfaces. Wallet and card setup reject subscription data with `UNSUPPORTED_CAPABILITY`.
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/shopware-payments/placed-order-approval.ts" code lang="ts" no-name -->
 
 ```ts
 import { useShopwareContext } from "#imports";
+import type { Schemas } from "#shopware";
 
 import { placedOrderCheckout } from "./checkout";
 import { shopwarePayments } from "./init";
@@ -225,7 +226,7 @@ async function onApprovePlacedOrder(orderId: string, result: ApprovalResult) {
   }
 }
 
-async function payExistingOrder(order: { id: string }) {
+async function payExistingOrder(order: Schemas["Order"]) {
   const element = requireElement("paypal-button");
 
   await shopwarePayments.buttons({
@@ -237,7 +238,47 @@ async function payExistingOrder(order: { id: string }) {
   });
 }
 
-export { onApprovePlacedOrder, payExistingOrder };
+// Reads the order with the associations the create-order validation needs.
+// The default detail tree has no currency and no address countries, so they
+// are named here. billingAddress.country must be named on its own:
+// addresses.country only fills the address list, not order.billingAddress.
+async function loadPlacedOrder(orderId: string): Promise<Schemas["Order"]> {
+  const response = await apiClient.invoke("readOrder post /order", {
+    body: {
+      ids: [orderId],
+      associations: {
+        currency: {},
+        orderCustomer: {},
+        lineItems: {},
+        transactions: {},
+        billingAddress: {
+          associations: {
+            country: {},
+          },
+        },
+        deliveries: {
+          associations: {
+            shippingOrderAddress: {
+              associations: {
+                country: {},
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const order = response.data.orders?.elements?.[0];
+
+  if (!order) {
+    throw new Error(`Order ${orderId} was not found`);
+  }
+
+  return order;
+}
+
+export { loadPlacedOrder, onApprovePlacedOrder, payExistingOrder };
 ```
 
 <!-- /automd -->

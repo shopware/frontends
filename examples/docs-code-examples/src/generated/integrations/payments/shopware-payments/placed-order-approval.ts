@@ -1,4 +1,5 @@
 import { useShopwareContext } from "#imports";
+import type { Schemas } from "#shopware";
 
 import { placedOrderCheckout } from "./checkout";
 import { shopwarePayments } from "./init";
@@ -38,7 +39,7 @@ async function onApprovePlacedOrder(orderId: string, result: ApprovalResult) {
   }
 }
 
-async function payExistingOrder(order: { id: string }) {
+async function payExistingOrder(order: Schemas["Order"]) {
   const element = requireElement("paypal-button");
 
   await shopwarePayments.buttons({
@@ -50,4 +51,44 @@ async function payExistingOrder(order: { id: string }) {
   });
 }
 
-export { onApprovePlacedOrder, payExistingOrder };
+// Reads the order with the associations the create-order validation needs.
+// The default detail tree has no currency and no address countries, so they
+// are named here. billingAddress.country must be named on its own:
+// addresses.country only fills the address list, not order.billingAddress.
+async function loadPlacedOrder(orderId: string): Promise<Schemas["Order"]> {
+  const response = await apiClient.invoke("readOrder post /order", {
+    body: {
+      ids: [orderId],
+      associations: {
+        currency: {},
+        orderCustomer: {},
+        lineItems: {},
+        transactions: {},
+        billingAddress: {
+          associations: {
+            country: {},
+          },
+        },
+        deliveries: {
+          associations: {
+            shippingOrderAddress: {
+              associations: {
+                country: {},
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const order = response.data.orders?.elements?.[0];
+
+  if (!order) {
+    throw new Error(`Order ${orderId} was not found`);
+  }
+
+  return order;
+}
+
+export { loadPlacedOrder, onApprovePlacedOrder, payExistingOrder };
