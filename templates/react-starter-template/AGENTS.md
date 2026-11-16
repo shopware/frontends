@@ -54,10 +54,13 @@ stubs. `supportLevel` in `templates/manifest.json` is authoritative.
 - `app/[[...path]]/page.tsx` resolves every storefront URL in a server
   component, the home page included: `/` maps to the sales channel's
   navigation category, technical paths (`/navigation/{id}`, `/detail/{id}`,
-  `/landingPage/{id}`) are parsed with `getRouteFromPathInfo`, everything
-  else is looked up in `/seo-url` with both the plain path and the path with
-  a trailing slash. The result is dispatched to
-  `features/cms/components/{NavigationPage,DetailPage,LandingPage}`.
+  `/landingPage/{id}`, `/page/cms/{id}`) are parsed with
+  `getRouteFromPathInfo`, everything else is looked up in `/seo-url` with both
+  the plain path and the path with a trailing slash. The result is dispatched
+  to `features/cms/components/{NavigationPage,DetailPage,LandingPage,CmsLayoutPage}`.
+  `/page/cms/{id}` is a standalone CMS layout (`frontend.cms.page.full`), such
+  as a legal page, which has no SEO URL; it is marked `noindex`, as in the
+  Storefront.
   `generateMetadata` in the same file builds title, description, keywords
   and Open Graph tags from the resolved entity; the home page keeps the
   layout's default title.

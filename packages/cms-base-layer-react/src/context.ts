@@ -11,6 +11,7 @@ export type CmsRouteName =
   | "frontend.navigation.page"
   | "frontend.detail.page"
   | "frontend.landing.page"
+  | "frontend.cms.page.full"
   | "frontend.account.customer-group-registration.page";
 
 export type CmsSectionLayout = "default" | "sidebar";

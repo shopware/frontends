@@ -9,11 +9,13 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import type { Schemas } from "#shopware";
+import { CmsLayoutPage } from "@/features/cms/components/CmsLayoutPage";
 import { DetailPage } from "@/features/cms/components/DetailPage";
 import { LandingPage } from "@/features/cms/components/LandingPage";
 import { NavigationPage } from "@/features/cms/components/NavigationPage";
 import { PageSkeleton } from "@/features/cms/components/PageSkeleton";
 import { readCategory } from "@/platform/shopware/reads/category";
+import { readCmsPage } from "@/platform/shopware/reads/cmsPage";
 import { readLandingPage } from "@/platform/shopware/reads/landingPage";
 import { readProductDetail } from "@/platform/shopware/reads/product";
 import { resolveSeoPath } from "@/platform/shopware/reads/seoUrl";
@@ -26,6 +28,7 @@ type CatchAllPageProps = {
 
 type CmsPageEntity =
   | Schemas["Category"]
+  | Schemas["CmsPage"]
   | Schemas["LandingPage"]
   | Schemas["Product"];
 
@@ -48,6 +51,8 @@ async function ResolvedPage({ params, searchParams }: CatchAllPageProps) {
       return <DetailPage productId={route.foreignKey} />;
     case "frontend.landing.page":
       return <LandingPage landingPageId={route.foreignKey} />;
+    case "frontend.cms.page.full":
+      return <CmsLayoutPage cmsPageId={route.foreignKey} />;
     default:
       notFound();
   }
@@ -63,6 +68,8 @@ async function readRouteEntity(
       return (await readProductDetail(route.foreignKey)).product;
     case "frontend.landing.page":
       return readLandingPage(route.foreignKey);
+    case "frontend.cms.page.full":
+      return readCmsPage(route.foreignKey);
     default:
       return null;
   }
@@ -90,6 +97,7 @@ function toMetadata(entity: CmsPageEntity): Metadata {
     title,
     description,
     keywords: meta.keywords || undefined,
+    robots: entity.apiAlias === "cms_page" ? { index: false } : undefined,
     openGraph: {
       type: "website",
       title,
