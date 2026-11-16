@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Schemas } from "#shopware";
 
 import type { BoxLayout } from "../../types";
+import { getProductPrice } from "./productPrice";
 import { SwListingProductPrice } from "./SwListingProductPrice";
 import type { ProductPriceContext } from "./SwListingProductPrice";
 import { SwProductCardAddToCartButton } from "./SwProductCardActions";
@@ -24,7 +25,6 @@ export type SwProductCardDetailsProps = {
   productName: string | null;
   productManufacturer?: string | null;
   translations: SwProductCardDetailsTranslations;
-  fromPrice?: number;
   productLink: string;
   cartLink: string;
   layoutType?: BoxLayout;
@@ -39,12 +39,13 @@ export function SwProductCardDetails({
   productName,
   productManufacturer,
   translations,
-  fromPrice,
   productLink,
   cartLink,
   layoutType,
 }: SwProductCardDetailsProps) {
   const isMinimalLayout = layoutType === "minimal";
+  const showBuyButton =
+    !getProductPrice(product).displayFrom && (product.childCount ?? 0) <= 0;
 
   return (
     <div className="self-stretch p-2 flex flex-col justify-between items-start gap-4 flex-1">
@@ -82,11 +83,7 @@ export function SwProductCardDetails({
         )}
       </div>
 
-      {isMinimalLayout ? null : fromPrice ? (
-        <Link href={productLink} className={DETAILS_LINK_CLASS}>
-          <span>{translations.product.details}</span>
-        </Link>
-      ) : (
+      {isMinimalLayout ? null : showBuyButton ? (
         <SwProductCardAddToCartButton
           productId={product.id}
           productName={productName ?? ""}
@@ -99,6 +96,10 @@ export function SwProductCardDetails({
             errors: translations.errors,
           }}
         />
+      ) : (
+        <Link href={productLink} className={DETAILS_LINK_CLASS}>
+          <span>{translations.product.details}</span>
+        </Link>
       )}
     </div>
   );

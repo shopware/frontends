@@ -8,10 +8,6 @@ packages:
 minimumReleaseAge: 4320 ## 3 days
 minimumReleaseAgeExclude:
   - "@shopware/*"
-  - "@vitest/coverage-v8@5.1.0"
-  - "@vitest/mocker@5.1.0"
-  - "@vitest/spy@5.1.0"
-  - vitest@5.1.0
 
 overrides:
   "@vercel/blob>undici": "^6.29.1"

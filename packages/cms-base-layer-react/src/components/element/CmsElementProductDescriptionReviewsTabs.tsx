@@ -207,7 +207,10 @@ export function CmsElementProductDescriptionReviewsTabs({
           </div>
         ) : null}
         {reviewAdded ? (
-          <div className="mt-4 p-3 bg-surface-surface-container border border-states-success rounded-md flex gap-2 md:gap-3 items-center">
+          <div
+            data-testid="review-success-message"
+            className="mt-4 p-3 bg-surface-surface-container border border-states-success rounded-md flex gap-2 md:gap-3 items-center"
+          >
             <div className="w-5 h-5 text-states-success flex-shrink-0">
               <CheckCircleIcon width={20} height={20} aria-label="Success" />
             </div>

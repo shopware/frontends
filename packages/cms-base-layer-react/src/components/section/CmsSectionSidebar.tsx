@@ -1,7 +1,7 @@
 import { cx } from "../../helpers/cx";
 import { getPositionContent } from "../../helpers/slots";
 import type { CmsComponentProps } from "../../registry";
-import type { CmsSectionSidebar as CmsSectionSidebarContent } from "../../types";
+import type { CmsSectionSidebarContent } from "../../types";
 import { CmsGenericBlock } from "../core/CmsGenericBlock";
 
 export function CmsSectionSidebar({

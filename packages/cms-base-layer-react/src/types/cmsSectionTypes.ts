@@ -8,6 +8,9 @@ export type CmsSectionBlock<
   blocks: Array<Schemas["CmsBlock"] & { sectionPosition: SECTION_POSITIONS }>;
 };
 
-export type CmsSectionDefault = CmsSectionBlock<"default", "main">;
+export type CmsSectionDefaultContent = CmsSectionBlock<"default", "main">;
 
-export type CmsSectionSidebar = CmsSectionBlock<"sidebar", "sidebar" | "main">;
+export type CmsSectionSidebarContent = CmsSectionBlock<
+  "sidebar",
+  "sidebar" | "main"
+>;

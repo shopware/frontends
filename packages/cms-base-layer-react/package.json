@@ -54,12 +54,12 @@
   "devDependencies": {
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "@vitest/coverage-v8": "5.1.0",
+    "@vitest/coverage-v8": "5.0.5",
     "next": "16.4.5",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "tsconfig": "workspace:*",
     "typescript": "5.9.3",
-    "vitest": "5.1.0"
+    "vitest": "5.0.5"
   }
 }

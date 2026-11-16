@@ -1,5 +1,4 @@
 import {
-  getProductFromPrice,
   getProductManufacturerName,
   getProductName,
   getProductUrl,
@@ -58,7 +57,6 @@ export function SwProductCard({
     ctx.translations,
     translationDefaults,
   );
-  const fromPrice = getProductFromPrice(product);
   const productName = getProductName({ product });
   const productManufacturer = getProductManufacturerName(product);
   const productLink = prefixUrl(getProductUrl(product), ctx.urlPrefix);
@@ -84,7 +82,6 @@ export function SwProductCard({
         productName={productName}
         productManufacturer={productManufacturer}
         translations={translations}
-        fromPrice={fromPrice}
         productLink={productLink}
         cartLink={cartLink}
         layoutType={layoutType}

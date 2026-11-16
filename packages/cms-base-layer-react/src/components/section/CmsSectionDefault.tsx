@@ -1,7 +1,7 @@
 import { cx } from "../../helpers/cx";
 import { getCmsLayout } from "../../helpers/layout";
 import type { CmsComponentProps } from "../../registry";
-import type { CmsSectionDefault as CmsSectionDefaultContent } from "../../types";
+import type { CmsSectionDefaultContent } from "../../types";
 import { CmsGenericBlock } from "../core/CmsGenericBlock";
 
 export function CmsSectionDefault({

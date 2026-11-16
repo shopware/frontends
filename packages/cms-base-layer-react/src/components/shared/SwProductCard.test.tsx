@@ -104,6 +104,30 @@ describe("SwProductCard", () => {
     expect(html).not.toContain('data-testid="add-to-cart-button"');
   });
 
+  it("shows the details link instead of add to cart for a variant parent", async () => {
+    const html = await renderToHtml(
+      <SwProductCard product={product({ childCount: 2 })} ctx={ctx} />,
+    );
+
+    expect(html).toContain("Details");
+    expect(html).toContain('href="/de-DE/Blue-Shirt/SW10001"');
+    expect(html).not.toContain('data-testid="add-to-cart-button"');
+  });
+
+  it("shows add to cart for a single calculated price", async () => {
+    const html = await renderToHtml(
+      <SwProductCard
+        product={product({
+          calculatedPrices: [{ unitPrice: 15, totalPrice: 15, quantity: 1 }],
+        })}
+        ctx={ctx}
+      />,
+    );
+
+    expect(html).toContain('data-testid="add-to-cart-button"');
+    expect(html).not.toContain("Details");
+  });
+
   it("renders the rating instead of the price in the minimal layout", async () => {
     const html = await renderToHtml(
       <SwProductCard

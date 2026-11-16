@@ -33,6 +33,21 @@ describe("SwPagination", () => {
     expect(html).toContain(">10</button>");
   });
 
+  it("marks every page button with its page number for the e2e page objects", async () => {
+    const html = await renderToHtml(
+      <SwPagination total={10} current={5} onChangePage={() => {}} />,
+    );
+
+    const pages = [
+      ...html.matchAll(
+        /data-testid="listing-pagination-page-button" data-page="(\d+)"/g,
+      ),
+    ].map((match) => match[1]);
+    expect(pages).toEqual(["1", "4", "5", "6", "10"]);
+    expect(html).toContain('data-testid="listing-pagination-previous-button"');
+    expect(html).toContain('data-testid="listing-pagination-next-button"');
+  });
+
   it("rounds the right corner on the last page", async () => {
     const html = await renderToHtml(
       <SwPagination total={2} current={2} onChangePage={() => {}} />,

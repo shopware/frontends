@@ -52,6 +52,7 @@ export function SwPagination({
         <button
           type="button"
           className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-outline-outline-variant bg-white text-sm font-medium text-surface-on-surface-variant hover:bg-surface-surface-container-low"
+          data-testid="listing-pagination-previous-button"
           onClick={() => onChangePage(current - 1)}
         >
           <span className="sr-only">{t.listing.previous}</span>
@@ -66,6 +67,8 @@ export function SwPagination({
         <button
           type="button"
           className={PAGE_BUTTON_CLASS}
+          data-testid="listing-pagination-page-button"
+          data-page={1}
           onClick={() => onChangePage(1)}
         >
           <span className="sr-only">Page </span>1
@@ -80,6 +83,8 @@ export function SwPagination({
             current === 2 &&
               "rounded-l-md border border-outline-outline-variant",
           )}
+          data-testid="listing-pagination-page-button"
+          data-page={current - 1}
           onClick={() => onChangePage(current - 1)}
         >
           <span className="sr-only">Page </span>
@@ -89,6 +94,8 @@ export function SwPagination({
       <button
         type="button"
         aria-current="page"
+        data-testid="listing-pagination-page-button"
+        data-page={current}
         className={cx(
           "bg-surface-surface-primary border-brand-primary text-brand-primary relative inline-flex items-center px-4 py-2 border text-sm font-medium",
           current - 1 >= 1
@@ -109,6 +116,8 @@ export function SwPagination({
             total === current + 1 &&
               "rounded-r-md border border-outline-outline-variant",
           )}
+          data-testid="listing-pagination-page-button"
+          data-page={current + 1}
           onClick={() => onChangePage(current + 1)}
         >
           <span className="sr-only">Page </span>
@@ -120,6 +129,8 @@ export function SwPagination({
         <button
           type="button"
           className={PAGE_BUTTON_CLASS}
+          data-testid="listing-pagination-page-button"
+          data-page={total}
           onClick={() => onChangePage(total)}
         >
           {total}
@@ -129,6 +140,7 @@ export function SwPagination({
         <button
           type="button"
           className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-outline-outline-variant bg-white text-sm font-medium text-surface-on-surface-variant hover:bg-surface-surface-container-low"
+          data-testid="listing-pagination-next-button"
           onClick={() => onChangePage(current + 1)}
         >
           <span className="sr-only">{t.listing.next}</span>
