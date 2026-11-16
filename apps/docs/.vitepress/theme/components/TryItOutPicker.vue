@@ -238,8 +238,7 @@ async function copyAiPrompt() {
         <h3 class="try-it-out-section-title">Or: delegate to an AI agent</h3>
         <p class="try-it-out-ai-hint">
           Paste this prompt into Claude, Cursor, Copilot, or any code assistant.
-          The prompt is tailored to <strong>{{ template.displayName }}</strong
-          >.
+          The prompt is tailored to <strong>{{ template.displayName }}</strong>.
         </p>
       </div>
       <pre
