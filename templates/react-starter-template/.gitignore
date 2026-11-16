@@ -18,6 +18,3 @@ node_modules
 .env.*
 !.env.example
 !.env.template
-
-# Test coverage
-coverage

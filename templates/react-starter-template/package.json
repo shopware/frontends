@@ -34,7 +34,6 @@
     "@types/node": "24.19.0",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "@vitest/coverage-v8": "5.0.5",
     "oxfmt": "0.76.0",
     "oxlint": "1.91.0",
     "tailwindcss": "4.3.4",

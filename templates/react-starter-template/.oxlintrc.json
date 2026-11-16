@@ -29,5 +29,5 @@
       }
     }
   ],
-  "ignorePatterns": [".next", "next-env.d.ts", "node_modules", "coverage"]
+  "ignorePatterns": [".next", "next-env.d.ts", "node_modules"]
 }

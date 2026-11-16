@@ -1,4 +1,3 @@
-@source "..";
 @source inline("max-md:hidden md:max-lg:hidden lg:hidden");
 
 @utility max-w-screen-2xl {
