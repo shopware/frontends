@@ -20,50 +20,33 @@ const locales = [
   { code: "de-DE", language: "de-DE", file: "de-DE.ts" },
 ];
 
-// Personalized pages render in the browser only, so the HTML a cache may hold
-// is the same empty shell for everyone.
-const personalizedRules = {
-  "/checkout": {
-    ssr: false,
-    headers: {
-      "Cache-Control": "no-cache, no-store, must-revalidate",
-      "Surrogate-Control": "no-store",
-    },
-  },
-  "/checkout/**": {
-    ssr: false,
-    headers: {
-      "Surrogate-Control": "no-store",
-    },
-  },
-  "/account": {
-    ssr: false,
-    headers: {
-      "Surrogate-Control": "no-store",
-    },
-  },
-  "/account/**": {
-    ssr: false,
-    headers: {
-      "Surrogate-Control": "no-store",
-    },
-  },
-  "/wishlist": {
-    ssr: false,
-    headers: {
-      "Surrogate-Control": "no-store",
-    },
+// Personalized pages are rendered in the browser and never cached. "ssr: false"
+// alone is not enough: under the "/**" ISR rule the empty app shell would still
+// be stored.
+const personalizedRule = {
+  ssr: false,
+  isr: false,
+  headers: {
+    "Cache-Control": "private, no-store",
+    "Surrogate-Control": "no-store",
   },
 };
+const personalizedPaths = [
+  "/checkout",
+  "/checkout/**",
+  "/account",
+  "/account/**",
+  "/wishlist",
+];
 
-// Route rules match raw paths and know nothing about i18n. Without these
-// copies, "/de-DE/checkout" is server-rendered under the "/**" ISR rule.
-const localizedPersonalizedRules = Object.fromEntries(
+// Route rules match raw paths and know nothing about i18n, so each path is
+// repeated under every locale prefix. The default locale has none.
+const personalizedRules = Object.fromEntries(
   locales
-    .filter((locale) => locale.code !== defaultLocale)
-    .flatMap((locale) =>
-      Object.entries(personalizedRules).map(
-        ([path, rule]) => [`/${locale.code}${path}`, rule] as const,
+    .map((locale) => (locale.code === defaultLocale ? "" : `/${locale.code}`))
+    .flatMap((prefix) =>
+      personalizedPaths.map(
+        (path) => [`${prefix}${path}`, personalizedRule] as const,
       ),
     ),
 );
@@ -207,7 +190,6 @@ export default defineNuxtConfig({
       isr: false,
     },
     ...personalizedRules,
-    ...localizedPersonalizedRules,
   },
   imports: {
     dirs: [

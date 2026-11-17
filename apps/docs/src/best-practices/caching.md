@@ -229,46 +229,69 @@ export default defineNuxtConfig({
 
 <!-- /automd -->
 
-The `vue-starter-template` uses a shorter 60-minute window. The source comment captures the trade-off: increase it for mostly-static storefronts, decrease it for frequently updated content.
+The `vue-starter-template` uses the same 24-hour window on the catch-all and takes personalized pages out of it. The source comment captures the trade-off: reduce the window for frequently updated catalogs.
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/caching/isr-incremental-static-regeneration-2.ts" code lang="ts" no-name -->
 
 ```ts
 import { defineNuxtConfig } from "nuxt/config";
 
+const defaultLocale = "en-GB";
+const locales = ["en-GB", "pl-PL", "de-DE"];
+
+// Rendered in the browser and never cached. "ssr: false" alone would leave the
+// empty app shell in the "/**" ISR cache.
+const personalizedRule = {
+  ssr: false,
+  isr: false,
+  headers: {
+    "Cache-Control": "private, no-store",
+    "Surrogate-Control": "no-store",
+  },
+};
+const personalizedPaths = [
+  "/checkout",
+  "/checkout/**",
+  "/account",
+  "/account/**",
+  "/wishlist",
+];
+
+// Route rules match raw paths, so each path is repeated under every locale prefix.
+const personalizedRules = Object.fromEntries(
+  locales
+    .map((locale) => (locale === defaultLocale ? "" : `/${locale}`))
+    .flatMap((prefix) =>
+      personalizedPaths.map(
+        (path) => [`${prefix}${path}`, personalizedRule] as const,
+      ),
+    ),
+);
+
 export default defineNuxtConfig({
   routeRules: {
     "/**": {
-      // 60-minute ISR - increase for mostly-static storefronts, decrease for frequently updated content
-      isr: 60 * 60, // 3600s
+      // 24-hour ISR - reduce for frequently updated catalogs or CMS-heavy storefronts
+      isr: 60 * 60 * 24, // 86400s
     },
     "/**/*.svg": {
       headers: {
         "Cache-Control": "public, max-age=31536000, immutable", // 1 year
       },
     },
-    "/checkout": {
-      ssr: false,
-      headers: {
-        "Cache-Control": "no-cache, no-store, must-revalidate",
-      },
-    },
-    "/checkout/**": { ssr: false },
-    "/account": { ssr: false },
-    "/account/**": { ssr: false },
-    "/wishlist": { ssr: false },
+    ...personalizedRules,
   },
 });
 ```
 
 <!-- /automd -->
 
-Route rules match the raw request path and know nothing about i18n. With the `prefix_except_default` strategy, `/de-DE/checkout` does not match the `/checkout` rule and falls under the catch-all. `vue-starter-template` therefore repeats its rules for personalized pages under every locale prefix, generated from its locale list. Do the same when you add a personalized route or a locale in your own project.
+Route rules match the raw request path and know nothing about i18n. With the `prefix_except_default` strategy, `/de-DE/checkout` does not match the `/checkout` rule and falls under the catch-all. `vue-starter-template` therefore repeats its rule for personalized pages under every locale prefix, generated from its own locale list. A project that extends the starter and adds a locale, or changes the default one, has to add the rules for the new prefixes itself. Do the same when you add a personalized route.
 
 `vue-starter-template-extended` extends `../vue-starter-template` and defines no `routeRules` of its own, so it inherits the parent's caching. Nuxt layer extends merges parent route rules, so changes in the parent propagate to the child. `vue-blank` defines no `routeRules`, so default Nitro behavior (full SSR, no ISR) applies.
 
 ::: warning
-ISR is only active in production builds and requires a runtime that can store and regenerate the cache (a Node server, Vercel, Netlify, or another Nitro-compatible host). Routes with `ssr: false` are client-rendered per request and are not ISR-cached. Exact stale-while-revalidate timing depends on the deployment target.
+ISR is only active in production builds and requires a runtime that can store and regenerate the cache (a Node server, Vercel, Netlify, or another Nitro-compatible host). A route with `ssr: false` is rendered in the browser, but under a catch-all `isr` rule its empty app shell is still cached. Set `isr: false` on the route to take it out of ISR. Exact stale-while-revalidate timing depends on the deployment target.
 :::
 
 ### `swr` and `prerender`
