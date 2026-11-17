@@ -31,7 +31,7 @@ overrides:
   "@tiptap/core": 3.30.5
   "js-yaml@>=4.0.0 <4.3.2": 4.3.2
   "sharp@<0.35.5": 0.35.5
-  "astro@<7.4.2": 7.4.2
+  "astro@<7.4.7": 7.4.7
   "tinypool@<2.1.2": 2.1.2
   "postcss-selector-parser@<7.1.6": 7.1.6
   "undici@>=7.0.0 <7.30.1": 7.30.1
@@ -48,7 +48,7 @@ overrides:
   "@intlify/core-base@<11.4.14": 11.4.16
   "@intlify/shared@<11.4.14": 11.4.16
   "seroval@<1.6.11": 1.6.12
-  "node-forge": 1.4.1
+  "node-forge": 1.4.3
   "follow-redirects": 1.16.2
   "minimatch": 11.0.1
   "glob": 14.0.2
@@ -81,8 +81,6 @@ allowBuilds:
 # Advisories with no usable patched release yet. Drop each entry once its fix ships.
 auditConfig:
   ignoreGhsas:
-    # node-forge: advisory names >=1.4.1, not published yet. Used by listhen for local dev HTTPS certs only.
-    - GHSA-86w9-cpqp-85rv
     # deepmerge: no patched release, the advisory covers <=4.3.1 and that is the latest.
     # Build-time only (@rollup/plugin-node-resolve in nitropack and unbuild). Drops out with rollup/plugins#2036.
     - GHSA-gcqx-w48m-w2h4

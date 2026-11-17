@@ -119,8 +119,6 @@ export function useAddress(): UseAddressReturn {
   async function updateCustomerAddress(
     customerAddress: Schemas["CustomerAddress"],
   ): Promise<Schemas["CustomerAddress"]> {
-    // customerAddress.addressId = customerAddress.id;
-
     const result = await apiClient.invoke(
       "updateCustomerAddress patch /account/address/{addressId}",
       {

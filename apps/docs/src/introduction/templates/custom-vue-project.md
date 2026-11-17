@@ -129,7 +129,6 @@ export type ShopwareFrontendsOptions = {
   shopwareApiClient?: {
     timeout: number;
   };
-  enableDevtools?: boolean;
 };
 ```
 
@@ -251,13 +250,8 @@ import { createShopwareContext } from "@shopware/composables";
 import { createApp } from "vue";
 
 const app = createApp({});
-const options = {
-  enableDevtools: false,
-};
 
-const shopwareContext = createShopwareContext(app, {
-  enableDevtools: !!options.enableDevtools, // decide if devtools should be enabled
-});
+const shopwareContext = createShopwareContext(app, {});
 
 export { shopwareContext };
 ```
@@ -332,7 +326,6 @@ export type ShopwareFrontendsOptions = {
   shopwareApiClient?: {
     timeout: number;
   };
-  enableDevtools?: boolean;
 };
 
 export default {
@@ -355,9 +348,7 @@ export default {
       },
     });
 
-    const shopwareContext = createShopwareContext(app, {
-      enableDevtools: !!options.enableDevtools,
-    });
+    const shopwareContext = createShopwareContext(app, {});
 
     app.provide("apiClient", apiClient);
     app.provide("shopware", shopwareContext);

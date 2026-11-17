@@ -16,7 +16,6 @@ describe("createShopwareContext", () => {
     const app = createApp({});
     const options = {
       devStorefrontUrl: "https://devstorefront.com",
-      enableDevtools: true,
       ssrWithoutUserContext: true,
     };
     const context = createShopwareContext(app, options);

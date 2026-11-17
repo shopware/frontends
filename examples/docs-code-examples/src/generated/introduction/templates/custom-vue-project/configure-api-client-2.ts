@@ -4,5 +4,4 @@ export type ShopwareFrontendsOptions = {
   shopwareApiClient?: {
     timeout: number;
   };
-  enableDevtools?: boolean;
 };

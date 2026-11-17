@@ -4,6 +4,7 @@ export * from "./ui-interfaces";
 export * from "./cms";
 export * from "./getFrontendRouteName";
 export * from "./getRouteFromPathInfo";
+export * from "./getTotalPages";
 export * from "./getTranslatedProperty";
 export * from "./listing";
 export * from "./price";

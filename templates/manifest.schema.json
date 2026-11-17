@@ -65,7 +65,7 @@
         },
         "framework": {
           "type": "string",
-          "enum": ["nuxt", "astro", "vite"]
+          "enum": ["nuxt", "next", "astro", "vite"]
         },
         "purpose": {
           "type": "string",

@@ -1,6 +1,3 @@
-/**
- * Commerce composable
- */
 import { useShopwareContext } from "#imports";
 import type { Schemas } from "#shopware";
 

@@ -11,6 +11,7 @@ recipe:
     - useCategory
   helpers:
     - getListingFilters
+    - getListingFiltersQuery
     - getTranslatedProperty
     - getCategoryFilterAggregations
     - getCategoryFilterPostFilter
@@ -151,7 +152,7 @@ Pick by scope — how much of the listing the composable is about:
 `useListing` is the one you reach for most:
 
 - **Read** — `getElements`, `getTotal`, `getTotalPagesCount`, `getLimit`, `getCurrentPage`, `getCurrentSortingOrder`, `getSortingOrders`.
-- **Filter** — `getInitialFilters`, `getAvailableFilters`, `getCurrentFilters`, `setCurrentFilters`, `resetFilters`, `filtersToQuery`.
+- **Filter** — `getInitialFilters`, `getAvailableFilters`, `getCurrentFilters`, `setCurrentFilters`, `resetFilters`, and the deprecated `filtersToQuery` (use `getListingFiltersQuery` from `@shopware/helpers`).
 - **Act** — `search`, `loadMore`, `changeCurrentPage`, `changeCurrentSortingOrder`, `setInitialListing`.
 - **State** — `loading`, `loadingMore`, `getCurrentListing`, `getInitialListing`.
 
@@ -456,7 +457,7 @@ const statusMessage = computed(() =>
 
 </CodeExample>
 
-The example is URL-first: a control writes its selection to the query, and one watcher turns the query into a single `search()`. That is what makes the back button, a refresh and a shared link land on the same listing, and it is the pattern `useListingFilters` uses in `cms-base-layer`. `setCurrentFilters()` is the shorter alternative when the listing state does not have to survive a reload — it takes the shortcut filter params directly and searches for you. `filtersToQuery()` is the piece for the other direction: it turns a `ProductListingCriteria` into a query object, joining array values with `|`. It gates on truthiness rather than on emptiness, so `shipping-free: false`, `rating: 0` and `min-price: 0` are dropped along with the genuinely empty values.
+The example is URL-first: a control writes its selection to the query, and one watcher turns the query into a single `search()`. That is what makes the back button, a refresh and a shared link land on the same listing, and it is the pattern `useListingFilters` uses in `cms-base-layer`. `setCurrentFilters()` is the shorter alternative when the listing state does not have to survive a reload — it takes the shortcut filter params directly and searches for you. `getListingFiltersQuery()` from `@shopware/helpers` is the piece for the other direction, and `filtersToQuery()` is its deprecated alias on `useListing`. It turns a `ProductListingCriteria` into a query object, joining array values with `|`. It gates on truthiness rather than on emptiness, so `shipping-free: false`, `rating: 0` and `min-price: 0` are dropped along with the genuinely empty values.
 
 Everything the listing needs from the URL goes through `buildCriteria`, including the page size and the sorting. That matters most for `loadMore()`: called with no argument it sends `{ p }` and nothing else, so the appended page would ignore the filters and come back at the shop's default page size rather than at `LIMIT`. `cms-base-layer` solves the same problem the same way, in `CmsElementProductListing`, by passing a rebuilt criteria as the second argument to `changeCurrentPage`.
 

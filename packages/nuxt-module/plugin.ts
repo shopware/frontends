@@ -200,7 +200,6 @@ function setupShopwarePlugin(NuxtApp: ShopwarePluginNuxtApp): {
   // TODO fix type App<Element>
   // TODO: Improve this typing.
   const shopwareContext = createShopwareContext(NuxtApp.vueApp as any, {
-    enableDevtools: true,
     devStorefrontUrl: shopwareRuntimeConfigPublic?.devStorefrontUrl || null,
     browserLocale,
     cacheableReads: shopwareRuntimeConfigPublic?.cacheableReads ?? false,

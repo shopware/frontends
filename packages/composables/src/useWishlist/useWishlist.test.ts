@@ -32,6 +32,7 @@ const defaultLocalItems = [
   "local-testId-17",
 ];
 let mockLocalItems: string[] = [...defaultLocalItems];
+const clearLocalWishlistSpy = vi.fn().mockResolvedValue(undefined);
 
 vi.mock("../useLocalWishlist/useLocalWishlist.ts", () => ({
   useLocalWishlist() {
@@ -42,7 +43,7 @@ vi.mock("../useLocalWishlist/useLocalWishlist.ts", () => ({
           return [...mockLocalItems];
         },
       },
-      clearWishlist: () => undefined,
+      clearWishlist: clearLocalWishlistSpy,
       count: ref(mockLocalItems.length),
     };
   },
@@ -53,6 +54,7 @@ vi.mock("../useUser/useUser.ts");
 
 beforeEach(() => {
   mockLocalItems = [...defaultLocalItems];
+  clearLocalWishlistSpy.mockClear();
 });
 
 describe("useWishlist - not logged in user", () => {
@@ -282,6 +284,41 @@ describe("useWishlist - logged in user", () => {
     await vm.mergeWishlistProducts();
 
     expect(mergeWishlistProductsSyncSpy).not.toHaveBeenCalled();
+    expect(clearLocalWishlistSpy).not.toHaveBeenCalled();
     expect(getWishlistProductsSyncSpy).toHaveBeenCalled();
+  });
+
+  it("mergeWishlistProducts clears only the local wishlist after merging", async () => {
+    const mergeWishlistProductsSyncSpy = vi.fn().mockResolvedValue(undefined);
+    const getWishlistProductsSyncSpy = vi.fn().mockResolvedValue(undefined);
+    const removeFromWishlistSyncSpy = vi.fn().mockResolvedValue(undefined);
+    vi.mocked(useUser).mockReturnValue(getMockedUser(true, false));
+    vi.mocked(useSyncWishlist).mockReturnValue({
+      getWishlistProducts: getWishlistProductsSyncSpy,
+      items: computed((): string[] => ["api-test-1", "api-test-2"]),
+      addToWishlistSync: () => undefined,
+      mergeWishlistProducts: mergeWishlistProductsSyncSpy,
+      removeFromWishlistSync: removeFromWishlistSyncSpy,
+      count: computed(() => 2),
+      currentPage: computed(() => 1),
+      limit: computed(() => 15),
+      products: computed((): Schemas["Product"][] => []),
+      isLoading: computed(() => false),
+    });
+    const { vm } = useSetup(() => useWishlist());
+
+    await vm.mergeWishlistProducts();
+
+    expect(mergeWishlistProductsSyncSpy).toHaveBeenCalledWith(
+      defaultLocalItems,
+    );
+    expect(removeFromWishlistSyncSpy).not.toHaveBeenCalled();
+    expect(clearLocalWishlistSpy).toHaveBeenCalledOnce();
+    expect(
+      mergeWishlistProductsSyncSpy.mock.invocationCallOrder[0],
+    ).toBeLessThan(clearLocalWishlistSpy.mock.invocationCallOrder[0] ?? 0);
+    expect(clearLocalWishlistSpy.mock.invocationCallOrder[0]).toBeLessThan(
+      getWishlistProductsSyncSpy.mock.invocationCallOrder[0] ?? 0,
+    );
   });
 });

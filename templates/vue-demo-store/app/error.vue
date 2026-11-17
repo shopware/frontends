@@ -72,8 +72,7 @@ const errorMessage = isFormattedError ? errMessage : props.error.message;
     <div class="flex flex-col items-center justify-center my-8">
       <div class="max-w-md text-center">
         <h1 class="mb-4 font-extrabold text-9xl">
-          <span class="sr-only">{{ $t("error") }}</span
-          >{{ statusCode }}
+          <span class="sr-only">{{ $t("error") }}</span>{{ statusCode }}
         </h1>
         <p
           v-if="errorMessage"

@@ -15,9 +15,7 @@ const activeTab = ref<
 
 const { addToCart } = useAddToCart(product);
 const { loadAssociations, isLoading, productAssociations } =
-  useProductAssociations(product, {
-    associationContext: "cross-selling",
-  });
+  useProductAssociations(product);
 
 const recommendedTabLoaded = ref<boolean>(false);
 const openRecommendedTab = async () => {
@@ -26,19 +24,7 @@ const openRecommendedTab = async () => {
     return;
   }
 
-  await loadAssociations({
-    method: "post",
-    searchParams: {
-      associations: {
-        media: {},
-        cover: {
-          associations: {
-            media: {},
-          },
-        },
-      },
-    },
-  });
+  await loadAssociations();
 
   recommendedTabLoaded.value = true;
 };
