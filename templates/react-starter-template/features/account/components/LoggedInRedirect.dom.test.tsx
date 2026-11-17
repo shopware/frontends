@@ -171,11 +171,14 @@ describe("LoggedInRedirect", () => {
     expect(replace).toHaveBeenCalledWith("/");
   });
 
-  it("does not redirect when the session failed to load", async () => {
+  it("waits out a failed session read and redirects once it recovers logged in", async () => {
     await setup({ ...anonymousSession, status: "error" });
+    expect(replace).not.toHaveBeenCalled();
+
     await interact(() => sessionControl.set?.(customer));
 
-    expect(replace).not.toHaveBeenCalled();
+    expect(replace).toHaveBeenCalledTimes(1);
+    expect(replace).toHaveBeenCalledWith("/");
   });
 
   it("lets the login form navigate once after a login on the page", async () => {
