@@ -25,7 +25,7 @@ vi.mock("@shopware/api-client", () => ({
 }));
 
 const config: PublicShopwareConfig = {
-  endpoint: "https://shop.test/store-api/",
+  publicEndpoint: "https://shop.test/store-api/",
   accessToken: "SWSCTEST",
   devStorefrontUrl: null,
 };
@@ -121,7 +121,10 @@ describe("createBrowserClient", () => {
     happyDOM.setURL("https://storefront.test/");
     const set = vi.spyOn(Cookies, "set");
     const { createBrowserClient } = await loadModule();
-    createBrowserClient({ ...config, endpoint: "http://shop.test/store-api/" });
+    createBrowserClient({
+      ...config,
+      publicEndpoint: "http://shop.test/store-api/",
+    });
 
     contextChanged()("new-token");
 
@@ -206,7 +209,7 @@ describe("loadPublicConfig", () => {
     const { loadPublicConfig } = await loadModule();
     const fetchImpl = vi
       .fn<typeof fetch>()
-      .mockResolvedValueOnce(jsonResponse({ endpoint: "" }))
+      .mockResolvedValueOnce(jsonResponse({ publicEndpoint: "" }))
       .mockResolvedValueOnce(jsonResponse(config));
 
     await expect(loadPublicConfig(fetchImpl)).rejects.toThrow();

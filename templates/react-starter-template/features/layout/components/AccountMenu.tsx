@@ -1,10 +1,10 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import type { RefObject } from "react";
 
-import { useCmsActions } from "@/cms/client";
+import { useNotify } from "@/components/NotifyContext";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 
 const t = {
@@ -25,10 +25,9 @@ export function AccountMenu({
   triggerRef,
   onClose,
 }: AccountMenuProps) {
-  const router = useRouter();
   const pathname = usePathname();
   const { logout } = useSessionActions();
-  const { notify } = useCmsActions();
+  const notify = useNotify();
   const [pending, setPending] = useState(false);
   const pendingRef = useRef(false);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -72,7 +71,7 @@ export function AccountMenu({
     try {
       const result = await logout();
       if (!result.ok) return;
-      router.push("/");
+      window.location.assign("/");
       triggerRef.current?.focus();
       onClose();
     } catch (cause) {

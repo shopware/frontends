@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { CmsActionsProvider } from "@/cms/client";
+import { NotifyProvider } from "@/components/NotifyContext";
 import { anonymousSession } from "@/features/session/anonymousSession";
 import { SessionActionsProvider } from "@/features/session/components/SessionActionsContext";
 import type { SessionActions } from "@/features/session/components/SessionActionsContext";
@@ -104,11 +104,11 @@ async function setup(
 ) {
   const notify = vi.fn();
   const bar = (
-    <CmsActionsProvider actions={{ notify }}>
+    <NotifyProvider notify={notify}>
       <SessionActionsProvider actions={actions}>
         <HeaderBar menu={null} />
       </SessionActionsProvider>
-    </CmsActionsProvider>
+    </NotifyProvider>
   );
   mounted = await mount(
     session ? (
@@ -327,7 +327,10 @@ describe("HeaderBar in the browser", () => {
     expect(menu()?.querySelector(LOGOUT_BUTTON)).not.toBeNull();
   });
 
-  it("logs out once, goes home and closes the menu", async () => {
+  it("logs out once, reloads home and closes the menu", async () => {
+    const assign = vi
+      .spyOn(window.location, "assign")
+      .mockImplementation(() => {});
     const request = deferred<SessionActionResult>();
     const logout = vi.fn<SessionActions["logout"]>(() => request.promise);
     const { account, menu, logoutButton, notify } = await setup(loggedIn, {
@@ -344,15 +347,16 @@ describe("HeaderBar in the browser", () => {
 
     await interact(() => button.click());
     expect(logout).toHaveBeenCalledTimes(1);
-    expect(push).not.toHaveBeenCalled();
+    expect(assign).not.toHaveBeenCalled();
 
     await interact(() => {
       sessionControl.set?.({ ...anonymousSession, status: "ready" });
       request.resolve({ ok: true });
     });
 
-    expect(push).toHaveBeenCalledTimes(1);
-    expect(push).toHaveBeenCalledWith("/");
+    expect(assign).toHaveBeenCalledTimes(1);
+    expect(assign).toHaveBeenCalledWith("/");
+    expect(push).not.toHaveBeenCalled();
     expect(menu()).toBeNull();
     expect(account.getAttribute("data-logged-in")).toBe("false");
     expect(account.hasAttribute("aria-expanded")).toBe(false);

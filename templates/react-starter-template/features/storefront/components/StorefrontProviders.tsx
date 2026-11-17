@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 
 import { CmsActionsProvider } from "@/cms/client";
 import type { CmsActions, CmsNotification } from "@/cms/client";
+import { NotifyProvider } from "@/components/NotifyContext";
 import { ShopwareSessionProvider } from "@/features/session/components/ShopwareSessionProvider";
 
 import { NOT_WIRED_MESSAGES } from "../notWired";
@@ -42,36 +43,38 @@ export function StorefrontProviders({ children }: { children: ReactNode }) {
       subscribeNewsletter: notWired(NOT_WIRED_MESSAGES.forms),
       submitProductReview: notWired(NOT_WIRED_MESSAGES.forms),
       findVariant: async () => {
-        notify({ type: "warning", message: NOT_WIRED_MESSAGES.forms });
+        notify({ type: "warning", message: NOT_WIRED_MESSAGES.variants });
         return null;
       },
     };
   }, [notify]);
 
   return (
-    <ShopwareSessionProvider notify={notify}>
-      <CmsActionsProvider actions={actions}>
-        {children}
-        <div
-          aria-live="polite"
-          className="pointer-events-none fixed right-4 bottom-4 z-50 flex max-w-sm flex-col gap-2"
-        >
-          {toasts.map((toast) => (
-            <p
-              key={toast.id}
-              data-testid="notification-element-message"
-              className={`pointer-events-auto rounded-md px-4 py-3 text-sm shadow-lg ${TOAST_CLASSES[toast.type]}`}
-            >
-              {toast.message}
-              {toast.action && (
-                <Link href={toast.action.href} className="ml-2 underline">
-                  {toast.action.label}
-                </Link>
-              )}
-            </p>
-          ))}
-        </div>
-      </CmsActionsProvider>
-    </ShopwareSessionProvider>
+    <NotifyProvider notify={notify}>
+      <ShopwareSessionProvider>
+        <CmsActionsProvider actions={actions}>
+          {children}
+          <div
+            aria-live="polite"
+            className="pointer-events-none fixed right-4 bottom-4 z-50 flex max-w-sm flex-col gap-2"
+          >
+            {toasts.map((toast) => (
+              <p
+                key={toast.id}
+                data-testid="notification-element-message"
+                className={`pointer-events-auto rounded-md px-4 py-3 text-sm shadow-lg ${TOAST_CLASSES[toast.type]}`}
+              >
+                {toast.message}
+                {toast.action && (
+                  <Link href={toast.action.href} className="ml-2 underline">
+                    {toast.action.label}
+                  </Link>
+                )}
+              </p>
+            ))}
+          </div>
+        </CmsActionsProvider>
+      </ShopwareSessionProvider>
+    </NotifyProvider>
   );
 }

@@ -56,6 +56,28 @@ describe("NewsletterBox in the browser", () => {
     expect(actions.notify).not.toHaveBeenCalled();
   });
 
+  it("ignores a second submit while the request runs", async () => {
+    let finish!: (result: { ok: boolean }) => void;
+    const subscribeNewsletter = vi.fn(
+      () =>
+        new Promise<{ ok: boolean }>((resolve) => {
+          finish = resolve;
+        }),
+    );
+    const { form, input } = await setup({ subscribeNewsletter });
+    const button = query<HTMLButtonElement>(form, 'button[type="submit"]');
+
+    await interact(() => setInputValue(input, "jane@example.com"));
+    await interact(() => submitForm(form));
+    await interact(() => submitForm(form));
+
+    expect(subscribeNewsletter).toHaveBeenCalledTimes(1);
+    expect(button.getAttribute("aria-busy")).toBe("true");
+
+    await interact(() => finish({ ok: true }));
+    expect(button.getAttribute("aria-busy")).toBe("false");
+  });
+
   it("rejects a malformed address", async () => {
     const { actions, form, input, error } = await setup();
 

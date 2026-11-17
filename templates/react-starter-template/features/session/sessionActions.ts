@@ -1,7 +1,7 @@
 import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
 
-import type { ApiClient, Schemas, operations } from "#shopware";
+import type { ApiClient, Schemas } from "#shopware";
 
 import { resolveApiErrorMessages } from "./apiErrors";
 import type { ApiErrorContext } from "./apiErrors";
@@ -74,7 +74,7 @@ export function createSessionActions({
           "register post /account/register",
           {
             body: {
-              ...(input as operations["register post /account/register"]["body"]),
+              ...input,
               storefrontUrl,
             },
           },

@@ -5,13 +5,14 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
-import { IconButton, useCmsActions } from "@/cms/client";
+import { IconButton } from "@/cms/client";
 import {
   HeartIcon,
   SearchIcon,
   ShoppingCartIcon,
   UserIcon,
 } from "@/components/icons";
+import { useNotify } from "@/components/NotifyContext";
 import { LOGIN_PATH } from "@/features/account/redirect";
 import { AccountMenu } from "@/features/layout/components/AccountMenu";
 import { MainCounter } from "@/features/layout/components/MainCounter";
@@ -37,7 +38,7 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
   const { status, isLoggedIn, customerName, cartCount, wishlistCount } =
     useSession();
   const { retrySession } = useSessionActions();
-  const { notify } = useCmsActions();
+  const notify = useNotify();
   const router = useRouter();
   const [mobileSearchActive, setMobileSearchActive] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);

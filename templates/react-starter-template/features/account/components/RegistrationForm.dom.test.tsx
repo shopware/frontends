@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Mock } from "vitest";
 
-import { CmsActionsProvider } from "@/cms/client";
+import { NotifyProvider } from "@/components/NotifyContext";
 import { anonymousSession } from "@/features/session/anonymousSession";
 import { SessionActionsProvider } from "@/features/session/components/SessionActionsContext";
 import type { SessionActions } from "@/features/session/components/SessionActionsContext";
@@ -119,12 +119,12 @@ async function setup(
   const actions = { register };
   const notify = vi.fn();
   mounted = await mount(
-    <CmsActionsProvider actions={{ notify }}>
+    <NotifyProvider notify={notify}>
       <SessionActionsProvider actions={actions}>
         <RegistrationForm countries={countries} {...props} />
         {sibling}
       </SessionActionsProvider>
-    </CmsActionsProvider>,
+    </NotifyProvider>,
   );
   const { container } = mounted;
   return {
@@ -373,6 +373,9 @@ describe("RegistrationForm in the browser", () => {
     );
     expect(submit.disabled).toBe(false);
     expect(submit.getAttribute("aria-busy")).toBe("false");
+    const alert = byTestId(container, "registration-form-error");
+    expect(alert.getAttribute("role")).toBe("alert");
+    expect(alert.textContent).toBe("The email address is already in use.");
   });
 
   it("keeps the submit button focusable but ignores a second submit while the request runs", async () => {
@@ -449,8 +452,11 @@ describe("RegistrationForm in the browser", () => {
 
     expect(actions.register).toHaveBeenCalledTimes(1);
     const payload = sentPayload(actions.register);
-    expect(payload.accountType).toBe("business");
-    expect(payload.vatIds).toEqual(["DE123456789"]);
+    expect(payload).toMatchObject({
+      accountType: "business",
+      company: "Acme GmbH",
+      vatIds: ["DE123456789"],
+    });
     expect(payload.billingAddress.company).toBe("Acme GmbH");
     expect(payload.billingAddress.countryId).toBe("country-pl");
   });
@@ -471,6 +477,8 @@ describe("RegistrationForm in the browser", () => {
 
     expect(push).toHaveBeenCalledTimes(1);
     expect(push).toHaveBeenCalledWith("/Clothing/Men/");
+    expect(input("registration-email-input").value).toBe("");
+    expect(input("registration-password-input").value).toBe("");
   });
 
   it("navigates once when the session flips to logged in next to LoggedInRedirect", async () => {
@@ -503,11 +511,11 @@ describe("RegistrationForm in the browser", () => {
     mounted = await mount(
       <ControlledSession>
         <LoggedInRedirect />
-        <CmsActionsProvider actions={{ notify }}>
+        <NotifyProvider notify={notify}>
           <SessionActionsProvider actions={{ register }}>
             <RegistrationForm countries={countries} />
           </SessionActionsProvider>
-        </CmsActionsProvider>
+        </NotifyProvider>
       </ControlledSession>,
     );
     const { container } = mounted;

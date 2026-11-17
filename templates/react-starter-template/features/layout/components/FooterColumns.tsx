@@ -16,8 +16,8 @@ export function FooterColumns({ tree }: { tree: NavigationNode[] }) {
                 <li key={child.id}>
                   <Link
                     href={child.href}
-                    target={child.external ? "_blank" : undefined}
-                    rel={child.external ? "noopener" : undefined}
+                    target={child.newTab ? "_blank" : undefined}
+                    rel={child.newTab ? "noopener" : undefined}
                     className="text-surface-surface-primary hover:text-surface-inverse-on-surface"
                   >
                     {child.name}

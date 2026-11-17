@@ -34,6 +34,7 @@ export function createSessionStore(): SessionStore {
   let readCount = 0;
   let publicConfig: PublicShopwareConfig | null = null;
   let context: Schemas["SalesChannelContext"] | null = null;
+  let pendingMutation: Promise<unknown> | null = null;
 
   function publish(next: StorefrontSession): void {
     snapshot = next;
@@ -84,6 +85,7 @@ export function createSessionStore(): SessionStore {
 
   async function retry(): Promise<StorefrontSession> {
     await initialRead;
+    await pendingMutation;
     if (!initialRead) {
       await start();
     } else if (snapshot.status === "error") {
@@ -113,19 +115,20 @@ export function createSessionStore(): SessionStore {
       getStorefrontUrl: resolveStorefrontUrl,
       notify,
     });
+    function mutate<T>(run: () => Promise<T>): Promise<T> {
+      const result = start().then(run);
+      const tracked = result.catch(() => {});
+      pendingMutation = tracked;
+      void tracked.then(() => {
+        if (pendingMutation === tracked) pendingMutation = null;
+      });
+      return result;
+    }
+
     return {
-      login: async (input) => {
-        await start();
-        return actions.login(input);
-      },
-      register: async (input) => {
-        await start();
-        return actions.register(input);
-      },
-      logout: async () => {
-        await start();
-        return actions.logout();
-      },
+      login: (input) => mutate(() => actions.login(input)),
+      register: (input) => mutate(() => actions.register(input)),
+      logout: () => mutate(() => actions.logout()),
       retrySession: retry,
     };
   }

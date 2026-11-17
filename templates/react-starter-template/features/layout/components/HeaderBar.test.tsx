@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 
-import { CmsActionsProvider } from "@/cms/client";
+import { NotifyProvider } from "@/components/NotifyContext";
 import { anonymousSession } from "@/features/session/anonymousSession";
 import { SessionProvider } from "@/features/session/components/SessionProvider";
 import type { StorefrontSession } from "@/features/session/types";
@@ -16,13 +16,13 @@ vi.mock("next/navigation", () => ({
   usePathname: () => "/",
 }));
 
-const actions = { notify: vi.fn() };
+const notify = vi.fn();
 
 function render(session?: StorefrontSession, menu: ReactNode = null) {
   const bar = (
-    <CmsActionsProvider actions={actions}>
+    <NotifyProvider notify={notify}>
       <HeaderBar menu={menu} />
-    </CmsActionsProvider>
+    </NotifyProvider>
   );
   return renderToHtml(
     session ? <SessionProvider session={session}>{bar}</SessionProvider> : bar,
@@ -66,7 +66,7 @@ describe("HeaderBar", () => {
     await render();
 
     expect(push).not.toHaveBeenCalled();
-    expect(actions.notify).not.toHaveBeenCalled();
+    expect(notify).not.toHaveBeenCalled();
   });
 
   it("renders the menu node it is given after the cart button", async () => {

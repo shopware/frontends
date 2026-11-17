@@ -39,19 +39,19 @@ describe("buildNavigationTree", () => {
         id: "clothing",
         name: "Kleidung",
         href: "/Kleidung/",
-        external: false,
+        newTab: false,
         children: [
           {
             id: "men",
             name: "Men",
             href: "/Kleidung/Herren/",
-            external: false,
+            newTab: false,
             children: [
               {
                 id: "shirts",
                 name: "Shirts",
                 href: "/navigation/shirts",
-                external: false,
+                newTab: false,
                 children: [],
               },
             ],
@@ -79,7 +79,7 @@ describe("buildNavigationTree", () => {
       category({ id: "home", name: "Home", seoUrls: [{ seoPathInfo: "" }] }),
     ]);
 
-    expect(tree.map((node) => [node.href, node.external])).toEqual([
+    expect(tree.map((node) => [node.href, node.newTab])).toEqual([
       ["https://example.com/blog", true],
       ["/Sale/", true],
       ["/navigation/home", false],
@@ -96,7 +96,7 @@ describe("buildNavigationTree", () => {
         id: "leaf",
         name: "Leaf",
         href: "/navigation/leaf",
-        external: false,
+        newTab: false,
         children: [],
       },
     ]);

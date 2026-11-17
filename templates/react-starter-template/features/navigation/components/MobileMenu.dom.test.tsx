@@ -11,13 +11,13 @@ const tree: NavigationNode[] = [
     id: "clothing",
     name: "Clothing",
     href: "/Clothing/",
-    external: false,
+    newTab: false,
     children: [
       {
         id: "men",
         name: "Men",
         href: "/Clothing/Men/",
-        external: false,
+        newTab: false,
         children: [],
       },
     ],
@@ -26,7 +26,7 @@ const tree: NavigationNode[] = [
     id: "food",
     name: "Food",
     href: "/Food/",
-    external: false,
+    newTab: false,
     children: [],
   },
 ];

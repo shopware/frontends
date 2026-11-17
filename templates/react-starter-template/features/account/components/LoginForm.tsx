@@ -4,8 +4,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import type { FormEvent } from "react";
 
-import { BaseButton, useCmsActions } from "@/cms/client";
+import { BaseButton } from "@/cms/client";
 import { InputField } from "@/components/form/InputField";
+import { useNotify } from "@/components/NotifyContext";
 import {
   emptyLoginValues,
   validateLogin,
@@ -37,13 +38,14 @@ type Touched = Partial<Record<keyof LoginValues, boolean>>;
 export function LoginForm() {
   const router = useRouter();
   const { login } = useSessionActions();
-  const { notify } = useCmsActions();
+  const notify = useNotify();
   const [values, setValues] = useState<LoginValues>(emptyLoginValues);
   const [touched, setTouched] = useState<Touched>({});
   const [submitted, setSubmitted] = useState(false);
   const [pending, setPending] = useState(false);
   const [navigating, startNavigation] = useTransition();
   const [focusRequest, setFocusRequest] = useState(0);
+  const [formError, setFormError] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
   const busy = pending || navigating;
@@ -74,9 +76,16 @@ export function LoginForm() {
     }
 
     setPending(true);
+    setFormError(null);
     try {
       const result = await login(values);
-      if (!result.ok) return;
+      if (!result.ok) {
+        setFormError(result.message ?? null);
+        return;
+      }
+      setValues(emptyLoginValues);
+      setTouched({});
+      setSubmitted(false);
       notify({ type: "success", message: t.account.messages.loggedInSuccess });
       const target = resolveRedirectFromSearch(window.location.search);
       startNavigation(() => {
@@ -136,6 +145,15 @@ export function LoginForm() {
           onBlur={touch("password")}
           error={errorFor("password")}
         />
+        {formError ? (
+          <p
+            role="alert"
+            data-testid="login-form-error"
+            className="text-sm text-states-error"
+          >
+            {formError}
+          </p>
+        ) : null}
         <BaseButton
           type="submit"
           data-testid="login-submit-button"

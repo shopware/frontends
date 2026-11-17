@@ -15,7 +15,7 @@ export function NavigationLink({
   children,
   ...props
 }: NavigationLinkProps) {
-  if (node.external) {
+  if (node.newTab) {
     return (
       <a {...props} href={node.href} target="_blank" rel="noopener">
         {children}

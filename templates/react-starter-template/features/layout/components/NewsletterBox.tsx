@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { z } from "zod";
 
 import { BaseButton, cx, useCmsActions } from "@/cms/client";
 import { INPUT_CLASS } from "@/components/input";
@@ -33,12 +34,10 @@ const t = {
   },
 };
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 export function validateEmail(value: string): string | null {
   const trimmed = value.trim();
   if (!trimmed) return t.validations.required;
-  if (!EMAIL_PATTERN.test(trimmed)) return t.validations.email;
+  if (!z.email().safeParse(trimmed).success) return t.validations.email;
   return null;
 }
 
@@ -119,7 +118,7 @@ export function NewsletterBox({ className }: { className?: string }) {
                 onBlur={() => setTouched(true)}
                 className={cx(
                   INPUT_CLASS,
-                  "px-3 focus-visible:ring-brand-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-brand-primary",
+                  "px-3 focus-visible:outline-brand-secondary!",
                 )}
               />
               {error ? (

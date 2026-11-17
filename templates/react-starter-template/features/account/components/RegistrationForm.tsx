@@ -4,10 +4,11 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 
-import { BaseButton, useCmsActions } from "@/cms/client";
+import { BaseButton } from "@/cms/client";
 import { CountrySelect } from "@/components/form/CountrySelect";
 import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
+import { useNotify } from "@/components/NotifyContext";
 import { resolveRedirectFromSearch } from "@/features/account/redirect";
 import {
   emptyRegistrationValues,
@@ -86,7 +87,7 @@ export function RegistrationForm({
 }: RegistrationFormProps) {
   const router = useRouter();
   const { register } = useSessionActions();
-  const { notify } = useCmsActions();
+  const notify = useNotify();
   const [values, setValues] = useState<RegistrationValues>(
     emptyRegistrationValues,
   );
@@ -97,6 +98,7 @@ export function RegistrationForm({
   const [refreshing, startRefresh] = useTransition();
   const [doubleOptInCount, setDoubleOptInCount] = useState(0);
   const [focusRequest, setFocusRequest] = useState(0);
+  const [formError, setFormError] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const successBoxRef = useRef<HTMLOutputElement>(null);
 
@@ -165,13 +167,17 @@ export function RegistrationForm({
     }
 
     setPending(true);
+    setFormError(null);
     try {
       const result = await register(toRegistrationInput(values));
-      if (!result.ok) return;
+      if (!result.ok) {
+        setFormError(result.message ?? null);
+        return;
+      }
+      setValues(emptyRegistrationValues);
+      setTouched({});
+      setSubmitted(false);
       if (result.doubleOptIn) {
-        setValues(emptyRegistrationValues);
-        setTouched({});
-        setSubmitted(false);
         setDoubleOptInCount((count) => count + 1);
         return;
       }
@@ -409,6 +415,15 @@ export function RegistrationForm({
             ) : null}
           </div>
         </fieldset>
+        {formError ? (
+          <p
+            role="alert"
+            data-testid="registration-form-error"
+            className="mb-3 text-sm text-states-error"
+          >
+            {formError}
+          </p>
+        ) : null}
         <div className="mb-5 text-right">
           <BaseButton
             type="submit"

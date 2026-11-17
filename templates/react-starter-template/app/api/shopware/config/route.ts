@@ -7,7 +7,7 @@ export async function GET(): Promise<Response> {
   await connection();
   const { publicEndpoint, accessToken, devStorefrontUrl } = getShopwareConfig();
   const config: PublicShopwareConfig = {
-    endpoint: publicEndpoint,
+    publicEndpoint,
     accessToken,
     devStorefrontUrl,
   };

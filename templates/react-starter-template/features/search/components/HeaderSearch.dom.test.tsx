@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { CmsActionsProvider } from "@/cms/client";
+import { NotifyProvider } from "@/components/NotifyContext";
 import { NOT_WIRED_MESSAGES } from "@/features/storefront/notWired";
 import { interact, mount, pressKey, query } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
@@ -17,9 +17,9 @@ afterEach(async () => {
 async function setup(autoFocus?: boolean) {
   const notify = vi.fn();
   mounted = await mount(
-    <CmsActionsProvider actions={{ notify }}>
+    <NotifyProvider notify={notify}>
       <HeaderSearch autoFocus={autoFocus} />
-    </CmsActionsProvider>,
+    </NotifyProvider>,
   );
   return {
     notify,

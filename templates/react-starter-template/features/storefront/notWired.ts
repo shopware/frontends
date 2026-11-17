@@ -3,4 +3,5 @@ export const NOT_WIRED_MESSAGES = {
   wishlist: "The wishlist is not connected to a session yet.",
   search: "Search is not connected yet.",
   forms: "Forms are not connected to a session yet.",
+  variants: "Variant switching is not connected yet.",
 } as const;

@@ -174,7 +174,8 @@ describe("toRegistrationInput", () => {
   it("builds the business Store API body with VAT id, company and state", () => {
     const input = toRegistrationInput(validBusiness);
 
-    expect(input.accountType).toBe("business");
+    if (input.accountType !== "business") throw new Error("expected business");
+    expect(input.company).toBe("Acme GmbH");
     expect(input.vatIds).toEqual(["DE123456789"]);
     expect(input.billingAddress.company).toBe("Acme GmbH");
     expect(input.billingAddress.countryStateId).toBe("state-be");
@@ -182,8 +183,7 @@ describe("toRegistrationInput", () => {
   });
 
   it("sends an empty VAT id entry for a business without one", () => {
-    expect(toRegistrationInput({ ...validBusiness, vatId: "" }).vatIds).toEqual(
-      [""],
-    );
+    const input = toRegistrationInput({ ...validBusiness, vatId: "" });
+    expect("vatIds" in input && input.vatIds).toEqual([""]);
   });
 });

@@ -285,7 +285,7 @@ export function CountrySelect({
       {labelElement}
       <div
         className={cx(
-          "flex items-center gap-2 rounded-md border bg-surface-surface px-3 py-2 text-sm focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/20",
+          "flex items-center gap-2 rounded-md border bg-surface-surface px-3 py-2 text-sm focus-within:border-brand-primary focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-outline-outline-focus",
           fieldError ? "border-states-error" : "border-outline-outline-variant",
         )}
       >

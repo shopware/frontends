@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { parsePublicShopwareConfig } from "./publicConfig";
 
 const config = {
-  endpoint: "https://shop.example.com/store-api/",
+  publicEndpoint: "https://shop.example.com/store-api/",
   accessToken: "SWSCOWN",
   devStorefrontUrl: "https://shop.example.com/en",
 };
@@ -28,10 +28,10 @@ describe("parsePublicShopwareConfig", () => {
   it.each([
     ["no object", null],
     ["a string", "config"],
-    ["no endpoint", { ...config, endpoint: undefined }],
+    ["no public endpoint", { ...config, publicEndpoint: undefined }],
     ["an empty access token", { ...config, accessToken: "" }],
     ["a numeric dev storefront URL", { ...config, devStorefrontUrl: 1 }],
-    ["no dev storefront URL key", { endpoint: "e", accessToken: "t" }],
+    ["no dev storefront URL key", { publicEndpoint: "e", accessToken: "t" }],
   ])("throws on %s", (_, value) => {
     expect(() => parsePublicShopwareConfig(value)).toThrow();
   });

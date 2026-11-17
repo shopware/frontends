@@ -2,7 +2,7 @@ import { Suspense, use, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { CmsActionsProvider } from "@/cms/client";
+import { NotifyProvider } from "@/components/NotifyContext";
 import { SessionActionsProvider } from "@/features/session/components/SessionActionsContext";
 import type { SessionActions } from "@/features/session/components/SessionActionsContext";
 import type { SessionActionResult } from "@/features/session/types";
@@ -68,12 +68,12 @@ async function setup(
   };
   const notify = vi.fn();
   mounted = await mount(
-    <CmsActionsProvider actions={{ notify }}>
+    <NotifyProvider notify={notify}>
       <SessionActionsProvider actions={actions}>
         <LoginForm />
         {sibling}
       </SessionActionsProvider>
-    </CmsActionsProvider>,
+    </NotifyProvider>,
   );
   const { container } = mounted;
   return {
@@ -137,13 +137,14 @@ describe("LoginForm in the browser", () => {
     );
   });
 
-  it("calls the port with the credentials and leaves the error toast to the action on a rejection", async () => {
-    const { actions, notify, form, email, password, submit } = await setup({
-      login: vi.fn(async () => ({
-        ok: false,
-        message: "Invalid credentials.",
-      })),
-    });
+  it("calls the port with the credentials, leaves the toast to the action and keeps the error in the form", async () => {
+    const { actions, notify, container, form, email, password, submit } =
+      await setup({
+        login: vi.fn(async () => ({
+          ok: false,
+          message: "Invalid credentials.",
+        })),
+      });
 
     await interact(() => setInputValue(email, "jane@example.com"));
     await interact(() => setInputValue(password, "secret"));
@@ -159,10 +160,13 @@ describe("LoginForm in the browser", () => {
     expect(email.value).toBe("jane@example.com");
     expect(password.value).toBe("secret");
     expect(submit.getAttribute("aria-busy")).toBe("false");
+    const alert = query(container, '[data-testid="login-form-error"]');
+    expect(alert.getAttribute("role")).toBe("alert");
+    expect(alert.textContent).toBe("Invalid credentials.");
   });
 
-  it("confirms a successful login and goes home", async () => {
-    const { notify, form, email, password } = await setup({
+  it("confirms a successful login, clears the credentials and goes home", async () => {
+    const { notify, container, form, email, password } = await setup({
       login: vi.fn(async () => ({ ok: true })),
     });
 
@@ -175,6 +179,12 @@ describe("LoginForm in the browser", () => {
       message: "You have been logged in successfully.",
     });
     expect(navigation.push).toHaveBeenCalledWith("/");
+    expect(email.value).toBe("");
+    expect(password.value).toBe("");
+    expect(email.hasAttribute("aria-invalid")).toBe(false);
+    expect(
+      container.querySelector('[data-testid="login-form-error"]'),
+    ).toBeNull();
   });
 
   it("follows a same-origin redirect query parameter", async () => {

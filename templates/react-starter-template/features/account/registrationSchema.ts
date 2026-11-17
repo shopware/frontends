@@ -146,14 +146,21 @@ export function toRegistrationInput(
     ...(business ? { company: values.company } : {}),
   };
 
-  return {
-    accountType: values.accountType,
+  const customer = {
     firstName: values.firstName,
     lastName: values.lastName,
     email: values.email,
     password: values.password,
     acceptedDataProtection: true,
-    ...(business ? { vatIds: [values.vatId] } : {}),
     billingAddress,
   };
+
+  return business
+    ? {
+        ...customer,
+        accountType: "business",
+        company: values.company,
+        vatIds: [values.vatId],
+      }
+    : { ...customer, accountType: "private" };
 }

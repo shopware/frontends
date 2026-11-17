@@ -10,13 +10,13 @@ const tree: NavigationNode[] = [
     id: "clothing",
     name: "Clothing",
     href: "/Clothing/",
-    external: false,
+    newTab: false,
     children: [
       {
         id: "men",
         name: "Men",
         href: "/Clothing/Men/",
-        external: false,
+        newTab: false,
         children: [],
       },
     ],

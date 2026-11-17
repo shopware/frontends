@@ -6,7 +6,7 @@ export type NavigationNode = {
   id: string;
   name: string;
   href: string;
-  external: boolean;
+  newTab: boolean;
   children: NavigationNode[];
 };
 
@@ -17,7 +17,7 @@ export function buildNavigationTree(
     id: category.id,
     name: getTranslatedProperty(category, "name"),
     href: getCategoryUrl(category),
-    external: Boolean(category.externalLink || category.linkNewTab),
+    newTab: Boolean(category.externalLink || category.linkNewTab),
     children: buildNavigationTree(category.children ?? []),
   }));
 }

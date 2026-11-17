@@ -3,9 +3,10 @@
 import { useEffect, useRef } from "react";
 import type { KeyboardEvent } from "react";
 
-import { cx, useCmsActions } from "@/cms/client";
+import { cx } from "@/cms/client";
 import { SearchSmallIcon } from "@/components/icons";
 import { INPUT_CLASS } from "@/components/input";
+import { useNotify } from "@/components/NotifyContext";
 import { NOT_WIRED_MESSAGES } from "@/features/storefront/notWired";
 
 const t = {
@@ -20,7 +21,7 @@ export function HeaderSearch({
   className?: string;
   autoFocus?: boolean;
 }) {
-  const { notify } = useCmsActions();
+  const notify = useNotify();
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -48,10 +49,7 @@ export function HeaderSearch({
         placeholder={t["search.placeholder"]}
         autoComplete="off"
         onKeyDown={handleKeyDown}
-        className={cx(
-          INPUT_CLASS,
-          "pr-10 pl-3 focus-visible:ring-brand-primary/20",
-        )}
+        className={cx(INPUT_CLASS, "pr-10 pl-3")}
       />
       <SearchSmallIcon className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-surface-on-surface-variant" />
     </div>

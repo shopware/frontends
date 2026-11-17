@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { ApiClient, Schemas } from "#shopware";
+import { NotifyProvider } from "@/components/NotifyContext";
+import type { Notify } from "@/components/NotifyContext";
 import type { PublicShopwareConfig } from "@/platform/shopware/publicConfig";
 import { interact, mount, query } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
@@ -16,7 +18,6 @@ import {
   registrationInput,
   salesChannelContext,
 } from "../session.fixture";
-import type { SessionNotification } from "../sessionActions";
 import type { SessionActionResult, StorefrontSession } from "../types";
 import { useSessionActions } from "./SessionActionsContext";
 import type { SessionActions } from "./SessionActionsContext";
@@ -35,7 +36,7 @@ vi.mock("@/features/session/browserClient", () => ({
 }));
 
 const config: PublicShopwareConfig = {
-  endpoint: "https://shop.test/store-api/",
+  publicEndpoint: "https://shop.test/store-api/",
   accessToken: "SWSCTEST",
   devStorefrontUrl: null,
 };
@@ -124,16 +125,18 @@ afterEach(async () => {
 });
 
 async function setup(wrap: (node: ReactNode) => ReactNode = (node) => node) {
-  const notifications: SessionNotification[] = [];
+  const notifications: Parameters<Notify>[0][] = [];
   mounted = await mount(
     wrap(
-      <ShopwareSessionProvider
+      <NotifyProvider
         notify={(notification) => {
           notifications.push(notification);
         }}
       >
-        <Probe />
-      </ShopwareSessionProvider>,
+        <ShopwareSessionProvider>
+          <Probe />
+        </ShopwareSessionProvider>
+      </NotifyProvider>,
     ),
   );
   const { container } = mounted;
@@ -276,6 +279,20 @@ describe("ShopwareSessionProvider recovery", () => {
 
     await vi.waitFor(() => expect(session().isLoggedIn).toBe(true));
     expect(backend.invocations).toHaveLength(2);
+  });
+
+  it("does not re-read a failed session while the tab is hidden", async () => {
+    const backend = createBackend(customer());
+    backend.failures.set(READ_CONTEXT, new TypeError("Failed to fetch"));
+    const { session } = await setup();
+    await vi.waitFor(() => expect(session().status).toBe("error"));
+
+    backend.failures.delete(READ_CONTEXT);
+    vi.spyOn(document, "visibilityState", "get").mockReturnValue("hidden");
+    await interact(() => document.dispatchEvent(new Event("visibilitychange")));
+
+    expect(session().status).toBe("error");
+    expect(backend.invocations).toHaveLength(1);
   });
 
   it("does not re-read a session that is ready", async () => {

@@ -139,11 +139,11 @@ Next.js code: 16.4 differs from most training data (Cache Components,
   readers share one `cache()`d loader.
 - Categories cross into client islands only as `NavigationNode` trees
   (`features/navigation/navigationTree.ts`: id, name, href from
-  `getCategoryUrl`, `external` for `externalLink`/`linkNewTab`, children).
-  `NavigationLink` turns `external` into `target="_blank" rel="noopener"`.
+  `getCategoryUrl`, `newTab` for `externalLink`/`linkNewTab`, children).
+  `NavigationLink` turns `newTab` into `target="_blank" rel="noopener"`.
   Never pass `Schemas["Category"]` to a client component.
-- Client islands: `TopNavigation` (desktop menubar with the flyout, hidden
-  below `lg`), `MobileMenu` (burger plus a `<dialog>` drawer with
+- Client islands: `TopNavigation` (desktop disclosure navigation with the
+  flyout, hidden below `lg`), `MobileMenu` (burger plus a `<dialog>` drawer with
   `data-testid="sidebar-left"`, focus trap and body scroll lock), `HeaderBar`
   (logo, search, account/wishlist/cart buttons, mobile search toggle),
   `HeaderSearch` and `NewsletterBox`.
@@ -181,8 +181,9 @@ Next.js code: 16.4 differs from most training data (Cache Components,
   next-intl swap. Keep the Vue `data-testid`s and roles
   (`header-account-button[data-logged-in]`, `header-wishlist-button`,
   `header-mini-cart-button`, `header-search-input`,
-  `[role="menubar"] [role="menuitem"]` for top-level entries only); the e2e
-  suite asserts them.
+  `header-navigation-link` on top-level entries only); the e2e suite asserts
+  them. The top navigation is a disclosure (`aria-expanded`), not an ARIA
+  menubar.
 - Icons are hand-ported meteor SVGs in `components/icons/index.tsx` (fill
   `currentColor`, `aria-hidden`). Shared class lists live in
   `components/input.ts` and `features/layout/headerAction.ts`.
@@ -239,7 +240,8 @@ Next.js code: 16.4 differs from most training data (Cache Components,
   `createSessionActions` in `features/session/sessionActions.ts`: the Store
   API call, then a `/context` re-read, mirroring `useUser`. The forms send
   the real payload (`RegistrationInput` is the `/account/register` body
-  without `storefrontUrl`); `register` adds `storefrontUrl` from
+  without `storefrontUrl`, omitted per branch so the private/business union
+  survives); `register` adds `storefrontUrl` from
   `storefrontUrl.ts`, a port of `getStorefrontUrl`
   (`devStorefrontUrl`, else the page origin, matched against the sales
   channel domains), resolved after the client and its config are ready.
@@ -247,16 +249,25 @@ Next.js code: 16.4 differs from most training data (Cache Components,
   means the session already ended (another tab, an expired context), so it
   refreshes the session and resolves `{ ok: true }` without a toast; every
   other logout failure stays a failure. Actions called before the client is
-  ready wait for it and for the first `/context` read, so a late guest token
-  cannot overwrite the login token. A failed re-read after a successful
-  mutation does not turn it into a failure.
+  ready wait for it and for the first `/context` read, and a retry waits for
+  any running action, so a late guest token cannot overwrite the login token.
+  A failed re-read after a successful mutation does not turn it into a
+  failure. Logout ends with a full reload (`window.location.assign`), and the
+  forms clear their values after a success: Cache Components keep hidden
+  pages in `<Activity>`, so state left in a form survives soft navigations,
+  logouts included.
 - The actions never reject. On an error they resolve every message with
   `resolveApiErrorMessages` (`apiErrors.ts`, a port of the Vue
   `useApiErrorsResolver` with the copy of `errors.json` in
   `errorMessages.ts`), show one error toast per message themselves and
   resolve `{ ok: false, message }` with the first one, so the forms must not
-  notify `{ ok: false }` again. Anything that is not an `ApiClientError`
+  notify `{ ok: false }` again; they show that message inline in a
+  `role="alert"` paragraph instead. Anything that is not an `ApiClientError`
   resolves to `errors.message-default`.
+- Toasts come from `useNotify()` (`components/NotifyContext.tsx`), provided
+  by `StorefrontProviders`, which owns the toast list. App code outside `cms/`
+  uses it, not `useCmsActions().notify`; the CMS port's `notify` is the same
+  function.
 - `StorefrontProviders` is also the app side of the CMS actions port
   (`CmsActionsProvider`). Cart, wishlist and forms are still stubs there that
   resolve `{ ok: false, message }` with the "not connected" copy from

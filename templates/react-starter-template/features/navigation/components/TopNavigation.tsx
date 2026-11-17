@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import type { FocusEvent } from "react";
 
-import { cx } from "@/cms/client";
 import { ChevronRightSmallIcon } from "@/components/icons";
 
 import type { NavigationNode } from "../navigationTree";
@@ -89,10 +88,7 @@ export function TopNavigation({ tree }: { tree: NavigationNode[] }) {
             return (
               <li
                 key={node.id}
-                className={cx(
-                  "border-b border-transparent text-surface-on-surface hover:border-surface-on-surface",
-                  active && "border-surface-on-surface",
-                )}
+                className="border-b border-transparent text-surface-on-surface hover:border-surface-on-surface has-aria-[current=page]:border-surface-on-surface"
               >
                 <NavigationLink
                   ref={(element) => {
@@ -103,6 +99,7 @@ export function TopNavigation({ tree }: { tree: NavigationNode[] }) {
                     }
                   }}
                   node={node}
+                  data-testid="header-navigation-link"
                   aria-expanded={hasChildren ? expanded : undefined}
                   aria-current={active ? "page" : undefined}
                   onFocus={() => open(node.id)}

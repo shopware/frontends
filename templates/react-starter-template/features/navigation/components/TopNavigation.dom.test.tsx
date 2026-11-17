@@ -18,7 +18,7 @@ function node(overrides: Partial<NavigationNode>): NavigationNode {
     id: "node",
     name: "Node",
     href: "/node/",
-    external: false,
+    newTab: false,
     children: [],
     ...overrides,
   };
@@ -64,16 +64,16 @@ afterEach(async () => {
   route.pathname = "/Clothing";
 });
 
-function menuitems(container: ParentNode): HTMLAnchorElement[] {
+function navLinks(container: ParentNode): HTMLAnchorElement[] {
   return queryAll<HTMLAnchorElement>(container, "nav a");
 }
 
 function labels(container: ParentNode): string[] {
-  return menuitems(container).map((item) => item.textContent ?? "");
+  return navLinks(container).map((item) => item.textContent ?? "");
 }
 
 function trigger(container: ParentNode, name: string): HTMLAnchorElement {
-  const item = menuitems(container).find((it) => it.textContent === name);
+  const item = navLinks(container).find((it) => it.textContent === name);
   if (!item) throw new Error(`No link "${name}"`);
   return item;
 }
@@ -95,6 +95,11 @@ describe("TopNavigation in the browser", () => {
     expect(labels(container)).toEqual(["Clothing", "Men", "Shirts", "Food"]);
     const flyout = query(container, "nav li > a + div");
     expect(flyout.textContent).toContain("Men");
+    expect(
+      [
+        ...container.querySelectorAll('[data-testid="header-navigation-link"]'),
+      ].map((link) => link.textContent),
+    ).toEqual(["Clothing", "Food"]);
   });
 
   it("switches to the focused trigger and renders no flyout for a leaf node", async () => {

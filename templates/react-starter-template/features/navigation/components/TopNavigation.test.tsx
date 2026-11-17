@@ -18,7 +18,7 @@ function node(overrides: Partial<NavigationNode>): NavigationNode {
     id: "node",
     name: "Node",
     href: "/node/",
-    external: false,
+    newTab: false,
     children: [],
     ...overrides,
   };
@@ -43,7 +43,7 @@ const tree: NavigationNode[] = [
     id: "blog",
     name: "Blog",
     href: "https://example.com/blog",
-    external: true,
+    newTab: true,
   }),
 ];
 
@@ -124,6 +124,5 @@ describe("TopNavigation", () => {
     expect(clothing).toContain('aria-current="page"');
     expect(food).not.toContain("aria-current");
     expect(html.match(/aria-current="page"/g)).toHaveLength(1);
-    expect(html.match(/ border-surface-on-surface"/g)).toHaveLength(1);
   });
 });

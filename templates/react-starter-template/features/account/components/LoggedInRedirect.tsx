@@ -18,5 +18,12 @@ export function LoggedInRedirect() {
     router.replace(resolveRedirectFromSearch(window.location.search));
   }, [status, isLoggedIn, router]);
 
+  useEffect(
+    () => () => {
+      settled.current = false;
+    },
+    [],
+  );
+
   return null;
 }

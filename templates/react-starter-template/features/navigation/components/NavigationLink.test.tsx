@@ -12,7 +12,7 @@ describe("NavigationLink", () => {
           id: "clothing",
           name: "Clothing",
           href: "/Clothing/",
-          external: false,
+          newTab: false,
           children: [],
         }}
         className="nav-link"
@@ -34,7 +34,7 @@ describe("NavigationLink", () => {
           id: "blog",
           name: "Blog",
           href: "https://example.com/blog",
-          external: true,
+          newTab: true,
           children: [],
         }}
       >

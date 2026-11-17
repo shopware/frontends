@@ -3,15 +3,15 @@
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import type { ReactNode } from "react";
 
+import { useNotify } from "@/components/NotifyContext";
+
 import { anonymousSession } from "../anonymousSession";
-import type { SessionNotification } from "../sessionActions";
 import { createSessionStore } from "../sessionStore";
 import type { StorefrontSession } from "../types";
 import { SessionActionsProvider } from "./SessionActionsContext";
 import { SessionProvider } from "./SessionProvider";
 
 export type ShopwareSessionProviderProps = {
-  notify: (notification: SessionNotification) => void;
   children: ReactNode;
 };
 
@@ -20,9 +20,9 @@ function getServerSession(): StorefrontSession {
 }
 
 export function ShopwareSessionProvider({
-  notify,
   children,
 }: ShopwareSessionProviderProps) {
+  const notify = useNotify();
   const [store] = useState(createSessionStore);
   const session = useSyncExternalStore(
     store.subscribe,
