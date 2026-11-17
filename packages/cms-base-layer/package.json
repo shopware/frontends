@@ -1,6 +1,6 @@
 {
   "name": "@shopware/cms-base-layer",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "Vue CMS Nuxt Layer for Shopware",
   "author": "Shopware",
   "repository": {
@@ -40,8 +40,8 @@
   },
   "dependencies": {
     "@iconify-json/carbon": "1.2.27",
-    "@nuxt/image": "2.1.0",
-    "@nuxt/kit": "4.6.3",
+    "@nuxt/image": "2.2.1",
+    "@nuxt/kit": "4.6.4",
     "@shopware/api-client": "workspace:*",
     "@shopware/composables": "workspace:*",
     "@shopware/helpers": "workspace:*",
@@ -58,14 +58,14 @@
     "xss": "1.0.15"
   },
   "devDependencies": {
-    "@nuxt/schema": "4.6.3",
+    "@nuxt/schema": "4.6.4",
     "@types/three": "0.182.0",
     "@typescript/native-preview": "7.0.0-dev.20260205.1",
-    "@vitest/coverage-v8": "5.0.5",
-    "nuxt": "4.6.3",
+    "@vitest/coverage-v8": "5.1.0",
+    "nuxt": "4.6.4",
     "tsconfig": "workspace:*",
     "typescript": "5.9.3",
-    "vitest": "5.0.5",
+    "vitest": "5.1.0",
     "vue-router": "5.4.0",
     "vue-tsc": "3.3.11"
   }

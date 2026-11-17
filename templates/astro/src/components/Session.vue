@@ -22,9 +22,7 @@ await refreshSessionContext();
         Default payment method:
         <strong>{{ selectedPaymentMethod?.translated?.name }}</strong>
       </p>
-      <p>
-        Is customer logged in: <strong>{{ isLoggedIn }}</strong>
-      </p>
+      <p>Is customer logged in: <strong>{{ isLoggedIn }}</strong></p>
     </div>
   </div>
 </template>

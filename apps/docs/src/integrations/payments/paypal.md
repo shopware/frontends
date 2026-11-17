@@ -24,7 +24,7 @@ In order to follow this guide properly, we recommend that you get familiar with 
 
 - [Payment Flow in Shopware 6](https://developer.shopware.com/docs/concepts/commerce/checkout-concept/payments)
 - [Payment API](https://shopware.stoplight.io/docs/store-api/8218801e50fe5-handling-the-payment)
-  :::
+:::
 
 In this chapter you will learn how to integrate a payment flow with Shopware Frontends. There are various ways in which payment providers integrate with Shopware's API, so it is likely that you need to consult the documentation of your payment provider to get the details.
 

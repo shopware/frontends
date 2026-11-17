@@ -1,6 +1,6 @@
 {
   "name": "vue-demo-store",
-  "version": "1.14.1",
+  "version": "1.14.2",
   "private": true,
   "type": "module",
   "scripts": {
@@ -39,9 +39,9 @@
     "@iconify/utils": "3.1.7",
     "@nuxtjs/i18n": "10.4.0",
     "@shopware/api-gen": "canary",
-    "nuxt": "4.6.3",
-    "oxfmt": "0.62.0",
-    "oxlint": "1.77.0",
+    "nuxt": "4.6.4",
+    "oxfmt": "0.78.0",
+    "oxlint": "1.93.0",
     "typescript": "5.9.3",
     "vite": "8.3.5"
   },
