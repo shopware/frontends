@@ -1,7 +1,5 @@
-import { CmsPage } from "@shopware/cms-base-layer-react";
-
+import { CmsPage } from "@/cms";
 import { createStorefrontCmsContext } from "@/platform/cms/context";
-import { notFoundOn404 } from "@/platform/shopware/errors";
 import { readProductDetail } from "@/platform/shopware/reads/product";
 
 export type DetailPageProps = {
@@ -9,7 +7,7 @@ export type DetailPageProps = {
 };
 
 export async function DetailPage({ productId }: DetailPageProps) {
-  const { product } = await readProductDetail(productId).catch(notFoundOn404);
+  const { product } = await readProductDetail(productId);
   const ctx = await createStorefrontCmsContext({
     routeName: "frontend.detail.page",
     foreignKey: productId,

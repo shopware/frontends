@@ -92,7 +92,6 @@ export function renderer(
         return config.textTransformer(node.content); // return text
       }
       if (node.type === "tag") {
-        const transformedNode = getOptionsFromNode(node, resolveUrl);
         const children: RawChildren[] = [];
         for (const child of node.children) {
           const rendered = _render(h, child);
@@ -104,8 +103,9 @@ export function renderer(
         if (componentConfig !== undefined) {
           return componentConfig.renderer(node, children, h, context);
         }
-        // else, create normal html element
-        return h(node.name, transformedNode, [...children]);
+        // else, create normal html element; Vue 3 takes attributes as flat props
+        const { attrs, ...options } = getOptionsFromNode(node, resolveUrl);
+        return h(node.name, { ...attrs, ...options }, [...children]);
       }
     }
     return undefined;

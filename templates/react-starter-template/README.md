@@ -6,7 +6,7 @@ a project from.
 
 ## Stack
 
-- Next.js 16.3 with the App Router and Cache Components
+- Next.js 16.4 with the App Router and Cache Components
 - React 19
 - `@shopware/api-client` with the Store API types, `@shopware/helpers`
 - Tailwind CSS v4 with the Shopware color tokens from `@shopware/design-tokens`
@@ -37,6 +37,12 @@ To use your own instance, copy `.env.template` to `.env` and set:
 All of them are read on the server at request time, so one build can serve
 several environments. The browser gets the public ones from
 `/api/shopware/config`.
+
+### Minimum Shopware version
+
+Use Shopware 6.7.6.0 or newer. Reads send their Criteria as a compressed
+`_criteria` GET query parameter, which the Store API accepts from 6.7.6.0 on,
+and the template has no POST fallback.
 
 ## Type generation
 

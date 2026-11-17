@@ -7,6 +7,7 @@ type Injections = {
   shopware: unknown;
   apiClient: {
     invoke: ReturnType<typeof vi.fn>;
+    defaultHeaders?: Record<string, string>;
   };
   swNotifications?: unknown;
 };
@@ -14,7 +15,10 @@ type Injections = {
 export function useSetup<V>(setup: () => V, customMocks?: Partial<Injections>) {
   const defaultInjections: Injections = {
     shopware: {},
-    apiClient: { invoke: customMocks?.apiClient?.invoke ?? vi.fn() },
+    apiClient: {
+      invoke: customMocks?.apiClient?.invoke ?? vi.fn(),
+      defaultHeaders: {},
+    },
   };
 
   const component = defineComponent({

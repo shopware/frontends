@@ -10,12 +10,19 @@ registration and logout work; cart, wishlist, search and forms are stubs.
 
 Next.js ships docs that match the installed version in
 `node_modules/next/dist/docs/`. Read the relevant guide there before writing
-Next.js code: 16.3 differs from most training data (Cache Components,
+Next.js code: 16.4 differs from most training data (Cache Components,
 `proxy.ts` instead of `middleware.ts`, async request APIs).
 
-`agentRules` is `false` in `next.config.ts`, so `next dev` does not write its
-own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
-`AGENTS.md` files only.
+## Code layout
+
+- `platform/shopware/` is the data-access layer on the server: the API client
+  and the reads. Nothing outside it creates a server client.
+- `features/<area>/components/` holds the UI of one area. A component imports a
+  read from `platform/shopware/reads/` and never calls the Store API itself;
+  the browser session in `features/session/` is the one exception (see Session
+  and actions).
+- `cms/` renders Shopping Experiences pages, the port of `cms-base-layer`.
+  `cms/AGENTS.md` holds its rules.
 
 ## Store API
 
@@ -39,7 +46,8 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   sessions between users.
 - Reads live in `platform/shopware/reads/`. Each is a `'use cache'` function
   that creates its own anonymous client and sets a `cacheLife` profile from
-  `next.config.ts` (`catalog`, `listing`, `seo`, `reference`) and an `sw:` tag.
+  `next.config.ts` (`catalog`, `listing`, `seo`, `reference`; the navigation
+  read uses the built-in `hours`) and an `sw:` tag.
   When an endpoint has a GET variant (an `operations` key of the form
   `<operationId>Get get <path>`), the read uses it and sends its criteria as
   `query: { _criteria: encodeForQuery(criteria) }`. POST is only for endpoints
@@ -47,8 +55,18 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   and no POST fallback. Where the generated GET type does not declare
   `_criteria` yet (category, landing page), the read widens the query type
   locally, the precedent being `useCategorySearch.search` in composables.
-  Let a failed read throw so the failure is not cached; the calling
-  component handles it (`notFoundOn404` in `platform/shopware/errors.ts`).
+  `pnpm check:cacheable-reads` fails on a call to any POST operation
+  registered in `cacheableReadRoutes`
+  (`packages/composables/src/useCacheableRead/routes.ts`).
+- A `'use cache'` read is keyed on its arguments only. Everything that changes
+  the response — language, currency, sales channel, a context token — must be an
+  argument, or the cache serves one visitor's response to another.
+- Let a failed read throw so the failure is not cached. An error that leaves
+  a `'use cache'` function reaches the caller as a plain `Error` carrying only
+  a `digest`: no `ApiClientError`, no `status`. So a read turns a Store API
+  404 into `notFound()` itself, with `.catch(notFoundOn404)`
+  (`platform/shopware/errors.ts`) on the `invoke` call. A `catch` in the
+  calling component can no longer tell a 404 from a 500.
 - The Store API caps `limit` at 100 and the demo backend has 250 countries, so
   `readCountries` pages through `/country` with `"total-count-mode": "exact"`
   until `elements.length >= total` (ten pages at most) and returns
@@ -63,25 +81,40 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
 
 ## Routing and CMS
 
-- `app/[...path]/page.tsx` resolves every storefront URL in a server
-  component: `/` maps to the sales channel's navigation category, technical
-  paths (`/navigation/{id}`, `/detail/{id}`, `/landingPage/{id}`) are parsed
-  with `getRouteFromPathInfo`, everything else is looked up in `/seo-url` with
-  both the plain path and the path with a trailing slash. The result is
-  dispatched to `features/cms/components/{NavigationPage,DetailPage,LandingPage}`.
+- `app/[[...path]]/page.tsx` resolves every storefront URL in a server
+  component, the home page included: `/` maps to the sales channel's
+  navigation category, technical paths (`/navigation/{id}`, `/detail/{id}`,
+  `/landingPage/{id}`, `/page/cms/{id}`) are parsed with
+  `getRouteFromPathInfo`, everything else is looked up in `/seo-url` with both
+  the plain path and the path with a trailing slash. The result is dispatched
+  to `features/cms/components/{NavigationPage,DetailPage,LandingPage,CmsLayoutPage}`.
+  `/page/cms/{id}` is a standalone CMS layout (`frontend.cms.page.full`), such
+  as a legal page, which has no SEO URL; it is marked `noindex`, as in the
+  Storefront.
+  `generateMetadata` in the same file builds title, description, keywords
+  and Open Graph tags from the resolved entity; the home page keeps the
+  layout's default title.
+- `app/error.tsx` and `app/not-found.tsx` render inside the root layout, so
+  the header stays when a read fails or a path does not resolve.
 - A miss calls `notFound()` inside a `<Suspense>` boundary, which streams a
   200 with `noindex`, not a real 404. Real 301/404/503 status codes need the
   lookup in `proxy.ts`; that is a later stage, do not try to fix it in the
   page.
+- Listing params from the URL are validated before they reach the Store API
+  (`buildListingQueryParams`): `limit` and `p` must be positive integers and
+  `limit` is capped at 100, because the Store API answers 400 above its
+  `max_limit`. A page past the last one is a Store API 404 and renders the
+  not-found page.
 - `skipTrailingSlashRedirect` is on because Shopware category paths end with
   `/`. The catch-all receives the segments without that slash, which is why
   the SEO lookup tries both spellings.
-- CMS pages render through `@shopware/cms-base-layer-react`: `CmsPage` with a
-  `CmsContext` built by `platform/cms/context.ts` (`createStorefrontCmsContext`,
-  locale `en-GB`, currency from `/context`). Override a CMS component in
-  `platform/cms/registry.ts` with `mergeCmsRegistries`, never by editing the
-  package. `app/globals.css` imports the package stylesheet and adds `@source`
-  for its `src`, otherwise Tailwind drops the component classes.
+- CMS pages render through `cms/` (`@/cms`): `CmsPage` with a `CmsContext`
+  built by `platform/cms/context.ts` (`createStorefrontCmsContext`, locale
+  `en-GB`, currency from `/context`). To replace a default component, register
+  your own in `platform/cms/registry.ts` with `mergeCmsRegistries`.
+  `app/globals.css` imports `cms/assets/styles.css`, which carries the
+  rich-text rules and the `@source inline` safelist for the visibility classes
+  built from CMS data; without that import those classes are dropped.
 - Listing state lives in the URL (`manufacturer`, `properties`, `min-price`,
   `max-price`, `rating`, `shipping-free`, `order`, `limit`, `p`). When those
   params are present and the category layout contains a product listing,
@@ -91,10 +124,11 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
 - Reading `searchParams` or calling `connection()` makes a subtree dynamic, so
   it always happens inside a `<Suspense>` (`PageSkeleton` is the fallback).
   Catalog routes must never read `cookies()` or `headers()`.
-- The home page calls `connection()` before its reads so `next build` does
-  not need the Store API. Prerendering at build time is a later decision.
+- `next build` does not need the Store API: the catch-all awaits `params`
+  and `searchParams` and the header calls `connection()`, so every read runs
+  at request time. Prerendering at build time is a later decision.
 
-## Layout
+## Header and footer
 
 - `app/layout.tsx` renders `features/layout/components/Header` and `Footer`
   around `<main aria-label="Main content">`. Both are server components. The
@@ -120,7 +154,7 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   follow that `redirect` after a login or a registration.
   They read `window.location` in the event handler, never `usePathname()` or
   `useSearchParams()` during render: with Cache Components those hooks suspend
-  the root layout under `app/[...path]` (an unknown catch-all param), which
+  the root layout under `app/[[...path]]` (an unknown catch-all param), which
   fails `next build`, and would drop the login form out of the static shell.
   `AccountMenu` may call `usePathname()` only because it renders after a
   click, never on the server.
@@ -178,7 +212,7 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   the route handler `app/api/shopware/config/route.ts` (`GET`, `connection()`
   first, `Cache-Control: no-store`), never from `NEXT_PUBLIC_*`: those are
   inlined at build time, so one build could not be re-pointed at another
-  instance. The static `api` segment wins over `app/[...path]`.
+  instance. The static `api` segment wins over `app/[[...path]]`.
   `loadPublicConfig` fetches it once per page load and forgets a failure, so
   the next caller retries; `parsePublicShopwareConfig` in
   `platform/shopware/publicConfig.ts` validates the payload. That fetch and
@@ -224,13 +258,20 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   notify `{ ok: false }` again. Anything that is not an `ApiClientError`
   resolves to `errors.message-default`.
 - `StorefrontProviders` is also the app side of the CMS actions port
-  (`CmsActionsProvider`). Cart, wishlist, variant lookup and forms are
-  still stubs there that show a "not connected" notification
-  (`features/storefront/notWired.ts`) and return `{ ok: false }`. Wire them
-  there, not in the CMS components.
+  (`CmsActionsProvider`). Cart, wishlist and forms are still stubs there that
+  resolve `{ ok: false, message }` with the "not connected" copy from
+  `features/storefront/notWired.ts`; the CMS component shows that message as
+  its one toast, so the stub must not notify as well. `findVariant` resolves
+  `null`, so it notifies itself. Wire them there, not in the CMS components.
 
 ## Rules the code does not show
 
+- Cache Components are on. A catalog route must never read `cookies()` or
+  `headers()`: that silently makes the route dynamic, and its HTML stops being
+  cacheable.
+- `agentRules: false` in `next.config.ts` stops `next dev` from generating its
+  own agent rules into this file or a `CLAUDE.md` pointer file. The repository
+  keeps `AGENTS.md` files only.
 - Colors come from `@shopware/design-tokens` (`tailwind.css`, `@theme static`).
   The class names match the Vue templates (`bg-brand-primary`,
   `text-surface-on-surface`), so markup ports between them. Add or change a
@@ -238,7 +279,5 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
 - The template reads `@shopware/design-tokens` from its build output, and
   `unbuild --stub` does not work in Next.js client bundles. After changing the
   package, rebuild it: `pnpm --filter @shopware/design-tokens build`.
-  `@shopware/cms-base-layer-react` ships source, so its edits are live.
-- `@shopware/design-tokens` and `@shopware/cms-base-layer-react` are linked
-  with `workspace:*` until they are published, which is why the template is
-  not scaffoldable yet.
+- `@shopware/design-tokens` is linked with `workspace:*` until it is
+  published, which is why the template is not scaffoldable yet.

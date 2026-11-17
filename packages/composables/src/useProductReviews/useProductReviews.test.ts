@@ -44,8 +44,9 @@ describe("useProductReviews", () => {
     });
 
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("readProductReviewsGet get"),
-      expect.objectContaining({
+      "readProductReviewsGet get /product/{productId}/reviews",
+      {
+        headers: { "sw-context-token": "" },
         pathParams: {
           productId: ProductMock.id,
         },
@@ -55,7 +56,7 @@ describe("useProductReviews", () => {
             sort: [{ field: "createdAt", order: "DESC" }],
           }),
         },
-      }),
+      },
     );
     expect(vm.productReviews).toEqual([{ id: "1", content: "Great!" }]);
   });

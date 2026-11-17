@@ -1,9 +1,9 @@
 "use client";
 
-import { cx, useCmsActions } from "@shopware/cms-base-layer-react/client";
 import { useEffect, useRef } from "react";
 import type { KeyboardEvent } from "react";
 
+import { cx, useCmsActions } from "@/cms/client";
 import { SearchSmallIcon } from "@/components/icons";
 import { INPUT_CLASS } from "@/components/input";
 import { NOT_WIRED_MESSAGES } from "@/features/storefront/notWired";

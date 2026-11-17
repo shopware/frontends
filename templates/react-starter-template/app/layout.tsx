@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import type { ReactNode } from "react";
 
 import { Footer } from "@/features/layout/components/Footer";
 import { Header } from "@/features/layout/components/Header";
@@ -22,9 +21,7 @@ export const metadata: Metadata = {
   description: "A Next.js storefront template for Shopware 6.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: ReactNode }>) {
+export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={inter.variable}>
       <body className="bg-surface-background font-sans text-surface-on-background antialiased">

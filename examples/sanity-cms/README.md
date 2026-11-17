@@ -132,7 +132,7 @@ on mount) and never baked into the cacheable SSR HTML.
 
 ## Learn more
 
-- Integration guide: **https://developer.shopware.com/frontends/resources/integrations/cms/sanity.html**
+- Integration guide: **https://developer.shopware.com/frontends/integrations/cms/sanity.html**
 - [`@nuxtjs/sanity` docs](https://sanity.nuxtjs.org/) · [Sanity docs](https://www.sanity.io/docs)
 
 ## Try it online

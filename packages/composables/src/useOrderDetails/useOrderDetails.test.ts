@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 
+import { useOrderDetails } from "#imports";
+
 import { useSetup } from "../_test";
 import Order from "../mocks/Order";
-import { useOrderDetails } from "./useOrderDetails";
 
 describe("useOrderDetails", () => {
   it("init details", async () => {
@@ -15,14 +16,19 @@ describe("useOrderDetails", () => {
     await vm.loadOrderDetails();
     expect(vm.hasDocuments).toBe(false);
     expect(vm.documents).toStrictEqual([]);
+    expect(injections.apiClient.invoke).toHaveBeenCalledTimes(1);
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
       expect.stringContaining("readOrder"),
       expect.objectContaining({
         body: expect.objectContaining({
           associations: expect.anything(),
         }),
+        query: { checkPromotion: true },
       }),
     );
+    expect(
+      injections.apiClient.invoke.mock.calls.at(0)?.[1].body,
+    ).not.toHaveProperty("checkPromotion");
 
     expect(vm.personalDetails).toEqual({
       email: Order.orders.elements?.[0]?.orderCustomer.email,
@@ -184,6 +190,40 @@ describe("useOrderDetails", () => {
     expect(vm.paymentChangeable).toEqual(false);
     await vm.loadOrderDetails();
     expect(vm.paymentChangeable).toEqual(true);
+  });
+
+  it("retries with checkPromotion body flag when paymentChangeable is missing", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke
+      .mockResolvedValueOnce({
+        data: { orders: Order.orders, paymentChangeable: {} },
+      })
+      .mockResolvedValueOnce({ data: Order });
+    await vm.loadOrderDetails();
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledTimes(2);
+    expect(injections.apiClient.invoke.mock.calls.at(0)?.[1]).toEqual(
+      expect.objectContaining({
+        query: { checkPromotion: true },
+      }),
+    );
+    expect(
+      injections.apiClient.invoke.mock.calls.at(0)?.[1].body,
+    ).not.toHaveProperty("checkPromotion");
+    expect(injections.apiClient.invoke.mock.calls.at(1)?.[1]).toEqual({
+      body: expect.objectContaining({ checkPromotion: true }),
+    });
+    expect(vm.paymentChangeable).toEqual(true);
+  });
+
+  it("does not retry when no order is returned", async () => {
+    const { vm, injections } = useSetup(() => useOrderDetails("123-test"));
+    injections.apiClient.invoke.mockResolvedValue({
+      data: { orders: { elements: [] }, paymentChangeable: {} },
+    });
+    await vm.loadOrderDetails();
+
+    expect(injections.apiClient.invoke).toHaveBeenCalledTimes(1);
   });
 
   it("loadOrderDetails with custom associations", async () => {

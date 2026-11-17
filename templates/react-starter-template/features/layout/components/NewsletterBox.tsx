@@ -1,13 +1,9 @@
 "use client";
 
-import {
-  BaseButton,
-  cx,
-  useCmsActions,
-} from "@shopware/cms-base-layer-react/client";
 import { useState } from "react";
 import type { FormEvent } from "react";
 
+import { BaseButton, cx, useCmsActions } from "@/cms/client";
 import { INPUT_CLASS } from "@/components/input";
 
 const t = {

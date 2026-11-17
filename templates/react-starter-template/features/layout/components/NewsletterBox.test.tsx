@@ -1,7 +1,7 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
-import type { CmsActions } from "@shopware/cms-base-layer-react/client";
 import { describe, expect, it, vi } from "vitest";
 
+import { CmsActionsProvider } from "@/cms/client";
+import type { CmsActions } from "@/cms/client";
 import { renderToHtml } from "@/test/render";
 
 import { NewsletterBox, validateEmail } from "./NewsletterBox";

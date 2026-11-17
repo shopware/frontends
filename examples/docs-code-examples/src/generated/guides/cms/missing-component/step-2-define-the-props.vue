@@ -1,4 +1,4 @@
-<!-- components/{{ componentName }}.vue -->
+<!-- app/components/cms/{{ componentName }}.vue -->
 <script setup lang="ts">
 import type { Schemas } from "#shopware";
 

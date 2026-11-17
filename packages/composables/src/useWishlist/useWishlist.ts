@@ -1,7 +1,5 @@
+import { getTotalPages } from "@shopware/helpers";
 import { defu } from "defu";
-/**
- * Template composable
- */
 import { computed, ref } from "vue";
 import type { ComputedRef } from "vue";
 
@@ -104,7 +102,9 @@ export function useWishlist(): UseWishlistReturn {
     canSyncWishlist.value ? itemsSync.value : itemsLocal.value,
   );
 
-  const totalPagesCount = computed(() => Math.ceil(count.value / limit.value));
+  const totalPagesCount = computed(() =>
+    getTotalPages(count.value, limit.value),
+  );
 
   const clearWishlist = async () => {
     if (canSyncWishlist.value) {
@@ -118,7 +118,7 @@ export function useWishlist(): UseWishlistReturn {
   const mergeWishlistProducts = async () => {
     if (itemsLocal.value?.length) {
       await mergeWishlistProductsSync(itemsLocal.value);
-      clearWishlist();
+      await clearWishlistLocal();
     }
     await getWishlistProductsSync();
   };

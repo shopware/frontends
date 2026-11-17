@@ -1,6 +1,6 @@
-import { cx } from "@shopware/cms-base-layer-react/client";
 import type { ComponentProps } from "react";
 
+import { cx } from "@/cms/client";
 import { ChevronDownIcon } from "@/components/icons";
 import { INPUT_CLASS } from "@/components/input";
 

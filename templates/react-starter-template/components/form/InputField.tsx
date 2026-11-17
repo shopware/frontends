@@ -1,6 +1,6 @@
-import { cx } from "@shopware/cms-base-layer-react/client";
 import type { ComponentProps } from "react";
 
+import { cx } from "@/cms/client";
 import { INPUT_CLASS } from "@/components/input";
 
 import { FieldLabel } from "./FieldLabel";

@@ -6,12 +6,6 @@ import type { Schemas } from "#shopware";
 /**
  * A composables library compatible with Vue 3 and Shopware 6.
  *
- * Some more info...
- *
- * @remarks
- * The `widget-lib` defines the {@link IWidget} interface and {@link Widget} class,
- * which are used to build widgets.
- *
  * @packageDocumentation
  */
 
@@ -22,6 +16,8 @@ export * from "./createShopwareContext";
 export * from "./useAddress/useAddress";
 export * from "./useAddToCart/useAddToCart";
 export * from "./useBreadcrumbs/useBreadcrumbs";
+export type { UseCacheableReadReturn } from "./useCacheableRead/useCacheableRead";
+export { useCacheableRead } from "./useCacheableRead/useCacheableRead";
 export * from "./useCart/useCart";
 export * from "./useCartItem/useCartItem";
 export * from "./useCategory/useCategory";
@@ -106,7 +102,9 @@ export function resolveCmsComponent(
   }
 }
 
-// TODO: handle defaults in app
+/**
+ * @deprecated Returns an empty object. Will be removed in the next major release.
+ */
 export function getDefaultApiParams(): {
   [composableName: string]: unknown;
 } {

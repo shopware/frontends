@@ -1,7 +1,5 @@
-import { CmsPage } from "@shopware/cms-base-layer-react";
-
+import { CmsPage } from "@/cms";
 import { createStorefrontCmsContext } from "@/platform/cms/context";
-import { notFoundOn404 } from "@/platform/shopware/errors";
 import { readLandingPage } from "@/platform/shopware/reads/landingPage";
 
 export type LandingPageProps = {
@@ -9,7 +7,7 @@ export type LandingPageProps = {
 };
 
 export async function LandingPage({ landingPageId }: LandingPageProps) {
-  const landingPage = await readLandingPage(landingPageId).catch(notFoundOn404);
+  const landingPage = await readLandingPage(landingPageId);
   const ctx = await createStorefrontCmsContext({
     routeName: "frontend.landing.page",
     foreignKey: landingPageId,

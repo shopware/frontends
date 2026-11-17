@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import type { BoxLayout } from "@shopware/composables";
+import { useProductPrice } from "@shopware/composables";
 import type { UrlRouteOutput } from "@shopware/helpers";
-import { computed } from "vue";
+import { computed, toRef } from "vue";
 
 import type { Schemas } from "#shopware";
+
+import { shouldShowBuyButton } from "../helpers/product/shouldShowBuyButton";
 
 type Translations = {
   product: {
@@ -27,6 +30,10 @@ const props = defineProps<{
 }>();
 
 const isMinimalLayout = computed(() => props.layoutType === "minimal");
+const { displayFrom } = useProductPrice(toRef(props, "product"));
+const showBuyButton = computed(() =>
+  shouldShowBuyButton(props.product, displayFrom.value),
+);
 </script>
 <template>
   <div
@@ -72,7 +79,7 @@ const isMinimalLayout = computed(() => props.layoutType === "minimal");
     <template v-if="!isMinimalLayout">
       <SwBaseButton
         variant="primary"
-        v-if="!fromPrice"
+        v-if="showBuyButton"
         size="medium"
         :disabled="!product?.available"
         block

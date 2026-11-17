@@ -18,7 +18,7 @@ nav:
 [<img src="../../.assets/cms-icons/storyblok.light.svg" alt="Storyblok Logo" class="mb-8 h-20 hidden dark:block" />](https://www.storyblok.com/docs/guide/introduction)
 [<img src="../../.assets/cms-icons/storyblok.dark.svg" alt="Storyblok Logo" class="mb-8 h-20 block dark:hidden" />](https://www.storyblok.com/docs/guide/introduction)
 
-Storyblok is a headless CMS that can be easily integrated into any Nuxt 3 application.
+Storyblok is a headless CMS that can be easily integrated into any Nuxt application.
 On this page we explain the basics of how to integrate it into our [vue-blank template](../../introduction/templates/blank-template).
 
 ## Step by step guide
@@ -49,8 +49,8 @@ export default defineNuxtConfig({
 
 <!-- /automd -->
 
-6. In the root directory of your project create a `storyblok` folder.
-7. Let's create our base components files inside our `vue-blank-storyblok/storyblok` folder
+6. In the `app` directory of your project create a `storyblok` folder.
+7. Let's create our base components files inside our `vue-blank-storyblok/app/storyblok` folder
 
    **Feature.vue**
 
@@ -161,7 +161,7 @@ onMounted(async () => {
 
 <!-- /automd -->
 
-9. Create `pages/[...all].vue` and `pages/storyblok/[slug].vue` files
+9. Create `app/pages/[...all].vue` and `app/pages/storyblok/[slug].vue` files
 
    **[...all].vue**
 

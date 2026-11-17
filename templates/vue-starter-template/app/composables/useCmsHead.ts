@@ -1,5 +1,6 @@
 import {
   getCategoryImageUrl,
+  getCmsMeta,
   getSmallestThumbnailUrl,
   getTranslatedProperty,
   isLandingPage,
@@ -14,15 +15,6 @@ type CmsPageEntity =
   | Schemas["Category"]
   | Schemas["LandingPage"]
   | Schemas["Product"];
-
-type MetaEntry = {
-  name: string;
-  content: string;
-};
-
-function getMetaContent(meta: MetaEntry[], name: string) {
-  return meta.find((entry) => entry.name === name)?.content;
-}
 
 export function useCmsHead(
   entity: Ref<CmsPageEntity> | ComputedRef<CmsPageEntity>,
@@ -39,24 +31,26 @@ export function useCmsHead(
     return url.href;
   });
   // get title and meta tags available in the Shopware instance
-  const { title: metaTitle, meta } = useCmsMeta(unrefEntity);
+  const cmsMeta = computed(() => getCmsMeta(unrefEntity));
 
   const title = computed(() => {
-    const title = metaTitle.value;
+    const title = cmsMeta.value.title;
     if (options?.mainShopTitle) {
       return `${title} | ${options.mainShopTitle}`;
     }
     return title;
   });
 
-  const description = computed(() => getMetaContent(meta.value, "description"));
+  const description = computed(
+    () => cmsMeta.value.metaDescription || undefined,
+  );
 
   const ogTitle = computed(() =>
     isProduct(unrefEntity)
       ? getTranslatedProperty(unrefEntity, "ogTitle") ||
-        getMetaContent(meta.value, "title") ||
+        cmsMeta.value.metaTitle ||
         title.value
-      : getMetaContent(meta.value, "title"),
+      : cmsMeta.value.metaTitle || undefined,
   );
 
   const ogDescription = computed(() =>
@@ -78,9 +72,9 @@ export function useCmsHead(
   });
 
   const additionalMeta = computed(() =>
-    meta.value.filter(
-      (entry: MetaEntry) => !["title", "description"].includes(entry.name),
-    ),
+    cmsMeta.value.keywords
+      ? [{ name: "keywords", content: cmsMeta.value.keywords }]
+      : [],
   );
 
   useSeoMeta({

@@ -1,14 +1,11 @@
 "use client";
 
-import {
-  IconButton,
-  useCmsActions,
-} from "@shopware/cms-base-layer-react/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
+import { IconButton, useCmsActions } from "@/cms/client";
 import {
   HeartIcon,
   SearchIcon,

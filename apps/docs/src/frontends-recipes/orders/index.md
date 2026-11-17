@@ -4,14 +4,22 @@ nav:
   position: 40
 ---
 
+<script setup>
+import RecipeCard from "../../components/RecipeCard.vue";
+import RecipeCardGrid from "../../components/RecipeCardGrid.vue";
+</script>
+
 # Orders
 
 Recipes for reading one placed order — access without a customer session, and everything a detail page renders from it.
 
-<PageRef page="guest-order-lookup.html" title="Guest Order Lookup via Deep Link" sub="Understand why the first lookup is meant to fail, which error code asks for credentials, what login: true does to the session token, and why the deep link filter is not a normal criteria filter." />
-
-<PageRef page="details.html" title="Order Details" sub="Understand why reading one order is a search, how the default associations decide what the page can render, where paymentChangeable comes from, and what cancellation and document downloads actually send." />
+<RecipeCardGrid>
+  <RecipeCard page="guest-order-lookup.html" title="Guest Order Lookup via Deep Link" summary="Open a guest order from the confirmation mail link, asking for the email and postal code only when the first lookup rejects the guest as not authenticated." :composables="['useOrderDetails', 'useUser']" />
+  <RecipeCard page="details.html" title="Order Details" summary="Render one order with its state, items, documents and downloads, and let the customer cancel it." :composables="['useOrderDetails', 'useDefaultOrderAssociations']" />
+</RecipeCardGrid>
 
 The paginated list a signed-in customer opens these pages from lives in the Account area:
 
-<PageRef page="../account/order-history.html" title="Order History" sub="Understand the paginated order list, the associations a list row does not contain, the order detail request, payment change, cancellation, and guest order access." />
+<RecipeCardGrid>
+  <RecipeCard page="../account/order-history.html" title="Order History" summary="List a customer's orders page by page and open one order with the associations it needs." :composables="['useCustomerOrders', 'useOrderDetails']" />
+</RecipeCardGrid>

@@ -27,9 +27,9 @@ To add multiple CMS support, you need to inject a middleware into the main routi
 
 `templates/vue-starter-template/app/pages/[...all].vue`
 
-<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/multiple-cms/adding-middleware.vue" code lang="vue{17-24,49-56}" no-name -->
+<!-- automd:file src="examples/docs-code-examples/src/generated/guides/cms/multiple-cms/adding-middleware.vue" code lang="vue{22-26,55-58}" no-name -->
 
-```vue{17-24,49-56}
+```vue{22-26,55-58}
 <script setup lang="ts">
 import { pascalCase } from "scule";
 import { h, ref, resolveComponent } from "vue";
@@ -119,8 +119,8 @@ function render() {
 
 The key changes are:
 
-- **Lines 17-24**: Inject the `pageRenderMiddlewares` to check for additional CMS resolvers
-- **Lines 49-56**: If no Shopware CMS component is found, try to render content from the additional CMS
+- **Lines 22-26**: Inject the `pageRenderMiddlewares` to check for additional CMS resolvers
+- **Lines 55-58**: If no Shopware CMS component is found, try to render content from the additional CMS
 
 The `cmsPageRendererComponent` is returned before the regular `cmsPageView` is resolved, but only if it's not null and **no** `componentName` (routeName) is found from Shopware.
 

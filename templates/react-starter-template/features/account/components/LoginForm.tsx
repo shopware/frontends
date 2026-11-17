@@ -1,13 +1,10 @@
 "use client";
 
-import {
-  BaseButton,
-  useCmsActions,
-} from "@shopware/cms-base-layer-react/client";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import type { FormEvent } from "react";
 
+import { BaseButton, useCmsActions } from "@/cms/client";
 import { InputField } from "@/components/form/InputField";
 import {
   emptyLoginValues,

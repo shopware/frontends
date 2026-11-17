@@ -1,10 +1,10 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import type { FocusEvent } from "react";
 
+import { cx } from "@/cms/client";
 import { ChevronRightSmallIcon } from "@/components/icons";
 
 import type { NavigationNode } from "../navigationTree";

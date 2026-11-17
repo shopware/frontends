@@ -95,15 +95,6 @@ The flow is therefore two requests, not one. The first sends just the code and i
 
 <RecipeFlowDiagram label="Guest order lookup flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. The customer opens a route that carries only the order's `deepLinkCode`.
-2. `readOrder post /order` is sent with the `deepLinkCode` filter and nothing else.
-3. The call rejects with `CHECKOUT__GUEST_NOT_AUTHENTICATED`, which the page reads as "ask for credentials".
-4. A form collects the email address and the billing postal code of the order.
-5. The request is repeated with `filter`, `email`, `zipcode` and `login: true`, and the response header establishes a guest session.
-6. With a session in place, `useOrderDetails(order.id)` renders the order exactly as it does for a registered customer — the [Order Details recipe](details.html) takes it from there.
-
 You do not need a separate authentication request. `login: true` on this operation is the login, which is why no composable wraps it — the credentials belong to one order, not to an account.
 
 ## Request Flow
@@ -429,7 +420,6 @@ There is one exception to that adoption. A response marked `Cache-Control: publi
 - [Order Details recipe](details.html)
 - [Login recipe](../account/login.html)
 - [Order History recipe](../account/order-history.html)
-- [Create a checkout](../../guides/e-commerce/checkout.html)
 - [Error handling in the API client](../../packages/api-client.html#error-handling)
 - [Composables reference](../../packages/composables/)
 - [Reference implementation in `vue-starter-template`](https://github.com/shopware/frontends/blob/main/templates/vue-starter-template/app/pages/account/order/%5BdeepCode%5D.vue)

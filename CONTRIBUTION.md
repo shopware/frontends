@@ -38,11 +38,16 @@ In order to keep track of the changes inside project we do use `changesets` pack
 We're using [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) to keep our commit messages consistent. However to avoid having too much noise, we're squashing all commits into one when merging PRs.
 That's why the PR title is the commit message for the whole PR. Please make sure to follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) format when creating a PR title. We do have a GitHub Action that will check if the PR title is valid.
 
+## New templates, layers, packages and examples
+
+Before you propose one, answer the questions in
+[templates/README.md](templates/README.md).
+
 ## Agent instruction files
 
-The repo carries `AGENTS.md` / `CLAUDE.md` instruction files for AI coding
-agents, at the root and in some packages. If you add or edit one, the rules —
-file pairing, the size budget, and what belongs in them — are in
+The repo carries `AGENTS.md` instruction files for AI coding agents, at the root
+and in some packages. If you add or edit one, the rules — no `CLAUDE.md` files,
+the size budget, and what belongs in them — are in
 [AGENTS.md](AGENTS.md#maintaining-these-files).
 
 ## Documenting code

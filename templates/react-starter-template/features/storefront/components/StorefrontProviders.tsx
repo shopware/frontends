@@ -1,13 +1,11 @@
 "use client";
 
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
-import type {
-  CmsActions,
-  CmsNotification,
-} from "@shopware/cms-base-layer-react/client";
+import Link from "next/link";
 import { useCallback, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
+import { CmsActionsProvider } from "@/cms/client";
+import type { CmsActions, CmsNotification } from "@/cms/client";
 import { ShopwareSessionProvider } from "@/features/session/components/ShopwareSessionProvider";
 
 import { NOT_WIRED_MESSAGES } from "../notWired";
@@ -31,21 +29,18 @@ export function StorefrontProviders({ children }: { children: ReactNode }) {
     setToasts((current) => [...current, { ...notification, id }]);
     setTimeout(() => {
       setToasts((current) => current.filter((toast) => toast.id !== id));
-    }, 5000);
+    }, notification.timeout ?? 5000);
   }, []);
 
   const actions = useMemo<Partial<CmsActions>>(() => {
-    const notWired = async () => {
-      notify({ type: "warning", message: NOT_WIRED_MESSAGES.forms });
-      return { ok: false };
-    };
+    const notWired = (message: string) => async () => ({ ok: false, message });
     return {
       notify,
-      addToCart: notWired,
-      toggleWishlist: notWired,
-      submitContactForm: notWired,
-      subscribeNewsletter: notWired,
-      submitProductReview: notWired,
+      addToCart: notWired(NOT_WIRED_MESSAGES.cart),
+      toggleWishlist: notWired(NOT_WIRED_MESSAGES.wishlist),
+      submitContactForm: notWired(NOT_WIRED_MESSAGES.forms),
+      subscribeNewsletter: notWired(NOT_WIRED_MESSAGES.forms),
+      submitProductReview: notWired(NOT_WIRED_MESSAGES.forms),
       findVariant: async () => {
         notify({ type: "warning", message: NOT_WIRED_MESSAGES.forms });
         return null;
@@ -65,9 +60,14 @@ export function StorefrontProviders({ children }: { children: ReactNode }) {
             <p
               key={toast.id}
               data-testid="notification-element-message"
-              className={`rounded-md px-4 py-3 text-sm shadow-lg ${TOAST_CLASSES[toast.type]}`}
+              className={`pointer-events-auto rounded-md px-4 py-3 text-sm shadow-lg ${TOAST_CLASSES[toast.type]}`}
             >
               {toast.message}
+              {toast.action && (
+                <Link href={toast.action.href} className="ml-2 underline">
+                  {toast.action.label}
+                </Link>
+              )}
             </p>
           ))}
         </div>

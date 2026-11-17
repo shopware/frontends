@@ -1,10 +1,10 @@
 "use client";
 
-import { useCmsActions } from "@shopware/cms-base-layer-react/client";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import type { RefObject } from "react";
 
+import { useCmsActions } from "@/cms/client";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 
 const t = {

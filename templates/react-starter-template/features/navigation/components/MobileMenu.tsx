@@ -1,9 +1,9 @@
 "use client";
 
-import { IconButton, cx } from "@shopware/cms-base-layer-react/client";
-import type { IconButtonProps } from "@shopware/cms-base-layer-react/client";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 
+import { IconButton, cx } from "@/cms/client";
+import type { IconButtonProps } from "@/cms/client";
 import { ChevronUpIcon, CloseIcon, MenuIcon } from "@/components/icons";
 
 import type { NavigationNode } from "../navigationTree";

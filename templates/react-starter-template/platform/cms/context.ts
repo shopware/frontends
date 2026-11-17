@@ -1,9 +1,6 @@
 import "server-only";
-import { createCmsContext } from "@shopware/cms-base-layer-react";
-import type {
-  CmsContext,
-  CreateCmsContextInput,
-} from "@shopware/cms-base-layer-react";
+import { createCmsContext } from "@/cms";
+import type { CmsContext, CreateCmsContextInput } from "@/cms";
 
 import { readSalesChannelContext } from "../shopware/reads/context";
 import { cmsRegistry } from "./registry";

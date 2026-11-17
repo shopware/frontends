@@ -1,20 +1,18 @@
 import { expect, type Locator, type Page } from "@playwright/test";
 
-import { AbstractPage } from "./AbstractPage";
 import { LoginForm } from "./LoginPage";
 
-export class HomePage extends AbstractPage {
-  //readonly page: Page
+export class HomePage {
+  readonly page: Page;
   readonly accountButton: Locator;
   readonly linkToRegistrationPage: Locator;
   readonly searchBar: Locator;
-  readonly wishlistButton: Locator;
   readonly signedIn: Locator;
   readonly myAccountLink: Locator;
   readonly suggestResultLink: Locator;
 
   constructor(page: Page) {
-    super(page);
+    this.page = page;
     this.accountButton = page.getByTestId("header-account-button");
     this.searchBar = page.getByTestId("header-search-input");
     this.linkToRegistrationPage = page.getByTestId("login-sign-up-button");
@@ -70,9 +68,9 @@ export class HomePage extends AbstractPage {
     for (const href of hrefs.filter((entry): entry is string => !!entry)) {
       tried.push(href);
       await this.page.goto(href);
-      await this.page.waitForSelector("[data-testid='product-quantity']", {
-        state: "visible",
-      });
+      await this.page
+        .getByTestId("product-quantity")
+        .waitFor({ state: "visible" });
       const hasVariants = await this.page
         .getByTestId("product-variant")
         .first()
@@ -96,7 +94,7 @@ export class HomePage extends AbstractPage {
    */
   async openFirstCategoryPage() {
     const sameTabEntries = this.page.locator(
-      '[role="menubar"] [role="menuitem"]:not([target="_blank"])',
+      '[data-testid="header-navigation-link"]:not([target="_blank"])',
     );
     await sameTabEntries.first().waitFor({ state: "visible" });
 
@@ -147,9 +145,9 @@ export class HomePage extends AbstractPage {
     }
 
     await this.page.goto(href);
-    await this.page.waitForSelector("[data-testid='product-quantity']", {
-      state: "visible",
-    });
+    await this.page
+      .getByTestId("product-quantity")
+      .waitFor({ state: "visible" });
   }
 
   /** Some templates link to a register page, the starter renders it inline. */
@@ -175,21 +173,22 @@ export class HomePage extends AbstractPage {
   }
 
   async typeSearchPhrase(phrase: string) {
-    await this.page.waitForLoadState("networkidle");
-    await this.searchBar.click();
-    await this.searchBar.type(phrase);
-    await this.page.waitForLoadState();
-    await this.page.waitForSelector("[data-testid='layout-search-result-box']");
+    await this.fillSearchPhrase(phrase);
     await this.page.keyboard.press("Enter");
   }
 
   async searchBySuggest(phrase: string) {
-    await this.page.waitForLoadState("networkidle");
-    await this.searchBar.click();
-    await this.searchBar.type(phrase);
-    await this.page.waitForLoadState();
-    await this.page.waitForSelector("[data-testid='layout-search-result-box']");
+    await this.fillSearchPhrase(phrase);
     await this.suggestResultLink.click();
+  }
+
+  private async fillSearchPhrase(phrase: string) {
+    const resultBox = this.page.getByTestId("layout-search-result-box");
+
+    await expect(async () => {
+      await this.searchBar.fill(phrase, { timeout: 5000 });
+      await resultBox.waitFor({ state: "visible", timeout: 5000 });
+    }).toPass({ intervals: [500, 1000, 2000], timeout: 45000 });
   }
 
   /** The toggle is <client-only>, so its presence means the listing is hydrated. */
@@ -206,10 +205,10 @@ export class HomePage extends AbstractPage {
 
     // A toggle: clicking a product already wishlisted would remove it.
     const toggles = this.page.getByTestId("product-box-toggle-wishlist-button");
-    const labels = await toggles.evaluateAll((controls) =>
-      controls.map((control) => control.getAttribute("aria-label")),
+    const states = await toggles.evaluateAll((controls) =>
+      controls.map((control) => control.getAttribute("data-in-wishlist")),
     );
-    const index = labels.indexOf("Add to wishlist");
+    const index = states.indexOf("false");
     if (index === -1) {
       throw new Error("Every product on this listing is already wishlisted.");
     }
@@ -224,16 +223,18 @@ export class HomePage extends AbstractPage {
     await stored;
 
     await expect(toggles.nth(index)).toHaveAttribute(
-      "aria-label",
-      "Remove from wishlist",
+      "data-in-wishlist",
+      "true",
     );
   }
 
   async openMyAccount() {
-    await this.signedIn.waitFor();
-    await this.signedIn.dispatchEvent("click");
-    await this.myAccountLink.waitFor();
-    await this.myAccountLink.dispatchEvent("click");
+    await expect(async () => {
+      if (await this.myAccountLink.isVisible()) return;
+      await this.signedIn.click({ timeout: 5000 });
+      await this.myAccountLink.waitFor({ state: "visible", timeout: 5000 });
+    }).toPass({ intervals: [500, 1000, 2000], timeout: 45000 });
+    await this.myAccountLink.click();
     await this.page.waitForURL("**/account");
   }
 }

@@ -20,6 +20,7 @@ recipe:
     - useListing
   helpers:
     - getCmsLayoutConfiguration
+    - getCmsMeta
     - getProductListingFromCmsPage
     - getTranslatedProperty
   operations:
@@ -100,8 +101,8 @@ const steps = [
     title: "UI",
     action: "Set the meta tags",
     detail:
-      "useCmsMeta reads the meta fields off the entity, not off the CMS page. It takes the entity itself rather than a ref — the templates unwrap theirs inside useCmsHead — so it does not follow a replacement.",
-    code: "const { title, meta } = useCmsMeta(unref(category))",
+      "getCmsMeta reads the meta fields off the entity, not off the CMS page. Call it inside a computed so the head follows changes.",
+    code: "const cmsMeta = computed(() => getCmsMeta(unref(category)))",
     state: "document head",
     typeKeys: [],
   },
@@ -122,16 +123,6 @@ What comes back is `CmsPage → sections → blocks → slots`. Every level carr
 
 <RecipeFlowDiagram label="CMS rendering flow diagram" :steps="steps" />
 
-Read the diagram from left to right:
-
-1. The page fetches its entity; the route returns the resolved `cmsPage` along with it.
-2. The response carries the full `cmsPage` tree — sections, blocks and slots.
-3. Each section's `type` is resolved to a `CmsSection<Type>` component.
-4. `useCmsSection(section).getPositionContent(position)` groups the blocks by section position.
-5. `useCmsBlock(block).getSlotContent(name)` picks one slot for an element component.
-6. On a category page the embedded product listing seeds the shared listing context.
-7. `useCmsMeta(entity)` supplies the title and meta tags for the document head.
-
 You do not need a request per section, block or element. The only later requests are the ones an element makes for itself — a cross-selling slider, a product listing page change.
 
 ## Request Flow
@@ -146,7 +137,7 @@ You do not need a request per section, block or element. The only later requests
 | Read one slot               | `getSlotContent("left")`                                                    | none                                 | <SchemaTypeTooltip type-key='Schemas["CmsSlot"]' />                                                       |
 | Fetch a page by id directly | `invoke("readCms post /cms/{id}", { pathParams: { id }, body: { slots } })` | `POST /cms/{id}`                     | <SchemaTypeTooltip type-key='operations["readCms post /cms/{id}"]["body"]' />                             |
 
-`POST` is the request-layer default, but not what the supported template does: `vue-starter-template` sets `cacheableReads: true` under `runtimeConfig.public.shopware`, and with that flag `useCategorySearch` calls `readCategoryGet get /category/{navigationId}` instead, compressing the same criteria into a `_criteria` query param so the read is HTTP-cacheable. `useLandingSearch` has not been moved to the cacheable variant and always posts. Either way the same `cmsPage` tree comes back.
+`POST` is the request-layer default. `vue-starter-template` sets `cacheableReads: true` under `runtimeConfig.public.shopware`. With that flag, `useCategorySearch` calls `readCategoryGet get /category/{navigationId}` for a fresh default guest, with the same criteria compressed into a `_criteria` query param, so the read is HTTP-cacheable. Every other session still posts, see [Which sessions use GET](../../best-practices/caching.html#which-sessions-use-get). `useLandingSearch` always posts. Either way the same `cmsPage` tree comes back.
 
 The last row is the operation nothing uses. It takes a `slots` string of `|`-separated identifiers to resolve only some slots, and a `ProductListingCriteria` for the listing an element on the page may hold.
 
@@ -160,7 +151,7 @@ Pick by scope — how much of the CMS page the composable is about:
 | `useLandingSearch`     | a landing page       | the same, for a landing page                                    |
 | `useCategory`          | the current category | reading the category a page already fetched, as a `ComputedRef` |
 | `useNavigationContext` | the current route    | deciding whether the page behaves as a category page            |
-| `useCmsMeta`           | the entity           | filling the document title and meta tags                        |
+| `useCmsMeta`           | the entity           | never — deprecated, use `getCmsMeta` from `@shopware/helpers`   |
 | `useCmsTranslations`   | every CMS component  | overriding a component's fallback strings per locale            |
 | `useCmsSection`        | one section          | splitting a section's blocks by position                        |
 | `useCmsBlock`          | one block            | picking the slot an element component renders from              |
@@ -176,10 +167,10 @@ The tree walk is what you use on every page:
 
 Five things the generated reference will not tell you:
 
-- Only the lookups follow a replacement, and only if you hand them something to follow. `getPositionContent` and `getSlotContent` read the current value on every call, but the `section` and `block` the composable returns are the value read when it was called. `useCmsElementConfig` and `useCmsMeta` follow nothing at all and take the object itself: a `ref` makes the first return `undefined` and the second produce empty strings, in both cases without an error.
+- Only the lookups follow a replacement, and only if you hand them something to follow. `getPositionContent` and `getSlotContent` read the current value on every call, but the `section` and `block` the composable returns are the value read when it was called. `useCmsElementConfig` accepts the element, a `ref` or a getter, and `getConfigValue` reads it on every call. `useCmsMeta` follows nothing at all and takes the object itself: a `ref` makes it produce empty strings without an error.
 - `getSlotContent(name)` is `Array.find` with a cast. A slot the block does not have is `undefined` at runtime while the type promises a value.
 - `getConfigValue(key)` returns `false`, not the value, when the entry's `source` is `"mapped"` — the case where the value comes from the surrounding entity rather than from the layout.
-- `useCmsMeta(entity)` returns a `title` and a `meta` computed, and it takes the entity, not a ref to it. Neither template calls it directly; both wrap it in their own `useCmsHead(entity)`, which unwraps the ref, passes the title, description and Open Graph tags to `useSeoMeta`, and the remaining meta entries and the canonical link to `useHead`.
+- `useCmsMeta(entity)` is deprecated. It takes the entity, not a ref to it, so its `title` and `meta` computeds do not follow a replacement. `getCmsMeta(entity)` from `@shopware/helpers` returns the same fields as plain strings, and both templates call it inside a `computed` in their own `useCmsHead(entity)` — called outside one it snapshots the values and misses in-place changes to a reactive entity — which unwraps the ref, passes the title, description and Open Graph tags to `useSeoMeta`, and the remaining meta entries and the canonical link to `useHead`.
 - `useCmsElementConfig` and `useCmsElementImage` live in `packages/composables/src/cms/` rather than in a `use*` directory of their own, so the generated reference — built one page per `use*` directory — has no page for them.
 
 `resolveCmsComponent(content)` is exported from `@shopware/composables` alongside them. It derives the component name from `content.type` and `content.apiAlias` and attempts the resolution for you.
@@ -268,6 +259,8 @@ The component name is built at runtime, so Nuxt cannot rewrite `resolveComponent
 
 A section component then does the same one level down. `useCmsSection(() => content)` gives it `getPositionContent(position)` for its blocks, and each block component uses `useCmsBlock(() => content)` and `getSlotContent(name)` to reach its elements. The element at the end of that walk is where rendering stops being generic: it reads what the admin configured with `const { getConfigValue } = useCmsElementConfig(content)` and renders its own markup from those values.
 
+You rarely write that renderer yourself. With `@shopware/cms-base-layer` extended, `<CmsPage :content="entity.cmsPage" />` does the whole walk: the layer registers every section, block and element component globally, so there is nothing to import. `vue-starter-template` renders it in its page components — `FrontendNavigationPage`, `FrontendLandingPage` and `FrontendDetailPage`, each after fetching its own entity — and not in the catch-all route, which only resolves the path. Write a renderer like the one above only when you do not use the layer; you then also build every section, block and element component it would have provided.
+
 ## State And Session
 
 Almost nothing here is state. `useCmsSection` and `useCmsBlock` resolve whatever they were handed on each lookup, and `useCmsMeta` wraps its output in computeds, but nothing is stored, no context is provided and no request is made. They are helpers with a composable's naming. `useCmsMeta` is the one that still insists on the entity rather than a ref to it, and says nothing when it gets one.
@@ -276,7 +269,7 @@ The two places state does appear are worth knowing. `useCmsTranslations()` injec
 
 The CMS payload is context-dependent like everything else. Prices inside a product element are calculated for the current currency and tax state, and `visibility` on a section or block can hide it for a given device. A currency or language switch invalidates the whole rendered page.
 
-That payload is also the one a shared cache may store. With the starter's `cacheableReads: true` the category read comes back `public, s-maxage=1800`, where the `POST` variant is `private, no-cache` — so the CMS tree and the calculated prices of the embedded listing sit in the same cacheable response. Keeping one customer's prices out of another's page is the backend's contract rather than the renderer's: those entries are varied on language, currency and login state, which [Backend HTTP cache and reverse proxy](../../best-practices/caching.html#backend-http-cache-and-reverse-proxy) explains. The frontend guards one thing itself — `@shopware/api-client` ignores `sw-context-token` on a publicly cacheable response, so a replayed guest token from a cache hit cannot overwrite a logged-in session.
+That payload is also the one a shared cache may store. With the starter's `cacheableReads: true`, a guest's category read comes back `public, s-maxage=1800`. The `POST` variant is `private, no-cache`. So the CMS tree and the calculated prices of the embedded listing sit in the same cacheable response. The backend keeps customers, currencies and carts apart only with `sw-cache-hash`, and a browser on another domain cannot send it. So the frontend keeps them apart itself: `invokeRead` sends GET only for a fresh default guest and posts for everyone else, see [Which sessions use GET](../../best-practices/caching.html#which-sessions-use-get). `@shopware/api-client` also ignores `sw-context-token` on a publicly cacheable response, so a replayed guest token from a cache hit cannot overwrite a logged-in session.
 
 ## Edge Cases
 
@@ -306,20 +299,20 @@ That payload is also the one a shared cache may store. With the starter's `cache
 - Do not use `getSlotContent` without a guard. The cast hides a possible `undefined`.
 - Do not call `resolveComponent` outside a component's setup or render.
 - Do not put a CMS component override outside a path registered `global: true`.
-- Do not read meta tags off the CMS page. `useCmsMeta` takes the entity, unwrapped.
+- Do not read meta tags off the CMS page. `getCmsMeta` takes the entity, unwrapped.
 - Do not issue a listing request on a category page before checking whether the CMS payload already carried one.
 - Do not assume a rendered CMS page survives a currency or language switch.
 
 ## Testing Checklist
 
-- A category page gets its layout from the category request itself — a `GET /category/{navigationId}?_criteria=…` with the starter template's `cacheableReads: true`, a `POST` without it — and never a separate `readCms post /cms/{id}` request.
+- A category page gets its layout from the category request itself, never from a separate `readCms post /cms/{id}` request. With the starter's `cacheableReads: true`, a fresh guest sends `GET /category/{navigationId}?_criteria=…`. After login or a currency switch, the same page sends a `POST`.
 - Every section in the payload resolves to a component, and an unknown type renders the fallback rather than nothing.
 - `getPositionContent` returns only the blocks whose `sectionPosition` matches.
 - `getSlotContent` returns `undefined` for a slot the block does not have, without throwing, and the element renders nothing rather than an empty wrapper.
 - Replacing the `content` of a mounted block changes what its slots render, without a remount.
 - A category page renders its first page of products before any listing request is sent.
 - A product listing element on a landing page fails loudly through `useCategoryListing` instead of rendering an empty listing.
-- `useCmsMeta` produces a title from the entity's translated name and meta entries only for the fields that are set.
+- `getCmsMeta` returns the entity's translated name as `title` and an empty string for every meta field that is not set.
 - A component reading `useCmsTranslations()` renders its own defaults when nothing was provided.
 - An element reads its admin configuration through `getConfigValue`, and a key the layout does not set comes back `undefined`.
 - Switching the language re-renders the page with translated CMS content.
@@ -328,7 +321,6 @@ That payload is also the one a shared cache may store. With the starter's `cache
 
 - [Contact Form recipe](contact-form.html)
 - [Product Listing and Filters recipe](../catalog/listing.html)
-- [Create content pages](../../guides/cms/content-pages.html)
 - [Create Blocks (CMS)](../../guides/cms/create-blocks.html)
 - [Create Elements (CMS)](../../guides/cms/create-elements.html)
 - [Implement a Missing CMS Component](../../guides/cms/missing-component.html)

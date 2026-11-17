@@ -90,7 +90,7 @@ Since all CMS components are registered in your Nuxt application, you can now st
 
 > `@shopware/cms-base-layer` no longer owns the default UnoCSS theme. If you want the shared Shopware Frontends design tokens and UnoCSS defaults, extend `@shopware/unocss-design-tokens-layer` as shown above.
 
-See a [short guide](https://developer.shopware.com/frontends/guides/cms/content-pages.html#use-the-cms-base-package) on how to use `cms-base-layer` in your Nuxt project.
+See a [short guide](https://developer.shopware.com/frontends/frontends-recipes/cms/rendering.html) on how to use `cms-base-layer` in your Nuxt project.
 
 ## Styling and Design Tokens
 
@@ -115,6 +115,7 @@ export default defineNuxtConfig({
 
 ```ts [uno.config.ts]
 import { mergeConfigs } from "@unocss/core";
+
 import baseConfig from "./.nuxt/uno.config.mjs";
 
 export default mergeConfigs([
@@ -460,6 +461,36 @@ The procedure is:
 
 ✅ Thanks to this, nuxt will take the component registered in your app instead of the one registered by this nuxt layer.
 
+### App blocks (`app-renderer`)
+
+Every block an app registers through the Meteor Admin SDK (`cms.registerCmsBlock`) reaches the Store API with the type `app-renderer`, so they all render through `CmsBlockAppRenderer`. By default it places the block's slots in the CSS grid the app declared, like the Storefront's fallback, in the order the app declared them.
+
+To give one app block its own markup, add a global component named after the block, `CmsBlockAppRenderer` followed by the PascalCase `appBlockName` — for a block registered as `swag-two-columns`, that is `CmsBlockAppRendererSwagTwoColumns.vue`. It receives the block as its `content` prop, and every other app block keeps the fallback:
+
+```vue
+<script setup lang="ts">
+import type { CmsBlockAppRenderer } from "@shopware/composables";
+
+const props = defineProps<{ content: CmsBlockAppRenderer }>();
+
+const { getSlotContent } = useCmsBlock(() => props.content);
+
+const text = computed(() => getSlotContent("text-0"));
+const image = computed(() => getSlotContent("image-1"));
+</script>
+
+<template>
+  <div class="grid gap-6 md:grid-cols-2">
+    <CmsGenericElement :content="text" />
+    <CmsGenericElement :content="image" />
+  </div>
+</template>
+```
+
+The slots are named `{element}-{index}` in the order the app declared them, so look them up by name rather than by position: the Store API sorts them by name, so `image-1` comes before `text-0` and `text-10` before `text-2`. The fallback restores the declared order from the index, as the Administration preview shows it. The Storefront's fallback keeps the Store API order, so a block that mixes element types can place its slots differently there.
+
+The lookup of these components lives in `CmsBlockAppRenderer` itself. If you override `CmsBlockAppRenderer`, for example to change the fallback markup, your override replaces that lookup too, and your `CmsBlockAppRenderer{AppBlockName}` components are no longer used unless it renders them. A component whose name does not match the `appBlockName` renders the fallback without a warning, as a misnamed override of any other CMS component does.
+
 ### Internal components
 
 ❗**Internal components are not a part of public API. Once overwritten you need to track the changes on your own.**
@@ -491,66 +522,35 @@ No additional packages needed to be installed.
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/cms-base-layer/CHANGELOG.md)
 
-### Latest changes: 4.0.0
-
-### Major Changes
-
-- [#2609](https://github.com/shopware/frontends/pull/2609) [`2dc86da`](https://github.com/shopware/frontends/commit/2dc86da2532e986ebdadd06a922e68403414a0ff) Thanks [@mkucmus](https://github.com/mkucmus)! - Make the package a plain Nuxt layer.
-
-  **Breaking:** the package now declares an `exports` map, so only the layer entry point
-  is importable. Deep imports such as
-  `@shopware/cms-base-layer/app/components/SwProductCard.vue` no longer resolve. Use the
-  auto-registered global components instead, which is what extending the layer gives you.
-
-  **Breaking:** the leftover Nuxt module is gone, so `index.cjs` and the `dist` build are
-  no longer published. The module registered a component folder that moved to `app/` a
-  while ago, so it could not work any more. Consume this package with `extends`, which
-  resolves `nuxt.config.ts`:
-
-  ```ts
-  export default defineNuxtConfig({
-    extends: ["@shopware/cms-base-layer"],
-  });
-  ```
-
-  Other changes:
-
-  - Dropped the `build` and `dev` scripts and the `unbuild` dev dependency. There is
-    nothing left to bundle.
-  - Fixed `files`. It listed `helpers` and `app.config.ts`, which do not exist at the
-    package root, and shipped the dead `dist` and `index.cjs`.
-  - Deleted `components.d.ts`. It typed two components at paths that moved to
-    `app/components/public/cms/`, and no tsconfig referenced the file.
-  - Removed two vitest aliases that pointed at files which do not exist.
-  - Removed the `check-colors` script. It read `uno.config.ts` from this package, which
-    moved to `@shopware/unocss-design-tokens-layer`, so it always found zero colors. It
-    also relied on `tsx` without declaring it.
-
-### Minor Changes
-
-- [#2574](https://github.com/shopware/frontends/pull/2574) [`2ddf156`](https://github.com/shopware/frontends/commit/2ddf156805b2941fe2069e78453fb3c4eb6d44ac) Thanks [@mkucmus](https://github.com/mkucmus)! - `SwProductListingFilters` and `SwProductListingFiltersHorizontal` render a new `SwFilterCategories` checkbox filter when the listing response contains the category aggregations from `getCategoryFilterAggregations()`. The selection is kept in the `categories` URL param and applied as a criteria `post-filter`. Both are search listings only (`listing-type="productSearchListing"`); on any other listing the category filter is not rendered, because the selection would neither reach the URL nor the criteria. Listings without these aggregations are unaffected.
+### Latest changes: 4.1.1
 
 ### Patch Changes
 
-- [#2645](https://github.com/shopware/frontends/pull/2645) [`7a7ce3e`](https://github.com/shopware/frontends/commit/7a7ce3e5649e7ab84f7e547ce1ebcd9413117dde) Thanks [@mkucmus](https://github.com/mkucmus)! - Ship `component-dirs.json` in the published package. `nuxt.config.ts` imports it at load time, but it was missing from `files`, so the layer failed to load when installed from the registry.
+- [#2720](https://github.com/shopware/frontends/pull/2720) [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789) Thanks [@mkucmus](https://github.com/mkucmus)! - `CmsElementProductDescriptionReviews` loads reviews with `useCacheableRead().invokeRead`.
 
-- [#2660](https://github.com/shopware/frontends/pull/2660) [`8913956`](https://github.com/shopware/frontends/commit/89139563924163e57cafdd9770fe603f2dbd8cba) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Read translatable entity fields through their `translated` object instead of the untranslated entity root, so they follow the language of the current request instead of rendering the system language. Affected components: `SwContactForm` and `SwNewsletterForm` (salutation `displayName`), `SwStockInfo` (delivery time `name`), `SwVariantConfigurator` (property group `name` — the option values below it already used `translated`), `CmsElementBuyBox` (unit `name`), `CmsElementCrossSelling` (cross selling `name`), `CmsElementProductDescriptionReviews` (category `name`), `SwProductCardImage` and `CmsElementImageGallery` (media `alt`).
+- [#2859](https://github.com/shopware/frontends/pull/2859) [`2c1e574`](https://github.com/shopware/frontends/commit/2c1e574187a80692addb866db96882ef4acbebda) Thanks [@mkucmus](https://github.com/mkucmus)! - Align the `@nuxt/kit` dependency with the Nuxt 4.6.2 bump. The advisories themselves (GHSA-vjh5-4x84-xrqp, GHSA-xfq5-w38q-pc2x) are fixed by `nuxt` and `@nuxt/nitro-server` 4.6.2; `@nuxt/kit` is not an affected package.
 
-  All of them now go through `getTranslatedProperty()` from `@shopware/helpers`, which falls back to the root property when `translated` is missing — so the rendered value only ever changes on storefronts whose language differs from the system language.
+- [#2864](https://github.com/shopware/frontends/pull/2864) [`b4b2f3b`](https://github.com/shopware/frontends/commit/b4b2f3b78653ac87608803f21faae4080f57344c) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Update `@nuxt/kit` to 4.6.3 and `vue` to 3.5.44, the minimum Nuxt 4.6.3 requires.
 
-- [#2606](https://github.com/shopware/frontends/pull/2606) [`1c9a604`](https://github.com/shopware/frontends/commit/1c9a604e05c0fa1b27708a5338cd5690a0ff5c67) Thanks [@mkucmus](https://github.com/mkucmus)! - Stop leaking internal types into the layer's public type surface.
+- [#2834](https://github.com/shopware/frontends/pull/2834) [`2d3987c`](https://github.com/shopware/frontends/commit/2d3987c201db2f437af2785eed7948e958399cda) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Give the `CmsSectionSidebar` `<aside>` an accessible name so pages with more than one complementary landmark pass the axe `landmark-unique` rule. New translation key: `layout.ariaLabels.contentSidebar` (default "Content sidebar"). Add it to your locale files.
 
-  - `index.d.ts` now only augments the app config. It no longer re-exports `@shopware/composables` and `./.nuxt/imports`.
-  - The `#imports` shim moved to a private `types/imports.d.ts`, which is not published.
-  - `app.config` exports a plain object with `satisfies AppConfigInput` instead of calling `defineAppConfig`. No runtime change.
+- [#2791](https://github.com/shopware/frontends/pull/2791) [`4f0f33b`](https://github.com/shopware/frontends/commit/4f0f33b9fcb66c5a6bacf86400fa6d82f68e064f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Point the README and JSDoc documentation links at the Frontends Recipes that replaced the redirected guides
 
-  This fixes `Cannot find name 'ref'` and similar errors in the shared and node contexts when a project uses the Nuxt 4 project-references `tsconfig.json`.
+- [#2825](https://github.com/shopware/frontends/pull/2825) [`0b5de57`](https://github.com/shopware/frontends/commit/0b5de57fe1149212fd7274b6f530495a245742b5) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add `data-testid` and `data-*` state attributes to the wishlist toggle, variant options, sort dropdown, pagination and top navigation, so e2e tests no longer depend on translated text or CSS classes. Sort options are now `menuitemradio` items with `aria-checked`, so screen readers announce the active sort.
 
-- [#2601](https://github.com/shopware/frontends/pull/2601) [`e64d2f9`](https://github.com/shopware/frontends/commit/e64d2f9c13a99054d7e56e4b7ec2f1f23f9768b7) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Typography for CMS-authored HTML is now scoped to a `cms-element-text` class and ships from the layer as `app/assets/css/rich-text.css`, with overflow guards for long strings, media, `pre` and tables. Headings and lists in your own markup that had no explicit size or `list-*` class were relying on the removed global rules and will change.
+- [#2835](https://github.com/shopware/frontends/pull/2835) [`22c1b4f`](https://github.com/shopware/frontends/commit/22c1b4fb2a34e351ff4e84e7f198cfc306f9fb5f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Support Nuxt 4.6. `@shopware/nuxt-module` and `@shopware/cms-base-layer` now depend on `@nuxt/kit` 4.6.1, and the Nuxt plugin types `ssrContext.event` from `NuxtSSRContext`, so it type-checks on both Nuxt 4.5 and 4.6. The Nuxt templates require Node `^22.22.3 || ^24.15.0 || >=26.0.0`, the range Nuxt 4.6 supports. `@shopware/unocss-design-tokens-layer` no longer re-exports its generated `.nuxt/imports` from `index.d.ts`, which pulled server routes into the shared type context of apps extending the layer.
 
-- [#2663](https://github.com/shopware/frontends/pull/2663) [`7020545`](https://github.com/shopware/frontends/commit/70205458cb9357a068029d0aaef41898ab94b354) Thanks [@mkucmus](https://github.com/mkucmus)! - A linked CMS image always has an accessible name now. `CmsElementImage` names the link with the element's `ariaLabel`, then the media title, then a generic fallback translatable through `cms.image.linkWithoutLabel`. A decorative image skips the media title.
+- [#2884](https://github.com/shopware/frontends/pull/2884) [`aefbc9d`](https://github.com/shopware/frontends/commit/aefbc9dca270f08bbb3e877d1a64f4b07336f534) Thanks [@patzick](https://github.com/patzick)! - Update `@nuxt/kit` to 4.6.4, in line with the Nuxt 4.6.4 bump that fixes GHSA-mjrq-cffv-q4qc and GHSA-r99w-jh2x-3mg9.
 
-- Updated dependencies [[`2ddf156`](https://github.com/shopware/frontends/commit/2ddf156805b2941fe2069e78453fb3c4eb6d44ac), [`204c8f4`](https://github.com/shopware/frontends/commit/204c8f45f737e724db6d00b80c5faef8ddb77cb4), [`7020545`](https://github.com/shopware/frontends/commit/70205458cb9357a068029d0aaef41898ab94b354), [`183c183`](https://github.com/shopware/frontends/commit/183c183f905486c27fa770fd0f4cd9993e86c20e), [`458494e`](https://github.com/shopware/frontends/commit/458494e8bd2be88d4fbf161636a109c8f4efc443), [`183c183`](https://github.com/shopware/frontends/commit/183c183f905486c27fa770fd0f4cd9993e86c20e), [`183c183`](https://github.com/shopware/frontends/commit/183c183f905486c27fa770fd0f4cd9993e86c20e), [`8913956`](https://github.com/shopware/frontends/commit/89139563924163e57cafdd9770fe603f2dbd8cba), [`458494e`](https://github.com/shopware/frontends/commit/458494e8bd2be88d4fbf161636a109c8f4efc443)]:
-  - @shopware/helpers@1.8.0
-  - @shopware/composables@1.13.0
-  - @shopware/api-client@1.6.0
+- [#2816](https://github.com/shopware/frontends/pull/2816) [`b6c09e5`](https://github.com/shopware/frontends/commit/b6c09e53ff457c3552ac4f159a6d5072538373e5) Thanks [@mkucmus](https://github.com/mkucmus)! - Add `data-testid` attributes to the reviews section header (`product-reviews-tab`) and the review success message (`review-success-message`) in `CmsElementProductDescriptionReviews`.
+
+- [#2832](https://github.com/shopware/frontends/pull/2832) [`be8b48c`](https://github.com/shopware/frontends/commit/be8b48c5d6b767b6d965c081329ac89b57af1f56) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Make `SwVariantConfigurator` keyboard and screen-reader accessible. Each option group is now a native radio group: every option renders a visually hidden `<input type="radio">` inside its label, so options can be reached with Tab, changed with the arrow keys, and announced with their selected state. The focused option shows a visible focus ring, and the label exposes `data-selected`.
+
+  Each radio group's `name` is scoped to the component instance, so two configurators on one page that share a property group such as "Size" no longer merge into one group.
+
+  With `allowRedirect` (the default), an option picked with the arrow keys only updates the selection; the redirect to the variant happens on Enter or Space, or on click. If focus leaves the option group before that, the selection reverts to the loaded product (no option, if none was selected), so the selected option always matches the product that Add to cart uses. Without `allowRedirect`, every change still emits `change` immediately.
+
+- Updated dependencies [[`fa598c8`](https://github.com/shopware/frontends/commit/fa598c84e4d72ff4b7dc50547ea2412bc424b491), [`5374dfd`](https://github.com/shopware/frontends/commit/5374dfd32614e264028b0a83d060919427307f3d), [`43a035f`](https://github.com/shopware/frontends/commit/43a035fa60a73f554ac4de9da7abd6fce9892288), [`4f0f33b`](https://github.com/shopware/frontends/commit/4f0f33b9fcb66c5a6bacf86400fa6d82f68e064f), [`eba2d99`](https://github.com/shopware/frontends/commit/eba2d996327d28c7f22025c848a3728d4d5fd3bf), [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789), [`2202e1c`](https://github.com/shopware/frontends/commit/2202e1cec2b7d72260ed115940386c6793523676), [`43a035f`](https://github.com/shopware/frontends/commit/43a035fa60a73f554ac4de9da7abd6fce9892288), [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789), [`037ffa9`](https://github.com/shopware/frontends/commit/037ffa97e3fdeec3a7dc896cb6a5b401e4b5f481)]:
+  - @shopware/helpers@1.9.0
+  - @shopware/composables@1.15.0
+  - @shopware/api-client@1.8.0

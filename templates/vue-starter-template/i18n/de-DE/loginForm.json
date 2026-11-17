@@ -5,6 +5,7 @@
     "loginLabel": "E-Mail-Adresse",
     "passwordLabel": "Passwort",
     "submitButtonLabel": "Anmelden",
-    "signUpButtonLabel": "Registrieren"
+    "signUpButtonLabel": "Registrieren",
+    "forgotPasswordLink": "Passwort vergessen?"
   }
 }

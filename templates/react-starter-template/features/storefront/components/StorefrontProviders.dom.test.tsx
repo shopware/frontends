@@ -1,8 +1,8 @@
-import { useCmsActions } from "@shopware/cms-base-layer-react/client";
-import type { CmsActionResult } from "@shopware/cms-base-layer-react/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { ApiClient } from "#shopware";
+import { useCmsActions } from "@/cms/client";
+import type { CmsActionResult } from "@/cms/client";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { errorMessages } from "@/features/session/errorMessages";
@@ -158,7 +158,7 @@ function AddToCartConsumer({
 }
 
 describe("StorefrontProviders CMS stubs", () => {
-  it("warns once and leaves no message for the island to repeat", async () => {
+  it("returns the not-wired message for the island to show once", async () => {
     const results: CmsActionResult[] = [];
     mounted = await mount(
       <StorefrontProviders>
@@ -175,10 +175,12 @@ describe("StorefrontProviders CMS stubs", () => {
     );
     await vi.waitFor(() => expect(results).toHaveLength(1));
 
-    expect(results[0]).toEqual({ ok: false });
+    expect(results[0]).toEqual({
+      ok: false,
+      message: NOT_WIRED_MESSAGES.cart,
+    });
     const toasts = queryAll<HTMLParagraphElement>(container, TOAST);
     expect(toasts).toHaveLength(1);
-    expect(toasts[0]?.textContent).toBe(NOT_WIRED_MESSAGES.forms);
-    expect(toasts[0]?.className).toContain("bg-states-warning-container");
+    expect(toasts[0]?.textContent).toBe(NOT_WIRED_MESSAGES.cart);
   });
 });
