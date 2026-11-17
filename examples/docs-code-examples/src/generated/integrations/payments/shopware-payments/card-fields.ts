@@ -13,6 +13,8 @@ function field(id: string): HTMLElement {
   return element;
 }
 
+const CARD_METHOD_ID = "CARD_METHOD_ID";
+
 const cardFields = await shopwarePayments.cardFields({
   elements: {
     number: field("card-number"),
@@ -20,7 +22,7 @@ const cardFields = await shopwarePayments.cardFields({
     cvv: field("card-cvv"),
   },
   checkout: cartCheckout,
-  onApprove,
+  onApprove: (result) => onApprove(result, CARD_METHOD_ID),
   onError,
   onBeforeSubmit() {
     return true;

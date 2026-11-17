@@ -26,23 +26,7 @@ The [PayPal integration](./paypal.html) covers the separate SwagPayPal extension
 
 ## Prerequisites
 
-Install ShopwarePayments and enable the payment methods for the sales channel. Before rendering a button or card field, select the matching ShopwarePayments method on the shopper context. `buttons()`, `applePay()`, and `googlePay()` leave that selection unchanged. When the Shopware order already exists, its transaction has to use the same method.
-
-<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/shopware-payments/select-payment-method.ts" code lang="ts" no-name -->
-
-```ts
-import { useSessionContext } from "#imports";
-
-const { setPaymentMethod } = useSessionContext();
-
-// Store API id of the ShopwarePayments method for this surface:
-// PayPal, Pay Later, Apple Pay, Google Pay, or card.
-const paymentMethodId = "SHOPWARE_PAYMENTS_METHOD_ID";
-
-await setPaymentMethod({ id: paymentMethodId });
-```
-
-<!-- /automd -->
+Install ShopwarePayments and enable the payment methods for the sales channel. `createOrder()` places the Shopware order with the payment method on the session context. `buttons()`, `applePay()`, `googlePay()`, and `cardFields()` leave that selection unchanged. The context holds one method, so a page that shows several of these surfaces passes each surface's Store API payment method id into `onApprove`. That handler calls `setPaymentMethod()` with the id immediately before `createOrder()`. When the Shopware order already exists, its transaction has to use the same method.
 
 ## Load the library
 
@@ -56,6 +40,21 @@ Exact version URLs are immutable, while version aliases such as `/headless/v{maj
 Load `/headless/latest/` for the newest release. **0.0.4** is the minimum for this guide. That release ships PayPal, Pay Later, Apple Pay, and Google Pay, along with card fields and `handlePayment`.
 
 **Note:** While the major version remains `0`, minor releases may introduce breaking changes.
+
+To pin **0.0.4** with Subresource Integrity, use the exact version URL and its `integrity` hash:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/shopware-payments/load-the-library-pinned.html" code lang="html" no-name -->
+
+```html
+<script
+  src="https://headless.shopware-payments.services.shopware.io/headless/0.0.4/shopware-payments.js"
+  integrity="sha384-QqUFIM5rA4Yd4/avX5xFYJAoAmWFx1dDLAUJmSGVo/U4F086ChQo0eErwAeKSgcN"
+  data-shop-id="YOUR_SHOP_ID"
+  crossorigin="anonymous"
+></script>
+```
+
+<!-- /automd -->
 
 `data-shop-id` is this shop's app shop id. A logged-in customer can get it from the Store API: send `POST /store-api/app-system/ShopwarePayments/generate-token`. The response includes `shopId`. The same request returns a JWT for the app server, which the page does not need. Server operators can also read it with `bin/console system:config:get core.app.shopIdV2` and copy the `id` value. Shops that still store the previous key return it from `bin/console system:config:get core.app.shopId`; copy `value` from that output. `init({ shopId })` overrides the attribute when both are set.
 
@@ -287,7 +286,7 @@ export { loadPlacedOrder, onApprovePlacedOrder, payExistingOrder };
 
 `onApprove` runs after the shopper approves the provider order for a cart that has not been ordered yet. The result carries `providerOrderId`, `paymentResult`, and a `contextToken` when the Store API session changed. `providerOrderId` is the PayPal order id. The Shopware order id comes from `createOrder()`. An order the page already has uses `onApprovePlacedOrder` instead.
 
-Copy a returned context token onto your Store API client before placing the order. In the Nuxt module, assigning `apiClient.defaultHeaders["sw-context-token"]` stores the cookie as well. Then place the Shopware order and call `handlePayment`. Leave checkout as soon as the order exists. Follow a returned `redirectUrl` when the provider needs another payer action, such as 3-D Secure. With no `redirectUrl`, open `/checkout/success/<id>`. A missing redirect is not a paid transaction: a pending capture can come back as `in_progress`. `vue-starter-template` loads the order on that route and shows the order state. `/checkout/success/<id>/paid` is static and always says the order is paid, so do not use it as `finishUrl`. When `handlePayment()` throws, open `/checkout/success/<id>/unpaid`.
+Copy a returned context token onto your Store API client before placing the order. In the Nuxt module, assigning `apiClient.defaultHeaders["sw-context-token"]` stores the cookie as well. Call `setPaymentMethod()` with the id for the approved surface, then `createOrder()`, then `handlePayment`. Leave checkout as soon as the order exists. Follow a returned `redirectUrl` when the provider needs another payer action, such as 3-D Secure. With no `redirectUrl`, open `/checkout/success/<id>`. A missing redirect is not a paid transaction: a pending capture can come back as `in_progress`. `vue-starter-template` loads the order on that route and shows the order state. `/checkout/success/<id>/paid` is static and always says the order is paid, so do not use it as `finishUrl`. When `handlePayment()` throws, open `/checkout/success/<id>/unpaid`.
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/shopware-payments/shared-approval.ts" code lang="ts" no-name -->
 
@@ -295,6 +294,7 @@ Copy a returned context token onto your Store API client before placing the orde
 import {
   useCart,
   useCheckout,
+  useNotifications,
   useSessionContext,
   useShopwareContext,
 } from "#imports";
@@ -304,18 +304,38 @@ import type { ApprovalResult } from "./snippet-context";
 
 const { apiClient } = useShopwareContext();
 const { refreshSessionContext } = useSessionContext();
-const { createOrder } = useCheckout();
+const { createOrder, setPaymentMethod } = useCheckout();
 const { refreshCart } = useCart();
+const { pushError } = useNotifications();
 
-async function onApprove(result: ApprovalResult) {
-  if (result.contextToken) {
-    apiClient.defaultHeaders["sw-context-token"] = result.contextToken;
-    await refreshSessionContext();
+async function onApprove(result: ApprovalResult, paymentMethodId: string) {
+  let orderId: string;
+
+  try {
+    if (result.contextToken) {
+      apiClient.defaultHeaders["sw-context-token"] = result.contextToken;
+      await refreshSessionContext();
+    }
+
+    // The session holds one method. Select the one for the surface
+    // the shopper approved before the order is placed.
+    await setPaymentMethod({ id: paymentMethodId });
+    const order = await createOrder();
+    orderId = order.id;
+  } catch (error) {
+    console.error("ShopwarePayments could not place the order", error);
+    pushError("The order was not placed. Stay on checkout and try again.", {
+      persistent: true,
+    });
+    return;
   }
 
-  const order = await createOrder();
-  await refreshCart();
-  const orderId = order.id;
+  try {
+    await refreshCart();
+  } catch (error) {
+    console.error("ShopwarePayments could not refresh the cart", error);
+  }
+
   const finishUrl = `${window.location.origin}/checkout/success/${orderId}`;
   const errorUrl = `${window.location.origin}/checkout/success/${orderId}/unpaid`;
 
@@ -339,7 +359,7 @@ export { onApprove };
 
 <!-- /automd -->
 
-`handlePayment()` posts the Shopware order id and sends the provider id as `sp-id`. After that call the transaction is not `open`. In `vue-starter-template`, the success page calls Store API `handle-payment` on load. That endpoint only pays a transaction that is still `open`, so the second call does nothing. The call above catches a thrown error and still leaves checkout, because `refreshCart()` has already emptied the cart. Order creation and `handlePayment()` are not retried automatically. A lost response can mean the server finished the call, so check the order before offering another attempt.
+`handlePayment()` posts the Shopware order id and sends the provider id as `sp-id`. After that call the transaction is not `open`. In `vue-starter-template`, the success page calls Store API `handle-payment` on load. That endpoint only pays a transaction that is still `open`, so the second call does nothing. The first `try` covers the context-token update, `setPaymentMethod()`, and `createOrder()`. When that `try` throws, no Shopware order exists. `pushError()` from `useNotifications()` shows the message on checkout, with `{ persistent: true }` so it stays on screen, and `onApprove` returns without leaving the page. The shopper can correct the cart or the address and approve again. `vue-starter-template` renders those notifications on the checkout page. `refreshCart()` runs only after `createOrder()` resolves. When the cart refresh throws, the error is logged and `handlePayment()` still runs, because the order already exists. The second `try` catches a thrown `handlePayment()` error and opens `/checkout/success/<id>/unpaid`. Neither step is retried automatically. A lost `handlePayment()` response can mean the server finished the call, so check the order before offering another attempt.
 
 ## PayPal
 
@@ -357,12 +377,13 @@ import { onApprove } from "./shared-approval";
 import { requireElement } from "./snippet-context";
 
 const element = requireElement("paypal-button");
+const PAYPAL_METHOD_ID = "PAYPAL_METHOD_ID";
 
 await shopwarePayments.buttons({
   funding: "paypal",
   element,
   checkout: cartCheckout,
-  onApprove,
+  onApprove: (result) => onApprove(result, PAYPAL_METHOD_ID),
   onError,
 });
 ```
@@ -383,12 +404,13 @@ import { onApprove } from "./shared-approval";
 import { requireElement } from "./snippet-context";
 
 const element = requireElement("paypal-pay-later-button");
+const PAY_LATER_METHOD_ID = "PAY_LATER_METHOD_ID";
 
 await shopwarePayments.buttons({
   funding: "paylater",
   element,
   checkout: cartCheckout,
-  onApprove,
+  onApprove: (result) => onApprove(result, PAY_LATER_METHOD_ID),
   onError,
 });
 ```
@@ -442,11 +464,12 @@ import { onApprove } from "./shared-approval";
 import { requireElement } from "./snippet-context";
 
 const element = requireElement("apple-pay-button");
+const APPLE_PAY_METHOD_ID = "APPLE_PAY_METHOD_ID";
 
 await shopwarePayments.applePay({
   element,
   checkout: cartCheckout,
-  onApprove,
+  onApprove: (result) => onApprove(result, APPLE_PAY_METHOD_ID),
   onError,
 });
 ```
@@ -475,11 +498,12 @@ import { onApprove } from "./shared-approval";
 import { requireElement } from "./snippet-context";
 
 const element = requireElement("google-pay-button");
+const GOOGLE_PAY_METHOD_ID = "GOOGLE_PAY_METHOD_ID";
 
 await shopwarePayments.googlePay({
   element,
   checkout: cartCheckout,
-  onApprove,
+  onApprove: (result) => onApprove(result, GOOGLE_PAY_METHOD_ID),
   onError,
 });
 ```
@@ -519,6 +543,8 @@ function field(id: string): HTMLElement {
   return element;
 }
 
+const CARD_METHOD_ID = "CARD_METHOD_ID";
+
 const cardFields = await shopwarePayments.cardFields({
   elements: {
     number: field("card-number"),
@@ -526,7 +552,7 @@ const cardFields = await shopwarePayments.cardFields({
     cvv: field("card-cvv"),
   },
   checkout: cartCheckout,
-  onApprove,
+  onApprove: (result) => onApprove(result, CARD_METHOD_ID),
   onError,
   onBeforeSubmit() {
     return true;
