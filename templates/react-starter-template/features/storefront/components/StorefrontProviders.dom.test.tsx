@@ -26,7 +26,7 @@ const browser = vi.hoisted(() => ({
 vi.mock("@/features/session/browserClient", () => ({
   CONTEXT_TOKEN_COOKIE: "sw-context-token",
   loadPublicConfig: async (): Promise<PublicShopwareConfig> => ({
-    endpoint: "https://shop.test/store-api/",
+    publicEndpoint: "https://shop.test/store-api/",
     accessToken: "SWSCTEST",
     devStorefrontUrl: null,
   }),
