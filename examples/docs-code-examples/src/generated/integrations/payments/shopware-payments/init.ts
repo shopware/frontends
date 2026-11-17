@@ -26,9 +26,8 @@ if (
 // Call init() again when one of them changes, and render into new elements.
 const shopwarePayments: ShopwarePaymentsClient =
   await window.ShopwarePayments.init({
-    // Shopware base URL, including a language prefix or subdirectory.
-    // Strip a trailing /store-api from the Nuxt endpoint.
-    storefrontUrl: endpoint.replace(/\/store-api\/?$/, ""),
+    // Shopware base URL. A trailing /store-api on the Nuxt endpoint is removed.
+    storefrontUrl: endpoint,
     salesChannelId,
     storeApi: {
       accessKey,
