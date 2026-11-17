@@ -263,6 +263,8 @@ export default defineNuxtConfig({
 
 <!-- /automd -->
 
+Route rules match the raw request path and know nothing about i18n. With the `prefix_except_default` strategy, `/de-DE/checkout` does not match the `/checkout` rule and falls under the catch-all. `vue-starter-template` therefore repeats its rules for personalized pages under every locale prefix, generated from its locale list. Do the same when you add a personalized route or a locale in your own project.
+
 `vue-starter-template-extended` extends `../vue-starter-template` and defines no `routeRules` of its own, so it inherits the parent's caching. Nuxt layer extends merges parent route rules, so changes in the parent propagate to the child. `vue-blank` defines no `routeRules`, so default Nitro behavior (full SSR, no ISR) applies.
 
 ::: warning

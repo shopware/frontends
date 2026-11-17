@@ -13,6 +13,61 @@ const viteServerWebSocketWorkaround = {
   },
 } as Record<string, unknown>;
 
+const defaultLocale = "en-GB";
+const locales = [
+  { code: "en-GB", language: "en-GB", file: "en-GB.ts" },
+  { code: "pl-PL", language: "pl-PL", file: "pl-PL.ts" },
+  { code: "de-DE", language: "de-DE", file: "de-DE.ts" },
+];
+
+// Personalized pages render in the browser only, so the HTML a cache may hold
+// is the same empty shell for everyone.
+const personalizedRules = {
+  "/checkout": {
+    ssr: false,
+    headers: {
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+      "Surrogate-Control": "no-store",
+    },
+  },
+  "/checkout/**": {
+    ssr: false,
+    headers: {
+      "Surrogate-Control": "no-store",
+    },
+  },
+  "/account": {
+    ssr: false,
+    headers: {
+      "Surrogate-Control": "no-store",
+    },
+  },
+  "/account/**": {
+    ssr: false,
+    headers: {
+      "Surrogate-Control": "no-store",
+    },
+  },
+  "/wishlist": {
+    ssr: false,
+    headers: {
+      "Surrogate-Control": "no-store",
+    },
+  },
+};
+
+// Route rules match raw paths and know nothing about i18n. Without these
+// copies, "/de-DE/checkout" is server-rendered under the "/**" ISR rule.
+const localizedPersonalizedRules = Object.fromEntries(
+  locales
+    .filter((locale) => locale.code !== defaultLocale)
+    .flatMap((locale) =>
+      Object.entries(personalizedRules).map(
+        ([path, rule]) => [`/${locale.code}${path}`, rule] as const,
+      ),
+    ),
+);
+
 export default defineNuxtConfig({
   extends: [
     "@shopware/composables/nuxt-layer",
@@ -106,27 +161,11 @@ export default defineNuxtConfig({
   ],
   i18n: {
     strategy: "prefix_except_default",
-    defaultLocale: "en-GB",
+    defaultLocale,
     detectBrowserLanguage: false,
     langDir: "./src/langs/",
     vueI18n: "config.ts",
-    locales: [
-      {
-        code: "en-GB",
-        language: "en-GB",
-        file: "en-GB.ts",
-      },
-      {
-        code: "pl-PL",
-        language: "pl-PL",
-        file: "pl-PL.ts",
-      },
-      {
-        code: "de-DE",
-        file: "de-DE.ts",
-        language: "de-DE",
-      },
-    ],
+    locales,
   },
   icon: {
     // Avoid bundling the full @iconify-json/carbon collection into Nitro (~1.1 MB).
@@ -167,37 +206,8 @@ export default defineNuxtConfig({
     "/sitemap.xml": {
       isr: false,
     },
-    "/checkout": {
-      ssr: false,
-      headers: {
-        "Cache-Control": "no-cache, no-store, must-revalidate",
-        "Surrogate-Control": "no-store",
-      },
-    },
-    "/checkout/**": {
-      ssr: false,
-      headers: {
-        "Surrogate-Control": "no-store",
-      },
-    },
-    "/account": {
-      ssr: false,
-      headers: {
-        "Surrogate-Control": "no-store",
-      },
-    },
-    "/account/**": {
-      ssr: false,
-      headers: {
-        "Surrogate-Control": "no-store",
-      },
-    },
-    "/wishlist": {
-      ssr: false,
-      headers: {
-        "Surrogate-Control": "no-store",
-      },
-    },
+    ...personalizedRules,
+    ...localizedPersonalizedRules,
   },
   imports: {
     dirs: [
