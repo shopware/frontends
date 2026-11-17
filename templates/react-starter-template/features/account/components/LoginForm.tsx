@@ -45,7 +45,7 @@ export function LoginForm() {
   const [pending, setPending] = useState(false);
   const [navigating, startNavigation] = useTransition();
   const [focusRequest, setFocusRequest] = useState(0);
-  const [formError, setFormError] = useState<string | null>(null);
+  const [formErrors, setFormErrors] = useState<string[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
 
   const busy = pending || navigating;
@@ -76,11 +76,13 @@ export function LoginForm() {
     }
 
     setPending(true);
-    setFormError(null);
+    setFormErrors([]);
     try {
       const result = await login(values);
       if (!result.ok) {
-        setFormError(result.message ?? null);
+        setFormErrors(
+          result.messages ?? (result.message ? [result.message] : []),
+        );
         return;
       }
       setValues(emptyLoginValues);
@@ -145,14 +147,16 @@ export function LoginForm() {
           onBlur={touch("password")}
           error={errorFor("password")}
         />
-        {formError ? (
-          <p
+        {formErrors.length > 0 ? (
+          <div
             role="alert"
             data-testid="login-form-error"
             className="text-sm text-states-error"
           >
-            {formError}
-          </p>
+            {formErrors.map((message) => (
+              <p key={message}>{message}</p>
+            ))}
+          </div>
         ) : null}
         <BaseButton
           type="submit"

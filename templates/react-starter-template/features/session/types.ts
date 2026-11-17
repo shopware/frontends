@@ -24,5 +24,6 @@ export type RegistrationInput = DistributiveOmit<
 export type SessionActionResult = {
   ok: boolean;
   message?: string;
+  messages?: string[];
   doubleOptIn?: boolean;
 };

@@ -57,6 +57,7 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
 
   const goToLogin = () => {
     const { pathname, search, hash } = window.location;
+    if (pathname.replace(/\/+$/, "") === LOGIN_PATH) return;
     router.push(
       `${LOGIN_PATH}?redirect=${encodeURIComponent(`${pathname}${search}${hash}`)}`,
     );

@@ -108,7 +108,7 @@ describe("StorefrontProviders session", () => {
     expect(queryAll(container, TOAST)).toHaveLength(0);
   });
 
-  it("shows a failed login as one error toast", async () => {
+  it("leaves a failed login to the form and shows no toast", async () => {
     const results: SessionActionResult[] = [];
     mounted = await mount(
       <StorefrontProviders>
@@ -123,11 +123,8 @@ describe("StorefrontProviders session", () => {
     await vi.waitFor(() => expect(results).toHaveLength(1));
 
     const message = errorMessages.errors.login_no_matching_customer_internal;
-    expect(results[0]).toEqual({ ok: false, message });
-    const toasts = queryAll<HTMLParagraphElement>(container, TOAST);
-    expect(toasts).toHaveLength(1);
-    expect(toasts[0]?.textContent).toBe(message);
-    expect(toasts[0]?.className).toContain("bg-states-error-container");
+    expect(results[0]).toEqual({ ok: false, message, messages: [message] });
+    expect(queryAll(container, TOAST)).toHaveLength(0);
   });
 });
 

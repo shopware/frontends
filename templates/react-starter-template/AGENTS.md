@@ -259,11 +259,12 @@ Next.js code: 16.4 differs from most training data (Cache Components,
 - The actions never reject. On an error they resolve every message with
   `resolveApiErrorMessages` (`apiErrors.ts`, a port of the Vue
   `useApiErrorsResolver` with the copy of `errors.json` in
-  `errorMessages.ts`), show one error toast per message themselves and
-  resolve `{ ok: false, message }` with the first one, so the forms must not
-  notify `{ ok: false }` again; they show that message inline in a
-  `role="alert"` paragraph instead. Anything that is not an `ApiClientError`
-  resolves to `errors.message-default`.
+  `errorMessages.ts`) and resolve `{ ok: false, message, messages }`.
+  `login` and `register` do not toast: their forms show every message inline
+  in one `role="alert"` block, and a toast as well would make screen readers
+  read it twice. `logout` has no form, so it shows one error toast per
+  message. Anything that is not an `ApiClientError` resolves to
+  `errors.message-default`.
 - Toasts come from `useNotify()` (`components/NotifyContext.tsx`), provided
   by `StorefrontProviders`, which owns the toast list. App code outside `cms/`
   uses it, not `useCmsActions().notify`; the CMS port's `notify` is the same

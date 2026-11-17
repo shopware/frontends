@@ -88,7 +88,7 @@ describe("createSessionActions().login", () => {
     expect(notifications).toEqual([]);
   });
 
-  it("notifies the resolved login error and resolves it without refreshing", async () => {
+  it("resolves the login error for the form without a toast or a refresh", async () => {
     const { actions, refreshSession, notifications } = setup(
       rejectWith(apiClientError([{ code: "0", detail: "No customer" }], 401)),
     );
@@ -98,14 +98,10 @@ describe("createSessionActions().login", () => {
     ).resolves.toEqual({
       ok: false,
       message: errorMessages.errors.login_no_matching_customer_internal,
+      messages: [errorMessages.errors.login_no_matching_customer_internal],
     });
 
-    expect(notifications).toEqual([
-      {
-        type: "error",
-        message: errorMessages.errors.login_no_matching_customer_internal,
-      },
-    ]);
+    expect(notifications).toEqual([]);
     expect(refreshSession).not.toHaveBeenCalled();
   });
 
@@ -172,7 +168,7 @@ describe("createSessionActions().register", () => {
     expect(notifications).toEqual([]);
   });
 
-  it("notifies every resolved registration error and resolves the first one", async () => {
+  it("resolves every registration error for the form without a toast", async () => {
     const { actions, refreshSession, notifications } = setup(
       rejectWith(
         apiClientError([
@@ -188,18 +184,13 @@ describe("createSessionActions().register", () => {
     await expect(actions.register(registrationInput)).resolves.toEqual({
       ok: false,
       message: "The email address jane@example.com is already in use",
+      messages: [
+        "The email address jane@example.com is already in use",
+        errorMessages.errors["VIOLATION::ZIP_CODE_INVALID"],
+      ],
     });
 
-    expect(notifications).toEqual([
-      {
-        type: "error",
-        message: "The email address jane@example.com is already in use",
-      },
-      {
-        type: "error",
-        message: errorMessages.errors["VIOLATION::ZIP_CODE_INVALID"],
-      },
-    ]);
+    expect(notifications).toEqual([]);
     expect(refreshSession).not.toHaveBeenCalled();
   });
 
@@ -237,6 +228,7 @@ describe("createSessionActions().logout", () => {
     await expect(actions.logout()).resolves.toEqual({
       ok: false,
       message: DEFAULT_MESSAGE,
+      messages: [DEFAULT_MESSAGE],
     });
     expect(notifications).toEqual([
       { type: "error", message: DEFAULT_MESSAGE },
@@ -283,6 +275,7 @@ describe("createSessionActions().logout", () => {
     await expect(actions.logout()).resolves.toEqual({
       ok: false,
       message: "No",
+      messages: ["No"],
     });
     expect(notifications).toEqual([{ type: "error", message: "No" }]);
     expect(refreshSession).not.toHaveBeenCalled();
@@ -305,11 +298,15 @@ describe("createSessionActions", () => {
       actions.logout(),
     ]);
 
-    expect(results).toEqual([
-      { status: "fulfilled", value: { ok: false, message: DEFAULT_MESSAGE } },
-      { status: "fulfilled", value: { ok: false, message: DEFAULT_MESSAGE } },
-      { status: "fulfilled", value: { ok: false, message: DEFAULT_MESSAGE } },
-    ]);
+    const failed = {
+      status: "fulfilled",
+      value: {
+        ok: false,
+        message: DEFAULT_MESSAGE,
+        messages: [DEFAULT_MESSAGE],
+      },
+    };
+    expect(results).toEqual([failed, failed, failed]);
   });
 
   it("resolves not ok when the storefront URL cannot be determined", async () => {
@@ -319,6 +316,7 @@ describe("createSessionActions", () => {
     await expect(actions.register(registrationInput)).resolves.toEqual({
       ok: false,
       message: DEFAULT_MESSAGE,
+      messages: [DEFAULT_MESSAGE],
     });
     expect(invocations).toEqual([]);
   });

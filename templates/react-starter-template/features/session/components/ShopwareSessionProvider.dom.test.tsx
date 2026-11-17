@@ -343,16 +343,14 @@ describe("ShopwareSessionProvider config failure", () => {
 
     const defaultMessage = errorMessages.errors["message-default"];
     await expect(run((actions) => actions.login(credentials))).resolves.toEqual(
-      { ok: false, message: defaultMessage },
+      { ok: false, message: defaultMessage, messages: [defaultMessage] },
     );
     await expect(run((actions) => actions.logout())).resolves.toEqual({
       ok: false,
       message: defaultMessage,
+      messages: [defaultMessage],
     });
-    expect(notifications).toEqual([
-      { type: "error", message: defaultMessage },
-      { type: "error", message: defaultMessage },
-    ]);
+    expect(notifications).toEqual([{ type: "error", message: defaultMessage }]);
   });
 
   it("retries the config and the first context read when an action runs after the failure", async () => {
@@ -440,7 +438,7 @@ describe("ShopwareSessionProvider actions", () => {
     expect(notifications).toEqual([]);
   });
 
-  it("notifies the resolved login error and resolves { ok: false }", async () => {
+  it("resolves the login error for the form without a toast", async () => {
     const backend = createBackend();
     backend.failures.set(
       LOGIN,
@@ -451,10 +449,10 @@ describe("ShopwareSessionProvider actions", () => {
 
     const message = errorMessages.errors.login_no_matching_customer_internal;
     await expect(run((actions) => actions.login(credentials))).resolves.toEqual(
-      { ok: false, message },
+      { ok: false, message, messages: [message] },
     );
 
-    expect(notifications).toEqual([{ type: "error", message }]);
+    expect(notifications).toEqual([]);
     expect(session().isLoggedIn).toBe(false);
     expect(
       backend.invocations.filter(({ operation }) => operation === READ_CONTEXT),

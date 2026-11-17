@@ -98,7 +98,7 @@ export function RegistrationForm({
   const [refreshing, startRefresh] = useTransition();
   const [doubleOptInCount, setDoubleOptInCount] = useState(0);
   const [focusRequest, setFocusRequest] = useState(0);
-  const [formError, setFormError] = useState<string | null>(null);
+  const [formErrors, setFormErrors] = useState<string[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
   const successBoxRef = useRef<HTMLOutputElement>(null);
 
@@ -167,11 +167,13 @@ export function RegistrationForm({
     }
 
     setPending(true);
-    setFormError(null);
+    setFormErrors([]);
     try {
       const result = await register(toRegistrationInput(values));
       if (!result.ok) {
-        setFormError(result.message ?? null);
+        setFormErrors(
+          result.messages ?? (result.message ? [result.message] : []),
+        );
         return;
       }
       setValues(emptyRegistrationValues);
@@ -415,14 +417,16 @@ export function RegistrationForm({
             ) : null}
           </div>
         </fieldset>
-        {formError ? (
-          <p
+        {formErrors.length > 0 ? (
+          <div
             role="alert"
             data-testid="registration-form-error"
             className="mb-3 text-sm text-states-error"
           >
-            {formError}
-          </p>
+            {formErrors.map((message) => (
+              <p key={message}>{message}</p>
+            ))}
+          </div>
         ) : null}
         <div className="mb-5 text-right">
           <BaseButton

@@ -194,6 +194,16 @@ describe("HeaderBar in the browser", () => {
     expect(account.hasAttribute("aria-controls")).toBe(false);
   });
 
+  it("keeps the redirect of the login page when a guest clicks the account button there", async () => {
+    const { account } = await setup();
+    window.history.replaceState(null, "", "/account/login/?redirect=%2Fx");
+
+    await interact(() => account.click());
+
+    expect(push).not.toHaveBeenCalled();
+    expect(window.location.search).toBe("?redirect=%2Fx");
+  });
+
   it("re-reads a failed session on the account click and opens the menu for a logged-in customer", async () => {
     const request = deferred<StorefrontSession>();
     const retrySession = vi.fn<SessionActions["retrySession"]>(

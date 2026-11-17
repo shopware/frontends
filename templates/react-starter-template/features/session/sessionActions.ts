@@ -39,10 +39,15 @@ export function createSessionActions({
     context?: ApiErrorContext,
   ): SessionActionResult {
     const messages = resolveApiErrorMessages(error, context);
-    for (const message of messages) {
+    return { ok: false, message: messages[0], messages };
+  }
+
+  function failWithToast(error: unknown): SessionActionResult {
+    const result = fail(error);
+    for (const message of result.messages ?? []) {
       notify({ type: "error", message });
     }
-    return { ok: false, message: messages[0] };
+    return result;
   }
 
   async function refreshAfterMutation(): Promise<void> {
@@ -92,7 +97,7 @@ export function createSessionActions({
       try {
         await client.invoke("logoutCustomer post /account/logout");
       } catch (error) {
-        if (!isAlreadyLoggedOut(error)) return fail(error);
+        if (!isAlreadyLoggedOut(error)) return failWithToast(error);
       }
       await refreshAfterMutation();
       return { ok: true };

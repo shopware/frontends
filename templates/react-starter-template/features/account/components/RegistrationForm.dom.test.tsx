@@ -326,6 +326,10 @@ describe("RegistrationForm in the browser", () => {
       registerMock(async () => ({
         ok: false,
         message: "The email address is already in use.",
+        messages: [
+          "The email address is already in use.",
+          "The ZIP code is invalid.",
+        ],
       })),
     );
 
@@ -375,7 +379,10 @@ describe("RegistrationForm in the browser", () => {
     expect(submit.getAttribute("aria-busy")).toBe("false");
     const alert = byTestId(container, "registration-form-error");
     expect(alert.getAttribute("role")).toBe("alert");
-    expect(alert.textContent).toBe("The email address is already in use.");
+    expect([...alert.querySelectorAll("p")].map((p) => p.textContent)).toEqual([
+      "The email address is already in use.",
+      "The ZIP code is invalid.",
+    ]);
   });
 
   it("keeps the submit button focusable but ignores a second submit while the request runs", async () => {
