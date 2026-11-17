@@ -110,19 +110,18 @@ describe("CountrySelect", () => {
     expect(html).toContain(">Value is required</p>");
   });
 
-  it("derives the ids and test ids from the props", async () => {
+  it("derives the ids from the id prop", async () => {
     const html = await render({
       id: "billingCountry",
-      testId: "billing-country-select",
       error: "Value is required",
     });
     const input = tag(html, /<input[^>]*role="combobox"[^>]*>/);
 
     expect(input).toContain('id="billingCountry"');
-    expect(input).toContain('data-testid="billing-country-select"');
+    expect(input).toContain('data-testid="country-select"');
     expect(input).toContain('aria-describedby="billingCountry-error"');
     expect(tag(html, /<label[^>]*>/)).toContain('for="billingCountry"');
-    expect(html).toContain('data-testid="billing-country-select-toggle"');
+    expect(html).toContain('data-testid="country-select-toggle"');
   });
 
   it("renders a disabled read-only input with the only country", async () => {
@@ -137,17 +136,6 @@ describe("CountrySelect", () => {
       'src="https://flagcdn.com/de.svg"',
     );
     expect(html).not.toContain("country-select-toggle");
-    expect(html).not.toContain("country-select-clear");
-  });
-
-  it("disables the combobox and the toggle when disabled", async () => {
-    const html = await render({ disabled: true, value: poland.id });
-    const input = tag(html, /<input[^>]*role="combobox"[^>]*>/);
-
-    expect(input).toContain("disabled");
-    expect(
-      tag(html, /<button[^>]*data-testid="country-select-toggle"[^>]*>/),
-    ).toContain("disabled");
     expect(html).not.toContain("country-select-clear");
   });
 

@@ -65,7 +65,7 @@ afterEach(async () => {
 });
 
 function menuitems(container: ParentNode): HTMLAnchorElement[] {
-  return queryAll<HTMLAnchorElement>(container, 'a[role="menuitem"]');
+  return queryAll<HTMLAnchorElement>(container, "nav a");
 }
 
 function labels(container: ParentNode): string[] {
@@ -74,7 +74,7 @@ function labels(container: ParentNode): string[] {
 
 function trigger(container: ParentNode, name: string): HTMLAnchorElement {
   const item = menuitems(container).find((it) => it.textContent === name);
-  if (!item) throw new Error(`No menuitem "${name}"`);
+  if (!item) throw new Error(`No link "${name}"`);
   return item;
 }
 
@@ -93,7 +93,7 @@ describe("TopNavigation in the browser", () => {
 
     expect(clothing.getAttribute("aria-expanded")).toBe("true");
     expect(labels(container)).toEqual(["Clothing", "Men", "Shirts", "Food"]);
-    const flyout = query(container, 'a[role="menuitem"] + div');
+    const flyout = query(container, "nav li > a + div");
     expect(flyout.textContent).toContain("Men");
   });
 

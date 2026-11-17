@@ -60,7 +60,6 @@ function deferred<T>() {
 
 async function setup(
   overrides: Partial<SessionActions> = {},
-  props: { hideSignUp?: boolean; redirectUrl?: string | null } = {},
   sibling: ReactNode = null,
 ) {
   const actions = {
@@ -71,7 +70,7 @@ async function setup(
   mounted = await mount(
     <CmsActionsProvider actions={{ notify }}>
       <SessionActionsProvider actions={actions}>
-        <LoginForm {...props} />
+        <LoginForm />
         {sibling}
       </SessionActionsProvider>
     </CmsActionsProvider>,
@@ -195,31 +194,29 @@ describe("LoginForm in the browser", () => {
     expect(navigation.push).toHaveBeenCalledWith("/Clothing/Men/");
   });
 
-  it("ignores an off-site redirect and prefers an explicit redirectUrl", async () => {
-    window.history.replaceState(
-      null,
-      "",
-      "/account/login?redirect=https%3A%2F%2Fexample.com",
-    );
-    const first = await setup({ login: vi.fn(async () => ({ ok: true })) });
+  it("ignores an off-site redirect and the login page itself", async () => {
+    for (const redirect of [
+      "https%3A%2F%2Fexample.com",
+      "%2Faccount%2Flogin",
+    ]) {
+      window.history.replaceState(
+        null,
+        "",
+        `/account/login?redirect=${redirect}`,
+      );
+      const { email, password, form } = await setup({
+        login: vi.fn(async () => ({ ok: true })),
+      });
 
-    await interact(() => setInputValue(first.email, "jane@example.com"));
-    await interact(() => setInputValue(first.password, "secret"));
-    await interact(() => submitForm(first.form));
-    expect(navigation.push).toHaveBeenCalledWith("/");
+      await interact(() => setInputValue(email, "jane@example.com"));
+      await interact(() => setInputValue(password, "secret"));
+      await interact(() => submitForm(form));
+      expect(navigation.push).toHaveBeenCalledWith("/");
 
-    await mounted?.unmount();
-    mounted = undefined;
-    navigation.push.mockReset();
-
-    const second = await setup(
-      { login: vi.fn(async () => ({ ok: true })) },
-      { redirectUrl: "/account" },
-    );
-    await interact(() => setInputValue(second.email, "jane@example.com"));
-    await interact(() => setInputValue(second.password, "secret"));
-    await interact(() => submitForm(second.form));
-    expect(navigation.push).toHaveBeenCalledWith("/account");
+      await mounted?.unmount();
+      mounted = undefined;
+      navigation.push.mockReset();
+    }
   });
 
   it("keeps the submit button focusable but ignores a second submit while the request runs", async () => {
@@ -250,7 +247,6 @@ describe("LoginForm in the browser", () => {
     const login = vi.fn<SessionActions["login"]>(async () => ({ ok: true }));
     const { notify, submit, email, password } = await setup(
       { login },
-      {},
       <Suspense fallback={null}>
         <PendingRoute until={route.promise} />
       </Suspense>,
@@ -289,25 +285,5 @@ describe("LoginForm in the browser", () => {
       message: "Service unavailable",
     });
     expect(navigation.push).not.toHaveBeenCalled();
-  });
-
-  it("sends the visitor to the registration anchor from the sign-up button", async () => {
-    const { container } = await setup();
-    const signUp = query<HTMLButtonElement>(
-      container,
-      '[data-testid="login-sign-up-button"]',
-    );
-
-    await interact(() => signUp.click());
-
-    expect(navigation.push).toHaveBeenCalledWith("/account/login#registration");
-  });
-
-  it("renders no sign-up button when hidden", async () => {
-    const { container } = await setup({}, { hideSignUp: true });
-
-    expect(
-      container.querySelector('[data-testid="login-sign-up-button"]'),
-    ).toBeNull();
   });
 });

@@ -5,6 +5,7 @@ import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
 import {
   interact,
   mount,
+  pointerClick,
   pressKey,
   query,
   queryAll,
@@ -101,7 +102,7 @@ describe("CountrySelect in the browser", () => {
 
     await interact(() => input.focus());
     await interact(() => setInputValue(input, "ger"));
-    await interact(() => query<HTMLButtonElement>(container, OPTION).click());
+    await pointerClick(query<HTMLButtonElement>(container, OPTION));
 
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange).toHaveBeenCalledWith(germany.id, germany);
@@ -206,6 +207,11 @@ describe("CountrySelect in the browser", () => {
     expect(options()).toHaveLength(0);
     expect(listbox()?.textContent).toBe("No countries found");
     expect(input.getAttribute("aria-activedescendant")).toBeNull();
+    const status = query<HTMLElement>(document.body, '[role="status"]');
+    expect(status.textContent).toBe("No countries found");
+
+    await interact(() => setInputValue(input, "pol"));
+    expect(status.textContent).toBe("");
   });
 
   it("clears the selection from the clear button", async () => {
@@ -214,11 +220,11 @@ describe("CountrySelect in the browser", () => {
     });
     expect(input.value).toBe("Poland");
 
-    await interact(() =>
+    await pointerClick(
       query<HTMLButtonElement>(
         container,
         '[data-testid="country-select-clear"]',
-      ).click(),
+      ),
     );
 
     expect(onChange).toHaveBeenCalledTimes(1);
@@ -281,13 +287,31 @@ describe("CountrySelect in the browser", () => {
     expect(onBlur).toHaveBeenCalledTimes(2);
   });
 
+  it("keeps the list open and the focus on the input while an option is pressed", async () => {
+    const { input, listbox, options } = await setup();
+
+    await interact(() => input.focus());
+    const [option] = options();
+    const down = new MouseEvent("mousedown", {
+      bubbles: true,
+      cancelable: true,
+    });
+    await interact(() => option?.dispatchEvent(down));
+
+    expect(down.defaultPrevented).toBe(true);
+    expect(listbox()).not.toBeNull();
+    expect(document.activeElement).toBe(input);
+  });
+
   it("clears the value when the selected option is clicked again", async () => {
     const { input, onChange, options } = await setup({
       initialValue: poland.id,
     });
 
     await interact(() => input.focus());
-    await interact(() => options()[1]?.click());
+    const selected = options()[1];
+    if (!selected) throw new Error("No selected option");
+    await pointerClick(selected);
 
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange).toHaveBeenCalledWith("", null);

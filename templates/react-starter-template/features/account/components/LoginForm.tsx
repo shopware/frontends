@@ -21,7 +21,6 @@ const t = {
     loginLabel: "Email address",
     passwordLabel: "Password",
     submitButtonLabel: "Sign in",
-    signUpButtonLabel: "Sign up",
   },
   form: {
     requiredFieldsNote: "Fields marked with asterisks (*) are required.",
@@ -33,19 +32,9 @@ const t = {
   },
 };
 
-const SIGN_UP_PATH = "/account/login#registration";
-
 type Touched = Partial<Record<keyof LoginValues, boolean>>;
 
-export type LoginFormProps = {
-  hideSignUp?: boolean;
-  redirectUrl?: string | null;
-};
-
-export function LoginForm({
-  hideSignUp = false,
-  redirectUrl = null,
-}: LoginFormProps) {
+export function LoginForm() {
   const router = useRouter();
   const { login } = useSessionActions();
   const { notify } = useCmsActions();
@@ -89,10 +78,7 @@ export function LoginForm({
       const result = await login(values);
       if (!result.ok) return;
       notify({ type: "success", message: t.account.messages.loggedInSuccess });
-      const target = resolveRedirectFromSearch(
-        window.location.search,
-        redirectUrl,
-      );
+      const target = resolveRedirectFromSearch(window.location.search);
       startNavigation(() => {
         router.push(target);
       });
@@ -160,15 +146,6 @@ export function LoginForm({
           {t.loginForm.submitButtonLabel}
         </BaseButton>
       </form>
-      {hideSignUp ? null : (
-        <BaseButton
-          variant="secondary"
-          data-testid="login-sign-up-button"
-          onClick={() => router.push(SIGN_UP_PATH)}
-        >
-          {t.loginForm.signUpButtonLabel}
-        </BaseButton>
-      )}
     </div>
   );
 }

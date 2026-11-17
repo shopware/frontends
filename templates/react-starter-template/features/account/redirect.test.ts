@@ -47,6 +47,12 @@ describe("resolveRedirectTarget", () => {
     );
   });
 
+  it("refuses the login page itself", () => {
+    expect(resolveRedirectTarget("/account/login")).toBe("/");
+    expect(resolveRedirectTarget("/account/login/?redirect=%2F")).toBe("/");
+    expect(resolveRedirectTarget("/account/./login#registration")).toBe("/");
+  });
+
   it("uses the given fallback", () => {
     expect(resolveRedirectTarget(null, "/account")).toBe("/account");
     expect(resolveRedirectTarget("https://example.com", "/account")).toBe(
@@ -71,15 +77,6 @@ describe("resolveRedirectFromSearch", () => {
     ).toBe("/");
     expect(
       resolveRedirectFromSearch("?redirect=%2F%252e%2F%2Fevil.example"),
-    ).toBe("/");
-  });
-
-  it("prefers an explicit target over the query parameter", () => {
-    expect(resolveRedirectFromSearch("?redirect=%2FClothing", "/account")).toBe(
-      "/account",
-    );
-    expect(
-      resolveRedirectFromSearch("?redirect=%2FClothing", "//example.com"),
     ).toBe("/");
   });
 });

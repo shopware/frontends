@@ -11,14 +11,12 @@ import { NavigationLink } from "./NavigationLink";
 
 const t = {
   "layout.ariaLabels.sidebar": "Sidebar",
+  "layout.ariaLabels.mainNavigation": "Main navigation",
   "layout.sideMenu.open": "Open menu",
   "layout.sideMenu.close": "Close menu",
   "layout.sideMenu.showSubcategories": "Show subcategories",
   "layout.sideMenu.hideSubcategories": "Hide subcategories",
 };
-
-const FOCUSABLE_SELECTOR =
-  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 type BurgerButtonProps = Omit<
   IconButtonProps,
@@ -59,6 +57,7 @@ export function MobileMenu({
   const drawerId = useId();
 
   const close = useCallback(() => {
+    panelRef.current?.close();
     setOpen(false);
     burgerRef.current?.focus();
   }, []);
@@ -74,31 +73,9 @@ export function MobileMenu({
 
   useEffect(() => {
     if (!open) return;
+    panelRef.current?.showModal();
     closeButtonRef.current?.focus();
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        close();
-        return;
-      }
-      if (event.key !== "Tab" || !panelRef.current) return;
-      const focusable =
-        panelRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (!first || !last) return;
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [open, close]);
+  }, [open]);
 
   const toggle = (id: string) => {
     setExpandedIds((current) => {
@@ -118,23 +95,25 @@ export function MobileMenu({
         onClick={() => setOpen(true)}
       />
       {open ? (
-        <>
+        <dialog
+          ref={panelRef}
+          id={drawerId}
+          data-testid="sidebar-left"
+          aria-label={t["layout.ariaLabels.sidebar"]}
+          className="m-0 h-full max-h-none w-full max-w-none bg-transparent p-0"
+          onCancel={(event) => {
+            event.preventDefault();
+            close();
+          }}
+        >
           <button
             type="button"
             tabIndex={-1}
             aria-label={t["layout.sideMenu.close"]}
-            className="fixed inset-0 z-40 cursor-default bg-overlay-dark-high"
+            className="fixed inset-0 cursor-default bg-overlay-dark-high"
             onClick={close}
           />
-          <dialog
-            ref={panelRef}
-            open
-            id={drawerId}
-            data-testid="sidebar-left"
-            aria-modal="true"
-            aria-label={t["layout.ariaLabels.sidebar"]}
-            className="fixed inset-y-0 left-0 right-auto z-40 m-0 flex h-auto max-h-none w-screen max-w-md flex-col bg-surface-surface p-0 text-surface-on-surface shadow-xl"
-          >
+          <div className="fixed inset-y-0 left-0 flex w-screen max-w-md flex-col bg-surface-surface text-surface-on-surface shadow-xl">
             <div className="flex px-4 py-5">
               <IconButton
                 ref={closeButtonRef}
@@ -146,7 +125,10 @@ export function MobileMenu({
                 <CloseIcon className="size-3" />
               </IconButton>
             </div>
-            <aside className="flex w-full flex-1 flex-col overflow-y-auto">
+            <nav
+              aria-label={t["layout.ariaLabels.mainNavigation"]}
+              className="flex w-full flex-1 flex-col overflow-y-auto"
+            >
               <ul className="flex flex-col items-start space-y-2 px-2">
                 {tree.map((node) => {
                   const hasChildren = node.children.length > 0;
@@ -203,9 +185,9 @@ export function MobileMenu({
                   );
                 })}
               </ul>
-            </aside>
-          </dialog>
-        </>
+            </nav>
+          </div>
+        </dialog>
       ) : null}
     </>
   );

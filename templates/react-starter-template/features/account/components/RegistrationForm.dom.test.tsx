@@ -17,6 +17,7 @@ import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
 import {
   interact,
   mount,
+  pointerClick,
   query,
   queryAll,
   setInputValue,
@@ -161,8 +162,8 @@ async function chooseCountry(container: HTMLElement, name: string) {
   const option = queryAll<HTMLButtonElement>(container, '[role="option"]').find(
     (candidate) => candidate.textContent?.includes(name),
   );
-  expect(option).toBeDefined();
-  await interact(() => option?.click());
+  if (!option) throw new Error(`No option "${name}"`);
+  await pointerClick(option);
 }
 
 const personalData = {
@@ -400,9 +401,10 @@ describe("RegistrationForm in the browser", () => {
   it("stays busy until the redirect target has rendered", async () => {
     const route = deferred<void>();
     push.mockImplementation(() => routeLoad.start?.());
+    window.history.replaceState(null, "", "/account/login?redirect=%2Faccount");
     const { container, actions, submit, input } = await setup(
       registerMock(async () => ({ ok: true })),
-      { redirectUrl: "/account" },
+      {},
       <Suspense fallback={null}>
         <PendingRoute until={route.promise} />
       </Suspense>,
@@ -453,20 +455,7 @@ describe("RegistrationForm in the browser", () => {
     expect(payload.billingAddress.countryId).toBe("country-pl");
   });
 
-  it("navigates to the redirect target after a completed registration", async () => {
-    const { container, form, input } = await setup(
-      registerMock(async () => ({ ok: true })),
-      { redirectUrl: "/account" },
-    );
-
-    await fill(input, { ...personalData, ...addressData });
-    await chooseCountry(container, "Poland");
-    await interact(() => submitForm(form));
-
-    expect(push).toHaveBeenCalledWith("/account");
-  });
-
-  it("follows the redirect query parameter without an explicit redirectUrl", async () => {
+  it("navigates to the redirect query parameter after a completed registration", async () => {
     window.history.replaceState(
       null,
       "",
@@ -559,10 +548,9 @@ describe("RegistrationForm in the browser", () => {
     expect(push).not.toHaveBeenCalled();
   });
 
-  it("clears a company-only form after every double opt-in and scrolls the notice into view", async () => {
+  it("clears a business form after every double opt-in and scrolls the notice into view", async () => {
     const { container, actions, form, input, error } = await setup(
       registerMock(async () => ({ ok: true, doubleOptIn: true })),
-      { companyOnly: true },
     );
     const scroll = vi.spyOn(
       query<HTMLOutputElement>(container, "output"),
@@ -570,6 +558,15 @@ describe("RegistrationForm in the browser", () => {
     );
 
     for (const round of [1, 2]) {
+      await interact(() =>
+        setSelectValue(
+          byTestId<HTMLSelectElement>(
+            container,
+            "registration-account-type-select",
+          ),
+          "business",
+        ),
+      );
       await fill(input, {
         ...personalData,
         ...addressData,
@@ -583,12 +580,15 @@ describe("RegistrationForm in the browser", () => {
         "business",
       );
       expect(scroll).toHaveBeenCalledTimes(round);
-      expect(input("registration-company-input").value).toBe("");
-      byTestId(container, "registration-vatid-input");
+      expect(input("registration-first-name-input").value).toBe("");
       expect(
-        container.querySelector(
-          '[data-testid="registration-account-type-select"]',
-        ),
+        byTestId<HTMLSelectElement>(
+          container,
+          "registration-account-type-select",
+        ).value,
+      ).toBe("private");
+      expect(
+        container.querySelector('[data-testid="registration-company-input"]'),
       ).toBeNull();
       expect(error("company")).toBeNull();
       expect(error("firstName")).toBeNull();

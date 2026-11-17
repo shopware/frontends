@@ -43,7 +43,7 @@ export default function LoginPage() {
       <LoggedInRedirect />
       <div className="flex flex-col gap-10 lg:flex-row lg:gap-0">
         <div className="flex w-full flex-col justify-start lg:w-1/2 lg:border-r lg:border-outline-outline-variant lg:pr-16">
-          <LoginForm hideSignUp />
+          <LoginForm />
         </div>
         <div
           id="registration"

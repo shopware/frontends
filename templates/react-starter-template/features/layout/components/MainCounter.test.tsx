@@ -6,9 +6,13 @@ import { MainCounter } from "./MainCounter";
 
 describe("MainCounter", () => {
   it("renders the count inside the badge", async () => {
-    const html = await renderToHtml(<MainCounter count={7} />);
+    const html = await renderToHtml(
+      <MainCounter count={7} testId="header-cart-counter" />,
+    );
 
-    expect(html).toMatch(/<span[^>]*bg-states-error[^>]*>7<\/span>/);
+    expect(html).toMatch(
+      /<span data-testid="header-cart-counter"[^>]*>7<\/span>/,
+    );
   });
 
   it("appends the caller's positioning class", async () => {

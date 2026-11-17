@@ -1,4 +1,5 @@
 export const DEFAULT_REDIRECT = "/";
+export const LOGIN_PATH = "/account/login";
 
 const PLACEHOLDER_ORIGIN = "http://placeholder.invalid";
 
@@ -17,17 +18,16 @@ export function resolveRedirectTarget(
   if (!target || hasUnsafeChar(target)) return fallback;
   if (!target.startsWith("/") || target.startsWith("//")) return fallback;
   const url = new URL(target, PLACEHOLDER_ORIGIN);
-  if (url.origin !== PLACEHOLDER_ORIGIN || url.pathname.startsWith("//")) {
+  if (
+    url.origin !== PLACEHOLDER_ORIGIN ||
+    url.pathname.startsWith("//") ||
+    url.pathname.replace(/\/+$/, "") === LOGIN_PATH
+  ) {
     return fallback;
   }
   return url.pathname + url.search + url.hash;
 }
 
-export function resolveRedirectFromSearch(
-  search: string,
-  preferred: string | null = null,
-): string {
-  return resolveRedirectTarget(
-    preferred ?? new URLSearchParams(search).get("redirect"),
-  );
+export function resolveRedirectFromSearch(search: string): string {
+  return resolveRedirectTarget(new URLSearchParams(search).get("redirect"));
 }

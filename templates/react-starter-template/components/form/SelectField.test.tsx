@@ -48,25 +48,6 @@ describe("SelectField", () => {
     expect(optionTags(html)).toHaveLength(3);
   });
 
-  it("replaces the options with a disabled loading entry while loading", async () => {
-    const html = await renderToHtml(
-      <SelectField
-        id="state"
-        label="State"
-        placeholder="Choose state"
-        options={options}
-        loading
-      />,
-    );
-    const rendered = optionTags(html);
-
-    expect(rendered).toHaveLength(2);
-    expect(rendered[1]).toMatch(
-      /^<option (value="" disabled=""|disabled="" value="")>Loading\.\.\.<\/option>$/,
-    );
-    expect(html).not.toContain(">Private<");
-  });
-
   it("passes native attributes through to the select", async () => {
     const html = await renderToHtml(
       <SelectField

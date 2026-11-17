@@ -104,4 +104,24 @@ describe("NewsletterBox in the browser", () => {
     expect(input.value).toBe("jane@example.com");
     expect(input.disabled).toBe(false);
   });
+
+  it("reports a subscription the backend did not accept", async () => {
+    const { actions, form, input } = await setup({
+      subscribeNewsletter: vi.fn(async () => ({
+        ok: false,
+        message: "Forms are not connected to a session yet.",
+      })),
+    });
+
+    await interact(() => setInputValue(input, "jane@example.com"));
+    input.focus();
+    await interact(() => submitForm(form));
+
+    expect(actions.notify).toHaveBeenCalledWith({
+      type: "error",
+      message: "Forms are not connected to a session yet.",
+    });
+    expect(input.value).toBe("jane@example.com");
+    expect(document.activeElement).toBe(input);
+  });
 });

@@ -1,7 +1,4 @@
 export const errorMessages = {
-  messages: {
-    error: "An error occurred. Please try again.",
-  },
   errors: {
     "promotions-on-cart-price-zero-error":
       "Promotions are excluded for cart because the price of the cart is zero",

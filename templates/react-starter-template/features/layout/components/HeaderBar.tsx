@@ -12,6 +12,7 @@ import {
   ShoppingCartIcon,
   UserIcon,
 } from "@/components/icons";
+import { LOGIN_PATH } from "@/features/account/redirect";
 import { AccountMenu } from "@/features/layout/components/AccountMenu";
 import { MainCounter } from "@/features/layout/components/MainCounter";
 import { HEADER_ACTION_CLASS } from "@/features/layout/headerAction";
@@ -56,7 +57,7 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
   const goToLogin = () => {
     const { pathname, search, hash } = window.location;
     router.push(
-      `/account/login?redirect=${encodeURIComponent(`${pathname}${search}${hash}`)}`,
+      `${LOGIN_PATH}?redirect=${encodeURIComponent(`${pathname}${search}${hash}`)}`,
     );
   };
 
@@ -175,6 +176,7 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
                   <MainCounter
                     count={wishlistCount}
                     className={COUNTER_CLASS}
+                    testId="header-wishlist-counter"
                   />
                 ) : null}
               </span>
@@ -189,7 +191,11 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
               <span className="relative flex">
                 <ShoppingCartIcon className={ICON_CLASS} />
                 {cartCount > 0 ? (
-                  <MainCounter count={cartCount} className={COUNTER_CLASS} />
+                  <MainCounter
+                    count={cartCount}
+                    className={COUNTER_CLASS}
+                    testId="header-cart-counter"
+                  />
                 ) : null}
               </span>
             </IconButton>

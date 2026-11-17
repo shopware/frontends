@@ -194,25 +194,6 @@ describe("RegistrationForm", () => {
     expect(html).not.toMatch(/aria-describedby="[^"]*-error/);
   });
 
-  it("starts as a business account without the account type select when companyOnly", async () => {
-    const html = await renderToHtml(
-      <RegistrationForm countries={countries} companyOnly />,
-    );
-
-    expect(html).not.toContain("registration-account-type-select");
-    expect(html).toContain('data-testid="registration-vatid-input"');
-    expect(html).toContain('<label for="vatId"');
-    expect(html).toContain(">VAT ID</label>");
-    const company = elementWithTestId(html, "registration-company-input");
-    expect(company.toLowerCase()).toContain('autocomplete="organization"');
-    expect(company).toMatch(REQUIRED_ATTRIBUTE);
-    expect(html).toContain('<label for="company"');
-    expect(html).toContain(requiredLabel("Company"));
-    expect(elementWithTestId(html, "registration-vatid-input")).not.toMatch(
-      REQUIRED_ATTRIBUTE,
-    );
-  });
-
   it("reports unavailable countries with a retry instead of an empty picker", async () => {
     const html = await renderToHtml(
       <RegistrationForm countries={[]} countriesUnavailable />,

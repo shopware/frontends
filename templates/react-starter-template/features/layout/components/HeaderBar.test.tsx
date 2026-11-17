@@ -59,7 +59,7 @@ describe("HeaderBar", () => {
     expect(cart).toContain('aria-label="Cart"');
 
     expect(html).toContain('aria-label="Search"');
-    expect(html).not.toContain("bg-states-error");
+    expect(html).not.toContain("-counter");
   });
 
   it("does not navigate or notify while rendering", async () => {
@@ -67,16 +67,6 @@ describe("HeaderBar", () => {
 
     expect(push).not.toHaveBeenCalled();
     expect(actions.notify).not.toHaveBeenCalled();
-  });
-
-  it("gives every action button the same round hit area", async () => {
-    const html = await render();
-    const buttons = html.match(/<button[^>]*>/g) ?? [];
-
-    expect(buttons).toHaveLength(4);
-    for (const button of buttons) {
-      expect(button).toContain("rounded-full p-2");
-    }
   });
 
   it("renders the menu node it is given after the cart button", async () => {
@@ -103,9 +93,10 @@ describe("HeaderBar", () => {
 
     const account = buttonWithTestId(html, "header-account-button");
     expect(account).toContain('data-logged-in="true"');
-    expect(html.match(/bg-states-error/g)).toHaveLength(2);
-    expect(html).toMatch(/bg-states-error[^>]*>3<\/span>/);
-    expect(html).toMatch(/bg-states-error[^>]*>2<\/span>/);
+    expect(html).toMatch(
+      /data-testid="header-wishlist-counter"[^>]*>3<\/span>/,
+    );
+    expect(html).toMatch(/data-testid="header-cart-counter"[^>]*>2<\/span>/);
   });
 
   it("renders a closed account disclosure for a logged-in customer", async () => {
@@ -134,7 +125,7 @@ describe("HeaderBar", () => {
       wishlistCount: 4,
     });
 
-    expect(html.match(/bg-states-error/g)).toHaveLength(1);
-    expect(html).toMatch(/bg-states-error[^>]*>1<\/span>/);
+    expect(html).not.toContain("header-wishlist-counter");
+    expect(html).toMatch(/data-testid="header-cart-counter"[^>]*>1<\/span>/);
   });
 });

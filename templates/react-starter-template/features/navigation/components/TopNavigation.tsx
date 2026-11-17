@@ -81,7 +81,7 @@ export function TopNavigation({ tree }: { tree: NavigationNode[] }) {
         aria-label={t["layout.ariaLabels.mainNavigation"]}
         className={NAV_CLASS}
       >
-        <ul role="menubar" className={LIST_CLASS}>
+        <ul className={LIST_CLASS}>
           {tree.map((node) => {
             const hasChildren = node.children.length > 0;
             const active = normalizePath(node.href) === currentPath;
@@ -89,12 +89,10 @@ export function TopNavigation({ tree }: { tree: NavigationNode[] }) {
             return (
               <li
                 key={node.id}
-                role="none"
                 className={cx(
                   "border-b border-transparent text-surface-on-surface hover:border-surface-on-surface",
                   active && "border-surface-on-surface",
                 )}
-                onMouseEnter={() => open(node.id)}
               >
                 <NavigationLink
                   ref={(element) => {
@@ -105,11 +103,10 @@ export function TopNavigation({ tree }: { tree: NavigationNode[] }) {
                     }
                   }}
                   node={node}
-                  role="menuitem"
-                  aria-haspopup={hasChildren ? "true" : undefined}
                   aria-expanded={hasChildren ? expanded : undefined}
                   aria-current={active ? "page" : undefined}
                   onFocus={() => open(node.id)}
+                  onMouseEnter={() => open(node.id)}
                   onClick={close}
                 >
                   {node.name}
@@ -124,7 +121,6 @@ export function TopNavigation({ tree }: { tree: NavigationNode[] }) {
                         >
                           <NavigationLink
                             node={child}
-                            role="menuitem"
                             className="mb-3 flex items-center gap-1 font-bold text-brand-primary"
                             onClick={close}
                           >
@@ -139,7 +135,6 @@ export function TopNavigation({ tree }: { tree: NavigationNode[] }) {
                                 <li key={grandChild.id}>
                                   <NavigationLink
                                     node={grandChild}
-                                    role="menuitem"
                                     className="text-surface-on-surface hover:text-brand-primary"
                                     onClick={close}
                                   >

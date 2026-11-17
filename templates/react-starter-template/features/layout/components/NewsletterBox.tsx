@@ -19,6 +19,7 @@ const t = {
           "By submitting you automatically agree to our privacy policy.",
         messages: {
           subscribed: "Thank you! We have signed up your address.",
+          failed: "An error occurred. Please try again.",
         },
       },
     },
@@ -50,6 +51,7 @@ export function NewsletterBox({ className }: { className?: string }) {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (pending) return;
     setTouched(true);
     if (validateEmail(email)) return;
 
@@ -66,6 +68,11 @@ export function NewsletterBox({ className }: { className?: string }) {
         });
         setEmail("");
         setTouched(false);
+      } else {
+        actions.notify({
+          type: "error",
+          message: result.message || t.layout.footer.newsletter.messages.failed,
+        });
       }
     } catch (cause) {
       actions.notify({
@@ -105,7 +112,7 @@ export function NewsletterBox({ className }: { className?: string }) {
                 autoComplete="email"
                 placeholder={t.layout.footer.newsletter.placeholder}
                 value={email}
-                disabled={pending}
+                readOnly={pending}
                 aria-invalid={error ? true : undefined}
                 aria-describedby={error ? "newsletter-email-error" : undefined}
                 onChange={(event) => setEmail(event.target.value)}
@@ -119,7 +126,7 @@ export function NewsletterBox({ className }: { className?: string }) {
                 <p
                   id="newsletter-email-error"
                   role="alert"
-                  className="mt-1 text-xs text-states-error"
+                  className="mt-1 text-xs text-states-error-container"
                 >
                   {error}
                 </p>
@@ -135,7 +142,8 @@ export function NewsletterBox({ className }: { className?: string }) {
               type="submit"
               variant="secondary"
               size="small"
-              disabled={pending}
+              aria-busy={pending}
+              aria-disabled={pending || undefined}
             >
               {t.layout.footer.newsletter.button}
             </BaseButton>

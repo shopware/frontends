@@ -78,13 +78,12 @@ describe("TopNavigationPlaceholder", () => {
 });
 
 describe("TopNavigation", () => {
-  it("renders a labelled menubar with one menuitem link per top-level node", async () => {
+  it("renders a labelled navigation list with one link per top-level node", async () => {
     const html = await renderToHtml(<TopNavigation tree={tree} />);
 
     expect(html).toContain('aria-label="Main navigation"');
-    expect(html).toContain('role="menubar"');
-    expect(html.match(/role="none"/g)).toHaveLength(3);
-    expect(html.match(/role="menuitem"/g)).toHaveLength(3);
+    expect(html).not.toContain("role=");
+    expect(html).not.toContain("aria-haspopup");
     expect(anchors(html)).toHaveLength(3);
     expect(html).not.toContain("Shirts");
   });
@@ -93,21 +92,17 @@ describe("TopNavigation", () => {
     const html = await renderToHtml(<TopNavigation tree={[]} />);
 
     expect(html).toContain('aria-label="Main navigation"');
-    expect(html).toMatch(
-      /<ul role="menubar" class="[^"]*min-h-\[25px\][^"]*">/,
-    );
+    expect(html).toMatch(/<ul class="[^"]*min-h-\[25px\][^"]*">/);
     expect(anchors(html)).toHaveLength(0);
   });
 
-  it("marks only nodes with children as popup triggers", async () => {
+  it("reports the expanded state only on nodes with children", async () => {
     const html = await renderToHtml(<TopNavigation tree={tree} />);
     const [clothing, food, blog] = anchors(html);
 
-    expect(clothing).toContain('aria-haspopup="true"');
     expect(clothing).toContain('aria-expanded="false"');
-    expect(food).not.toContain("aria-haspopup");
     expect(food).not.toContain("aria-expanded");
-    expect(blog).not.toContain("aria-haspopup");
+    expect(blog).not.toContain("aria-expanded");
   });
 
   it("opens external nodes in a new tab and internal nodes in the same tab", async () => {

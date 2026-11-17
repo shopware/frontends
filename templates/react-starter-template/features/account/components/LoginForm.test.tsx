@@ -33,7 +33,6 @@ describe("LoginForm", () => {
     expect(html).toContain(">Sign in to your account</h1>");
     expect(html).toContain(">Sign in to your account to continue</p>");
     expect(html).toContain(">Sign in</span>");
-    expect(html).toContain(">Sign up</span>");
   });
 
   it("labels and wires the two inputs", async () => {
@@ -63,7 +62,7 @@ describe("LoginForm", () => {
     );
   });
 
-  it("renders the submit and sign-up buttons", async () => {
+  it("renders the submit button", async () => {
     const html = await renderToHtml(<LoginForm />);
 
     const submit = elementWithTestId(html, "login-submit-button");
@@ -71,18 +70,6 @@ describe("LoginForm", () => {
     expect(submit).toContain('aria-busy="false"');
     expect(submit).not.toMatch(DISABLED_ATTRIBUTE);
     expect(submit).not.toContain("aria-disabled=");
-
-    const signUp = elementWithTestId(html, "login-sign-up-button");
-    expect(signUp).toContain('type="button"');
-    expect(signUp).toContain("bg-brand-secondary");
-  });
-
-  it("omits the sign-up button when hideSignUp is set", async () => {
-    const html = await renderToHtml(<LoginForm hideSignUp />);
-
-    expect(html).not.toContain("login-sign-up-button");
-    expect(html).not.toContain(">Sign up</span>");
-    expect(html).toContain('data-testid="login-submit-button"');
   });
 
   it("shows no errors before any interaction", async () => {

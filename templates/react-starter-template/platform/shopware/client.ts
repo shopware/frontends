@@ -5,11 +5,10 @@ import type { ApiClient, operations } from "#shopware";
 
 import { getShopwareConfig } from "./config";
 
-export function createShopwareClient(contextToken?: string): ApiClient {
+export function createShopwareClient(): ApiClient {
   const { endpoint, accessToken } = getShopwareConfig();
   return createAPIClient<operations>({
     baseURL: endpoint,
     accessToken,
-    contextToken,
   });
 }

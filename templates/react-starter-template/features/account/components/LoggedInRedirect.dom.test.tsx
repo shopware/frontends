@@ -164,7 +164,7 @@ describe("LoggedInRedirect", () => {
       guest,
       <CmsActionsProvider actions={{ notify }}>
         <SessionActionsProvider actions={{ login }}>
-          <LoginForm hideSignUp />
+          <LoginForm />
         </SessionActionsProvider>
       </CmsActionsProvider>,
     );

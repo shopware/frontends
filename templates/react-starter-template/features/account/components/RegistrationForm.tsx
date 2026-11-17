@@ -74,16 +74,7 @@ type Touched = Partial<Record<RegistrationField, boolean>>;
 export type RegistrationFormProps = {
   countries: CountryOption[];
   countriesUnavailable?: boolean;
-  companyOnly?: boolean;
-  redirectUrl?: string | null;
 };
-
-function initialValues(companyOnly: boolean): RegistrationValues {
-  return {
-    ...emptyRegistrationValues,
-    accountType: companyOnly ? "business" : "private",
-  };
-}
 
 function toAccountType(value: string): AccountType {
   return value === "business" ? "business" : "private";
@@ -92,14 +83,12 @@ function toAccountType(value: string): AccountType {
 export function RegistrationForm({
   countries,
   countriesUnavailable = false,
-  companyOnly = false,
-  redirectUrl = null,
 }: RegistrationFormProps) {
   const router = useRouter();
   const { register } = useSessionActions();
   const { notify } = useCmsActions();
-  const [values, setValues] = useState<RegistrationValues>(() =>
-    initialValues(companyOnly),
+  const [values, setValues] = useState<RegistrationValues>(
+    emptyRegistrationValues,
   );
   const [touched, setTouched] = useState<Touched>({});
   const [submitted, setSubmitted] = useState(false);
@@ -180,16 +169,13 @@ export function RegistrationForm({
       const result = await register(toRegistrationInput(values));
       if (!result.ok) return;
       if (result.doubleOptIn) {
-        setValues(initialValues(companyOnly));
+        setValues(emptyRegistrationValues);
         setTouched({});
         setSubmitted(false);
         setDoubleOptInCount((count) => count + 1);
         return;
       }
-      const target = resolveRedirectFromSearch(
-        window.location.search,
-        redirectUrl,
-      );
+      const target = resolveRedirectFromSearch(window.location.search);
       startNavigation(() => {
         router.push(target);
       });
@@ -234,21 +220,19 @@ export function RegistrationForm({
         }}
       >
         <div className="mb-10 grid grid-cols-12 gap-5">
-          {companyOnly ? null : (
-            <SelectField
-              className="col-span-12"
-              id="accountType"
-              data-testid="registration-account-type-select"
-              label={t.form.accountType.title}
-              options={ACCOUNT_TYPE_OPTIONS}
-              value={values.accountType}
-              onChange={(event) =>
-                setField("accountType", toAccountType(event.target.value))
-              }
-              onBlur={touch("accountType")}
-              error={errorFor("accountType")}
-            />
-          )}
+          <SelectField
+            className="col-span-12"
+            id="accountType"
+            data-testid="registration-account-type-select"
+            label={t.form.accountType.title}
+            options={ACCOUNT_TYPE_OPTIONS}
+            value={values.accountType}
+            onChange={(event) =>
+              setField("accountType", toAccountType(event.target.value))
+            }
+            onBlur={touch("accountType")}
+            error={errorFor("accountType")}
+          />
           <InputField
             className="col-span-12 md:col-span-4"
             id="firstName"

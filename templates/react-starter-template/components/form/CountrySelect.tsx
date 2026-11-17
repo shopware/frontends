@@ -18,6 +18,7 @@ const t = {
 
 const FLAG_CDN = "https://flagcdn.com";
 const ISO_PATTERN = /^[A-Z]{2}$/;
+const TEST_ID = "country-select";
 
 export type CountrySelectProps = {
   id?: string;
@@ -30,8 +31,6 @@ export type CountrySelectProps = {
   error?: string;
   loadError?: boolean;
   required?: boolean;
-  disabled?: boolean;
-  testId?: string;
   className?: string;
 };
 
@@ -93,8 +92,6 @@ export function CountrySelect({
   error,
   loadError = false,
   required = false,
-  disabled = false,
-  testId = "country-select",
   className,
 }: CountrySelectProps) {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -107,7 +104,7 @@ export function CountrySelect({
   const singleCountry = countries.length === 1 ? countries[0] : undefined;
   const selected = countries.find((country) => country.id === value) ?? null;
   const filtered = filterCountries(countries, searchTerm);
-  const showList = isOpen && !singleCountry && !disabled && !loadError;
+  const showList = isOpen && !singleCountry && !loadError;
   const fieldError = loadError ? t["form.countrySearchError"] : error;
   const listboxId = `${id}-listbox`;
   const errorId = `${id}-error`;
@@ -150,7 +147,7 @@ export function CountrySelect({
   }
 
   function openList() {
-    if (disabled || loadError || singleCountry || isOpen) return;
+    if (loadError || singleCountry || isOpen) return;
     setIsOpen(true);
     setHighlightedIndex(initialHighlight(filtered));
   }
@@ -266,7 +263,7 @@ export function CountrySelect({
             className="w-full min-w-0 bg-transparent text-sm text-surface-on-surface-disabled outline-hidden"
             value={singleCountry.name}
             autoComplete="country-name"
-            data-testid={testId}
+            data-testid={TEST_ID}
             aria-invalid={fieldError ? true : undefined}
             aria-describedby={fieldError ? errorId : undefined}
             disabled
@@ -288,9 +285,8 @@ export function CountrySelect({
       {labelElement}
       <div
         className={cx(
-          "flex items-center gap-2 rounded-md border px-3 py-2 text-sm focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/20",
+          "flex items-center gap-2 rounded-md border bg-surface-surface px-3 py-2 text-sm focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/20",
           fieldError ? "border-states-error" : "border-outline-outline-variant",
-          disabled ? "bg-surface-surface-disabled" : "bg-surface-surface",
         )}
       >
         {selected && !isOpen ? (
@@ -301,12 +297,11 @@ export function CountrySelect({
           id={id}
           role="combobox"
           type="text"
-          className="w-full min-w-0 truncate bg-transparent text-sm text-surface-on-surface outline-hidden placeholder:text-surface-on-surface-variant disabled:text-surface-on-surface-disabled"
+          className="w-full min-w-0 truncate bg-transparent text-sm text-surface-on-surface outline-hidden placeholder:text-surface-on-surface-variant"
           value={isOpen ? searchTerm : (selected?.name ?? "")}
           placeholder={placeholder}
           autoComplete="country-name"
-          data-testid={testId}
-          disabled={disabled}
+          data-testid={TEST_ID}
           required={required}
           aria-autocomplete="list"
           aria-expanded={showList}
@@ -320,12 +315,12 @@ export function CountrySelect({
           onBlur={onBlur}
           onKeyDown={handleKeyDown}
         />
-        {value && !disabled ? (
+        {value ? (
           <button
             type="button"
             className="-my-0.5 flex size-6 flex-none items-center justify-center rounded-sm text-surface-on-surface-variant outline-hidden transition-colors hover:bg-surface-surface-container hover:text-surface-on-surface focus-visible:ring-2 focus-visible:ring-outline-outline-focus"
             aria-label={t["form.clearCountry"]}
-            data-testid={`${testId}-clear`}
+            data-testid={`${TEST_ID}-clear`}
             onMouseDown={preventFocusSteal}
             onClick={() => selectCountry(null)}
           >
@@ -339,8 +334,7 @@ export function CountrySelect({
             aria-label={t["form.toggleCountryList"]}
             aria-expanded={showList}
             aria-controls={showList ? listboxId : undefined}
-            data-testid={`${testId}-toggle`}
-            disabled={disabled}
+            data-testid={`${TEST_ID}-toggle`}
             onMouseDown={preventFocusSteal}
             onClick={toggleList}
           >
@@ -363,7 +357,10 @@ export function CountrySelect({
           className="absolute z-20 mt-1 max-h-64 w-full overflow-auto rounded-lg border border-outline-outline-variant bg-surface-surface p-1 shadow-lg"
         >
           {filtered.length === 0 ? (
-            <div className="px-4 py-3 text-sm text-surface-on-surface-variant">
+            <div
+              aria-hidden="true"
+              className="px-4 py-3 text-sm text-surface-on-surface-variant"
+            >
               {t["form.noCountryResults"]}
             </div>
           ) : (
@@ -402,6 +399,9 @@ export function CountrySelect({
         </div>
       ) : null}
 
+      <span role="status" className="sr-only">
+        {showList && filtered.length === 0 ? t["form.noCountryResults"] : ""}
+      </span>
       {errorElement}
     </div>
   );

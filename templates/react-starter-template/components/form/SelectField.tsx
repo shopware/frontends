@@ -6,10 +6,6 @@ import { INPUT_CLASS } from "@/components/input";
 
 import { FieldLabel } from "./FieldLabel";
 
-const t = {
-  "form.loading": "Loading...",
-};
-
 export type SelectOption = { label: string; value: string };
 
 export type SelectFieldProps = Omit<
@@ -20,7 +16,6 @@ export type SelectFieldProps = Omit<
   label: string;
   options: SelectOption[];
   placeholder?: string;
-  loading?: boolean;
   error?: string;
   className?: string;
 };
@@ -30,7 +25,6 @@ export function SelectField({
   label,
   options,
   placeholder,
-  loading = false,
   error,
   className,
   required,
@@ -51,17 +45,11 @@ export function SelectField({
           {placeholder !== undefined ? (
             <option value="">{placeholder}</option>
           ) : null}
-          {loading ? (
-            <option value="" disabled>
-              {t["form.loading"]}
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
             </option>
-          ) : (
-            options.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))
-          )}
+          ))}
         </select>
         <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-3 size-3 -translate-y-1/2 text-surface-on-surface-variant" />
       </div>
