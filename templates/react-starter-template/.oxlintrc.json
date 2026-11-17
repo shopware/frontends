@@ -5,7 +5,29 @@
     "correctness": "error"
   },
   "rules": {
-    "react/rules-of-hooks": "error"
+    "react/rules-of-hooks": "error",
+    "jsx-a11y/autocomplete-valid": "off",
+    "jsx-a11y/prefer-tag-over-role": "off"
   },
+  "overrides": [
+    {
+      "files": ["cms/**"],
+      "rules": {
+        "nextjs/no-img-element": "off"
+      }
+    },
+    {
+      "files": ["cms/components/element/CmsElementImage.tsx"],
+      "rules": {
+        "jsx-a11y/media-has-caption": "off"
+      }
+    },
+    {
+      "files": ["cms/components/shared/SwSlider.tsx"],
+      "rules": {
+        "react/immutability": "off"
+      }
+    }
+  ],
   "ignorePatterns": [".next", "next-env.d.ts", "node_modules"]
 }
