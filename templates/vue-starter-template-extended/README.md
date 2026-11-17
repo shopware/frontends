@@ -130,6 +130,29 @@ lumora-demo-store/
 
 Customize UnoCSS configuration in `uno.config.ts` to add Lumora-specific styles.
 
+## Agent Tools (WebMCP)
+
+Lumora registers shop tools for AI agents in the browser with [WebMCP](https://webmachinelearning.github.io/webmcp/), a proposed web API that Chrome tests behind a flag. An agent can search, open a category, read a product, change the cart and open checkout. Searches and categories open on the page, and cart changes show in the cart. No tool places an order. The shopper does that on the checkout page, and the cart and checkout pages have no tools.
+
+| Tool               | What it does                                       |
+| ------------------ | -------------------------------------------------- |
+| `search_products`  | Searches product names and shows the results       |
+| `browse_category`  | Opens a category, with an optional price range     |
+| `get_product`      | Reads one product, or the one on screen            |
+| `add_to_cart`      | Adds a product and shows the usual cart message    |
+| `get_cart`         | Reads the cart                                     |
+| `update_cart_item` | Changes a quantity, 0 removes the item             |
+| `go_to_checkout`   | Opens checkout, where the shopper places the order |
+
+To try it:
+
+1. In Chrome 153 or newer, enable `chrome://flags/#enable-webmcp-testing` and restart Chrome.
+2. Run `pnpm dev` and open the shop.
+3. In DevTools, open **Application > WebMCP** to list the tools and run them.
+4. To shop by chat, use an agent extension such as [webmcp-extension](https://github.com/GoogleChromeLabs/webmcp-extension) or the [Model Context Tool Inspector](https://chromewebstore.google.com/detail/model-context-tool-inspec/gbpdfapgefenggkahomfgkhfehlcenpd). webmcp-extension needs Chrome 155 or newer, and its model server also uses port 3000, so start and build it with `PORT=4000`. Coding agents can use the [Chrome DevTools MCP server](https://github.com/ChromeDevTools/chrome-devtools-mcp) with `--categoryExperimentalWebmcp --chromeArg=--enable-features=WebMCP`.
+
+The tools live in `app/components/WebMcpTools.client.vue`, and `app/layouts/default.vue` adds them to the starter's default layout. Browsers without WebMCP ignore them.
+
 ## Next Steps
 
 Optional enhancements:
