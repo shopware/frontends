@@ -101,9 +101,9 @@ The essentials for code changes:
     forbidden. Mutations always stay POST/PATCH. Next.js templates have no
     composables, so the check is inverted there: a registered read uses its GET twin.
 - **`routeRules` (render layer)** — page-level caching lives in each template's
-  `nuxt.config.ts`: `isr` for catalog/content, `ssr: false` for personalized
-  routes (`/checkout`, `/account/**`), immutable `Cache-Control` for static
-  assets. Never bake personalized data into ISR-cached HTML.
+  `nuxt.config.ts`: `isr` for catalog/content, `ssr: false` with `isr: false`
+  for personalized routes under every locale prefix, immutable `Cache-Control`
+  for static assets. Never bake personalized data into ISR-cached HTML.
 - **Client state** — `createSharedComposable` and `provide`/`inject` dedupe work
   in-memory per session. They are not a durable response cache.
 
