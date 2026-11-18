@@ -24,14 +24,14 @@
   "dependencies": {
     "@shopware/api-client": "canary",
     "nuxt": "4.6.4",
-    "vue": "3.5.44",
+    "vue": "3.5.45",
     "vue-starter-template": "workspace:*"
   },
   "devDependencies": {
     "@shopware/api-gen": "canary",
-    "@unocss/core": "66.10.5",
+    "@unocss/core": "66.13.0",
     "typescript": "5.9.3",
-    "vue-tsc": "3.3.11",
+    "vue-tsc": "3.3.14",
     "oxfmt": "0.78.0",
     "oxlint": "1.93.0"
   },

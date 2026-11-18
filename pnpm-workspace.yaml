@@ -84,3 +84,6 @@ auditConfig:
     # deepmerge: no patched release, the advisory covers <=4.3.1 and that is the latest.
     # Build-time only (@rollup/plugin-node-resolve in nitropack and unbuild). Drops out with rollup/plugins#2036.
     - GHSA-gcqx-w48m-w2h4
+    # picomatch: no patched release, the advisory covers <=4.0.7 (2.x too) and that is the latest.
+    # Needs an attacker-supplied glob; every pattern here comes from build/dev config. Drops out with micromatch/picomatch#247.
+    - GHSA-fc5q-39xc-vjpf

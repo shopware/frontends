@@ -59,6 +59,7 @@
   },
   "dependencies": {
     "@shopware/api-client": "workspace:*",
+    "dotenv": "18.0.10",
     "ofetch": "1.5.1",
     "openapi-typescript": "7.13.0",
     "oxfmt": "0.78.0",
