@@ -6,11 +6,13 @@ type ToolProduct = {
   productId: string;
   name: string;
   price: number;
+  /** Set when a volume or variant price is lower. The price filters use it. */
+  priceFrom?: number;
   url: string;
 };
 
 type ToolCart = {
-  items: { lineItemId: string; productId: string; quantity: number }[];
+  items: { productId: string; quantity: number }[];
   warnings?: string[];
   error?: string;
 };
@@ -25,47 +27,89 @@ const TOOL_NAMES = [
   "update_cart_item",
 ];
 
+// Chrome's advice for one tool answer, in characters.
+const ANSWER_BUDGET = 1500;
+
 // WebMCP is a Chrome origin trial. The feature flag turns it on for the test.
 test.use({ launchOptions: { args: ["--enable-features=WebMCP"] } });
 
-/** Calls a page tool the way a browser agent does and parses its result. */
+/**
+ * Calls a page tool the way a browser agent does and parses its result.
+ * With `cancelAfter` the caller gives up after that many milliseconds.
+ */
 async function callTool(
   page: Page,
   name: string,
   input: Record<string, unknown> = {},
+  { cancelAfter }: { cancelAfter?: number } = {},
 ) {
   const result = await page.evaluate(
-    async ([toolName, toolInput]) => {
+    async ([toolName, toolInput, giveUpAfter]) => {
       const { modelContext } = document as unknown as {
         modelContext: {
           getTools(): Promise<{ name: string }[]>;
-          executeTool(tool: unknown, input: unknown): Promise<string>;
+          executeTool(
+            tool: unknown,
+            input: unknown,
+            options: { signal?: AbortSignal },
+          ): Promise<string>;
         };
       };
       const tools = await modelContext.getTools();
       const tool = tools.find((item) => item.name === toolName);
       if (!tool) throw new Error(`The page has no ${toolName} tool.`);
-      return modelContext.executeTool(tool, toolInput);
+      if (giveUpAfter === null) {
+        return modelContext.executeTool(tool, toolInput, {});
+      }
+      const signal = AbortSignal.timeout(giveUpAfter);
+      return modelContext
+        .executeTool(tool, toolInput, { signal })
+        .catch((error: Error) => {
+          if (error.name === "TimeoutError") return '{"cancelled":true}';
+          throw error;
+        });
     },
-    [name, input] as const,
+    [name, input, cancelAfter ?? null] as const,
+  );
+  expect(result.length, `${name} answer size`).toBeLessThanOrEqual(
+    ANSWER_BUDGET,
   );
   return JSON.parse(result);
 }
 
 function toolNames(page: Page) {
-  return page.evaluate(async () => {
-    const { modelContext } = document as unknown as {
-      modelContext?: { getTools(): Promise<{ name: string }[]> };
-    };
-    const tools = (await modelContext?.getTools()) ?? [];
-    return tools.map(({ name }) => name).sort();
-  });
+  return (
+    page
+      .evaluate(async () => {
+        const { modelContext } = document as unknown as {
+          modelContext?: { getTools(): Promise<{ name: string }[]> };
+        };
+        const tools = (await modelContext?.getTools()) ?? [];
+        return tools.map(({ name }) => name).sort();
+      })
+      // The dev server reloads the page once after a code change.
+      .catch(() => [] as string[])
+  );
 }
 
+/** The tools are listed before the page hydrates. A call waits for the page. */
 async function waitForTools(page: Page) {
   await expect
     .poll(() => toolNames(page), { timeout: 30000 })
     .toEqual(TOOL_NAMES);
+}
+
+/** Holds matching requests until the returned function is called. */
+async function hold(page: Page, url: string) {
+  let release = () => {};
+  const held = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route(url, async (route) => {
+    await held;
+    await route.continue().catch(() => {});
+  });
+  return release;
 }
 
 /** Finds a category with products, the way an agent reads the shop menu. */
@@ -85,39 +129,62 @@ test.describe("WebMCP agent tools", { tag: "@webmcp" }, () => {
     ({ browserName }) => browserName !== "chromium",
     "WebMCP runs in Chromium only.",
   );
-  test.setTimeout(120000);
+  test.setTimeout(180000);
 
-  test.beforeEach(async ({ page, homePage }) => {
-    await homePage.visitMainPage();
-    await waitForTools(page);
-  });
+  test("an agent shops and the page shows every step", async ({
+    page,
+    homePage,
+  }) => {
+    await test.step("the tools are listed before the page hydrates, and an early call waits", async () => {
+      const release = await hold(page, "**/store-api/context");
+      await homePage.visitMainPage();
+      await waitForTools(page);
 
-  test("an agent shops and the page shows every step", async ({ page }) => {
-    await test.step("bad input comes back as an error the agent can read", async () => {
+      const early = callTool(page, "get_cart");
+      const state = await Promise.race([
+        early.then(() => "answered"),
+        page.waitForTimeout(1000).then(() => "waiting"),
+      ]);
+      expect(state).toBe("waiting");
+
+      release();
+      expect((await early).items).toEqual([]);
+    });
+
+    const menu = await page
+      .getByTestId("header-navigation-link")
+      .allInnerTexts();
+
+    await test.step("bad input comes back as an error the agent can act on", async () => {
       expect(
         await callTool(page, "add_to_cart", { productId: "nope" }),
       ).toEqual({ error: expect.stringContaining("productId") });
       expect(
         await callTool(page, "update_cart_item", {
-          lineItemId: "nope",
+          productId: "0".repeat(32),
           quantity: -1,
         }),
       ).toEqual({ error: expect.stringContaining("quantity") });
       expect(
         await callTool(page, "browse_category", { category: "nope" }),
-      ).toEqual({ error: expect.stringContaining("The shop menu has:") });
+      ).toEqual({
+        error: expect.stringContaining("category"),
+        categories: expect.arrayContaining([menu[0].trim()]),
+      });
       expect(await callTool(page, "get_product")).toEqual({
         error: expect.stringContaining("product page"),
       });
       expect(await callTool(page, "go_to_checkout")).toEqual({
-        error: "The cart is empty.",
+        error: expect.stringContaining("The cart is empty"),
       });
     });
 
     let { category, products } = await browseFirstCategory(page);
 
     await test.step("the category page shows what the tool returns", async () => {
-      const prices = products.map(({ price }) => price).sort((a, b) => a - b);
+      const prices = products
+        .map(({ price, priceFrom }) => priceFrom ?? price)
+        .sort((a, b) => a - b);
       const maxPrice = prices[Math.floor(prices.length / 2)];
       const result = await callTool(page, "browse_category", {
         category,
@@ -126,8 +193,8 @@ test.describe("WebMCP agent tools", { tag: "@webmcp" }, () => {
       products = result.products;
 
       expect(products.length).toBeGreaterThan(0);
-      for (const { price } of products) {
-        expect(price).toBeLessThanOrEqual(maxPrice);
+      for (const { price, priceFrom } of products) {
+        expect(priceFrom ?? price).toBeLessThanOrEqual(maxPrice);
       }
       await expect(page).toHaveURL(new RegExp(`max-price=${maxPrice}`));
       await expect(page.getByTestId("loading")).toHaveCount(0);
@@ -144,12 +211,22 @@ test.describe("WebMCP agent tools", { tag: "@webmcp" }, () => {
 
     expect(products.length).toBeGreaterThan(1);
     const [product, other] = products;
-    let stock = 0;
 
-    await test.step("search_products shows the results page", async () => {
-      const result = await callTool(page, "search_products", {
+    await test.step("search_products shows the results page, and a call cancelled behind it does not run", async () => {
+      const release = await hold(page, "**/store-api/search**");
+      const search = callTool(page, "search_products", {
         query: product.name,
       });
+      expect(
+        await callTool(
+          page,
+          "add_to_cart",
+          { productId: other.productId },
+          { cancelAfter: 200 },
+        ),
+      ).toEqual({ cancelled: true });
+      release();
+      const result = await search;
 
       expect(
         result.products.map(({ productId }: ToolProduct) => productId),
@@ -158,6 +235,7 @@ test.describe("WebMCP agent tools", { tag: "@webmcp" }, () => {
       await expect(page.getByTestId("search-results-container")).toContainText(
         product.name,
       );
+      expect((await callTool(page, "get_cart")).items).toEqual([]);
     });
 
     await test.step("get_product reads the product on screen", async () => {
@@ -172,14 +250,14 @@ test.describe("WebMCP agent tools", { tag: "@webmcp" }, () => {
 
       const result = await callTool(page, "get_product");
       expect(result.productId).toBe(product.productId);
-      stock = result.stock;
+      expect(result.stock).toEqual(expect.any(Number));
     });
 
-    await test.step("parallel add_to_cart calls both land", async () => {
+    await test.step("parallel add_to_cart calls both land, also with a quantity sent as text", async () => {
       const results: ToolCart[] = await Promise.all([
         callTool(page, "add_to_cart", {
           productId: product.productId,
-          quantity: 2,
+          quantity: "2",
         }),
         callTool(page, "add_to_cart", { productId: other.productId }),
       ]);
@@ -187,10 +265,10 @@ test.describe("WebMCP agent tools", { tag: "@webmcp" }, () => {
       const cart: ToolCart = await callTool(page, "get_cart");
 
       expect(cart.items).toContainEqual(
-        expect.objectContaining({ productId: product.productId }),
+        expect.objectContaining({ productId: product.productId, quantity: 2 }),
       );
       expect(cart.items).toContainEqual(
-        expect.objectContaining({ productId: other.productId }),
+        expect.objectContaining({ productId: other.productId, quantity: 1 }),
       );
       await expect(page.getByTestId("notification-container")).toContainText(
         product.name,
@@ -198,13 +276,10 @@ test.describe("WebMCP agent tools", { tag: "@webmcp" }, () => {
     });
 
     await test.step("update_cart_item reports a cart warning, then clears it", async () => {
-      const cart: ToolCart = await callTool(page, "get_cart");
-      const line = cart.items.find(
-        ({ productId }) => productId === product.productId,
-      );
+      // More than any shop sells in one order.
       const tooMany: ToolCart = await callTool(page, "update_cart_item", {
-        lineItemId: line?.lineItemId,
-        quantity: stock + 1,
+        productId: product.productId,
+        quantity: 1_000_000,
       });
 
       expect(tooMany.warnings?.length).toBeGreaterThan(0);
@@ -213,7 +288,7 @@ test.describe("WebMCP agent tools", { tag: "@webmcp" }, () => {
       );
 
       const updated: ToolCart = await callTool(page, "update_cart_item", {
-        lineItemId: line?.lineItemId,
+        productId: product.productId,
         quantity: 1,
       });
       expect(updated.warnings).toEqual([]);
@@ -222,10 +297,16 @@ test.describe("WebMCP agent tools", { tag: "@webmcp" }, () => {
       );
     });
 
-    await test.step("go_to_checkout hands over and the tools go away", async () => {
-      const result = await callTool(page, "go_to_checkout");
+    await test.step("go_to_checkout works right after a page load and the tools go away", async () => {
+      const release = await hold(page, "**/store-api/checkout/cart");
+      await page.reload();
+      await waitForTools(page);
 
-      expect(result.url).toMatch(/\/checkout$/);
+      const checkout = callTool(page, "go_to_checkout");
+      await page.waitForTimeout(1000);
+      release();
+
+      expect((await checkout).url).toMatch(/\/checkout$/);
       await expect(page).toHaveURL(/\/checkout$/);
       await expect.poll(() => toolNames(page)).toEqual([]);
     });
@@ -234,9 +315,13 @@ test.describe("WebMCP agent tools", { tag: "@webmcp" }, () => {
       await page.goBack();
       await waitForTools(page);
 
-      const result = await callTool(page, "browse_category", { category });
-      expect(result.error).toBeUndefined();
-      expect(result.products?.length).toBeGreaterThan(0);
+      const cart: ToolCart = await callTool(page, "update_cart_item", {
+        productId: other.productId,
+        quantity: 0,
+      });
+      const inCart = cart.items.map(({ productId }) => productId);
+      expect(inCart).toContain(product.productId);
+      expect(inCart).not.toContain(other.productId);
     });
   });
 });

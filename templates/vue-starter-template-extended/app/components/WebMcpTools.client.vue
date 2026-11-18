@@ -2,10 +2,13 @@
 import {
   getCategoryUrl,
   getProductRoute,
+  getProductTierPrices,
   getTranslatedProperty,
 } from "@shopware/helpers";
 
 import type { Schemas } from "#shopware";
+import type { WebMcpToolHandler } from "~/composables/useWebMcpTools";
+import type { WebMcpToolName } from "~/utils/webMcpTools";
 
 const PRODUCT_ID = /^[0-9a-f]{32}$/i;
 
@@ -15,6 +18,7 @@ const { resolvePath } = useNavigationSearch();
 const { navigationElements, loadNavigationElements } = useNavigation();
 const {
   addProduct,
+  cart,
   cartItems,
   changeProductQuantity,
   isEmpty,
@@ -31,13 +35,32 @@ const localePath = useLocalePath();
 const router = useRouter();
 const nuxtApp = useNuxtApp();
 
-const categories = computed(() =>
-  (navigationElements.value ?? [])
-    .flatMap((category) => [category, ...(category.children ?? [])])
-    .filter((category) => category.type === "page"),
-);
+// Chrome advises at most 1.5K characters per tool answer, so lists are cut to fit.
+function fit<T>(items: T[], room: number) {
+  let size = 0;
+  const end = items.findIndex((item) => {
+    size += JSON.stringify(item).length + 1;
+    return size > room;
+  });
+  return end === -1 ? items : items.slice(0, end);
+}
+
+const categories = computed(() => {
+  const menu = navigationElements.value ?? [];
+  return [
+    ...menu,
+    ...menu.flatMap((category) => category.children ?? []),
+  ].filter((category) => category.type === "page");
+});
 const categoryName = (category: Schemas["Category"]) =>
   getTranslatedProperty(category, "name");
+const categoryNames = (menu: Schemas["Category"][]) =>
+  fit([...new Set(menu.map(categoryName))], 1000);
+
+async function loadCategories() {
+  if (!categories.value.length) await loadNavigationElements({ depth: 2 });
+  return categories.value;
+}
 
 type LinePayload = { options?: { option: string }[] };
 
@@ -45,35 +68,59 @@ function productSummary(product: Schemas["Product"]) {
   const options = (product.options ?? []).map((option) =>
     getTranslatedProperty(option, "name"),
   );
+  // With volume prices, the first one is the price of a single item.
+  const [single] = getProductTierPrices(product);
+  const unitPrice = single?.unitPrice ?? product.calculatedPrice?.unitPrice;
+  // The price filters and the product card use the lowest volume or variant price.
+  const lowest = product.calculatedCheapestPrice?.unitPrice;
   return {
     productId: product.id,
     name: getTranslatedProperty(product, "name"),
     ...(options.length ? { options } : {}),
-    price: product.calculatedPrice?.unitPrice,
-    available: product.available,
+    price: unitPrice,
+    ...(lowest !== undefined && unitPrice !== undefined && lowest < unitPrice
+      ? { priceFrom: lowest }
+      : {}),
+    ...(product.available ? {} : { available: false }),
     url: localePath(getProductRoute(product).path),
   };
 }
 
 function cartSummary() {
+  const lines = cartItems.value.map((item) => {
+    const payload = item.payload as LinePayload | undefined;
+    const options = payload?.options?.map(({ option }) => option) ?? [];
+    return {
+      ...(item.type === "product"
+        ? { productId: item.referencedId }
+        : { type: item.type }),
+      name: item.label,
+      ...(options.length ? { options } : {}),
+      quantity: item.quantity,
+      unitPrice: item.price?.unitPrice,
+      lineTotal: item.price?.totalPrice,
+    };
+  });
+  const items = fit(lines, 1000);
   return {
-    items: cartItems.value.map((item) => {
-      const payload = item.payload as LinePayload | undefined;
-      const options = payload?.options?.map(({ option }) => option) ?? [];
-      return {
-        lineItemId: item.id,
-        productId: item.referencedId,
-        name: item.label,
-        ...(options.length ? { options } : {}),
-        quantity: item.quantity,
-        unitPrice: item.price?.unitPrice,
-        lineTotal: item.price?.totalPrice,
-      };
-    }),
+    items,
+    ...(items.length < lines.length
+      ? { moreItems: lines.length - items.length }
+      : {}),
     subtotal: subtotal.value,
     total: totalPrice.value,
     currency: currency.value?.isoCode,
   };
+}
+
+const cartLine = (id: string) =>
+  cartItems.value.find(
+    (item) => item.type === "product" && item.referencedId === id,
+  );
+
+// The app loads the cart after it mounts. A tool can be called before that.
+async function loadCart() {
+  if (!cart.value) await refreshCart();
 }
 
 function text(value: unknown, field: string) {
@@ -81,22 +128,32 @@ function text(value: unknown, field: string) {
   throw new TypeError(`${field} must be a non-empty string.`);
 }
 
+// Agents often send numbers as text.
+const toNumber = (value: unknown) =>
+  typeof value === "string" && value.trim() ? Number(value) : value;
+
 function count(value: unknown, field: string, min: number) {
-  if (Number.isInteger(value) && (value as number) >= min) {
-    return value as number;
+  const parsed = toNumber(value);
+  if (Number.isInteger(parsed) && (parsed as number) >= min) {
+    return parsed as number;
   }
   throw new TypeError(`${field} must be a whole number of at least ${min}.`);
 }
 
 function price(value: unknown, field: string) {
-  if (value === undefined) return undefined;
-  if (typeof value === "number" && value >= 0) return value;
+  if (value === undefined || value === null) return undefined;
+  const parsed = toNumber(value);
+  if (typeof parsed === "number" && Number.isFinite(parsed) && parsed >= 0) {
+    return parsed;
+  }
   throw new TypeError(`${field} must be a number of 0 or more.`);
 }
 
 function productId(value: unknown) {
   if (typeof value === "string" && PRODUCT_ID.test(value)) return value;
-  throw new TypeError("productId must be a product id from search_products.");
+  throw new TypeError(
+    "productId must be a productId from search_products or browse_category.",
+  );
 }
 
 // Cart errors pile up in shared state, so drop old ones before each write.
@@ -134,7 +191,13 @@ async function showListing(
   return {
     total: listing.total,
     currency: currency.value?.isoCode,
-    products: listing.elements.map(productSummary),
+    products: fit(listing.elements.map(productSummary), 1300),
+    ...(listing.total
+      ? {}
+      : {
+          hint: "No products found. Try other words, another price range, or browse_category with one of these categories.",
+          categories: categoryNames(await loadCategories()),
+        }),
   };
 }
 
@@ -154,210 +217,121 @@ async function currentProductId() {
   throw new Error("The shopper is not on a product page. Pass a productId.");
 }
 
-useWebMcpTools([
-  {
-    name: "search_products",
-    description:
-      "Search products by name and show the results to the shopper. Returns up to 10 products with productId, name, price and url. To find products by type, use browse_category.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        query: {
-          type: "string",
-          description: "Words from a product name.",
-        },
-        minPrice: {
-          type: "number",
-          description: "Lowest price in the shop currency.",
-        },
-        maxPrice: {
-          type: "number",
-          description: "Highest price in the shop currency.",
-        },
-      },
-      required: ["query"],
-    },
-    async execute(input) {
-      const search = text(input.query, "query");
-      const minPrice = price(input.minPrice, "minPrice");
-      const maxPrice = price(input.maxPrice, "maxPrice");
-      const filters = { "min-price": minPrice, "max-price": maxPrice };
-      const { data } = await apiClient.invoke("searchPage post /search", {
-        headers: { "sw-include-seo-urls": true },
-        body: { search, limit: 10, ...filters },
-      });
-      return showListing("/search", { search, ...filters }, data);
-    },
+useWebMcpToolHandlers({
+  async search_products(input) {
+    const search = text(input.query, "query");
+    const minPrice = price(input.minPrice, "minPrice");
+    const maxPrice = price(input.maxPrice, "maxPrice");
+    const filters = { "min-price": minPrice, "max-price": maxPrice };
+    const { data } = await apiClient.invoke("searchPage post /search", {
+      headers: { "sw-include-seo-urls": true },
+      body: { search, limit: 10, ...filters },
+    });
+    return showListing("/search", { search, ...filters }, data);
   },
-  {
-    name: "browse_category",
-    description:
-      "Open a category from the shop menu and show its products to the shopper. Returns up to 10 products with productId, name, price and url. An unknown name returns the menu's category names.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        category: {
-          type: "string",
-          description: "A category name from the shop menu.",
-        },
-        minPrice: {
-          type: "number",
-          description: "Lowest price in the shop currency.",
-        },
-        maxPrice: {
-          type: "number",
-          description: "Highest price in the shop currency.",
-        },
-      },
-      required: ["category"],
-    },
-    async execute(input) {
-      const name = text(input.category, "category").toLowerCase();
-      if (!categories.value.length) {
-        await loadNavigationElements({ depth: 2 });
+
+  async browse_category(input) {
+    const name = text(input.category, "category").toLowerCase();
+    const menu = await loadCategories();
+    const category = menu.find(
+      (item) => categoryName(item).toLowerCase() === name,
+    );
+    if (!category) {
+      if (!menu.length) {
+        throw new Error("The shop menu did not load. Try again later.");
       }
-      const category = categories.value.find(
-        (item) => categoryName(item).toLowerCase() === name,
-      );
-      if (!category) {
-        const names = categories.value.map(categoryName).join(", ");
-        throw new Error(
-          names
-            ? `Unknown category. The shop menu has: ${names}.`
-            : "The shop menu did not load. Try again later.",
-        );
-      }
-      const minPrice = price(input.minPrice, "minPrice");
-      const maxPrice = price(input.maxPrice, "maxPrice");
-      const filters = { "min-price": minPrice, "max-price": maxPrice };
-      const { data } = await apiClient.invoke(
-        "readProductListing post /product-listing/{categoryId}",
-        {
-          headers: { "sw-include-seo-urls": true },
-          pathParams: { categoryId: category.id },
-          body: { limit: 10, ...filters },
-        },
-      );
-      return showListing(getCategoryUrl(category), filters, data);
-    },
-  },
-  {
-    name: "get_product",
-    description:
-      "Get one product with price, stock and description. Leave out productId to get the product the shopper is looking at.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        productId: {
-          type: "string",
-          description: "productId from search_products.",
-        },
-      },
-    },
-    annotations: { readOnlyHint: true },
-    async execute(input) {
-      const id =
-        input.productId === undefined
-          ? await currentProductId()
-          : productId(input.productId);
-      const { product } = await readProduct(id, {
-        associations: { options: {} },
-      });
       return {
-        ...productSummary(product),
-        currency: currency.value?.isoCode,
-        stock: product.availableStock,
-        description: plainText(getTranslatedProperty(product, "description")),
+        error: "The shop menu has no category with this name.",
+        categories: categoryNames(menu),
       };
-    },
-  },
-  {
-    name: "add_to_cart",
-    description:
-      "Add a product to the shopper's cart. The shopper sees a confirmation.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        productId: {
-          type: "string",
-          description: "productId from search_products or get_product.",
-        },
-        quantity: { type: "integer", minimum: 1, default: 1 },
+    }
+    const minPrice = price(input.minPrice, "minPrice");
+    const maxPrice = price(input.maxPrice, "maxPrice");
+    const filters = { "min-price": minPrice, "max-price": maxPrice };
+    const { data } = await apiClient.invoke(
+      "readProductListing post /product-listing/{categoryId}",
+      {
+        headers: { "sw-include-seo-urls": true },
+        pathParams: { categoryId: category.id },
+        body: { limit: 10, ...filters },
       },
-      required: ["productId"],
-    },
-    async execute(input) {
-      const id = productId(input.productId);
-      const quantity =
-        input.quantity === undefined ? 1 : count(input.quantity, "quantity", 1);
-      const warnings = await changeCart(() => addProduct({ id, quantity }));
-      const item = cartItems.value.find((line) => line.referencedId === id);
-      if (!item) {
-        throw new Error(
-          warnings.join(" ") ||
-            "The product was not added. If it has variants, call get_product with this productId and add the productId it returns.",
-        );
-      }
-      if (!warnings.length) {
-        pushSuccess(`${item.label} ${t("product.addedToCart")}`, {
-          action: {
-            label: t("product.viewCart"),
-            to: localePath("/checkout/cart"),
-          },
-        });
-      }
-      return { ...cartSummary(), warnings };
-    },
+    );
+    return showListing(getCategoryUrl(category), filters, data);
   },
-  {
-    name: "get_cart",
-    description:
-      "Get the shopper's cart: items with lineItemId and quantity, the subtotal, and the total with shipping.",
-    annotations: { readOnlyHint: true },
-    async execute() {
-      await refreshCart();
-      return cartSummary();
-    },
+
+  async get_product(input) {
+    const id =
+      input.productId === undefined || input.productId === null
+        ? await currentProductId()
+        : productId(input.productId);
+    const { product } = await readProduct(id, {
+      associations: { options: {} },
+    });
+    return {
+      ...productSummary(product),
+      currency: currency.value?.isoCode,
+      stock: product.availableStock,
+      description: plainText(getTranslatedProperty(product, "description")),
+    };
   },
-  {
-    name: "update_cart_item",
-    description: "Change the quantity of a cart item. Quantity 0 removes it.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        lineItemId: {
-          type: "string",
-          description: "lineItemId from get_cart.",
-        },
-        quantity: { type: "integer", minimum: 0 },
-      },
-      required: ["lineItemId", "quantity"],
-    },
-    async execute(input) {
-      const id = text(input.lineItemId, "lineItemId");
-      const quantity = count(input.quantity, "quantity", 0);
-      if (!cartItems.value.some((item) => item.id === id)) {
-        throw new Error("No cart item with this lineItemId. Call get_cart.");
-      }
-      const warnings = await changeCart(() =>
-        quantity === 0
-          ? removeItemById(id)
-          : changeProductQuantity({ id, quantity }),
+
+  async add_to_cart(input) {
+    const id = productId(input.productId);
+    const quantity =
+      input.quantity === undefined || input.quantity === null
+        ? 1
+        : count(input.quantity, "quantity", 1);
+    const warnings = await changeCart(() => addProduct({ id, quantity }));
+    const line = cartLine(id);
+    if (!line) {
+      throw new Error(
+        warnings.join(" ") ||
+          "The product was not added. If it has variants, call get_product with this productId and add the productId it returns.",
       );
-      return { ...cartSummary(), warnings };
-    },
+    }
+    if (!warnings.length) {
+      pushSuccess(`${line.label} ${t("product.addedToCart")}`, {
+        action: {
+          label: t("product.viewCart"),
+          to: localePath("/checkout/cart"),
+        },
+      });
+    }
+    return { ...cartSummary(), warnings };
   },
-  {
-    name: "go_to_checkout",
-    description:
-      "Open the checkout page. The shopper reviews and places the order there. You cannot place orders.",
-    async execute() {
-      if (isEmpty.value) throw new Error("The cart is empty.");
-      await navigateTo(localePath("/checkout"));
-      return { url: localePath("/checkout") };
-    },
+
+  async get_cart() {
+    await refreshCart();
+    return cartSummary();
   },
-]);
+
+  async update_cart_item(input) {
+    const id = productId(input.productId);
+    const quantity = count(input.quantity, "quantity", 0);
+    await loadCart();
+    const line = cartLine(id);
+    if (!line) {
+      throw new Error(
+        "This product is not in the cart. Call get_cart to see the items.",
+      );
+    }
+    const warnings = await changeCart(() =>
+      quantity === 0
+        ? removeItemById(line.id)
+        : changeProductQuantity({ id: line.id, quantity }),
+    );
+    return { ...cartSummary(), warnings };
+  },
+
+  async go_to_checkout() {
+    await loadCart();
+    if (isEmpty.value) {
+      throw new Error("The cart is empty. Add a product first.");
+    }
+    await navigateTo(localePath("/checkout"));
+    return { url: localePath("/checkout") };
+  },
+} satisfies Record<WebMcpToolName, WebMcpToolHandler>);
 </script>
 
 <template>

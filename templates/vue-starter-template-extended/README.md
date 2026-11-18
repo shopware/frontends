@@ -151,7 +151,18 @@ To try it:
 3. In DevTools, open **Application > WebMCP** to list the tools and run them.
 4. To shop by chat, use an agent extension such as [webmcp-extension](https://github.com/GoogleChromeLabs/webmcp-extension) or the [Model Context Tool Inspector](https://chromewebstore.google.com/detail/model-context-tool-inspec/gbpdfapgefenggkahomfgkhfehlcenpd). webmcp-extension needs Chrome 155 or newer, and its model server also uses port 3000, so start and build it with `PORT=4000`. Coding agents can use the [Chrome DevTools MCP server](https://github.com/ChromeDevTools/chrome-devtools-mcp) with `--categoryExperimentalWebmcp --chromeArg=--enable-features=WebMCP`.
 
-The tools live in `app/components/WebMcpTools.client.vue`, and `app/layouts/default.vue` adds them to the starter's default layout. Browsers without WebMCP ignore them.
+How it works:
+
+- `app/plugins/webMcpTools.client.ts` registers the tools when the app starts. An agent sees them before the page hydrates, and a call made that early waits for the page.
+- `app/utils/webMcpTools.ts` is the list an agent sees: names, titles, descriptions and inputs.
+- `app/components/WebMcpTools.client.vue` holds what each tool does. `app/layouts/default.vue` adds it to the starter's default layout.
+- `app/composables/useWebMcpTools.ts` runs the calls one at a time, with a 30 second limit. A call cancelled before its turn does not run.
+
+To add a tool, describe it in the list and write its handler in the component. The typecheck fails when the two do not match.
+
+A problem comes back as `{ "error": "..." }` with a next step, because the browser hides thrown errors from the agent. Lists are cut so that an answer stays under 1,500 characters, as Chrome advises, and `total` gives the full count. Browsers without WebMCP ignore all of this.
+
+Checked with Chrome 157 and the WebMCP draft of 13 November 2026.
 
 ## Next Steps
 
