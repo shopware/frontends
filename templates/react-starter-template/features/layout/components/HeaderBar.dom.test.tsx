@@ -1,8 +1,8 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { NotifyProvider } from "@/components/NotifyContext";
 import {
   cartView,
   fakeCart,
@@ -126,11 +126,11 @@ async function setup(
 ) {
   const notify = vi.fn();
   const bar = (
-    <CmsActionsProvider actions={{ notify }}>
+    <NotifyProvider notify={notify}>
       <SessionActionsProvider actions={actions}>
         <HeaderBar menu={null} />
       </SessionActionsProvider>
-    </CmsActionsProvider>
+    </NotifyProvider>
   );
   mounted = await mount(
     withI18n(
@@ -237,6 +237,16 @@ describe("HeaderBar in the browser", () => {
     expect(menu()).toBeNull();
     expect(account.hasAttribute("aria-expanded")).toBe(false);
     expect(account.hasAttribute("aria-controls")).toBe(false);
+  });
+
+  it("keeps the redirect of the login page when a guest clicks the account button there", async () => {
+    const { account } = await setup();
+    window.history.replaceState(null, "", "/account/login/?redirect=%2Fx");
+
+    await interact(() => account.click());
+
+    expect(push).not.toHaveBeenCalled();
+    expect(window.location.search).toBe("?redirect=%2Fx");
   });
 
   it("re-reads a failed session on the account click and opens the menu for a logged-in customer", async () => {

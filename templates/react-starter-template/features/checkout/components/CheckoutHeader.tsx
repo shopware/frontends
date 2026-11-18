@@ -1,5 +1,4 @@
-import { cx } from "@shopware/cms-base-layer-react/client";
-
+import { cx } from "@/cms/client";
 import { LocaleLink } from "@/components/LocaleLink";
 import { MetaNavigation } from "@/features/layout/components/MetaNavigation";
 import { SHELL_BUTTON_SECONDARY_CLASS } from "@/features/layout/shellButton";

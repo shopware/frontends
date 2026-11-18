@@ -1,9 +1,9 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { FocusEvent, MouseEvent } from "react";
 
+import { cx } from "@/cms/client";
 import { CheckmarkIcon, ChevronDownIcon, GlobeIcon } from "@/components/icons";
 import { useSession } from "@/features/session/components/SessionProvider";
 import {

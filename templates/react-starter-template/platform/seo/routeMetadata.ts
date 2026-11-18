@@ -1,10 +1,12 @@
 import "server-only";
+import { getCmsMeta } from "@shopware/helpers";
 import type { Metadata } from "next";
 
 import { withLocale } from "@/i18n/config";
 import type { Locale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/server";
 import { readCategory } from "@/platform/shopware/reads/category";
+import { readCmsPage } from "@/platform/shopware/reads/cmsPage";
 import { readSalesChannelContext } from "@/platform/shopware/reads/context";
 import { readCustomerGroupRegistration } from "@/platform/shopware/reads/customerGroupRegistration";
 import { readLandingPage } from "@/platform/shopware/reads/landingPage";
@@ -103,6 +105,14 @@ export async function buildRouteMetadata(
           await alternates(landingPage.id, seoPath),
         ),
       );
+    }
+    case "frontend.cms.page.full": {
+      const meta = getCmsMeta(await readCmsPage(route.foreignKey, languageId));
+      return {
+        title: meta.metaTitle || meta.title,
+        description: meta.metaDescription || undefined,
+        robots: { index: false },
+      };
     }
     case "frontend.account.customer-group-registration.page": {
       const group = await readCustomerGroupRegistration(

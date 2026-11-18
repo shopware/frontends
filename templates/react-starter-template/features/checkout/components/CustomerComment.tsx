@@ -1,7 +1,6 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
-
+import { cx } from "@/cms/client";
 import { FieldLabel } from "@/components/form/FieldLabel";
 import { INPUT_CLASS } from "@/components/input";
 import { useTranslations } from "@/i18n/I18nProvider";

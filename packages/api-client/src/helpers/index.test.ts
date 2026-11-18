@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { encodeForQuery } from "./index";
+import { encodeForQuery, mergeRequestHeaders } from "./index";
+import type { RequestHeaders } from "./index";
 
 describe("helpers/index", () => {
   it("should export encodeForQuery function", () => {
@@ -17,5 +18,13 @@ describe("helpers/index", () => {
     expect(result).not.toContain("+");
     expect(result).not.toContain("/");
     expect(result).not.toContain("=");
+  });
+
+  it("should export mergeRequestHeaders with its RequestHeaders type", () => {
+    const headers: RequestHeaders = { "sw-include-seo-urls": true };
+
+    expect(mergeRequestHeaders(headers, undefined)).toEqual({
+      "sw-include-seo-urls": "true",
+    });
   });
 });

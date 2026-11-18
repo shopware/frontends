@@ -1,6 +1,5 @@
 "use client";
 
-import { getProductPrice } from "@shopware/cms-base-layer-react/client";
 import {
   getProductName,
   getProductUrl,
@@ -8,6 +7,7 @@ import {
 } from "@shopware/helpers";
 
 import type { Schemas } from "#shopware";
+import { getProductPrice } from "@/cms/client";
 import { LocaleLink } from "@/components/LocaleLink";
 import { Price } from "@/components/Price";
 import { useContentLang } from "@/i18n/ContentLanguageProvider";

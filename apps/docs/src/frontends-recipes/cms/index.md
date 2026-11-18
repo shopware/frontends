@@ -4,10 +4,16 @@ nav:
   position: 25
 ---
 
+<script setup>
+import RecipeCard from "../../components/RecipeCard.vue";
+import RecipeCardGrid from "../../components/RecipeCardGrid.vue";
+</script>
+
 # CMS
 
 Recipes for Shopping Experiences: rendering a CMS page's tree of sections, blocks and slots, and the elements that tree is built from.
 
-<PageRef page="rendering.html" title="Rendering CMS Pages" sub="Understand why the CMS page arrives inside the category or landing page response rather than in its own request, how a type becomes a component name, what a lookup returns for a slot the block does not carry, and where the embedded product listing goes." />
-
-<PageRef page="contact-form.html" title="Contact Form" sub="Understand why the schema's required list is not the whole contract, what the operation does and does not return, why the consent checkbox is not part of the body, and which of slotId and navigationId decides where the mail goes." />
+<RecipeCardGrid>
+  <RecipeCard page="rendering.html" title="Rendering CMS Pages" summary="Walk a page's sections, blocks and slots and resolve each one to a component." :composables="['useCmsSection', 'useCmsBlock']" />
+  <RecipeCard page="contact-form.html" title="Contact Form" summary="Build a contact form element that submits to the Store API and passes a real shop's validation." :composables="['useCmsElementConfig', 'useSalutations']" />
+</RecipeCardGrid>

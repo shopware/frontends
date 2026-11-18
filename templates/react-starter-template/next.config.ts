@@ -5,9 +5,8 @@ import { cacheHeaderRules } from "./platform/routing/cacheHeaders";
 const nextConfig: NextConfig = {
   agentRules: false,
   cacheComponents: true,
-  partialPrefetching: true,
+  partialPrefetching: false,
   skipTrailingSlashRedirect: true,
-  transpilePackages: ["@shopware/cms-base-layer-react"],
   cacheLife: {
     catalog: { stale: 300, revalidate: 86400, expire: 172800 },
     listing: { stale: 60, revalidate: 900, expire: 3600 },

@@ -1,10 +1,10 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
-import type { CmsNotification } from "@shopware/cms-base-layer-react/client";
 import { Activity, StrictMode, act } from "react";
 import type { ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { CmsActionsProvider } from "@/cms/client";
+import type { CmsNotification } from "@/cms/client";
 import {
   cartResult,
   deferred,

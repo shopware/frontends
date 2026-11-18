@@ -1,6 +1,7 @@
 import { hasUnsafePathChar } from "@/platform/routing/paths";
 
 export const DEFAULT_REDIRECT = "/";
+export const LOGIN_PATH = "/account/login";
 
 const PLACEHOLDER_ORIGIN = "http://placeholder.invalid";
 
@@ -11,7 +12,11 @@ export function resolveRedirectTarget(
   if (!target || hasUnsafePathChar(target)) return fallback;
   if (!target.startsWith("/") || target.startsWith("//")) return fallback;
   const url = new URL(target, PLACEHOLDER_ORIGIN);
-  if (url.origin !== PLACEHOLDER_ORIGIN || url.pathname.startsWith("//")) {
+  if (
+    url.origin !== PLACEHOLDER_ORIGIN ||
+    url.pathname.startsWith("//") ||
+    url.pathname.replace(/\/+$/, "") === LOGIN_PATH
+  ) {
     return fallback;
   }
   return url.pathname + url.search + url.hash;

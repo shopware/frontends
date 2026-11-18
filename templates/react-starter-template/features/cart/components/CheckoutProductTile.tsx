@@ -1,11 +1,11 @@
 "use client";
 
-import { SwQuantitySelect, cx } from "@shopware/cms-base-layer-react/client";
-import type { CmsTranslations } from "@shopware/cms-base-layer-react/client";
 import { getSmallestThumbnailUrl } from "@shopware/helpers";
 import { useRef, useState } from "react";
 
 import type { Schemas } from "#shopware";
+import { SwQuantitySelect, cx } from "@/cms/client";
+import type { CmsTranslations } from "@/cms/client";
 import { Price } from "@/components/Price";
 import { useContentLang } from "@/i18n/ContentLanguageProvider";
 import { useMessages, useTranslations } from "@/i18n/I18nProvider";

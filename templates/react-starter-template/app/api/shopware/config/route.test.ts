@@ -28,7 +28,7 @@ describe("GET /api/shopware/config", () => {
 
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual({
-      endpoint: "https://shop.example.com/store-api/",
+      publicEndpoint: "https://shop.example.com/store-api/",
       accessToken: "SWSCOWN",
       devStorefrontUrl: "https://shop.example.com/en",
       headers: {},
@@ -96,7 +96,7 @@ describe("GET /api/shopware/config", () => {
     expect(server.connection).toHaveBeenCalledTimes(1);
     expect(endpointAtConnection).toBe("https://shop.example.com/store-api/");
     expect(await response.json()).toMatchObject({
-      endpoint: "https://runtime.example.com/store-api/",
+      publicEndpoint: "https://runtime.example.com/store-api/",
     });
   });
 
@@ -109,7 +109,7 @@ describe("GET /api/shopware/config", () => {
     const response = await GET();
 
     expect(await response.json()).toEqual({
-      endpoint: "https://demo-frontends.shopware.store/store-api/",
+      publicEndpoint: "https://demo-frontends.shopware.store/store-api/",
       accessToken: "SWSCNWDGMUWZM0TLVUU0YKLQVW",
       devStorefrontUrl: "https://demo-frontends.shopware.store/figma",
       headers: {},

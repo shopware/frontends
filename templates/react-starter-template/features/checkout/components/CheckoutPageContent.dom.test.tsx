@@ -1,8 +1,8 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Mock } from "vitest";
 
 import type { ApiClient, Schemas } from "#shopware";
+import { CmsActionsProvider } from "@/cms/client";
 import { cart as cartData, cartError } from "@/features/cart/cart.fixture";
 import { toCartActionErrors } from "@/features/cart/cartErrors";
 import type { CartErrorEntry } from "@/features/cart/cartErrors";

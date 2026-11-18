@@ -1,7 +1,7 @@
 import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
-import type { CmsFormViolation } from "@shopware/cms-base-layer-react/client";
 
+import type { CmsFormViolation } from "@/cms/client";
 import { NEWSLETTER_RECIPIENT_NOT_FOUND } from "@/features/account/profile/profileApi";
 import {
   apiFailureSummary,

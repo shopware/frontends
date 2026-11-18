@@ -1,16 +1,18 @@
 "use client";
 
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { ReactNode } from "react";
+
+import { CmsActionsProvider } from "@/cms/client";
 import type {
   CmsActions,
   CmsCustomerState,
   CmsNotification,
-} from "@shopware/cms-base-layer-react/client";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { ReactNode } from "react";
-
+} from "@/cms/client";
 import { CloseIcon } from "@/components/icons";
 import { LocaleLink } from "@/components/LocaleLink";
+import { NotifyProvider } from "@/components/NotifyContext";
+import type { Notify } from "@/components/NotifyContext";
 import {
   LoginModal,
   LoginModalProvider,
@@ -45,8 +47,6 @@ import { useShopwareClient } from "./ShopwareClientContext";
 export const TOAST_TIMEOUT_MS = 5000;
 
 type Toast = CmsNotification & { id: number };
-
-type Notify = (notification: CmsNotification) => void;
 
 const TOAST_CLASSES: Record<CmsNotification["type"], string> = {
   success: "bg-states-success-container text-states-on-success-container",
@@ -257,29 +257,31 @@ export function StorefrontProviders({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <ShopwareSessionProvider locale={locale} notify={notify}>
-      <CartProvider>
-        <WishlistProvider>
-          <LoginModalProvider>
-            <StorefrontCmsActions notify={notify}>
-              {children}
-              <LoginModal />
-              <div
-                aria-live="polite"
-                className="pointer-events-none fixed right-4 bottom-4 z-60 flex max-w-sm flex-col gap-2"
-              >
-                {toasts.map((toast) => (
-                  <ToastMessage
-                    key={toast.id}
-                    toast={toast}
-                    onDismiss={dismiss}
-                  />
-                ))}
-              </div>
-            </StorefrontCmsActions>
-          </LoginModalProvider>
-        </WishlistProvider>
-      </CartProvider>
-    </ShopwareSessionProvider>
+    <NotifyProvider notify={notify}>
+      <ShopwareSessionProvider locale={locale}>
+        <CartProvider>
+          <WishlistProvider>
+            <LoginModalProvider>
+              <StorefrontCmsActions notify={notify}>
+                {children}
+                <LoginModal />
+                <div
+                  aria-live="polite"
+                  className="pointer-events-none fixed right-4 bottom-4 z-60 flex max-w-sm flex-col gap-2"
+                >
+                  {toasts.map((toast) => (
+                    <ToastMessage
+                      key={toast.id}
+                      toast={toast}
+                      onDismiss={dismiss}
+                    />
+                  ))}
+                </div>
+              </StorefrontCmsActions>
+            </LoginModalProvider>
+          </WishlistProvider>
+        </CartProvider>
+      </ShopwareSessionProvider>
+    </NotifyProvider>
   );
 }

@@ -1,13 +1,10 @@
 "use client";
 
-import {
-  BaseButton,
-  useCmsActions,
-} from "@shopware/cms-base-layer-react/client";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 
+import { BaseButton } from "@/cms/client";
 import type { BirthdayPart } from "@/components/form/birthday";
 import { BirthdayField } from "@/components/form/BirthdayField";
 import { CheckboxField } from "@/components/form/CheckboxField";
@@ -15,6 +12,7 @@ import { CountrySelect } from "@/components/form/CountrySelect";
 import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
 import type { SelectOption } from "@/components/form/SelectField";
+import { useNotify } from "@/components/NotifyContext";
 import { resolveRedirectFromSearch } from "@/features/account/redirect";
 import {
   REGISTRATION_MAX_LENGTHS,
@@ -59,7 +57,6 @@ export type RegistrationFormProps = {
   birthYearMax?: number;
   companyOnly?: boolean;
   requestedGroupId?: string;
-  redirectUrl?: string | null;
 };
 
 function initialValues(companyOnly: boolean): RegistrationValues {
@@ -79,14 +76,15 @@ export function RegistrationForm({
   settings = TEMPLATE_SHOP_SETTINGS.loginRegistration,
   salutations = [],
   salutationsUnavailable = false,
-  birthYearMax = new Date().getFullYear(),
+  birthYearMax: birthYearMaxProp,
   companyOnly = false,
   requestedGroupId,
-  redirectUrl = null,
 }: RegistrationFormProps) {
+  const [currentYear] = useState(() => new Date().getFullYear());
+  const birthYearMax = birthYearMaxProp ?? currentYear;
   const router = useRouter();
   const { register } = useSessionActions();
-  const { notify } = useCmsActions();
+  const notify = useNotify();
   const t = useTranslations();
   const contentLang = useContentLang();
   const localePath = useLocalePath();
@@ -100,6 +98,7 @@ export function RegistrationForm({
   const [refreshing, startRefresh] = useTransition();
   const [doubleOptInCount, setDoubleOptInCount] = useState(0);
   const [focusRequest, setFocusRequest] = useState(0);
+  const [formErrors, setFormErrors] = useState<string[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
   const successBoxRef = useRef<HTMLOutputElement>(null);
 
@@ -185,22 +184,25 @@ export function RegistrationForm({
     }
 
     setPending(true);
+    setFormErrors([]);
     try {
       const result = await register(
         toRegistrationInput(formValues, { settings, requestedGroupId }),
       );
-      if (!result.ok) return;
+      if (!result.ok) {
+        setFormErrors(
+          result.messages ?? (result.message ? [result.message] : []),
+        );
+        return;
+      }
+      setValues(initialValues(companyOnly));
+      setTouched({});
+      setSubmitted(false);
       if (result.doubleOptIn) {
-        setValues(initialValues(companyOnly));
-        setTouched({});
-        setSubmitted(false);
         setDoubleOptInCount((count) => count + 1);
         return;
       }
-      const target = resolveRedirectFromSearch(
-        window.location.search,
-        redirectUrl,
-      );
+      const target = resolveRedirectFromSearch(window.location.search);
       startNavigation(() => {
         router.push(localePath(target));
       });
@@ -601,6 +603,17 @@ export function RegistrationForm({
             onBlur={touch("acceptedDataProtection")}
             error={errorFor("acceptedDataProtection")}
           />
+        ) : null}
+        {formErrors.length > 0 ? (
+          <div
+            role="alert"
+            data-testid="registration-form-error"
+            className="mb-3 text-sm text-states-error"
+          >
+            {formErrors.map((message) => (
+              <p key={message}>{message}</p>
+            ))}
+          </div>
         ) : null}
         <div className="mb-5 text-right">
           <BaseButton

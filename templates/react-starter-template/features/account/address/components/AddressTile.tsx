@@ -1,8 +1,7 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
-
 import type { Schemas } from "#shopware";
+import { cx } from "@/cms/client";
 import { useTranslations } from "@/i18n/I18nProvider";
 
 import { AddressActionLink } from "./AddressActionLink";

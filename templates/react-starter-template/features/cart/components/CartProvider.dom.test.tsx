@@ -1,9 +1,9 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import { Activity, StrictMode, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { ApiClient, Schemas } from "#shopware";
+import { CmsActionsProvider } from "@/cms/client";
 import { anonymousSession } from "@/features/session/anonymousSession";
 import { SessionProvider } from "@/features/session/components/SessionProvider";
 import {

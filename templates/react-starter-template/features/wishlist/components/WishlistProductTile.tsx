@@ -1,13 +1,6 @@
 "use client";
 
 import {
-  BaseButton,
-  IconButton,
-  WishlistIcon,
-  cx,
-  useCmsActions,
-} from "@shopware/cms-base-layer-react/client";
-import {
   getProductName,
   getProductUrl,
   getSmallestThumbnailUrl,
@@ -15,6 +8,13 @@ import {
 import { useId, useRef, useState } from "react";
 
 import type { Schemas } from "#shopware";
+import {
+  BaseButton,
+  IconButton,
+  WishlistIcon,
+  cx,
+  useCmsActions,
+} from "@/cms/client";
 import { LocaleLink } from "@/components/LocaleLink";
 import { Price } from "@/components/Price";
 import { cartResultMessages } from "@/features/cart/components/useLineItemActions";

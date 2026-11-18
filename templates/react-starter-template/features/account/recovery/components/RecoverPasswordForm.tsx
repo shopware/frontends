@@ -1,9 +1,9 @@
 "use client";
 
-import { BaseButton } from "@shopware/cms-base-layer-react/client";
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 
+import { BaseButton } from "@/cms/client";
 import { InputField } from "@/components/form/InputField";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";

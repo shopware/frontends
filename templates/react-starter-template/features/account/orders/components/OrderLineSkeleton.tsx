@@ -1,4 +1,4 @@
-import { cx } from "@shopware/cms-base-layer-react/client";
+import { cx } from "@/cms/client";
 
 const BAR = "rounded bg-surface-on-surface/10";
 

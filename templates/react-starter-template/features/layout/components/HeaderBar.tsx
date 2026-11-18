@@ -1,10 +1,10 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
+import { cx } from "@/cms/client";
 import {
   HeartIcon,
   SearchIcon,
@@ -12,6 +12,7 @@ import {
   UserIcon,
 } from "@/components/icons";
 import { LocaleLink } from "@/components/LocaleLink";
+import { LOGIN_PATH } from "@/features/account/redirect";
 import { MiniCart } from "@/features/cart/components/MiniCart";
 import { useCart } from "@/features/cart/useCart";
 import { AccountMenu } from "@/features/layout/components/AccountMenu";
@@ -26,6 +27,7 @@ import { useSearchPageTerm } from "@/features/search/useSearchPageTerm";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { useWishlist } from "@/features/wishlist/useWishlist";
+import { stripLocale } from "@/i18n/config";
 import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 
 const COUNTER_CLASS = "absolute -top-2 left-1/2";
@@ -73,9 +75,12 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
 
   const goToLogin = () => {
     const { pathname, search, hash } = window.location;
+    if (stripLocale(pathname).pathname.replace(/\/+$/, "") === LOGIN_PATH) {
+      return;
+    }
     router.push(
       localePath(
-        `/account/login?redirect=${encodeURIComponent(`${pathname}${search}${hash}`)}`,
+        `${LOGIN_PATH}?redirect=${encodeURIComponent(`${pathname}${search}${hash}`)}`,
       ),
     );
   };
@@ -227,6 +232,7 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
                   <MainCounter
                     count={wishlistCount}
                     className={COUNTER_CLASS}
+                    testId="header-wishlist-counter"
                   />
                 ) : null}
               </span>
@@ -245,7 +251,11 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
               <span className="relative flex">
                 <ShoppingCartIcon className={HEADER_ACTION_ICON_CLASS} />
                 {cartQuantity > 0 ? (
-                  <MainCounter count={cartQuantity} className={COUNTER_CLASS} />
+                  <MainCounter
+                    count={cartQuantity}
+                    className={COUNTER_CLASS}
+                    testId="header-cart-counter"
+                  />
                 ) : null}
               </span>
               <span className={HEADER_ACTION_LABEL_CLASS}>{cartLabel}</span>

@@ -1,9 +1,9 @@
-import type { CmsElementProductListingResultsProps } from "@shopware/cms-base-layer-react";
-import type { SwProductListingFiltersProps } from "@shopware/cms-base-layer-react/client";
 import { notFound } from "next/navigation";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { Schemas } from "#shopware";
+import type { CmsElementProductListingResultsProps } from "@/cms";
+import type { SwProductListingFiltersProps } from "@/cms/client";
 import { apiClientError } from "@/features/session/session.fixture";
 import { readSalesChannelContext } from "@/platform/shopware/reads/context";
 import { readProductSearch } from "@/platform/shopware/reads/productSearch";
@@ -21,10 +21,8 @@ vi.mock("next/navigation", () => ({
   }),
 }));
 
-vi.mock("@shopware/cms-base-layer-react/client", async (importOriginal) => ({
-  ...(await importOriginal<
-    typeof import("@shopware/cms-base-layer-react/client")
-  >()),
+vi.mock("@/cms/client", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/cms/client")>()),
   SwProductListingFilters: ({
     filters,
     sortOptions,
@@ -46,8 +44,8 @@ vi.mock("@shopware/cms-base-layer-react/client", async (importOriginal) => ({
   ),
 }));
 
-vi.mock("@shopware/cms-base-layer-react", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("@shopware/cms-base-layer-react")>()),
+vi.mock("@/cms", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/cms")>()),
   CmsElementProductListingResults: ({
     productCount,
     limit,

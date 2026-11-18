@@ -1,8 +1,8 @@
 "use client";
 
-import { BaseButton } from "@shopware/cms-base-layer-react/client";
 import { useState } from "react";
 
+import { BaseButton } from "@/cms/client";
 import { AddressDataSection } from "@/features/account/address/components/AddressDataSection";
 import { useCustomer } from "@/features/account/customer/useCustomer";
 import { PersonalDataSection } from "@/features/account/personal/components/PersonalDataSection";

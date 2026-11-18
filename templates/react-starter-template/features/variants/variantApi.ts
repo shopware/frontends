@@ -1,10 +1,7 @@
 import { encodeForQuery } from "@shopware/api-client/helpers";
-import type {
-  CmsFindVariantInput,
-  CmsFindVariantResult,
-} from "@shopware/cms-base-layer-react/client";
 
 import type { ApiClient, Schemas, operations } from "#shopware";
+import type { CmsFindVariantInput, CmsFindVariantResult } from "@/cms/client";
 import { READ_TIMEOUT_MS } from "@/features/session/readTimeout";
 import { hasApiErrorCode } from "@/features/wishlist/wishlistApi";
 import { hasUnsafePathChar, toSeoPath } from "@/platform/routing/paths";

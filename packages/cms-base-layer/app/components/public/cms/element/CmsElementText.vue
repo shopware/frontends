@@ -6,6 +6,7 @@ import type { CSSProperties, VNode, VNodeArrayChildren } from "vue";
 
 import { useCmsElementConfig, useUrlResolver } from "#imports";
 
+import { getTextElementContent } from "../../../../helpers/cms/getTextElementContent";
 import { getOptionsFromNode } from "../../../../helpers/html-to-vue/getOptionsFromNode";
 import type { NodeObject } from "../../../../helpers/html-to-vue/getOptionsFromNode";
 import { renderHtml } from "../../../../helpers/html-to-vue/renderToHtml";
@@ -15,11 +16,9 @@ const props = defineProps<{
   content: CmsElementText;
 }>();
 const context = getCurrentInstance();
-const { getConfigValue } = useCmsElementConfig(props.content);
+const { getConfigValue } = useCmsElementConfig(() => props.content);
 
-const mappedContent = computed<string>(() => {
-  return props.content?.data?.content || getConfigValue("content");
-});
+const mappedContent = computed(() => getTextElementContent(props.content));
 
 const style = computed<CSSProperties>(() => ({
   alignContent: getConfigValue("verticalAlign"),
@@ -149,12 +148,14 @@ const CmsTextRender = defineComponent({
         },
       },
     };
-    const rawHtml =
-      mappedContent.value?.length > 0
-        ? mappedContent.value
-        : "<div class='missing-content-element'></div>";
-
-    return () => renderHtml(rawHtml, config, h, context, resolveUrl);
+    return () =>
+      renderHtml(
+        mappedContent.value || "<div class='missing-content-element'></div>",
+        config,
+        h,
+        context,
+        resolveUrl,
+      );
   },
 });
 </script>

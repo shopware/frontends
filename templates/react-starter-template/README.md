@@ -64,6 +64,12 @@ every browser call until Shopware allows it (a service implementing
 `Authorization` for a secret in `SHOPWARE_API_HEADERS`: on a redirect to
 another origin it is dropped, while a custom header is sent along.
 
+### Minimum Shopware version
+
+Use Shopware 6.7.6.0 or newer. Reads send their Criteria as a compressed
+`_criteria` GET query parameter, which the Store API accepts from 6.7.6.0 on,
+and the template has no POST fallback.
+
 ## Search engines
 
 `/robots.txt` follows the Shopware storefront defaults and lists

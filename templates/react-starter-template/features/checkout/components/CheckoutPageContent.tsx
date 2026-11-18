@@ -1,14 +1,11 @@
 "use client";
 
-import {
-  BaseButton,
-  useCmsActions,
-} from "@shopware/cms-base-layer-react/client";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { MouseEvent } from "react";
 
 import type { Schemas } from "#shopware";
+import { BaseButton, useCmsActions } from "@/cms/client";
 import { LocaleLink } from "@/components/LocaleLink";
 import { useRequestLogin } from "@/features/account/components/LoginModal";
 import { useCartLoadNotices } from "@/features/cart/components/useCartLoadNotices";

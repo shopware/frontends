@@ -8,7 +8,7 @@ export type NavigationNode = {
   id: string;
   name: string;
   href: string;
-  external: boolean;
+  newTab: boolean;
   lang?: string;
   children: NavigationNode[];
 };
@@ -22,7 +22,7 @@ export function buildNavigationTree(
     id: category.id,
     name: getTranslatedProperty(category, "name"),
     href: withLocale(getCategoryUrl(category), locale),
-    external: Boolean(category.externalLink || category.linkNewTab),
+    newTab: Boolean(category.externalLink || category.linkNewTab),
     ...(contentLang ? { lang: contentLang } : {}),
     children: buildNavigationTree(category.children ?? [], locale, contentLang),
   }));

@@ -5,10 +5,9 @@ import {
   getClientListingFilters,
   hasActiveFilters,
   parseListingFilters,
-} from "@shopware/cms-base-layer-react";
-import type { ListingSearchParams } from "@shopware/cms-base-layer-react";
-import { SwProductListingFilters } from "@shopware/cms-base-layer-react/client";
-
+} from "@/cms";
+import type { ListingSearchParams } from "@/cms";
+import { SwProductListingFilters } from "@/cms/client";
 import { Breadcrumbs } from "@/features/navigation/components/Breadcrumbs";
 import type { Locale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/server";

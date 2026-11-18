@@ -1,9 +1,9 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
 import { useEffect, useRef, useState } from "react";
 import type { ChangeEvent, FocusEvent, KeyboardEvent, MouseEvent } from "react";
 
+import { cx } from "@/cms/client";
 import { CheckmarkIcon, ChevronDownIcon, CloseIcon } from "@/components/icons";
 import { useContentLang } from "@/i18n/ContentLanguageProvider";
 import { useTranslations } from "@/i18n/I18nProvider";
@@ -25,7 +25,6 @@ export type CountrySelectProps = {
   error?: string;
   loadError?: boolean;
   required?: boolean;
-  disabled?: boolean;
   testId?: string;
   className?: string;
 };
@@ -69,6 +68,7 @@ function Flag({ iso }: { iso: string }) {
           width={24}
           height={18}
           alt=""
+          loading="lazy"
           className="h-full w-full object-cover"
           onError={() => setFailed(true)}
         />
@@ -88,7 +88,6 @@ export function CountrySelect({
   error,
   loadError = false,
   required = false,
-  disabled = false,
   testId = "country-select",
   className,
 }: CountrySelectProps) {
@@ -104,7 +103,7 @@ export function CountrySelect({
   const singleCountry = countries.length === 1 ? countries[0] : undefined;
   const selected = countries.find((country) => country.id === value) ?? null;
   const filtered = filterCountries(countries, searchTerm);
-  const showList = isOpen && !singleCountry && !disabled && !loadError;
+  const showList = isOpen && !singleCountry && !loadError;
   const fieldError = loadError ? t("form.countrySearchError") : error;
   const listboxId = `${id}-listbox`;
   const errorId = `${id}-error`;
@@ -147,7 +146,7 @@ export function CountrySelect({
   }
 
   function openList() {
-    if (disabled || loadError || singleCountry || isOpen) return;
+    if (loadError || singleCountry || isOpen) return;
     setIsOpen(true);
     setHighlightedIndex(initialHighlight(filtered));
   }
@@ -285,9 +284,8 @@ export function CountrySelect({
       {labelElement}
       <div
         className={cx(
-          "flex items-center gap-2 rounded-md border px-3 py-2 text-sm focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/20",
+          "flex items-center gap-2 rounded-md border bg-surface-surface px-3 py-2 text-sm focus-within:border-brand-primary focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-outline-outline-focus",
           fieldError ? "border-states-error" : "border-outline-outline-variant",
-          disabled ? "bg-surface-surface-disabled" : "bg-surface-surface",
         )}
       >
         {selected && !isOpen ? (
@@ -298,12 +296,11 @@ export function CountrySelect({
           id={id}
           role="combobox"
           type="text"
-          className="w-full min-w-0 truncate bg-transparent text-sm text-surface-on-surface outline-hidden placeholder:text-surface-on-surface-variant disabled:text-surface-on-surface-disabled"
+          className="w-full min-w-0 truncate bg-transparent text-sm text-surface-on-surface outline-hidden placeholder:text-surface-on-surface-variant"
           value={isOpen ? searchTerm : (selected?.name ?? "")}
           placeholder={placeholder}
           autoComplete="country-name"
           data-testid={testId}
-          disabled={disabled}
           required={required}
           aria-autocomplete="list"
           aria-expanded={showList}
@@ -317,7 +314,7 @@ export function CountrySelect({
           onBlur={onBlur}
           onKeyDown={handleKeyDown}
         />
-        {value && !disabled ? (
+        {value ? (
           <button
             type="button"
             className="-my-0.5 flex size-6 flex-none items-center justify-center rounded-sm text-surface-on-surface-variant outline-hidden transition-colors hover:bg-surface-surface-container hover:text-surface-on-surface focus-visible:ring-2 focus-visible:ring-outline-outline-focus"
@@ -337,7 +334,6 @@ export function CountrySelect({
             aria-expanded={showList}
             aria-controls={showList ? listboxId : undefined}
             data-testid={`${testId}-toggle`}
-            disabled={disabled}
             onMouseDown={preventFocusSteal}
             onClick={toggleList}
           >
@@ -360,7 +356,10 @@ export function CountrySelect({
           className="absolute z-20 mt-1 max-h-64 w-full overflow-auto rounded-lg border border-outline-outline-variant bg-surface-surface p-1 shadow-lg"
         >
           {filtered.length === 0 ? (
-            <div className="px-4 py-3 text-sm text-surface-on-surface-variant">
+            <div
+              aria-hidden="true"
+              className="px-4 py-3 text-sm text-surface-on-surface-variant"
+            >
               {t("form.noCountryResults")}
             </div>
           ) : (
@@ -399,6 +398,9 @@ export function CountrySelect({
         </div>
       ) : null}
 
+      <span role="status" className="sr-only">
+        {showList && filtered.length === 0 ? t("form.noCountryResults") : ""}
+      </span>
       {errorElement}
     </div>
   );

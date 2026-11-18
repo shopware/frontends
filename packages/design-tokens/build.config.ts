@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { defineBuildConfig } from "unbuild";
 
 import { colors } from "./src/colors";
-import { toCssVariables, toJson, toTailwindTheme } from "./src/formats";
+import { toTailwindTheme } from "./src/formats";
 
 export default defineBuildConfig({
   entries: ["src/index"],
@@ -13,11 +13,7 @@ export default defineBuildConfig({
     async "rollup:done"(ctx) {
       const outDir = ctx.options.outDir;
       await mkdir(outDir, { recursive: true });
-      await Promise.all([
-        writeFile(join(outDir, "tailwind.css"), toTailwindTheme(colors)),
-        writeFile(join(outDir, "tokens.css"), toCssVariables(colors)),
-        writeFile(join(outDir, "tokens.json"), toJson(colors)),
-      ]);
+      await writeFile(join(outDir, "tailwind.css"), toTailwindTheme(colors));
     },
   },
 });

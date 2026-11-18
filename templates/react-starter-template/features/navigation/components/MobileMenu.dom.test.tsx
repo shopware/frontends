@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it } from "vitest";
 
 import { buildNavigationTree } from "@/features/navigation/navigationTree";
 import { withI18n } from "@/test/i18n";
-import { interact, mount, pressKey, query, queryAll } from "@/test/mount";
+import { interact, mount, query, queryAll } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
 import type { NavigationNode } from "../navigationTree";
@@ -13,13 +13,13 @@ const tree: NavigationNode[] = [
     id: "clothing",
     name: "Clothing",
     href: "/Clothing/",
-    external: false,
+    newTab: false,
     children: [
       {
         id: "men",
         name: "Men",
         href: "/Clothing/Men/",
-        external: false,
+        newTab: false,
         children: [],
       },
     ],
@@ -28,7 +28,7 @@ const tree: NavigationNode[] = [
     id: "food",
     name: "Food",
     href: "/Food/",
-    external: false,
+    newTab: false,
     children: [],
   },
 ];
@@ -86,9 +86,10 @@ describe("MobileMenu in the browser", () => {
 
     const drawer = query<HTMLDialogElement>(container, DRAWER);
     expect(drawer.getAttribute("aria-label")).toBe("Panel boczny");
-    expect(query<HTMLButtonElement>(drawer, "button").textContent).toBe(
-      "Zamknij menu",
-    );
+    expect(
+      query<HTMLButtonElement>(drawer, 'button:not([tabindex="-1"])')
+        .textContent,
+    ).toBe("Zamknij menu");
     expect(query<HTMLAnchorElement>(drawer, "a").getAttribute("href")).toMatch(
       /^\/pl-PL\/Clothing\/?$/,
     );
@@ -106,8 +107,11 @@ describe("MobileMenu in the browser", () => {
     const { container, burger } = await openMenu();
 
     const drawer = query<HTMLDialogElement>(container, DRAWER);
-    expect(drawer.getAttribute("aria-modal")).toBe("true");
+    expect(drawer.open).toBe(true);
     expect(drawer.getAttribute("aria-label")).toBe("Sidebar");
+    expect(query(drawer, "nav").getAttribute("aria-label")).toBe(
+      "Main navigation",
+    );
     expect(drawer.id).toBe(burger.getAttribute("aria-controls"));
     expect(burger.getAttribute("aria-expanded")).toBe("true");
     expect(document.body.style.overflow).toBe("hidden");
@@ -115,7 +119,10 @@ describe("MobileMenu in the browser", () => {
     expect(drawer.textContent).toContain("Food");
     expect(drawer.textContent).not.toContain("Men");
 
-    const close = query<HTMLButtonElement>(drawer, "button");
+    const close = query<HTMLButtonElement>(
+      drawer,
+      'button:not([tabindex="-1"])',
+    );
     expect(close.textContent).toBe("Close menu");
     expect(document.activeElement).toBe(close);
   });
@@ -123,12 +130,15 @@ describe("MobileMenu in the browser", () => {
   it("puts the close button on an ink strip above white rows with sand subcategories", async () => {
     const { container } = await openMenu();
     const drawer = query<HTMLDialogElement>(container, DRAWER);
-    const close = query<HTMLButtonElement>(drawer, "button");
+    const close = query<HTMLButtonElement>(
+      drawer,
+      'button:not([tabindex="-1"])',
+    );
 
     expect(close.parentElement?.className).toContain("bg-shell-ink");
     expect(close.className).toContain("focus-visible:outline-shell-accent");
     expect(query<HTMLImageElement>(drawer, "img").getAttribute("alt")).toBe("");
-    const rows = queryAll<HTMLLIElement>(drawer, "aside > ul > li");
+    const rows = queryAll<HTMLLIElement>(drawer, "nav > ul > li");
     expect(rows).toHaveLength(2);
     for (const row of rows) {
       expect(row.className).toContain("border-b border-shell-line");
@@ -172,25 +182,47 @@ describe("MobileMenu in the browser", () => {
 
   it("closes on Escape, restores the scroll and returns focus to the burger", async () => {
     const { container, burger } = await openMenu();
+    const cancel = new Event("cancel", { cancelable: true });
 
-    await interact(() => pressKey(document, "Escape"));
+    await interact(() => query(container, DRAWER).dispatchEvent(cancel));
 
+    expect(cancel.defaultPrevented).toBe(true);
     expect(container.querySelector(DRAWER)).toBeNull();
     expect(burger.getAttribute("aria-expanded")).toBe("false");
     expect(document.body.style.overflow).toBe("");
     expect(document.activeElement).toBe(burger);
   });
 
-  it("closes from the backdrop", async () => {
+  it("closes from the backdrop but not from a click inside the panel", async () => {
     const { container, burger } = await openMenu();
-    const backdrop = query<HTMLButtonElement>(
-      container,
-      'button[aria-label="Close menu"][tabindex="-1"]',
+    const drawer = query<HTMLDialogElement>(container, DRAWER);
+
+    await interact(() => query<HTMLElement>(drawer, "nav").click());
+    expect(container.querySelector(DRAWER)).not.toBeNull();
+
+    await interact(() =>
+      query<HTMLButtonElement>(
+        drawer,
+        'button[aria-label="Close menu"][tabindex="-1"]',
+      ).click(),
     );
 
-    await interact(() => backdrop.click());
+    expect(container.querySelector(DRAWER)).toBeNull();
+    expect(document.activeElement).toBe(burger);
+  });
+
+  it("closes after a link is followed", async () => {
+    const { container, burger } = await openMenu();
+    const link = [...container.querySelectorAll("a")].find(
+      (anchor) => anchor.textContent === "Food",
+    );
+    if (!link) throw new Error("No Food link");
+    link.addEventListener("click", (event) => event.preventDefault());
+
+    await interact(() => link.click());
 
     expect(container.querySelector(DRAWER)).toBeNull();
+    expect(document.body.style.overflow).toBe("");
     expect(document.activeElement).toBe(burger);
   });
 

@@ -31,7 +31,7 @@ let mounted: Mounted | undefined;
 beforeEach(() => {
   vi.mocked(loadPublicConfig).mockReset();
   vi.mocked(loadPublicConfig).mockResolvedValue({
-    endpoint: "https://shop.test/store-api",
+    publicEndpoint: "https://shop.test/store-api",
     accessToken: "access-token",
     devStorefrontUrl: null,
   });
@@ -154,7 +154,7 @@ describe("NewsletterSection in the browser", () => {
 
   it("prefers the configured dev storefront url when it is a sales channel domain", async () => {
     vi.mocked(loadPublicConfig).mockResolvedValue({
-      endpoint: "https://shop.test/store-api",
+      publicEndpoint: "https://shop.test/store-api",
       accessToken: "access-token",
       devStorefrontUrl: "https://shop.test/de",
     });

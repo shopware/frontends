@@ -1,16 +1,10 @@
 "use client";
 
-import {
-  getCmsTranslate,
-  useCmsActions,
-} from "@shopware/cms-base-layer-react/client";
-import type {
-  CmsActionError,
-  CmsNotification,
-} from "@shopware/cms-base-layer-react/client";
 import { useCallback, useRef } from "react";
 
 import type { Schemas } from "#shopware";
+import { getCmsTranslate, useCmsActions } from "@/cms/client";
+import type { CmsActionError, CmsNotification } from "@/cms/client";
 import { useCart } from "@/features/cart/useCart";
 import { useTranslations } from "@/i18n/I18nProvider";
 import { hasTranslation } from "@/i18n/translate";

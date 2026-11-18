@@ -1,10 +1,10 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import type { FocusEvent } from "react";
 
+import { cx } from "@/cms/client";
 import { ChevronRightSmallIcon } from "@/components/icons";
 import { stripLocale } from "@/i18n/config";
 import { useTranslations } from "@/i18n/I18nProvider";
@@ -88,18 +88,13 @@ export function TopNavigation({ tree }: { tree: NavigationNode[] }) {
         aria-label={t("layout.ariaLabels.mainNavigation")}
         className={NAV_CLASS}
       >
-        <ul role="menubar" className={LIST_CLASS}>
+        <ul className={LIST_CLASS}>
           {tree.map((node) => {
             const hasChildren = node.children.length > 0;
             const active = pagePath(node.href) === currentPath;
             const expanded = hasChildren && currentMenuPosition === node.id;
             return (
-              <li
-                key={node.id}
-                role="none"
-                className="flex shrink-0"
-                onMouseEnter={() => open(node.id)}
-              >
+              <li key={node.id} className="flex shrink-0">
                 <NavigationLink
                   ref={(element) => {
                     if (element) {
@@ -109,12 +104,12 @@ export function TopNavigation({ tree }: { tree: NavigationNode[] }) {
                     }
                   }}
                   node={node}
-                  role="menuitem"
+                  data-testid="header-navigation-link"
                   className={ITEM_CLASS}
-                  aria-haspopup={hasChildren ? "true" : undefined}
                   aria-expanded={hasChildren ? expanded : undefined}
                   aria-current={active ? "page" : undefined}
                   onFocus={() => open(node.id)}
+                  onMouseEnter={() => open(node.id)}
                   onClick={close}
                 >
                   {node.name}
@@ -129,7 +124,6 @@ export function TopNavigation({ tree }: { tree: NavigationNode[] }) {
                         >
                           <NavigationLink
                             node={child}
-                            role="menuitem"
                             className={cx(
                               "mb-3 flex w-fit items-center gap-1 font-semibold text-shell-ink hover:text-shell-accent-strong",
                               FLYOUT_FOCUS_CLASS,
@@ -147,7 +141,6 @@ export function TopNavigation({ tree }: { tree: NavigationNode[] }) {
                                 <li key={grandChild.id}>
                                   <NavigationLink
                                     node={grandChild}
-                                    role="menuitem"
                                     className={cx(
                                       "text-surface-on-surface hover:text-shell-accent-strong",
                                       FLYOUT_FOCUS_CLASS,

@@ -1,4 +1,4 @@
-<!-- components/cms/CmsElementImage.vue -->
+<!-- app/components/cms/CmsElementImage.vue -->
 
 <script setup lang="ts">
 import type { CmsElementImage } from "@shopware/composables";

@@ -1,8 +1,8 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
-import { useEffect, useState } from "react";
+import { Activity, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { NotifyProvider } from "@/components/NotifyContext";
 import { anonymousSession } from "@/features/session/anonymousSession";
 import { SessionActionsProvider } from "@/features/session/components/SessionActionsContext";
 import type { SessionActions } from "@/features/session/components/SessionActionsContext";
@@ -183,11 +183,43 @@ describe("LoggedInRedirect", () => {
     expect(replace).not.toHaveBeenCalled();
   });
 
-  it("does not redirect when the session failed to load", async () => {
+  it("decides again when the page comes back from a hidden Activity", async () => {
+    const visibility: { set?: (mode: "visible" | "hidden") => void } = {};
+    function Page() {
+      const [mode, setMode] = useState<"visible" | "hidden">("visible");
+      useEffect(() => {
+        visibility.set = setMode;
+      }, []);
+      return (
+        <Activity mode={mode}>
+          <LoggedInRedirect />
+        </Activity>
+      );
+    }
+    mounted = await mount(
+      <ControlledSession initial={guest}>
+        <Page />
+      </ControlledSession>,
+    );
+    expect(replace).not.toHaveBeenCalled();
+
+    await interact(() => visibility.set?.("hidden"));
+    await interact(() => sessionControl.set?.(customer));
+    expect(replace).not.toHaveBeenCalled();
+
+    await interact(() => visibility.set?.("visible"));
+    expect(replace).toHaveBeenCalledTimes(1);
+    expect(replace).toHaveBeenCalledWith("/");
+  });
+
+  it("waits out a failed session read and redirects once it recovers logged in", async () => {
     await setup({ ...anonymousSession, status: "error" });
+    expect(replace).not.toHaveBeenCalled();
+
     await interact(() => sessionControl.set?.(customer));
 
-    expect(replace).not.toHaveBeenCalled();
+    expect(replace).toHaveBeenCalledTimes(1);
+    expect(replace).toHaveBeenCalledWith("/");
   });
 
   it("lets the login form navigate once after a login on the page", async () => {
@@ -203,11 +235,11 @@ describe("LoggedInRedirect", () => {
     const notify = vi.fn();
     const container = await setup(
       guest,
-      <CmsActionsProvider actions={{ notify }}>
+      <NotifyProvider notify={notify}>
         <SessionActionsProvider actions={{ login }}>
-          <LoginForm hideSignUp />
+          <LoginForm />
         </SessionActionsProvider>
-      </CmsActionsProvider>,
+      </NotifyProvider>,
     );
 
     await interact(() =>

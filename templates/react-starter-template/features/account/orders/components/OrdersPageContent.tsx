@@ -1,8 +1,8 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
 import { useId, useRef } from "react";
 
+import { cx } from "@/cms/client";
 import { AccountPageHeader } from "@/features/account/components/AccountPageHeader";
 import { PageSizeSelector } from "@/features/paging/components/PageSizeSelector";
 import { Pagination } from "@/features/paging/components/Pagination";

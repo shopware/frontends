@@ -1,5 +1,6 @@
-import type { ListingSearchParams } from "@shopware/cms-base-layer-react";
 import { describe, expect, it, vi } from "vitest";
+
+import type { ListingSearchParams } from "@/cms";
 
 import { generateMetadata } from "./page";
 

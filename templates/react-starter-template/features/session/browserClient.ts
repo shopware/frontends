@@ -47,7 +47,7 @@ export function loadPublicConfig(
 
 export function createBrowserClient(config: PublicShopwareConfig): ApiClient {
   const client = createAPIClient<operations>({
-    baseURL: config.endpoint,
+    baseURL: config.publicEndpoint,
     accessToken: config.accessToken,
     contextToken: Cookies.get(CONTEXT_TOKEN_COOKIE),
     defaultHeaders: config.headers,

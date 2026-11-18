@@ -1,7 +1,7 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import { StrictMode, Suspense } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { CmsActionsProvider } from "@/cms/client";
 import {
   checkoutCustomer,
   checkoutSession,

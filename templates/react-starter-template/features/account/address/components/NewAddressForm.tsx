@@ -1,9 +1,9 @@
 "use client";
 
-import { useCmsActions } from "@shopware/cms-base-layer-react/client";
 import { useRouter } from "next/navigation";
 import { useRef, useState, useTransition } from "react";
 
+import { useCmsActions } from "@/cms/client";
 import { resolveRedirectFromSearch } from "@/features/account/redirect";
 import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";

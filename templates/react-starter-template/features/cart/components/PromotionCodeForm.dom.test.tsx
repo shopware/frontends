@@ -1,6 +1,6 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { CmsActionsProvider } from "@/cms/client";
 import type { Locale } from "@/i18n/config";
 import { withI18n } from "@/test/i18n";
 import {

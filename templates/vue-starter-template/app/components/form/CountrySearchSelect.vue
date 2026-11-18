@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { encodeForQuery } from "@shopware/api-client/helpers";
 import { onClickOutside, useDebounceFn } from "@vueuse/core";
 import type { MaybeRef } from "vue";
 
@@ -38,7 +37,7 @@ const emit = defineEmits<{
   blur: [];
 }>();
 
-const { apiClient, cacheableReads } = useShopwareContext();
+const { invokeRead } = useCacheableRead();
 
 const rootElement = useTemplateRef<HTMLElement>("rootElement");
 const searchInput = useTemplateRef<HTMLInputElement>("searchInput");
@@ -134,13 +133,9 @@ function buildCriteria(options: {
 }
 
 function invokeCountrySearch(criteria: Schemas["Criteria"]) {
-  return cacheableReads
-    ? apiClient.invoke("readCountryGet get /country", {
-        query: { _criteria: encodeForQuery(criteria) },
-      })
-    : apiClient.invoke("readCountry post /country", {
-        body: criteria,
-      });
+  return invokeRead("readCountry post /country", {
+    body: criteria,
+  });
 }
 
 async function fetchCountries(options: {

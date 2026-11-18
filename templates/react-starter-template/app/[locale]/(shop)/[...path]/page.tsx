@@ -1,9 +1,10 @@
-import type { ListingSearchParams } from "@shopware/cms-base-layer-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
+import type { ListingSearchParams } from "@/cms";
 import { CustomerGroupRegistrationPage } from "@/features/account/customerGroup/CustomerGroupRegistrationPage";
+import { CmsLayoutPage } from "@/features/cms/components/CmsLayoutPage";
 import { DetailPage } from "@/features/cms/components/DetailPage";
 import { LandingPage } from "@/features/cms/components/LandingPage";
 import { NavigationPage } from "@/features/cms/components/NavigationPage";
@@ -55,6 +56,14 @@ async function ResolvedPage({ params, searchParams }: CatchAllPageProps) {
       return (
         <LandingPage
           landingPageId={route.foreignKey}
+          locale={locale}
+          languageId={languageId}
+        />
+      );
+    case "frontend.cms.page.full":
+      return (
+        <CmsLayoutPage
+          cmsPageId={route.foreignKey}
           locale={locale}
           languageId={languageId}
         />

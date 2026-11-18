@@ -1,10 +1,10 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useRef } from "react";
 import type { RefObject } from "react";
 
+import { cx } from "@/cms/client";
 import { CloseIcon } from "@/components/icons";
 import { LocaleLink } from "@/components/LocaleLink";
 import { Price } from "@/components/Price";

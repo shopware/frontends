@@ -1,10 +1,10 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 
+import { cx } from "@/cms/client";
 import { SearchSmallIcon } from "@/components/icons";
 import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 import type { Translate } from "@/i18n/translate";

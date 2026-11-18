@@ -4,8 +4,7 @@ import type {
   CmsContactFormResult,
   CmsNewsletterInput,
   CmsNewsletterResult,
-} from "@shopware/cms-base-layer-react/client";
-
+} from "@/cms/client";
 import { resolveNewsletterStorefrontUrl } from "@/features/account/profile/newsletterStorefrontUrl";
 import {
   subscribeNewsletter,

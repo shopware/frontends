@@ -34,6 +34,7 @@ export type CmsBlockImageSimpleGrid = BlockType<
 export type CmsBlockImageSlider = BlockType<"imageSlider">;
 export type CmsBlockImageGallery = BlockType<"imageGallery">;
 
+export type CmsBlockVideo = BlockType<"video">;
 export type CmsBlockYoutubeVideo = BlockType<"video">;
 export type CmsBlockVimeoVideo = BlockType<"video">;
 
@@ -69,6 +70,7 @@ export type CmsBlockTextOnImage = BlockType<"content">;
 export type CmsBlockSidebarFilter = BlockType<"content">;
 export type CmsBlockCategoryNavigation = BlockType<"content">;
 
+export type CmsBlockCategoryHeading = BlockType<"content">;
 export type CmsBlockProductHeading = BlockType<TWO_COLUMNS>;
 export type CmsBlockProductThreeColumn = BlockType<THREE_COLUMNS>;
 export type CmsBlockProductListing = BlockType<"content">;
@@ -81,3 +83,13 @@ export type CmsBlockForm = BlockType<"content">;
 export type CmsBlockHtml = BlockType<"content">;
 
 export type CmsBlockImageGalleryBig = BlockType<"imageGallery">;
+
+export type CmsBlockAppRenderer = BlockType<string> & {
+  type: "app-renderer";
+  customFields?: {
+    appBlockName?: string;
+    slotLayout?: {
+      grid?: string | null;
+    };
+  } | null;
+};

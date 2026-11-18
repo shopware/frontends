@@ -1,10 +1,10 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
 import { getTranslatedProperty } from "@shopware/helpers";
 import { useId, useState } from "react";
 
 import type { Schemas } from "#shopware";
+import { cx } from "@/cms/client";
 import { ChevronDownIcon } from "@/components/icons";
 import { LocaleLink } from "@/components/LocaleLink";
 import { Price } from "@/components/Price";

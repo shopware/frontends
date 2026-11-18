@@ -1,9 +1,9 @@
 import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
 import { encodeForQuery } from "@shopware/api-client/helpers";
-import type { CmsApiViolation } from "@shopware/cms-base-layer-react/client";
 
 import type { ApiClient, Schemas } from "#shopware";
+import type { CmsApiViolation } from "@/cms/client";
 import { READ_TIMEOUT_MS } from "@/features/session/readTimeout";
 
 export type ProductReviewsClient = Pick<ApiClient, "invoke">;

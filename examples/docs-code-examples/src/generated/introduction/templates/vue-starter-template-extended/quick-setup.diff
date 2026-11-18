@@ -1,8 +1,0 @@
-  "dependencies": {
--   "vue-starter-template": "workspace:*"
-+   "vue-starter-template": "file:../vue-starter-template"
-  },
-  "devDependencies": {
--   "@shopware/cms-base-layer": "workspace:*",
-+   "@shopware/cms-base-layer": "canary",
-  }

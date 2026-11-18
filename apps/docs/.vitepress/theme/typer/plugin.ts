@@ -94,7 +94,7 @@ export async function ReadmeBasedReference({
           } catch (error) {
             try {
               const definitionFound = await findSync(
-                `function\ ${exportedOne}`,
+                `function\ ${exportedOne}\\b`,
                 resolve(`${projectRootDir}/${relativeDir}/${packageName}/src`),
                 ".ts$",
               );

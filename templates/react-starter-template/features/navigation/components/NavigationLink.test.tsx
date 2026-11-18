@@ -12,7 +12,7 @@ describe("NavigationLink", () => {
           id: "clothing",
           name: "Clothing",
           href: "/Clothing/",
-          external: false,
+          newTab: false,
           children: [],
         }}
         className="nav-link"
@@ -34,7 +34,7 @@ describe("NavigationLink", () => {
           id: "blog",
           name: "Blog",
           href: "https://example.com/blog",
-          external: true,
+          newTab: true,
           children: [],
         }}
       >
@@ -53,14 +53,14 @@ describe("NavigationLink", () => {
     ["https://example.com/blog", true],
   ])(
     "declares the content language of the node on %s",
-    async (href, external) => {
+    async (href, newTab) => {
       const html = await renderToHtml(
         <NavigationLink
           node={{
             id: "node",
             name: "Clothing",
             href,
-            external,
+            newTab,
             lang: "en-US",
             children: [],
           }}

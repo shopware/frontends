@@ -9,6 +9,7 @@ import {
 } from "react";
 import type { ReactNode } from "react";
 
+import { useNotify } from "@/components/NotifyContext";
 import { ShopwareClientProvider } from "@/features/storefront/components/ShopwareClientContext";
 import type { Locale } from "@/i18n/config";
 import { ContentLanguageProvider } from "@/i18n/ContentLanguageProvider";
@@ -18,7 +19,6 @@ import type { LanguageOption } from "@/platform/shopware/reads/languageOptions";
 
 import { anonymousSession } from "../anonymousSession";
 import type { CurrencyOption } from "../currencyOptions";
-import type { SessionNotification } from "../sessionActions";
 import { createSessionStore } from "../sessionStore";
 import type { StorefrontSession } from "../types";
 import { SessionActionsProvider } from "./SessionActionsContext";
@@ -27,7 +27,6 @@ import { ShopwareCurrenciesProvider } from "./ShopwareCurrenciesContext";
 import { ShopwareLanguagesProvider } from "./ShopwareLanguagesContext";
 
 export type ShopwareSessionProviderProps = {
-  notify: (notification: SessionNotification) => void;
   locale?: Locale;
   children: ReactNode;
 };
@@ -37,10 +36,10 @@ function getServerSession(): StorefrontSession {
 }
 
 export function ShopwareSessionProvider({
-  notify,
   locale,
   children,
 }: ShopwareSessionProviderProps) {
+  const notify = useNotify();
   const [store] = useState(() => createSessionStore({ locale }));
   const t = useTranslations();
   const session = useSyncExternalStore(

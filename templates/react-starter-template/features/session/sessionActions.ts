@@ -1,7 +1,7 @@
 import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
 
-import type { ApiClient, Schemas, operations } from "#shopware";
+import type { ApiClient, Schemas } from "#shopware";
 import type { Translate } from "@/i18n/translate";
 
 import { resolveApiErrorMessages } from "./apiErrors";
@@ -49,11 +49,16 @@ export function createSessionActions({
     error: unknown,
     context?: ApiErrorContext,
   ): SessionActionResult {
-    const messages = resolveApiErrorMessages(error, t, context);
-    for (const message of messages) {
+    const messages = [...new Set(resolveApiErrorMessages(error, t, context))];
+    return { ok: false, message: messages[0], messages };
+  }
+
+  function failWithToast(error: unknown): SessionActionResult {
+    const result = fail(error);
+    for (const message of result.messages ?? []) {
       notify({ type: "error", message });
     }
-    return { ok: false, message: messages[0] };
+    return result;
   }
 
   async function refreshAfterMutation(
@@ -87,7 +92,7 @@ export function createSessionActions({
           "register post /account/register",
           {
             body: {
-              ...(input as operations["register post /account/register"]["body"]),
+              ...input,
               storefrontUrl,
             },
           },
@@ -122,7 +127,7 @@ export function createSessionActions({
       try {
         await client.invoke("logoutCustomer post /account/logout");
       } catch (error) {
-        if (!isAlreadyLoggedOut(error)) return fail(error);
+        if (!isAlreadyLoggedOut(error)) return failWithToast(error);
       }
       await refreshAfterMutation();
       return { ok: true };
@@ -135,7 +140,7 @@ export function createSessionActions({
           fetchOptions: { timeout: READ_TIMEOUT_MS },
         });
       } catch (error) {
-        return fail(error);
+        return failWithToast(error);
       }
       await refreshAfterMutation({ keepLastGood: true });
       return { ok: true };

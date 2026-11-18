@@ -334,8 +334,7 @@ export function toRegistrationInput(
     ...(business ? { company: values.company } : {}),
   };
 
-  return {
-    accountType: values.accountType,
+  const customer = {
     ...(settings.showSalutation && values.salutationId
       ? { salutationId: values.salutationId }
       : {}),
@@ -347,8 +346,16 @@ export function toRegistrationInput(
     password: values.password,
     acceptedDataProtection:
       settings.requireDataProtectionCheckbox && values.acceptedDataProtection,
-    ...(business ? { vatIds: [values.vatId] } : {}),
     ...(requestedGroupId ? { requestedGroupId } : {}),
     billingAddress,
   };
+
+  return business
+    ? {
+        ...customer,
+        accountType: "business",
+        company: values.company,
+        vatIds: [values.vatId],
+      }
+    : { ...customer, accountType: "private" };
 }

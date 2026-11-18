@@ -5,7 +5,7 @@
 [![](https://img.shields.io/github/issues/shopware/frontends/composables?label=package%20issues&logo=github)](https://github.com/shopware/frontends/issues?q=is%3Aopen+is%3Aissue+label%3Acomposables)
 [![](https://img.shields.io/github/license/shopware/frontends?color=blue)](#)
 
-Set of Vue.js composition functions that can be used in any Vue.js project. They provide state management, UI logic and data fetching and are the base for all guides in our [building section](https://developer.shopware.com/frontends/guides/page-elements/navigation.html).
+Set of Vue.js composition functions that can be used in any Vue.js project. They provide state management, UI logic and data fetching and are the base for all guides in our [building section](https://developer.shopware.com/frontends/frontends-recipes/context/navigation.html).
 
 ## Features
 
@@ -166,60 +166,37 @@ All composable functions are fully typed with TypeScript and they are registed g
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/composables/CHANGELOG.md)
 
-### Latest changes: 1.13.0
+### Latest changes: 1.15.0
 
 ### Minor Changes
 
-- [#2663](https://github.com/shopware/frontends/pull/2663) [`7020545`](https://github.com/shopware/frontends/commit/70205458cb9357a068029d0aaef41898ab94b354) Thanks [@mkucmus](https://github.com/mkucmus)! - `useCmsElementImage` now honours the `ariaLabel` and `isDecorative` fields of a CMS image element, which were ignored before, and returns both. `imageAttrs.alt` is empty for a decorative image. `ariaLabel` names the link the image sits in, as it does in the Storefront, so it is not copied into `alt`.
+- [#2850](https://github.com/shopware/frontends/pull/2850) [`5374dfd`](https://github.com/shopware/frontends/commit/5374dfd32614e264028b0a83d060919427307f3d) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Deprecate API that has no effect, to be removed in the next major release:
 
-  Both fields are optional on the image element config, because a Shopware instance that has never had them set does not return them. `useCmsElementConfig` accepts optional config members now, so `getConfigValue` keeps the declared value type for them instead of widening to `{}`.
+  - `createShopwareContext`: the `enableDevtools` option and the `state` property of the returned plugin
+  - `useProductAssociations`: the `associationContext` option and the `method` and `searchParams` params of `loadAssociations`. Both `options` and the `loadAssociations` params are now optional, so call `loadAssociations()`
+  - `useProductConfigurator().isLoadingOptions` and `useSyncWishlist().isLoading`, which are never updated
+  - `getDefaultApiParams`, which already logged a deprecation error, now carries the `@deprecated` tag as well
 
-  `SliderElementConfig` gained the `"none"` value for `navigationDots` and `navigationArrows`. The Administration offers it, the type did not list it.
+  Also removes commented-out code and the unused, unexported `registerShopwareDevtools` and `useCmsElementProductBox`, which drops the undeclared `@vue/devtools-api` import. No runtime behaviour changes.
 
-- [#2642](https://github.com/shopware/frontends/pull/2642) [`183c183`](https://github.com/shopware/frontends/commit/183c183f905486c27fa770fd0f4cd9993e86c20e) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add `createDraftQuoteVersion` and `deleteDraftQuoteVersion` to `useB2bQuoteManagement`.
+- [#2720](https://github.com/shopware/frontends/pull/2720) [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789) Thanks [@mkucmus](https://github.com/mkucmus)! - Added `useCacheableRead().invokeRead`. It uses the cacheable GET route only for a fresh default guest. That GET has no `sw-context-token`. Other sessions stay POST. Branching on `useShopwareContext().cacheableReads` is deprecated. Keep reads that `invokeRead` does not take on POST. New `createShopwareContext` option: `ssrWithoutUserContext`. A category read over GET now sends its listing params as plain query params, so `limit` is no longer dropped.
 
-  Quote write operations such as `declineQuoteWithComment` expect the identifier of a temporary storefront draft version, not the `versionId` property of the quote entity. `createDraftQuoteVersion` wraps `POST /quote/{id}/draft-version` and returns that identifier, throwing when the API responds without one; `deleteDraftQuoteVersion` discards the draft again.
-
-  ```ts
-  const { createDraftQuoteVersion, declineQuoteWithComment } =
-    useB2bQuoteManagement();
-
-  const versionId = await createDraftQuoteVersion(quoteId);
-
-  await declineQuoteWithComment(quoteId, {
-    comment: "Too expensive",
-    lineItemId,
-    versionId,
-  });
-  ```
-
-- [#2642](https://github.com/shopware/frontends/pull/2642) [`183c183`](https://github.com/shopware/frontends/commit/183c183f905486c27fa770fd0f4cd9993e86c20e) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Add `declineQuoteWithComment` to `useB2bQuoteManagement`, following the Store API `POST /quote/{id}/decline` schema, which as of `6.7.12` also carries `lineItemId` and `versionId` next to `comment`.
-
-  `declineQuote` keeps its `(quoteId, comment)` signature and is deprecated. It will be removed in the next major.
-
-  ```ts
-  const { declineQuoteWithComment, createDraftQuoteVersion } =
-    useB2bQuoteManagement();
-
-  const versionId = await createDraftQuoteVersion(quoteId);
-
-  await declineQuoteWithComment(quoteId, {
-    comment: "Too expensive",
-    lineItemId,
-    versionId,
-  });
-  ```
+- [#2668](https://github.com/shopware/frontends/pull/2668) [`2202e1c`](https://github.com/shopware/frontends/commit/2202e1cec2b7d72260ed115940386c6793523676) Thanks [@mateuszfl](https://github.com/mateuszfl)! - Support SEO URLs of headless (API type) sales channels. Since shopware/shopware#17991 headless sales channels persist their SEO URLs against the `store-api.*` route family (`store-api.product.detail`, `store-api.category.detail`, `store-api.landing-page.detail`). `useNavigationSearch().resolvePath()` now maps those route names to their `frontend.*` equivalents, so page resolution works unchanged on a headless sales channel. The new `getFrontendRouteName` helper in `@shopware/helpers` exposes the same mapping for custom resolvers.
 
 ### Patch Changes
 
-- [#2676](https://github.com/shopware/frontends/pull/2676) [`458494e`](https://github.com/shopware/frontends/commit/458494e8bd2be88d4fbf161636a109c8f4efc443) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Realign the composables with the `6.7.13.0` Store API schema:
+- [#2851](https://github.com/shopware/frontends/pull/2851) [`43a035f`](https://github.com/shopware/frontends/commit/43a035fa60a73f554ac4de9da7abd6fce9892288) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - `useListing().filtersToQuery`, `useCmsMeta` and the page counts of `useListing`, `useWishlist` and `useCustomerOrders` now use the new `getListingFiltersQuery`, `getCmsMeta` and `getTotalPages` helpers from `@shopware/helpers`. The only behaviour change: with a limit of `0` or less, the page count is now `0` instead of `Infinity` or `NaN`.
 
-  - `useB2bQuoteManagement`: `getQuote()` now invokes `readQuote post /quote/{id}` (was `readQuote post /quote/detail/{id}`) and `createOrderFromQuote()` now invokes `createOrderFromQuote post /quote/{id}/order` (was `createOrderFromQuote post /quote/order/{id}`), matching the renamed endpoints.
-  - `useListing`: `getSortingOrders` is typed as `Schemas["ProductListingResult"]["availableSortings"]` instead of the removed `Schemas["ProductSorting"][]`.
-  - `useProductSearch`: the `associations` option is typed as `Partial<Schemas["Associations"]>` instead of the removed `Schemas["Association"]`.
+  Deprecated, to be removed in the next major release:
 
-- [#2660](https://github.com/shopware/frontends/pull/2660) [`8913956`](https://github.com/shopware/frontends/commit/89139563924163e57cafdd9770fe603f2dbd8cba) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - `useCmsElementImage` now returns the translated media `alt` in `imageAttrs`. It read `element.data.media.alt` from the entity root, which the Store API fills with the system language value, so the `alt` attribute ignored the language of the current request. The value is now resolved with `getTranslatedProperty()` and falls back to the root property when `translated` is missing.
+  - `useListing().filtersToQuery`: use `getListingFiltersQuery` from `@shopware/helpers`
+  - `useCmsMeta`: use `getCmsMeta` from `@shopware/helpers`
 
-- Updated dependencies [[`2ddf156`](https://github.com/shopware/frontends/commit/2ddf156805b2941fe2069e78453fb3c4eb6d44ac), [`204c8f4`](https://github.com/shopware/frontends/commit/204c8f45f737e724db6d00b80c5faef8ddb77cb4), [`183c183`](https://github.com/shopware/frontends/commit/183c183f905486c27fa770fd0f4cd9993e86c20e), [`458494e`](https://github.com/shopware/frontends/commit/458494e8bd2be88d4fbf161636a109c8f4efc443)]:
-  - @shopware/helpers@1.8.0
-  - @shopware/api-client@1.6.0
+- [#2791](https://github.com/shopware/frontends/pull/2791) [`4f0f33b`](https://github.com/shopware/frontends/commit/4f0f33b9fcb66c5a6bacf86400fa6d82f68e064f) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - Point the README and JSDoc documentation links at the Frontends Recipes that replaced the redirected guides
+
+- [#2843](https://github.com/shopware/frontends/pull/2843) [`eba2d99`](https://github.com/shopware/frontends/commit/eba2d996327d28c7f22025c848a3728d4d5fd3bf) Thanks [@grenzenlos-digital](https://github.com/grenzenlos-digital)! - Send `checkPromotion` as a query parameter when loading order details, so Shopware 6.7.7+ calculates `paymentChangeable`. When the order has no `paymentChangeable` entry, retry once with the flag in the request body, so Shopware 6.6 and 6.7.0-6.7.6 keep working.
+
+- [#2849](https://github.com/shopware/frontends/pull/2849) [`037ffa9`](https://github.com/shopware/frontends/commit/037ffa97e3fdeec3a7dc896cb6a5b401e4b5f481) Thanks [@mdanilowicz](https://github.com/mdanilowicz)! - `useWishlist().mergeWishlistProducts()` now clears the local (localStorage) wishlist after merging it into the customer's wishlist. Before, it cleared the API wishlist instead: the local items stayed and were merged again on every login, and products the sync store still held from earlier in the session were removed from the customer's wishlist on the server.
+- Updated dependencies [[`fa598c8`](https://github.com/shopware/frontends/commit/fa598c84e4d72ff4b7dc50547ea2412bc424b491), [`2202e1c`](https://github.com/shopware/frontends/commit/2202e1cec2b7d72260ed115940386c6793523676), [`43a035f`](https://github.com/shopware/frontends/commit/43a035fa60a73f554ac4de9da7abd6fce9892288), [`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789)]:
+  - @shopware/helpers@1.9.0
+  - @shopware/api-client@1.8.0

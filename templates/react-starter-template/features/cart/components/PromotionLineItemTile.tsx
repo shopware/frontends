@@ -1,9 +1,9 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
 import { useId } from "react";
 
 import type { Schemas } from "#shopware";
+import { cx } from "@/cms/client";
 import { TagIcon } from "@/components/icons";
 import { Price } from "@/components/Price";
 import { useContentLang } from "@/i18n/ContentLanguageProvider";

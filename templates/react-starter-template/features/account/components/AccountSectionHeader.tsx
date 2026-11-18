@@ -1,4 +1,4 @@
-import { cx } from "@shopware/cms-base-layer-react/client";
+import { cx } from "@/cms/client";
 
 export function AccountSectionHeader({
   title,

@@ -1,6 +1,5 @@
 import "server-only";
 import { encodeForQuery } from "@shopware/api-client/helpers";
-import type { ListingQueryParams } from "@shopware/cms-base-layer-react";
 import {
   getCategoryFilterAggregations,
   getCategoryFilterPostFilter,
@@ -8,6 +7,7 @@ import {
 import { cacheLife, cacheTag } from "next/cache";
 
 import type { Schemas, operations } from "#shopware";
+import type { ListingQueryParams } from "@/cms";
 
 import { createShopwareClient } from "../client";
 import { languageCacheTags } from "./cacheTags";

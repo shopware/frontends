@@ -1,9 +1,10 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
 import { useEffect, useId, useRef } from "react";
 import type { ReactNode } from "react";
 import { createPortal } from "react-dom";
+
+import { cx } from "@/cms/client";
 
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';

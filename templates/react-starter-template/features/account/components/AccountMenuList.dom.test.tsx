@@ -1,6 +1,6 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { CmsActionsProvider } from "@/cms/client";
 import { SessionActionsProvider } from "@/features/session/components/SessionActionsContext";
 import type { SessionActions } from "@/features/session/components/SessionActionsContext";
 import type { SessionActionResult } from "@/features/session/types";

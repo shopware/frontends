@@ -1,6 +1,6 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { NotifyProvider } from "@/components/NotifyContext";
 import { SessionActionsProvider } from "@/features/session/components/SessionActionsContext";
 import type { SessionActionResult } from "@/features/session/types";
 import { withI18n } from "@/test/i18n";
@@ -86,14 +86,14 @@ afterEach(async () => {
 async function setup() {
   mounted = await mount(
     withI18n(
-      <CmsActionsProvider actions={{ notify }}>
+      <NotifyProvider notify={notify}>
         <SessionActionsProvider actions={{ login }}>
           <LoginModalProvider>
             <Requester />
             <LoginModal />
           </LoginModalProvider>
         </SessionActionsProvider>
-      </CmsActionsProvider>,
+      </NotifyProvider>,
     ),
   );
   const { container } = mounted;

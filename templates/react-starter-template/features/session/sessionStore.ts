@@ -67,6 +67,7 @@ export function createSessionStore({
   let languages: Promise<LanguageOption[]> | null = null;
   let currencies: Promise<CurrencyOption[]> | null = null;
   let localeTask: Promise<void> = Promise.resolve();
+  let pendingMutation: Promise<unknown> | null = null;
 
   function publish(next: StorefrontSession): void {
     snapshot = next;
@@ -176,6 +177,7 @@ export function createSessionStore({
 
   async function retry(): Promise<StorefrontSession> {
     await initialRead;
+    await pendingMutation;
     if (!initialRead) {
       await start();
     } else if (snapshot.status === "error") {
@@ -244,27 +246,24 @@ export function createSessionStore({
       notify,
       t,
     });
+    function mutate<T>(run: () => Promise<T>): Promise<T> {
+      const result = start().then(run);
+      const tracked = result.catch(() => {});
+      pendingMutation = tracked;
+      void tracked.then(() => {
+        if (pendingMutation === tracked) pendingMutation = null;
+      });
+      return result;
+    }
+
     return {
-      login: async (input) => {
-        await start();
-        return actions.login(input);
-      },
-      register: async (input) => {
-        await start();
-        return actions.register(input);
-      },
-      confirmRegistration: async (input) => {
-        await start();
-        return actions.confirmRegistration(input);
-      },
-      logout: async () => {
-        await start();
-        return actions.logout();
-      },
-      setCurrency: async (currencyId) => {
-        await start();
-        return actions.setCurrency(currencyId);
-      },
+      login: (input) => mutate(() => actions.login(input)),
+      register: (input) => mutate(() => actions.register(input)),
+      confirmRegistration: (input) =>
+        mutate(() => actions.confirmRegistration(input)),
+      logout: () => mutate(() => actions.logout()),
+      setCurrency: (currencyId) =>
+        mutate(() => actions.setCurrency(currencyId)),
       retrySession: retry,
       refreshSession,
     };

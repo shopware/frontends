@@ -1,8 +1,8 @@
 "use client";
 
-import { useCmsActions } from "@shopware/cms-base-layer-react/client";
 import { useEffect, useRef, useState } from "react";
 
+import { useCmsActions } from "@/cms/client";
 import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";

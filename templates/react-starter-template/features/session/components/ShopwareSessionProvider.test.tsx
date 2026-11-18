@@ -24,7 +24,7 @@ function SessionStatus() {
 describe("ShopwareSessionProvider on the server", () => {
   it("renders the anonymous loading session without touching the Store API", async () => {
     const html = await renderToHtml(
-      <ShopwareSessionProvider notify={() => {}}>
+      <ShopwareSessionProvider>
         <SessionStatus />
       </ShopwareSessionProvider>,
     );

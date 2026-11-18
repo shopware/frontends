@@ -15,13 +15,13 @@ nav:
 
 # Overview
 
-Shopware Composable Frontends is Shopware's toolkit for creating platform-agnostic custom storefronts. The demo store implementation is based on Vue.js and Nuxt3.
+Shopware Composable Frontends is Shopware's toolkit for creating platform-agnostic custom storefronts. The demo store implementation is based on Vue.js and Nuxt 3.
 
 ## Quick Links
 
-- **Announcements**: To keep yourself up to date with the latest news regarding the project, please regularly check our Github Discussions page: [shopware/frontends/dicsussions](https://github.com/shopware/frontends/discussions). Especially the [Announcements](https://github.com/shopware/frontends/discussions/categories/announcements) category.
+- **Announcements**: To keep yourself up to date with the latest news regarding the project, please regularly check our GitHub Discussions page: [shopware/frontends/discussions](https://github.com/shopware/frontends/discussions), especially the [Announcements](https://github.com/shopware/frontends/discussions/categories/announcements) category.
 
-## How Shopware Frontends work?
+## How Shopware Frontends works
 
 Frontends is a collection of multiple packages that you can use to implement your custom storefront project.
 
@@ -33,7 +33,7 @@ Shopware 6 is considered one "supported" data source, but you can integrate any 
 
 ## Logic
 
-A big part (and a risk factor) of every custom storefront project is the implementation of domain-specific business functionality. That's why Shopware Frontends offers various packages that take care of some heavy lifting:
+A big part (and a risk factor) of every custom storefront project is the implementation of domain-specific business functionality. That's why Shopware Frontends offers various packages that do the heavy lifting:
 
 - Routing
 - Shopping worlds (Shopware CMS) integration
@@ -45,6 +45,6 @@ It also comes with TypeScript support.
 
 ## Template/UI
 
-You can decide to start from scratch and use no template at all, but we recommend looking at our [Templates](./introduction/templates.html) which are based on **Nuxt.js** and **Tailwind CSS**.
+You can decide to start from scratch and use no template at all, but we recommend looking at our [Templates](./introduction/templates.html), which are based on **Nuxt.js** and **Tailwind CSS**.
 
 <PageRef title="Internal Structure" sub="Details about the internal structure of Shopware Frontends" page="./concepts/internal-structure.html" />

@@ -1,8 +1,7 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
-
 import type { Schemas } from "#shopware";
+import { cx } from "@/cms/client";
 import { useContentLang } from "@/i18n/ContentLanguageProvider";
 
 const STATUS_CLASSES: Record<string, string> = {

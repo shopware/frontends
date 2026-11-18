@@ -91,7 +91,7 @@ describe("createSessionActions().login", () => {
     expect(notifications).toEqual([]);
   });
 
-  it("notifies the resolved login error and resolves it without refreshing", async () => {
+  it("resolves the login error for the form without a toast or a refresh", async () => {
     const { actions, refreshSession, notifications } = setup(
       rejectWith(apiClientError([{ code: "0", detail: "No customer" }], 401)),
     );
@@ -101,14 +101,10 @@ describe("createSessionActions().login", () => {
     ).resolves.toEqual({
       ok: false,
       message: en("errors.login_no_matching_customer_internal"),
+      messages: [en("errors.login_no_matching_customer_internal")],
     });
 
-    expect(notifications).toEqual([
-      {
-        type: "error",
-        message: en("errors.login_no_matching_customer_internal"),
-      },
-    ]);
+    expect(notifications).toEqual([]);
     expect(refreshSession).not.toHaveBeenCalled();
   });
 
@@ -175,7 +171,7 @@ describe("createSessionActions().register", () => {
     expect(notifications).toEqual([]);
   });
 
-  it("notifies every resolved registration error and resolves the first one", async () => {
+  it("resolves every registration error for the form without a toast", async () => {
     const { actions, refreshSession, notifications } = setup(
       rejectWith(
         apiClientError([
@@ -191,19 +187,30 @@ describe("createSessionActions().register", () => {
     await expect(actions.register(registrationInput)).resolves.toEqual({
       ok: false,
       message: "The email address jane@example.com is already in use",
+      messages: [
+        "The email address jane@example.com is already in use",
+        en("errors.VIOLATION::ZIP_CODE_INVALID"),
+      ],
     });
 
-    expect(notifications).toEqual([
-      {
-        type: "error",
-        message: "The email address jane@example.com is already in use",
-      },
-      {
-        type: "error",
-        message: en("errors.VIOLATION::ZIP_CODE_INVALID"),
-      },
-    ]);
+    expect(notifications).toEqual([]);
     expect(refreshSession).not.toHaveBeenCalled();
+  });
+
+  it("resolves a registration error shared by several fields once", async () => {
+    const { actions } = setup(
+      rejectWith(
+        apiClientError([
+          { code: "VIOLATION::IS_BLANK_ERROR" },
+          { code: "VIOLATION::IS_BLANK_ERROR" },
+        ]),
+      ),
+    );
+
+    const result = await actions.register(registrationInput);
+
+    expect(result).toMatchObject({ ok: false });
+    expect(result.messages).toHaveLength(1);
   });
 
   it("stays ok when the refresh after a successful registration fails", async () => {
@@ -360,6 +367,7 @@ describe("createSessionActions().logout", () => {
     await expect(actions.logout()).resolves.toEqual({
       ok: false,
       message: DEFAULT_MESSAGE,
+      messages: [DEFAULT_MESSAGE],
     });
     expect(notifications).toEqual([
       { type: "error", message: DEFAULT_MESSAGE },
@@ -406,6 +414,7 @@ describe("createSessionActions().logout", () => {
     await expect(actions.logout()).resolves.toEqual({
       ok: false,
       message: "No",
+      messages: ["No"],
     });
     expect(notifications).toEqual([{ type: "error", message: "No" }]);
     expect(refreshSession).not.toHaveBeenCalled();
@@ -450,6 +459,7 @@ describe("createSessionActions().setCurrency", () => {
     await expect(actions.setCurrency("currency-xxx")).resolves.toEqual({
       ok: false,
       message: "No currency",
+      messages: ["No currency"],
     });
 
     expect(notifications).toEqual([{ type: "error", message: "No currency" }]);
@@ -485,12 +495,15 @@ describe("createSessionActions", () => {
       actions.setCurrency("currency-usd"),
     ]);
 
-    expect(results).toEqual([
-      { status: "fulfilled", value: { ok: false, message: DEFAULT_MESSAGE } },
-      { status: "fulfilled", value: { ok: false, message: DEFAULT_MESSAGE } },
-      { status: "fulfilled", value: { ok: false, message: DEFAULT_MESSAGE } },
-      { status: "fulfilled", value: { ok: false, message: DEFAULT_MESSAGE } },
-    ]);
+    const failed = {
+      status: "fulfilled",
+      value: {
+        ok: false,
+        message: DEFAULT_MESSAGE,
+        messages: [DEFAULT_MESSAGE],
+      },
+    };
+    expect(results).toEqual([failed, failed, failed, failed]);
     await expect(
       actions.confirmRegistration({ em: "em", hash: "hash" }),
     ).resolves.toEqual({ status: "failed" });
@@ -503,13 +516,14 @@ describe("createSessionActions", () => {
     await expect(actions.register(registrationInput)).resolves.toEqual({
       ok: false,
       message: DEFAULT_MESSAGE,
+      messages: [DEFAULT_MESSAGE],
     });
     expect(invocations).toEqual([]);
   });
 });
 
 describe("createSessionActions translations", () => {
-  it("notifies and resolves the messages in the language of the translator", async () => {
+  it("resolves the messages in the language of the translator", async () => {
     const de = testTranslator("de-DE");
     const { actions, notifications } = setup(
       rejectWith(apiClientError([{ code: "0" }], 401)),
@@ -519,8 +533,20 @@ describe("createSessionActions translations", () => {
     const message = de("errors.login_no_matching_customer_internal");
     await expect(
       actions.login({ username: "jane@example.com", password: "wrong" }),
-    ).resolves.toEqual({ ok: false, message });
+    ).resolves.toEqual({ ok: false, message, messages: [message] });
     expect(message).toBe("Ungültiger Benutzername und/oder Passwort.");
+    expect(notifications).toEqual([]);
+  });
+
+  it("notifies the messages in the language of the translator", async () => {
+    const de = testTranslator("de-DE");
+    const { actions, notifications } = setup(
+      rejectWith(new TypeError("Failed to fetch")),
+      de,
+    );
+
+    const message = de("errors.message-default");
+    await actions.logout();
     expect(notifications).toEqual([{ type: "error", message }]);
   });
 });

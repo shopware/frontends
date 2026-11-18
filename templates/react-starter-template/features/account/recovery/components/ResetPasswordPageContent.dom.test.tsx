@@ -1,10 +1,10 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
-import type { CmsNotification } from "@shopware/cms-base-layer-react/client";
 import { Activity, StrictMode, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { ApiClient } from "#shopware";
+import { CmsActionsProvider } from "@/cms/client";
+import type { CmsNotification } from "@/cms/client";
 import { fakeClient } from "@/features/checkout/checkout.fixture";
 import type { FakeAnswer } from "@/features/checkout/checkout.fixture";
 import { deferred } from "@/features/checkout/checkoutTestDoubles";
@@ -78,7 +78,7 @@ beforeEach(() => {
   navigation.push.mockReset();
   vi.mocked(loadPublicConfig).mockReset();
   vi.mocked(loadPublicConfig).mockResolvedValue({
-    endpoint: "https://shop.test/store-api",
+    publicEndpoint: "https://shop.test/store-api",
     accessToken: "access-token",
     devStorefrontUrl: null,
   });

@@ -5,6 +5,7 @@ import { cacheLife, cacheTag } from "next/cache";
 import type { Schemas, operations } from "#shopware";
 
 import { createShopwareClient } from "../client";
+import { notFoundOn404 } from "../errors";
 import { languageCacheTags } from "./cacheTags";
 import { cmsAssociations } from "./cmsAssociations";
 
@@ -20,17 +21,16 @@ export async function readLandingPage(
   cacheLife("catalog");
   cacheTag(...languageCacheTags(`sw:landing:${landingPageId}`, languageId));
 
-  const response = await createShopwareClient({ languageId }).invoke(
-    "readLandingPageGet get /landing-page/{landingPageId}",
-    {
+  const response = await createShopwareClient({ languageId })
+    .invoke("readLandingPageGet get /landing-page/{landingPageId}", {
       pathParams: { landingPageId },
       query: {
         _criteria: encodeForQuery({
           associations: { ...cmsAssociations, seoUrls: {} },
         }),
       } as ReadLandingPageGetQuery,
-    },
-  );
+    })
+    .catch(notFoundOn404);
 
   return response.data;
 }

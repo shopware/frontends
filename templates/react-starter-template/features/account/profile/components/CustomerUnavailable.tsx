@@ -1,8 +1,8 @@
 "use client";
 
-import { BaseButton } from "@shopware/cms-base-layer-react/client";
 import { useState } from "react";
 
+import { BaseButton } from "@/cms/client";
 import { useTranslations } from "@/i18n/I18nProvider";
 
 export function CustomerUnavailable({

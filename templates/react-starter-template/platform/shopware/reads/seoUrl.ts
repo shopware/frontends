@@ -1,8 +1,13 @@
 import "server-only";
 import { encodeForQuery } from "@shopware/api-client/helpers";
-import type { CmsRouteName } from "@shopware/cms-base-layer-react";
-import { getRouteFromPathInfo, isTechnicalPath } from "@shopware/helpers";
+import {
+  getFrontendRouteName,
+  getRouteFromPathInfo,
+  isTechnicalPath,
+} from "@shopware/helpers";
 import { cacheLife, cacheTag } from "next/cache";
+
+import type { CmsRouteName } from "@/cms";
 
 import { createShopwareClient } from "../client";
 import { isRenderedRouteName } from "../routeNames";
@@ -44,12 +49,13 @@ async function readSeoUrl(
   );
 
   const seoUrl = response.data.elements?.[0];
-  if (!seoUrl || !isRenderedRouteName(seoUrl.routeName) || !seoUrl.foreignKey) {
+  const routeName = getFrontendRouteName(seoUrl?.routeName);
+  if (!seoUrl || !isRenderedRouteName(routeName) || !seoUrl.foreignKey) {
     return null;
   }
 
   return {
-    routeName: seoUrl.routeName,
+    routeName,
     foreignKey: seoUrl.foreignKey,
     seoPathInfo: seoUrl.seoPathInfo,
   };

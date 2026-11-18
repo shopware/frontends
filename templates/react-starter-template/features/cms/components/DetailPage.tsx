@@ -1,6 +1,6 @@
-import { CmsPage } from "@shopware/cms-base-layer-react";
 import { getProductName } from "@shopware/helpers";
 
+import { CmsPage } from "@/cms";
 import { JsonLd } from "@/components/JsonLd";
 import { toBreadcrumbItems } from "@/features/navigation/breadcrumbs";
 import { Breadcrumbs } from "@/features/navigation/components/Breadcrumbs";
@@ -13,7 +13,6 @@ import { catalogNow } from "@/platform/seo/clock";
 import { buildProductJsonLd } from "@/platform/seo/jsonLd";
 import { getSiteUrl } from "@/platform/seo/siteUrl";
 import { seoPathFrom, technicalPath } from "@/platform/seo/urls";
-import { notFoundOn404 } from "@/platform/shopware/errors";
 import { readBreadcrumbOrNothing } from "@/platform/shopware/reads/breadcrumb";
 import { resolveContentLanguage } from "@/platform/shopware/reads/languages";
 import { readProductDetail } from "@/platform/shopware/reads/product";
@@ -29,9 +28,7 @@ export async function DetailPage({
   locale,
   languageId,
 }: DetailPageProps) {
-  const { product } = await readProductDetail(productId, languageId).catch(
-    notFoundOn404,
-  );
+  const { product } = await readProductDetail(productId, languageId);
   const [ctx, breadcrumbs, { contentLang }, now] = await Promise.all([
     createStorefrontCmsContext({
       locale,

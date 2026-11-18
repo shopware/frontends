@@ -19,9 +19,16 @@ Next.js ships docs that match the installed version in
 Next.js code: 16.4 differs from most training data (Cache Components,
 `proxy.ts` instead of `middleware.ts`, async request APIs).
 
-`agentRules` is `false` in `next.config.ts`, so `next dev` does not write its
-own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
-`AGENTS.md` files only.
+## Code layout
+
+- `platform/shopware/` is the data-access layer on the server: the API client
+  and the reads. Nothing outside it creates a server client.
+- `features/<area>/components/` holds the UI of one area. A component imports a
+  read from `platform/shopware/reads/` and never calls the Store API itself;
+  the browser session in `features/session/` is the one exception (see Session
+  and actions).
+- `cms/` renders Shopping Experiences pages, the port of `cms-base-layer`.
+  `cms/AGENTS.md` holds its rules.
 
 ## Store API
 
@@ -75,7 +82,8 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   sessions between users.
 - Reads live in `platform/shopware/reads/`. Each is a `'use cache'` function
   that creates its own anonymous client and sets a `cacheLife` profile from
-  `next.config.ts` (`catalog`, `listing`, `seo`, `reference`) and an `sw:` tag.
+  `next.config.ts` (`catalog`, `listing`, `seo`, `reference`; the navigation
+  read uses the built-in `hours`) and an `sw:` tag.
   When an endpoint has a GET variant (an `operations` key of the form
   `<operationId>Get get <path>`), the read uses it and sends its criteria as
   `query: { _criteria: encodeForQuery(criteria) }`. POST is only for endpoints
@@ -83,8 +91,18 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   and no POST fallback. Where the generated GET type does not declare
   `_criteria` yet (category, landing page), the read widens the query type
   locally, the precedent being `useCategorySearch.search` in composables.
-  Let a failed read throw so the failure is not cached; the calling
-  component handles it (`notFoundOn404` in `platform/shopware/errors.ts`).
+  `pnpm check:cacheable-reads` fails on a call to any POST operation
+  registered in `cacheableReadRoutes`
+  (`packages/composables/src/useCacheableRead/routes.ts`).
+- A `'use cache'` read is keyed on its arguments only. Everything that changes
+  the response — language, currency, sales channel, a context token — must be an
+  argument, or the cache serves one visitor's response to another.
+- Let a failed read throw so the failure is not cached. An error that leaves
+  a `'use cache'` function reaches the caller as a plain `Error` carrying only
+  a `digest`: no `ApiClientError`, no `status`. So a read turns a Store API
+  404 into `notFound()` itself, with `.catch(notFoundOn404)`
+  (`platform/shopware/errors.ts`) on the `invoke` call. A `catch` in the
+  calling component can no longer tell a 404 from a 500.
 - Every read takes a trailing `languageId: string | null`, which sets the
   `sw-language-id` header and is part of the cache key; with a language id
   the read also tags `<tag>:<languageId>` next to its usual `sw:` tag
@@ -166,9 +184,15 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   a server component: technical paths (`/navigation/{id}`, `/detail/{id}`,
   `/landingPage/{id}`) are parsed with `getRouteFromPathInfo`, everything
   else is looked up in `/seo-url` with both the plain path and the path with
-  a trailing slash. The result is dispatched to
-  `features/cms/components/{NavigationPage,DetailPage,LandingPage}` and
-  `features/account/customerGroup/CustomerGroupRegistrationPage`.
+  a trailing slash; `/page/cms/{id}` is parsed too. The result is dispatched
+  to `features/cms/components/{NavigationPage,DetailPage,LandingPage,CmsLayoutPage}`
+  and `features/account/customerGroup/CustomerGroupRegistrationPage`.
+  `/page/cms/{id}` is a standalone CMS layout (`frontend.cms.page.full`), such
+  as a legal page, which has no SEO URL; it is marked `noindex`, as in the
+  Storefront. `generateMetadata` in the catch-all builds title, description,
+  keywords and Open Graph tags from the resolved entity.
+- `app/[locale]/error.tsx` renders inside the locale layout, so the page keeps
+  its `<html lang>` when a read fails.
 - Status codes come from `proxy.ts`, not from the page: a `notFound()` inside
   the page's `<Suspense>` can only stream a 200 with `noindex`. Before a
   catalog path renders, the proxy asks `seoResolver` (`platform/routing/`,
@@ -212,17 +236,23 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   `platform/routing/paths.ts`, checked against the app folders by
   `proxy.test.ts`) skip the lookup. Real statuses only show on `next start`;
   `next dev` and unit tests cannot prove the 404 of the rewritten page.
+- Listing params from the URL are validated before they reach the Store API
+  (`buildListingQueryParams`): `limit` and `p` must be positive integers and
+  `limit` is capped at 100, because the Store API answers 400 above its
+  `max_limit`. A page past the last one is a Store API 404 and renders the
+  not-found page.
 - `skipTrailingSlashRedirect` is on because Shopware category paths end with
   `/`. The catch-all receives the segments without that slash, which is why
   the SEO lookup tries both spellings.
-- CMS pages render through `@shopware/cms-base-layer-react`: `CmsPage` with a
-  `CmsContext` built by `platform/cms/context.ts` (`createStorefrontCmsContext`
-  with the page `locale` and `languageId`: `ctx.locale`, `ctx.urlPrefix` from
+- CMS pages render through `cms/` (`@/cms`): `CmsPage` with a `CmsContext`
+  built by `platform/cms/context.ts` (`createStorefrontCmsContext` with the
+  page `locale` and `languageId`: `ctx.locale`, `ctx.urlPrefix` from
   `localePrefix`, `ctx.translations` from `getMessagesFor`, currency from
-  `/context`). Override a CMS component in
-  `platform/cms/registry.ts` with `mergeCmsRegistries`, never by editing the
-  package. `app/globals.css` imports the package stylesheet and adds `@source`
-  for its `src`, otherwise Tailwind drops the component classes.
+  `/context`). To replace a default component, register your own in
+  `platform/cms/registry.ts` with `mergeCmsRegistries`. `app/globals.css`
+  imports `cms/assets/styles.css`, which carries the rich-text rules and the
+  `@source inline` safelist for the visibility classes built from CMS data;
+  without that import those classes are dropped.
 - `ctx.navigation`, the tree of the `category-navigation` element, comes from
   `readCategoryNavigation(cmsPage, rootId, languageId)` in
   `platform/cms/categoryNavigation.ts`. It reads only when the layout holds a
@@ -393,7 +423,7 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   hints. React hoists preconnect links in a full render, so no unit test can
   prove their place in a resumed stream.
 
-## Layout
+## Header and footer
 
 - `app/[locale]/(shop)/layout.tsx` renders `features/layout/components/Header` and
   `Footer` (both take the `locale`) around the `<main>` landmark. Both are
@@ -405,12 +435,12 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   readers share one `cache()`d loader.
 - Categories cross into client islands only as `NavigationNode` trees
   (`features/navigation/navigationTree.ts`: id, name, href from
-  `getCategoryUrl` run through `withLocale`, `external` for
+  `getCategoryUrl` run through `withLocale`, `newTab` for
   `externalLink`/`linkNewTab`, children).
-  `NavigationLink` turns `external` into `target="_blank" rel="noopener"`.
+  `NavigationLink` turns `newTab` into `target="_blank" rel="noopener"`.
   Never pass `Schemas["Category"]` to a client component.
-- Client islands: `TopNavigation` (desktop menubar with the flyout, hidden
-  below `lg`), `MobileMenu` (burger plus a `<dialog>` drawer with
+- Client islands: `TopNavigation` (desktop disclosure navigation with the
+  flyout, hidden below `lg`), `MobileMenu` (burger plus a `<dialog>` drawer with
   `data-testid="sidebar-left"`, focus trap and body scroll lock), `HeaderBar`
   (logo, search, account/wishlist/cart buttons, mobile search toggle),
   `HeaderSearch`, `NewsletterBox`, `MetaNavigation` and `StickyHeader` (the
@@ -570,8 +600,9 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   `TopNavigation`, `isCurrentAccountPage`). Keep the Vue `data-testid`s and roles
   (`header-account-button[data-logged-in]`, `header-wishlist-button`,
   `header-mini-cart-button`, `header-search-input`,
-  `[role="menubar"] [role="menuitem"]` for top-level entries only); the e2e
-  suite asserts them.
+  `header-navigation-link` on top-level entries only); the e2e suite asserts
+  them. The top navigation is a disclosure (`aria-expanded`), not an ARIA
+  menubar.
 - Icons are hand-ported meteor SVGs in `components/icons/index.tsx` (fill
   `currentColor`, `aria-hidden`). Shared class lists live in
   `components/input.ts`, `features/layout/headerAction.ts` and
@@ -624,7 +655,7 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   (`i18n/messages.ts`). Edit the Vue files only
   together with the Vue starter.
 - `react/core.json` also carries the English defaults that
-  `@shopware/cms-base-layer-react` components keep in their local
+  `cms/` components keep in their local
   `translationDefaults` (buy box, listing prices, pagination, filters,
   reviews, product card toasts, contact and newsletter forms) with Polish and
   German texts. The Vue JSON files lack them, which is why the Vue starter
@@ -757,18 +788,17 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   holds Shopware data (category, line-item, method, delivery-time, order
   state, country, salutation and state names), never on a wrapper that also
   renders `t(...)`, and keep mixed strings such as the cart image `alt`
-  without it. Limits: the CMS elements of `@shopware/cms-base-layer-react`
+  without it. Limits: the CMS elements of `cms/`
   (product names and descriptions, text blocks, listing cards, sorting and
-  filter names) have no `lang` until that package takes a content language
+  filter names) have no `lang` until `cms/` takes a content language
   in its context, and wrapping `<CmsPage>` is wrong because it also renders
   `ctx.translations`; a field that falls back to the system language
   (`languageIdChain[1]`) cannot be detected; axe cannot check any of it, so
   the unit tests assert where `lang` appears.
 - CMS components get `ctx.translations` (the same merged messages, the Vue
   `cmsTranslations`) and `ctx.urlPrefix`. A few labels hardcoded in
-  `@shopware/cms-base-layer-react` ("Go to slide N", the star ratings) and
-  internal links inside CMS rich text stay English and unprefixed; that is
-  package behaviour. The 404 is `app/[locale]/(shop)/not-found.tsx`, so every
+  `cms/` ("Go to slide N", the star ratings) and internal links inside CMS
+  rich text stay English and unprefixed; that is `cms/` behaviour. The 404 is `app/[locale]/(shop)/not-found.tsx`, so every
   `notFound()` under `(shop)` renders `NotFoundContent` (translated
   `<title>`, heading from `errors.message-404` and a localized home link)
   inside the shop layout and under the locale's `<html lang>`, as
@@ -894,7 +924,8 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   `createSessionActions` in `features/session/sessionActions.ts`: the Store
   API call, then a `/context` re-read, mirroring `useUser`. The forms send
   the real payload (`RegistrationInput` is the `/account/register` body
-  without `storefrontUrl`); `register` adds `storefrontUrl` from
+  without `storefrontUrl`, omitted per branch so the private/business union
+  survives); `register` adds `storefrontUrl` from
   `storefrontUrl.ts`, a port of `getStorefrontUrl`
   (`devStorefrontUrl`, else the page origin, matched against the sales
   channel domains), resolved after the client and its config are ready.
@@ -902,19 +933,29 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   means the session already ended (another tab, an expired context), so it
   refreshes the session and resolves `{ ok: true }` without a toast; every
   other logout failure stays a failure. Actions called before the client is
-  ready wait for it and for the first `/context` read, so a late guest token
-  cannot overwrite the login token. A failed re-read after a successful
-  mutation does not turn it into a failure.
+  ready wait for it and for the first `/context` read, and a retry waits for
+  any running action, so a late guest token cannot overwrite the login token.
+  A failed re-read after a successful mutation does not turn it into a
+  failure. Logout ends with a full reload (`window.location.assign`), and the
+  forms clear their values after a success: Cache Components keep hidden
+  pages in `<Activity>`, so state left in a form survives soft navigations,
+  logouts included.
 - The actions never reject. On an error they resolve every message with
   `resolveApiErrorMessages(error, t, context?)` (`apiErrors.ts`, a port of
   the Vue `useApiErrorsResolver` that resolves `errors.<code>` through the
-  translator of `useTranslations()`), show one error toast per message themselves and
-  resolve `{ ok: false, message }` with the first one, so the forms must not
-  notify `{ ok: false }` again. Anything that is not an `ApiClientError`
-  resolves to `errors.message-default`. `confirmRegistration` is the
-  exception to the toasts: it never toasts and resolves `{ status }`
-  (`confirmed` with `guest`, `alreadyConfirmed`, `invalidLink` or `failed`),
-  because its page shows the outcome inline.
+  translator of `useTranslations()`) and resolve
+  `{ ok: false, message, messages }`. `login` and `register` do not toast:
+  their forms show every message inline in one `role="alert"` block, and a
+  toast as well would make screen readers read it twice. `logout` and
+  `setCurrency` have no form, so they show one error toast per message.
+  Anything that is not an `ApiClientError` resolves to
+  `errors.message-default`. `confirmRegistration` never toasts and resolves
+  `{ status }` (`confirmed` with `guest`, `alreadyConfirmed`, `invalidLink`
+  or `failed`), because its page shows the outcome inline.
+- Toasts come from `useNotify()` (`components/NotifyContext.tsx`), provided
+  by `StorefrontProviders`, which owns the toast list. App code outside `cms/`
+  uses it, not `useCmsActions().notify`; the CMS port's `notify` is the same
+  function.
 - `StorefrontProviders` is also the app side of the CMS actions port
   (`CmsActionsProvider`). `addToCart` goes to the cart (see Cart),
   `toggleWishlist` and `isInWishlist` to the wishlist (see Wishlist),
@@ -933,7 +974,7 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   one keeps it until it is closed (the checkout's persistent errors).
 
 - `setCurrency(currencyId)` sends `updateContext patch /context
-{ currencyId }`, then re-reads `/context` with `keepLastGood`. The
+  { currencyId }`, then re-reads `/context` with `keepLastGood`. The
   identity does not change, so a failed re-read keeps the last session with
   status `"error"`, as `refreshSession()` does. A failure resolves
   `{ ok: false, message }` after its own toasts. It never touches the cart;
@@ -957,7 +998,7 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
     only `POST`, so the token never appears in a URL.
   - It calls `imitateCustomer(createShopwareClient(), credentials)`
     (`features/session/imitateCustomer.ts`, `imitateCustomerLogin post
-/account/login/imitate-customer`) on a fresh client without the
+    /account/login/imitate-customer`) on a fresh client without the
     visitor's token, so a guest cart is not merged and a logged-in customer
     is replaced. The new token comes from
     `client.defaultHeaders["sw-context-token"]`.
@@ -1195,6 +1236,12 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
 
 ## Rules the code does not show
 
+- Cache Components are on. A catalog route must never read `cookies()` or
+  `headers()`: that silently makes the route dynamic, and its HTML stops being
+  cacheable.
+- `agentRules: false` in `next.config.ts` stops `next dev` from generating its
+  own agent rules into this file or a `CLAUDE.md` pointer file. The repository
+  keeps `AGENTS.md` files only.
 - Markup keeps the `@shopware/design-tokens` class names of the Vue
   templates (`bg-brand-primary`, `text-surface-on-surface`), so it ports
   between them. `site/theme.css`, imported after the package's
@@ -1202,7 +1249,7 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   without touching any component file: a later `@theme` value for a
   design-token name (`--color-brand-primary`, the surface containers, the
   outlines, `outline-outline-focus`) replaces the package value, so CMS
-  blocks from `@shopware/cms-base-layer-react` follow the template's look
+  blocks from `cms/` follow the template's look
   too (ink buttons, peach secondary actions, warm surfaces), while the Vue
   starter keeps the package's purple. The same file defines the
   template-only `shell-*` colors for the layout chrome (header, meta bar,
@@ -1214,10 +1261,8 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
 - The template reads `@shopware/design-tokens` from its build output, and
   `unbuild --stub` does not work in Next.js client bundles. After changing the
   package, rebuild it: `pnpm --filter @shopware/design-tokens build`.
-  `@shopware/cms-base-layer-react` ships source, so its edits are live.
-- `@shopware/design-tokens` and `@shopware/cms-base-layer-react` are linked
-  with `workspace:*` until they are published, which is why the template is
-  not scaffoldable yet.
+- `@shopware/design-tokens` is linked with `workspace:*` until it is
+  published, which is why the template is not scaffoldable yet.
 
 ## Checkout
 
@@ -1675,7 +1720,7 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   has no `/customer-group-registration/`.
   `features/account/customerGroup/CustomerGroupRegistrationPage.tsx` reads
   `readCustomerGroupRegistration` (`getCustomerGroupRegistrationInfo get
-/customer-group-registration/config/{customerGroupId}`, anonymous GET,
+  /customer-group-registration/config/{customerGroupId}`, anonymous GET,
   `cacheLife("seo")` so a registration switched on or off shows within an
   hour) and the countries. A 404 `CUSTOMER_GROUP_REGISTRATION_NOT_FOUND`
   (inactive, or not assigned to this sales channel) becomes `notFound()`,
@@ -1908,7 +1953,7 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
 - Suggestions run in the browser through `useShopwareClient()`, like the Vue
   `layout/header/Search.vue`. `readSearchSuggest`
   (`features/search/searchSuggestApi.ts`, `searchSuggestGet get
-/search-suggest`) sends `search`, `limit=10` and `no-aggregations` as plain
+  /search-suggest`) sends `search`, `limit=10` and `no-aggregations` as plain
   query parameters, plus `sw-include-seo-urls` (the GET type lacks it,
   Shopware's CORS allows it) and `READ_TIMEOUT_MS`. `search` must stay a
   plain parameter: `ResolvedCriteriaProductSuggestRoute` checks it before the
@@ -2022,7 +2067,7 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
 
 - `findVariant` on the CMS port is `findProductVariant(getClient, input)` in
   `features/variants/variantApi.ts`; the buy box's
-  `SwVariantConfiguratorOptions` (`@shopware/cms-base-layer-react`) owns the
+  `SwVariantConfiguratorOptions` (`cms/`) owns the
   navigation and the messages. It never toasts and never rejects:
   `{ ok: true, variant }` (`productId`, plus `url` when the SEO read gave a
   safe path), `{ ok: false, notFound: true }`, `{ ok: false, cancelled: true }`
@@ -2030,7 +2075,7 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   `[Variants] finding the variant failed`).
 - Two browser GETs through the session client, with `READ_TIMEOUT_MS` and the
   island's abort signal: `searchProductVariantIdsGet get
-/product/{productId}/find-variant` under the parent (`parentId ?? productId`)
+  /product/{productId}/find-variant` under the parent (`parentId ?? productId`)
   with `options[<groupId>]=<optionId>` in configurator group order plus
   `switchedGroup`, then `readSeoUrlGet get /seo-url` with
   `variantSeoUrlCriteria` (`routeName` `frontend.detail.page`, `foreignKey`,
@@ -2095,7 +2140,7 @@ own `AGENTS.md` block or a `CLAUDE.md` pointer file. The repository keeps
   `core.newsletter.doubleOptInDomain` is set). Salutation, first and last
   name are sent only when filled; an empty `salutationId` would hit the
   foreign key. Unsubscribing is `unsubscribeToNewsletter post
-/newsletter/unsubscribe`; its 400 `CONTENT__NEWSLETTER_RECIPIENT_NOT_FOUND`
+  /newsletter/unsubscribe`; its 400 `CONTENT__NEWSLETTER_RECIPIENT_NOT_FOUND`
   (whose detail echoes the address) counts as success, so the form never
   tells whether an address is on the list.
 - The subscribe answer's `status` picks the copy: `notSet` means a double

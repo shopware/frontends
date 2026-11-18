@@ -1,7 +1,6 @@
 "use client";
 
-import { BaseButton } from "@shopware/cms-base-layer-react/client";
-
+import { BaseButton } from "@/cms/client";
 import { Modal } from "@/components/Modal";
 import { useTranslations } from "@/i18n/I18nProvider";
 

@@ -1,7 +1,6 @@
 "use client";
 
-import { formatPrice } from "@shopware/cms-base-layer-react/client";
-
+import { formatPrice } from "@/cms/client";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { useLocale } from "@/i18n/I18nProvider";
 

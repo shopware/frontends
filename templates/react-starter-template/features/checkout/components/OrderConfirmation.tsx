@@ -1,9 +1,9 @@
 "use client";
 
-import { BaseButton } from "@shopware/cms-base-layer-react/client";
 import { getShippingMethodDeliveryTime } from "@shopware/helpers";
 
 import type { Schemas } from "#shopware";
+import { BaseButton } from "@/cms/client";
 import { CheckmarkIcon } from "@/components/icons";
 import { LocaleLink } from "@/components/LocaleLink";
 import { Price } from "@/components/Price";

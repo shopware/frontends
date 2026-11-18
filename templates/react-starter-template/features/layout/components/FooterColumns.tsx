@@ -20,8 +20,8 @@ export function FooterColumns({ tree }: { tree: NavigationNode[] }) {
                   <Link
                     lang={child.lang}
                     href={child.href}
-                    target={child.external ? "_blank" : undefined}
-                    rel={child.external ? "noopener" : undefined}
+                    target={child.newTab ? "_blank" : undefined}
+                    rel={child.newTab ? "noopener" : undefined}
                     className="rounded-sm text-sm text-shell-on-ink-muted transition-colors hover:text-shell-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-shell-accent"
                   >
                     {child.name}

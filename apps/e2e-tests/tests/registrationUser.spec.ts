@@ -2,10 +2,7 @@ import { faker } from "@faker-js/faker";
 import type { APIRequestContext } from "@playwright/test";
 
 import { expect, test } from "../fixtures";
-import { HomePage } from "../page-objects/HomePage";
-import { RegisterForm } from "../page-objects/RegisterPage";
 import { uniqueEmail } from "../utils/data-helpers";
-import { captureStoreApi } from "../utils/store-api";
 import type { StoreApi } from "../utils/store-api";
 
 async function shopTurnsOffAccountTypeSelection(
@@ -26,20 +23,15 @@ async function shopTurnsOffAccountTypeSelection(
 }
 
 test.describe("Registration new user", { tag: "@frontends" }, () => {
-  let homePage: HomePage;
-  let registrationPage: RegisterForm;
-  let storeApi: { value?: StoreApi };
-
-  // Before Hook
-  test.beforeEach(async ({ page }) => {
-    homePage = new HomePage(page);
-    registrationPage = new RegisterForm(page);
-    storeApi = captureStoreApi(page);
-
+  test.beforeEach(async ({ homePage }) => {
     await homePage.visitMainPage();
   });
 
-  test("Registration new user", async ({ page }) => {
+  test("Registration new user", async ({
+    page,
+    homePage,
+    registrationPage,
+  }) => {
     await homePage.clickOnSignIn();
     await homePage.openRegistrationPage();
     await registrationPage.fillCustomerData(
@@ -63,7 +55,13 @@ test.describe("Registration new user", { tag: "@frontends" }, () => {
     ).toBeVisible();
   });
 
-  test("Registration new user company", async ({ page, request }) => {
+  test("Registration new user company", async ({
+    page,
+    request,
+    storeApi,
+    homePage,
+    registrationPage,
+  }) => {
     await homePage.clickOnSignIn();
     await homePage.openRegistrationPage();
     test.skip(

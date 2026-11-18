@@ -1,5 +1,4 @@
-import type { CmsCustomerState } from "@shopware/cms-base-layer-react/client";
-
+import type { CmsCustomerState } from "@/cms/client";
 import type { StorefrontSession } from "@/features/session/types";
 
 const LOADING: CmsCustomerState = { status: "loading" };

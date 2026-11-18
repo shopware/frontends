@@ -29,6 +29,11 @@ export async function addChangelogBodyToReadmeFile(packageName: string) {
     const parsed = await parseChangelog(
       path.join(packagePath, CHANGELOG_FILENAME),
     );
+    const latest = parsed.versions[0];
+    if (!latest) {
+      console.log(`- Changelog for package ${packageName} has no versions.`);
+      return;
+    }
 
     const lastPackageReadmeFile = await fs.readFile(
       path.join(packagePath, "README.md"),
@@ -46,9 +51,9 @@ export async function addChangelogBodyToReadmeFile(packageName: string) {
       "",
       `Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/${packageName}/${CHANGELOG_FILENAME})`,
       "",
-      `### Latest changes: ${parsed.versions[0].title}`,
+      `### Latest changes: ${latest.title ?? latest.version}`,
       "",
-      parsed.versions[0].body,
+      latest.body,
       "",
     ];
 
@@ -57,7 +62,7 @@ export async function addChangelogBodyToReadmeFile(packageName: string) {
     await fs.writeFile(path.join(packagePath, "README.md"), finalContent);
 
     console.log(`+ Changelog for package ${packageName} added.`);
-  } catch (e) {
+  } catch {
     console.log(`- Changelog for package ${packageName} omitted.`);
   }
 }

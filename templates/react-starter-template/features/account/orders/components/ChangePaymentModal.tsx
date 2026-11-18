@@ -1,10 +1,10 @@
 "use client";
 
-import { BaseButton } from "@shopware/cms-base-layer-react/client";
 import { getTranslatedProperty } from "@shopware/helpers";
 import { useId, useState } from "react";
 
 import type { Schemas } from "#shopware";
+import { BaseButton } from "@/cms/client";
 import { Modal } from "@/components/Modal";
 import { useTranslations } from "@/i18n/I18nProvider";
 

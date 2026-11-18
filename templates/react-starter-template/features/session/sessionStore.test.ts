@@ -20,7 +20,7 @@ vi.mock("@/features/session/browserClient", () => ({
 }));
 
 const config: PublicShopwareConfig = {
-  endpoint: "https://shop.test/store-api/",
+  publicEndpoint: "https://shop.test/store-api/",
   accessToken: "SWSCTEST",
   devStorefrontUrl: null,
 };
@@ -246,6 +246,46 @@ describe("createSessionStore", () => {
       isLoggedIn: true,
     });
     expect(invoke).toHaveBeenCalledTimes(3);
+  });
+
+  it("lets a retry wait for a running login so its guest read cannot overwrite the login token", async () => {
+    silenceConsoleError();
+    const login = deferred<{ data: unknown; status: number }>();
+    let reads = 0;
+    const invoke = vi.fn(async (operation: string) => {
+      if (operation === LOGIN) return login.promise;
+      reads += 1;
+      if (reads === 2) throw new TypeError("Failed to fetch");
+      return { data: salesChannelContext(reads > 2 ? customer() : null) };
+    });
+    browser.createBrowserClient.mockReturnValue({
+      invoke,
+    } as unknown as ApiClient);
+    const store = createSessionStore();
+    await store.start();
+    await expect(store.refresh()).rejects.toThrow("Failed to fetch");
+    const actions = store.createActions(() => {}, testTranslator());
+
+    const loggingIn = actions.login({
+      username: "jane@example.com",
+      password: "secret",
+    });
+    await vi.waitFor(() =>
+      expect(invoke).toHaveBeenLastCalledWith(LOGIN, expect.anything()),
+    );
+    const retried = store.retry();
+    await Promise.resolve();
+    expect(invoke).toHaveBeenCalledTimes(3);
+
+    login.resolve({ data: {}, status: 200 });
+    await expect(loggingIn).resolves.toEqual({ ok: true });
+    await expect(retried).resolves.toMatchObject({ isLoggedIn: true });
+    expect(invoke.mock.calls.map(([operation]) => operation)).toEqual([
+      READ_CONTEXT,
+      READ_CONTEXT,
+      LOGIN,
+      READ_CONTEXT,
+    ]);
   });
 
   it("does not read again when retried with a ready session", async () => {

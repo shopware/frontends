@@ -1,7 +1,7 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import { Suspense } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { CmsActionsProvider } from "@/cms/client";
 import type { CartActionError } from "@/features/cart/cartErrors";
 import type { CartActionResult } from "@/features/cart/types";
 import {

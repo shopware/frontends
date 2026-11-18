@@ -5,6 +5,7 @@ import { cacheLife, cacheTag } from "next/cache";
 import type { Schemas, operations } from "#shopware";
 
 import { createShopwareClient } from "../client";
+import { notFoundOn404 } from "../errors";
 import { languageCacheTags } from "./cacheTags";
 import { cmsAssociations } from "./cmsAssociations";
 
@@ -20,16 +21,15 @@ export async function readCategory(
   cacheLife("catalog");
   cacheTag(...languageCacheTags(`sw:category:${navigationId}`, languageId));
 
-  const response = await createShopwareClient({ languageId }).invoke(
-    "readCategoryGet get /category/{navigationId}",
-    {
+  const response = await createShopwareClient({ languageId })
+    .invoke("readCategoryGet get /category/{navigationId}", {
       headers: { "sw-include-seo-urls": true },
       pathParams: { navigationId },
       query: {
         _criteria: encodeForQuery({ associations: cmsAssociations }),
       } as ReadCategoryGetQuery,
-    },
-  );
+    })
+    .catch(notFoundOn404);
 
   return response.data;
 }

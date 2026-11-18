@@ -1,14 +1,16 @@
 import type { Locator, Page } from "@playwright/test";
 
-import { selectCountry, selectFirstOptionIfPresent } from "../utils/form";
+import {
+  selectDefaultCountry,
+  selectFirstOptionIfPresent,
+} from "../utils/form";
+import type { StoreApi } from "../utils/store-api";
 
 export class CheckoutPage {
   readonly page: Page;
+  readonly storeApi: { value?: StoreApi };
   readonly goToCheckoutButton: Locator;
   readonly placeOrderButton: Locator;
-  readonly loginOnCheckoutButton: Locator;
-  readonly notCreateAccountCheck: Locator;
-  readonly salutation: Locator;
   readonly firstName: Locator;
   readonly lastName: Locator;
   readonly emailAdrdress: Locator;
@@ -17,22 +19,15 @@ export class CheckoutPage {
   readonly city: Locator;
   readonly country: Locator;
   readonly countryState: Locator;
-  readonly submitButton: Locator;
-  readonly termsBox: Locator;
   readonly termCheckbox: Locator;
   readonly dataProtectionCheckbox: Locator;
   readonly createAccountToggle: Locator;
   readonly passwordInput: Locator;
 
-  constructor(page: Page) {
+  constructor(page: Page, storeApi: { value?: StoreApi }) {
     this.page = page;
     this.goToCheckoutButton = page.getByTestId("checkout-cart-link");
     this.placeOrderButton = page.getByTestId("checkout-place-order-button");
-    this.loginOnCheckoutButton = page.getByTestId("checkout-sign-in-link");
-    this.notCreateAccountCheck = page.getByTestId(
-      "checkout-create-account-checkbox",
-    );
-    this.salutation = page.getByTestId("checkout-pi-salutation-select");
     this.firstName = page.getByTestId("checkout-pi-first-name-input");
     this.lastName = page.getByTestId("checkout-pi-last-name-input");
     this.emailAdrdress = page.getByTestId("checkout-pi-email-input");
@@ -41,8 +36,6 @@ export class CheckoutPage {
     this.city = page.getByTestId("checkout-pi-city-input");
     this.country = page.getByTestId("country-select");
     this.countryState = page.getByTestId("checkout-pi-state-input");
-    this.submitButton = page.getByTestId("checkout-pi-submit-button");
-    this.termsBox = page.getByTestId("checkout-terms-box");
     this.termCheckbox = page.getByTestId("checkout-t&c-checkbox-tos");
     this.dataProtectionCheckbox = page.getByTestId(
       "checkout-t&c-checkbox-data-protection",
@@ -51,10 +44,10 @@ export class CheckoutPage {
       "checkout-create-account-toggle",
     );
     this.passwordInput = page.getByTestId("checkout-pi-password-input");
+    this.storeApi = storeApi;
   }
 
   async goToCheckout() {
-    await this.page.waitForSelector("[data-testid='mini-cart-container']");
     await this.page
       .getByTestId("mini-cart-container")
       .waitFor({ state: "visible" });
@@ -84,17 +77,6 @@ export class CheckoutPage {
       .waitFor({ state: "visible", timeout: 45000 });
   }
 
-  async loginOnCheckout() {
-    await this.page.waitForLoadState();
-    await this.loginOnCheckoutButton.click();
-  }
-
-  /** The starter checks out as a guest by default, so there is nothing to untick. */
-  async checkNotCreateAccount() {
-    if ((await this.notCreateAccountCheck.count()) === 0) return;
-    await this.notCreateAccountCheck.check();
-  }
-
   /** Passing a password switches checkout from a guest order to an account. */
   async fillGuestUserData(
     firstName: string,
@@ -109,29 +91,13 @@ export class CheckoutPage {
       await this.createAccountToggle.click();
       await this.passwordInput.fill(password);
     }
-    await selectFirstOptionIfPresent(this.salutation);
     await this.firstName.fill(firstName);
     await this.lastName.fill(lastName);
     await this.emailAdrdress.fill(email);
     await this.street.fill(street);
     await this.zipcode.fill(zipcode);
     await this.city.fill(city);
-    await selectCountry(this.page, this.country, "Germany");
+    await selectDefaultCountry(this.page, this.country, this.storeApi);
     await selectFirstOptionIfPresent(this.countryState);
-
-    // Demo-store checkout has a Continue control that registers the guest
-    // before place-order. The starter registers as part of place-order, so
-    // skip when that button is not on the page.
-    if ((await this.submitButton.count()) === 0) return;
-
-    // Saving the address registers the guest; without that session
-    // /checkout/order answers 403 CUSTOMER_NOT_LOGGED_IN.
-    const guestRegistered = this.page.waitForResponse(
-      (response) =>
-        response.url().includes("/account/register") && response.ok(),
-      { timeout: 30000 },
-    );
-    await this.submitButton.click();
-    await guestRegistered;
   }
 }

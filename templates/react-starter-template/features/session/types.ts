@@ -12,7 +12,11 @@ export type StorefrontSession = {
 
 export type LoginInput = { username: string; password: string };
 
-export type RegistrationInput = Omit<
+type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
+  ? Omit<T, K>
+  : never;
+
+export type RegistrationInput = DistributiveOmit<
   operations["register post /account/register"]["body"],
   "storefrontUrl"
 >;
@@ -20,5 +24,6 @@ export type RegistrationInput = Omit<
 export type SessionActionResult = {
   ok: boolean;
   message?: string;
+  messages?: string[];
   doubleOptIn?: boolean;
 };

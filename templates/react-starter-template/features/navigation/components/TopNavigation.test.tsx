@@ -26,7 +26,7 @@ function node(overrides: Partial<NavigationNode>): NavigationNode {
     id: "node",
     name: "Node",
     href: "/node/",
-    external: false,
+    newTab: false,
     children: [],
     ...overrides,
   };
@@ -51,7 +51,7 @@ const tree: NavigationNode[] = [
     id: "blog",
     name: "Blog",
     href: "https://example.com/blog",
-    external: true,
+    newTab: true,
   }),
 ];
 
@@ -104,13 +104,12 @@ describe("TopNavigationPlaceholder", () => {
 });
 
 describe("TopNavigation", () => {
-  it("renders a labelled menubar with one menuitem link per top-level node", async () => {
+  it("renders a labelled navigation list with one link per top-level node", async () => {
     const html = await renderToHtml(<TopNavigation tree={tree} />);
 
     expect(html).toContain('aria-label="Main navigation"');
-    expect(html).toContain('role="menubar"');
-    expect(html.match(/role="none"/g)).toHaveLength(3);
-    expect(html.match(/role="menuitem"/g)).toHaveLength(3);
+    expect(html).not.toContain("role=");
+    expect(html).not.toContain("aria-haspopup");
     expect(anchors(html)).toHaveLength(3);
     expect(html).not.toContain("Shirts");
   });
@@ -119,19 +118,17 @@ describe("TopNavigation", () => {
     const html = await renderToHtml(<TopNavigation tree={[]} />);
 
     expect(html).toContain('aria-label="Main navigation"');
-    expect(html).toMatch(/<ul role="menubar" class="[^"]*min-h-12[^"]*">/);
+    expect(html).toMatch(/<ul class="[^"]*min-h-12[^"]*">/);
     expect(anchors(html)).toHaveLength(0);
   });
 
-  it("marks only nodes with children as popup triggers", async () => {
+  it("reports the expanded state only on nodes with children", async () => {
     const html = await renderToHtml(<TopNavigation tree={tree} />);
     const [clothing, food, blog] = anchors(html);
 
-    expect(clothing).toContain('aria-haspopup="true"');
     expect(clothing).toContain('aria-expanded="false"');
-    expect(food).not.toContain("aria-haspopup");
     expect(food).not.toMatch(/\saria-expanded="/);
-    expect(blog).not.toContain("aria-haspopup");
+    expect(blog).not.toMatch(/\saria-expanded="/);
   });
 
   it("opens external nodes in a new tab and internal nodes in the same tab", async () => {
@@ -162,7 +159,7 @@ describe("TopNavigation", () => {
 
   it("keeps the band on one scrollable row so the header height stays fixed", async () => {
     const html = await renderToHtml(<TopNavigation tree={tree} />);
-    const list = html.match(/<ul role="menubar" class="([^"]*)">/)?.[1] ?? "";
+    const list = html.match(/<ul class="([^"]*)">/)?.[1] ?? "";
 
     expect(list.split(" ")).toEqual(
       expect.arrayContaining([
@@ -172,9 +169,7 @@ describe("TopNavigation", () => {
       ]),
     );
     expect(list).not.toContain("flex-wrap");
-    expect(html.match(/<li role="none" class="flex shrink-0"/g)).toHaveLength(
-      3,
-    );
+    expect(html.match(/<li class="flex shrink-0"/g)).toHaveLength(3);
   });
 
   it("centers the top-level items on the ink band in uppercase with accent hover, active and focus states", async () => {
@@ -183,9 +178,7 @@ describe("TopNavigation", () => {
     expect(html).toMatch(
       /^<div class="relative bg-shell-ink text-shell-on-ink"/,
     );
-    expect(html).toMatch(
-      /<ul role="menubar" class="[^"]*justify-center[^"]*">/,
-    );
+    expect(html).toMatch(/<ul class="[^"]*justify-center[^"]*">/);
     for (const item of anchors(html)) {
       expect(item).toContain("whitespace-nowrap");
       expect(item).toContain("uppercase");
@@ -197,7 +190,7 @@ describe("TopNavigation", () => {
     }
   });
 
-  it("labels the menubar in Polish and marks the prefixed current page under the pl-PL provider", async () => {
+  it("labels the navigation in Polish and marks the prefixed current page under the pl-PL provider", async () => {
     route.pathname = "/pl-PL/Food";
     const polishTree = [
       node({ id: "clothing", name: "Odzież", href: "/pl-PL/Clothing/" }),

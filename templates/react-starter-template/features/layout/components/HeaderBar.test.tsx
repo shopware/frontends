@@ -1,7 +1,7 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { NotifyProvider } from "@/components/NotifyContext";
 import {
   cartView,
   fakeCart,
@@ -40,7 +40,7 @@ vi.mock("@/features/wishlist/useWishlist", async () => ({
     .useFakeWishlist,
 }));
 
-const actions = { notify: vi.fn() };
+const notify = vi.fn();
 
 beforeEach(() => {
   fakeCart.set(cartView({ status: "loading" }));
@@ -49,9 +49,9 @@ beforeEach(() => {
 
 function render(session?: StorefrontSession, menu: ReactNode = null) {
   const bar = (
-    <CmsActionsProvider actions={actions}>
+    <NotifyProvider notify={notify}>
       <HeaderBar menu={menu} />
-    </CmsActionsProvider>
+    </NotifyProvider>
   );
   return renderToHtml(
     session ? <SessionProvider session={session}>{bar}</SessionProvider> : bar,
@@ -106,6 +106,7 @@ describe("HeaderBar", () => {
     expect(html).not.toContain("mini-cart-container");
 
     expect(html).toContain('aria-label="Search"');
+    expect(html).not.toContain("-counter");
     expect(counters(html)).toBeNull();
   });
 
@@ -150,9 +151,9 @@ describe("HeaderBar", () => {
   it("shows the Polish labels under the icons under the pl-PL provider", async () => {
     const html = await renderToHtml(
       withI18n(
-        <CmsActionsProvider actions={actions}>
+        <NotifyProvider notify={notify}>
           <HeaderBar menu={null} />
-        </CmsActionsProvider>,
+        </NotifyProvider>,
         "pl-PL",
       ),
     );
@@ -168,9 +169,9 @@ describe("HeaderBar", () => {
   it("renders the Polish labels and the prefixed logo link under the pl-PL provider", async () => {
     const html = await renderToHtml(
       withI18n(
-        <CmsActionsProvider actions={actions}>
+        <NotifyProvider notify={notify}>
           <HeaderBar menu={null} />
-        </CmsActionsProvider>,
+        </NotifyProvider>,
         "pl-PL",
       ),
     );
@@ -194,7 +195,7 @@ describe("HeaderBar", () => {
     await render();
 
     expect(push).not.toHaveBeenCalled();
-    expect(actions.notify).not.toHaveBeenCalled();
+    expect(notify).not.toHaveBeenCalled();
   });
 
   it("gives every action control the same hit area and ink focus ring", async () => {
@@ -239,8 +240,10 @@ describe("HeaderBar", () => {
     const account = buttonWithTestId(html, "header-account-button");
     expect(account).toContain('data-logged-in="true"');
     expect(counters(html)).toHaveLength(2);
-    expect(html).toMatch(/bg-shell-accent [^>]*>3<\/span>/);
-    expect(html).toMatch(/bg-shell-accent [^>]*>2<\/span>/);
+    expect(html).toMatch(
+      /data-testid="header-wishlist-counter"[^>]*>3<\/span>/,
+    );
+    expect(html).toMatch(/data-testid="header-cart-counter"[^>]*>2<\/span>/);
   });
 
   it("renders a closed account disclosure for a logged-in customer", async () => {
@@ -270,7 +273,8 @@ describe("HeaderBar", () => {
     });
 
     expect(counters(html)).toHaveLength(1);
-    expect(html).toMatch(/bg-shell-accent [^>]*>1<\/span>/);
+    expect(html).not.toContain("header-wishlist-counter");
+    expect(html).toMatch(/data-testid="header-cart-counter"[^>]*>1<\/span>/);
   });
 
   it("shows the count useCart reports, not the number of line items", async () => {

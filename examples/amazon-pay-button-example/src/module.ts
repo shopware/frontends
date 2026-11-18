@@ -75,14 +75,14 @@ export default defineNuxtModule<AmazonPayModuleOptions>({
 
     // add server plugin
     addPlugin({
-      src: resolver.resolve(__dirname, "./runtime/plugins/amazon-pay"),
+      src: resolver.resolve("./runtime/plugins/amazon-pay"),
       mode: "all",
     });
     // add composables
-    addImportsDir(resolver.resolve(__dirname, "./runtime/composables"));
+    addImportsDir(resolver.resolve("./runtime/composables"));
     // add components to the global scope
     addComponentsDir({
-      path: resolver.resolve(__dirname, "./runtime/components"),
+      path: resolver.resolve("./runtime/components"),
       global: true,
     });
 

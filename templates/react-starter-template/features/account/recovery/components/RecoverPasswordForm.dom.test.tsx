@@ -1,7 +1,7 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { ApiClient } from "#shopware";
+import { CmsActionsProvider } from "@/cms/client";
 import { fakeClient } from "@/features/checkout/checkout.fixture";
 import type { FakeAnswer } from "@/features/checkout/checkout.fixture";
 import { deferred } from "@/features/checkout/checkoutTestDoubles";
@@ -60,7 +60,7 @@ function domains() {
 beforeEach(() => {
   vi.mocked(loadPublicConfig).mockReset();
   vi.mocked(loadPublicConfig).mockResolvedValue({
-    endpoint: "https://shop.test/store-api",
+    publicEndpoint: "https://shop.test/store-api",
     accessToken: "access-token",
     devStorefrontUrl: null,
   });

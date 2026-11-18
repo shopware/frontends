@@ -1,8 +1,8 @@
-import type { ListingSearchParams } from "@shopware/cms-base-layer-react";
 import type { Metadata } from "next";
 import { connection } from "next/server";
 import { Suspense } from "react";
 
+import type { ListingSearchParams } from "@/cms";
 import { NavigationPage } from "@/features/cms/components/NavigationPage";
 import { PageSkeleton } from "@/features/cms/components/PageSkeleton";
 import { localeFromParams } from "@/i18n/server";

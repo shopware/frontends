@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 
-import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
 import { SelectField } from "./SelectField";
@@ -47,41 +46,6 @@ describe("SelectField", () => {
 
     expect(optionTags(html)[0]).toBe('<option value="">Choose state</option>');
     expect(optionTags(html)).toHaveLength(3);
-  });
-
-  it("replaces the options with a disabled loading entry while loading", async () => {
-    const html = await renderToHtml(
-      <SelectField
-        id="state"
-        label="State"
-        placeholder="Choose state"
-        options={options}
-        loading
-      />,
-    );
-    const rendered = optionTags(html);
-
-    expect(rendered).toHaveLength(2);
-    expect(rendered[1]).toMatch(
-      /^<option (value="" disabled=""|disabled="" value="")>Loading\.\.\.<\/option>$/,
-    );
-    expect(html).not.toContain(">Private<");
-  });
-
-  it("translates the loading entry under the pl-PL provider", async () => {
-    const html = await renderToHtml(
-      withI18n(
-        <SelectField
-          id="state"
-          label="Województwo"
-          options={options}
-          loading
-        />,
-        "pl-PL",
-      ),
-    );
-
-    expect(optionTags(html)[0]).toMatch(/>Ładowanie\.\.\.<\/option>$/);
   });
 
   it("passes native attributes through to the select", async () => {

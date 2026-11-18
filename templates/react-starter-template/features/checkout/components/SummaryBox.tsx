@@ -1,7 +1,6 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
-
+import { cx } from "@/cms/client";
 import { CartTotals } from "@/features/cart/components/CartTotals";
 import { CheckoutProductTile } from "@/features/cart/components/CheckoutProductTile";
 import { PromotionCodeForm } from "@/features/cart/components/PromotionCodeForm";

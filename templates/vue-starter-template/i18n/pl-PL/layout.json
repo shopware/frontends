@@ -36,7 +36,9 @@
       "sidebar": "Panel boczny",
       "closeNotification": "Zamknij powiadomienie",
       "languageSwitcher": "Zmień język",
-      "currencySwitcher": "Zmień walutę"
+      "currencySwitcher": "Zmień walutę",
+      "guidedSetup": "Konfiguracja z przewodnikiem",
+      "contentSidebar": "Panel boczny treści"
     }
   }
 }

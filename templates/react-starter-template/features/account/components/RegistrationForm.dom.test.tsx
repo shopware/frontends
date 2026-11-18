@@ -1,9 +1,9 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import { Suspense, use, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Mock } from "vitest";
 
+import { NotifyProvider } from "@/components/NotifyContext";
 import type { RegistrationSettings } from "@/features/account/registrationSchema";
 import { anonymousSession } from "@/features/session/anonymousSession";
 import { SessionActionsProvider } from "@/features/session/components/SessionActionsContext";
@@ -21,6 +21,7 @@ import { withI18n } from "@/test/i18n";
 import {
   interact,
   mount,
+  pointerClick,
   query,
   queryAll,
   setInputValue,
@@ -124,12 +125,12 @@ async function setup(
   const notify = vi.fn();
   mounted = await mount(
     withI18n(
-      <CmsActionsProvider actions={{ notify }}>
+      <NotifyProvider notify={notify}>
         <SessionActionsProvider actions={actions}>
           <RegistrationForm countries={countries} {...props} />
           {sibling}
         </SessionActionsProvider>
-      </CmsActionsProvider>,
+      </NotifyProvider>,
       locale,
     ),
   );
@@ -169,8 +170,8 @@ async function chooseCountry(container: HTMLElement, name: string) {
   const option = queryAll<HTMLButtonElement>(container, '[role="option"]').find(
     (candidate) => candidate.textContent?.includes(name),
   );
-  expect(option).toBeDefined();
-  await interact(() => option?.click());
+  if (!option) throw new Error(`No option "${name}"`);
+  await pointerClick(option);
 }
 
 const personalData = {
@@ -333,6 +334,10 @@ describe("RegistrationForm in the browser", () => {
       registerMock(async () => ({
         ok: false,
         message: "The email address is already in use.",
+        messages: [
+          "The email address is already in use.",
+          "The ZIP code is invalid.",
+        ],
       })),
     );
 
@@ -380,6 +385,12 @@ describe("RegistrationForm in the browser", () => {
     );
     expect(submit.disabled).toBe(false);
     expect(submit.getAttribute("aria-busy")).toBe("false");
+    const alert = byTestId(container, "registration-form-error");
+    expect(alert.getAttribute("role")).toBe("alert");
+    expect([...alert.querySelectorAll("p")].map((p) => p.textContent)).toEqual([
+      "The email address is already in use.",
+      "The ZIP code is invalid.",
+    ]);
   });
 
   it("keeps the submit button focusable but ignores a second submit while the request runs", async () => {
@@ -408,9 +419,10 @@ describe("RegistrationForm in the browser", () => {
   it("stays busy until the redirect target has rendered", async () => {
     const route = deferred<void>();
     push.mockImplementation(() => routeLoad.start?.());
+    window.history.replaceState(null, "", "/account/login?redirect=%2Faccount");
     const { container, actions, submit, input } = await setup(
       registerMock(async () => ({ ok: true })),
-      { redirectUrl: "/account" },
+      {},
       <Suspense fallback={null}>
         <PendingRoute until={route.promise} />
       </Suspense>,
@@ -455,8 +467,11 @@ describe("RegistrationForm in the browser", () => {
 
     expect(actions.register).toHaveBeenCalledTimes(1);
     const payload = sentPayload(actions.register);
-    expect(payload.accountType).toBe("business");
-    expect(payload.vatIds).toEqual(["DE123456789"]);
+    expect(payload).toMatchObject({
+      accountType: "business",
+      company: "Acme GmbH",
+      vatIds: ["DE123456789"],
+    });
     expect(payload.billingAddress.company).toBe("Acme GmbH");
     expect(payload.billingAddress.countryId).toBe("country-pl");
   });
@@ -498,9 +513,12 @@ describe("RegistrationForm in the browser", () => {
 
     expect(actions.register).toHaveBeenCalledTimes(1);
     const payload = sentPayload(actions.register);
-    expect(payload.requestedGroupId).toBe("group-b2b");
-    expect(payload.accountType).toBe("business");
-    expect(payload.vatIds).toEqual(["DE123456789"]);
+    expect(payload).toMatchObject({
+      requestedGroupId: "group-b2b",
+      accountType: "business",
+      company: "Acme GmbH",
+      vatIds: ["DE123456789"],
+    });
     expect(payload.billingAddress.company).toBe("Acme GmbH");
   });
 
@@ -514,20 +532,7 @@ describe("RegistrationForm in the browser", () => {
     expect("requestedGroupId" in sentPayload(actions.register)).toBe(false);
   });
 
-  it("navigates to the redirect target after a completed registration", async () => {
-    const { container, form, input } = await setup(
-      registerMock(async () => ({ ok: true })),
-      { redirectUrl: "/account" },
-    );
-
-    await fill(input, { ...personalData, ...addressData });
-    await chooseCountry(container, "Poland");
-    await interact(() => submitForm(form));
-
-    expect(push).toHaveBeenCalledWith("/account");
-  });
-
-  it("follows the redirect query parameter without an explicit redirectUrl", async () => {
+  it("navigates to the redirect query parameter after a completed registration", async () => {
     window.history.replaceState(
       null,
       "",
@@ -543,6 +548,8 @@ describe("RegistrationForm in the browser", () => {
 
     expect(push).toHaveBeenCalledTimes(1);
     expect(push).toHaveBeenCalledWith("/Clothing/Men/");
+    expect(input("registration-email-input").value).toBe("");
+    expect(input("registration-password-input").value).toBe("");
   });
 
   it("navigates once when the session flips to logged in next to LoggedInRedirect", async () => {
@@ -575,11 +582,11 @@ describe("RegistrationForm in the browser", () => {
     mounted = await mount(
       <ControlledSession>
         <LoggedInRedirect />
-        <CmsActionsProvider actions={{ notify }}>
+        <NotifyProvider notify={notify}>
           <SessionActionsProvider actions={{ register }}>
             <RegistrationForm countries={countries} />
           </SessionActionsProvider>
-        </CmsActionsProvider>
+        </NotifyProvider>
       </ControlledSession>,
     );
     const { container } = mounted;
@@ -618,6 +625,53 @@ describe("RegistrationForm in the browser", () => {
     );
     expect(error("firstName")).toBeNull();
     expect(push).not.toHaveBeenCalled();
+  });
+
+  it("clears a business form after every double opt-in and scrolls the notice into view", async () => {
+    const { container, actions, form, input, error } = await setup(
+      registerMock(async () => ({ ok: true, doubleOptIn: true })),
+    );
+    const scroll = vi.spyOn(
+      query<HTMLOutputElement>(container, "output"),
+      "scrollIntoView",
+    );
+
+    for (const round of [1, 2]) {
+      await interact(() =>
+        setSelectValue(
+          byTestId<HTMLSelectElement>(
+            container,
+            "registration-account-type-select",
+          ),
+          "business",
+        ),
+      );
+      await fill(input, {
+        ...personalData,
+        ...addressData,
+        "registration-company-input": "Acme GmbH",
+      });
+      await chooseCountry(container, "Poland");
+      await interact(() => submitForm(form));
+
+      expect(actions.register).toHaveBeenCalledTimes(round);
+      expect(actions.register.mock.calls[round - 1]?.[0].accountType).toBe(
+        "business",
+      );
+      expect(scroll).toHaveBeenCalledTimes(round);
+      expect(input("registration-first-name-input").value).toBe("");
+      expect(
+        byTestId<HTMLSelectElement>(
+          container,
+          "registration-account-type-select",
+        ).value,
+      ).toBe("private");
+      expect(
+        container.querySelector('[data-testid="registration-company-input"]'),
+      ).toBeNull();
+      expect(error("company")).toBeNull();
+      expect(error("firstName")).toBeNull();
+    }
   });
 
   it("clears a company-only form after every double opt-in and scrolls the notice into view", async () => {
@@ -722,9 +776,14 @@ describe("RegistrationForm in Polish", () => {
   });
 
   it("navigates to the prefixed redirect target after a completed registration", async () => {
+    window.history.replaceState(
+      null,
+      "",
+      "/pl-PL/account/login?redirect=%2Faccount",
+    );
     const { container, form, input } = await setup(
       registerMock(async () => ({ ok: true })),
-      { redirectUrl: "/account" },
+      {},
       null,
       "pl-PL",
     );
@@ -962,11 +1021,11 @@ describe("RegistrationForm with the shop settings in the browser", () => {
     const register = registerMock();
     mounted = await mount(
       withI18n(
-        <CmsActionsProvider actions={{ notify: vi.fn() }}>
+        <NotifyProvider notify={vi.fn()}>
           <SessionActionsProvider actions={{ register }}>
             <RefreshedRegistrationForm />
           </SessionActionsProvider>
-        </CmsActionsProvider>,
+        </NotifyProvider>,
       ),
     );
     const { container } = mounted;

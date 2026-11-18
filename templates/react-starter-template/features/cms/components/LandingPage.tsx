@@ -1,13 +1,12 @@
-import { CmsPage } from "@shopware/cms-base-layer-react";
 import { getTranslatedProperty } from "@shopware/helpers";
 
+import { CmsPage } from "@/cms";
 import { Breadcrumbs } from "@/features/navigation/components/Breadcrumbs";
 import type { Locale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/server";
 import { readCategoryNavigation } from "@/platform/cms/categoryNavigation";
 import { createStorefrontCmsContext } from "@/platform/cms/context";
 import { getSiteUrl } from "@/platform/seo/siteUrl";
-import { notFoundOn404 } from "@/platform/shopware/errors";
 import { readLandingPage } from "@/platform/shopware/reads/landingPage";
 import { resolveContentLanguage } from "@/platform/shopware/reads/languages";
 
@@ -22,9 +21,7 @@ export async function LandingPage({
   locale,
   languageId,
 }: LandingPageProps) {
-  const landingPage = await readLandingPage(landingPageId, languageId).catch(
-    notFoundOn404,
-  );
+  const landingPage = await readLandingPage(landingPageId, languageId);
   const [ctx, { contentLang }] = await Promise.all([
     createStorefrontCmsContext({
       locale,

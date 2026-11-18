@@ -1,8 +1,8 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
 import type { ReactNode, Ref } from "react";
 
+import { cx } from "@/cms/client";
 import { LocaleLink } from "@/components/LocaleLink";
 import { AccountPageHeader } from "@/features/account/components/AccountPageHeader";
 import {

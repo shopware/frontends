@@ -136,7 +136,7 @@ If you're developing locally and need customer registration to work, set `devSto
 Now that you have the Vue Starter Template set up, you can:
 
 - Explore the [CMS components](../concepts/shopping-experiences.html) to customize your content
-- Learn about [routing](../guides/routing.html) to handle dynamic pages
+- Learn about [routing](../frontends-recipes/context/url-resolving.html) to handle dynamic pages
 - Build [page elements](../guides/page-elements/) like navigation and product listings
 - Set up [e-commerce features](../guides/e-commerce/) like cart and checkout
 

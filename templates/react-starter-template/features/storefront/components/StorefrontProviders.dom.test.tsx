@@ -1,14 +1,14 @@
 import { encodeForQuery } from "@shopware/api-client/helpers";
-import { useCmsActions } from "@shopware/cms-base-layer-react/client";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+import type { ApiClient, Schemas } from "#shopware";
+import { useCmsActions } from "@/cms/client";
 import type {
   CmsActionResult,
   CmsCustomerState,
   CmsFindVariantResult,
   CmsNotification,
-} from "@shopware/cms-base-layer-react/client";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
-import type { ApiClient, Schemas } from "#shopware";
+} from "@/cms/client";
 import { cart, cartError, lineItem } from "@/features/cart/cart.fixture";
 import { useCart } from "@/features/cart/useCart";
 import { productReviewsCriteria } from "@/features/reviews/productReviewsApi";
@@ -56,7 +56,7 @@ vi.mock("next/navigation", () => ({
 vi.mock("@/features/session/browserClient", () => ({
   CONTEXT_TOKEN_COOKIE: "sw-context-token",
   loadPublicConfig: async (): Promise<PublicShopwareConfig> => ({
-    endpoint: "https://shop.test/store-api/",
+    publicEndpoint: "https://shop.test/store-api/",
     accessToken: "SWSCTEST",
     devStorefrontUrl: null,
   }),
@@ -251,7 +251,7 @@ describe("StorefrontProviders session", () => {
     expect(queryAll(container, MESSAGE)).toHaveLength(0);
   });
 
-  it("shows a failed login as one error toast", async () => {
+  it("leaves a failed login to the form and shows no toast", async () => {
     const results: SessionActionResult[] = [];
     mounted = await mount(
       <StorefrontProviders>
@@ -268,13 +268,8 @@ describe("StorefrontProviders session", () => {
     const message = testTranslator()(
       "errors.login_no_matching_customer_internal",
     );
-    expect(results[0]).toEqual({ ok: false, message });
-    const toasts = queryAll<HTMLParagraphElement>(container, MESSAGE);
-    expect(toasts).toHaveLength(1);
-    expect(toasts[0]?.textContent).toBe(message);
-    const toast = toastOf(toasts[0] as HTMLParagraphElement);
-    expect(toast.dataset.testid).toBe("notification-element-danger");
-    expect(toast.className).toContain("bg-states-error-container");
+    expect(results[0]).toEqual({ ok: false, message, messages: [message] });
+    expect(queryAll(container, MESSAGE)).toHaveLength(0);
   });
 });
 

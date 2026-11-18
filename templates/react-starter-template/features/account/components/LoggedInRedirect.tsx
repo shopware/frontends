@@ -21,15 +21,22 @@ export function LoggedInRedirect({
   const settled = useRef(false);
 
   useEffect(() => {
-    if (settled.current || status === "loading") return;
+    if (settled.current || status !== "ready") return;
     settled.current = true;
-    if (status !== "ready" || !isLoggedIn) return;
+    if (!isLoggedIn) return;
     router.replace(
       localePath(
         resolveRedirectFromSearch(window.location.search, null, fallback),
       ),
     );
   }, [status, isLoggedIn, router, localePath, fallback]);
+
+  useEffect(
+    () => () => {
+      settled.current = false;
+    },
+    [],
+  );
 
   return null;
 }

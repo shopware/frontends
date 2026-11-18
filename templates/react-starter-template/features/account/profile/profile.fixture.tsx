@@ -1,8 +1,8 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
-import type { CmsNotification } from "@shopware/cms-base-layer-react/client";
 import type { ReactNode } from "react";
 
 import type { Schemas } from "#shopware";
+import { CmsActionsProvider } from "@/cms/client";
+import type { CmsNotification } from "@/cms/client";
 import type { CheckoutClient } from "@/features/checkout/checkoutApi";
 import { ShopwareClientHarness } from "@/features/checkout/checkoutTestDoubles";
 import { SessionActionsProvider } from "@/features/session/components/SessionActionsContext";

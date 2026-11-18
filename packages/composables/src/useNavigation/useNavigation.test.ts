@@ -79,13 +79,15 @@ describe("useNavigation", () => {
       includes: { category: ["name"] },
     });
     expect(injections.apiClient.invoke).toHaveBeenCalledWith(
-      expect.stringContaining("readNavigationGet get"),
-      expect.objectContaining({
+      "readNavigationGet get /navigation/{activeId}/{rootId}",
+      {
+        headers: { "sw-include-seo-urls": true, "sw-context-token": "" },
+        pathParams: { activeId: "main-navigation", rootId: "main-navigation" },
         query: {
           _criteria: encodeForQuery({ includes: { category: ["name"] } }),
           depth: 2,
         },
-      }),
+      },
     );
   });
 });

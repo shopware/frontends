@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { ApiClient, Schemas } from "#shopware";
+import { NotifyProvider } from "@/components/NotifyContext";
+import type { Notify } from "@/components/NotifyContext";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
 import type { GetShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
 import type { Locale } from "@/i18n/config";
@@ -20,7 +22,6 @@ import {
   registrationInput,
   salesChannelContext,
 } from "../session.fixture";
-import type { SessionNotification } from "../sessionActions";
 import type { SessionActionResult, StorefrontSession } from "../types";
 import { useSessionActions } from "./SessionActionsContext";
 import type { SessionActions } from "./SessionActionsContext";
@@ -47,7 +48,7 @@ vi.mock("@/features/session/browserClient", () => ({
 }));
 
 const config: PublicShopwareConfig = {
-  endpoint: "https://shop.test/store-api/",
+  publicEndpoint: "https://shop.test/store-api/",
   accessToken: "SWSCTEST",
   devStorefrontUrl: null,
 };
@@ -136,16 +137,18 @@ afterEach(async () => {
 });
 
 async function setup(wrap: (node: ReactNode) => ReactNode = (node) => node) {
-  const notifications: SessionNotification[] = [];
+  const notifications: Parameters<Notify>[0][] = [];
   mounted = await mount(
     wrap(
-      <ShopwareSessionProvider
+      <NotifyProvider
         notify={(notification) => {
           notifications.push(notification);
         }}
       >
-        <Probe />
-      </ShopwareSessionProvider>,
+        <ShopwareSessionProvider>
+          <Probe />
+        </ShopwareSessionProvider>
+      </NotifyProvider>,
     ),
   );
   const { container } = mounted;
@@ -294,6 +297,20 @@ describe("ShopwareSessionProvider recovery", () => {
     expect(backend.invocations).toHaveLength(2);
   });
 
+  it("does not re-read a failed session while the tab is hidden", async () => {
+    const backend = createBackend(customer());
+    backend.failures.set(READ_CONTEXT, new TypeError("Failed to fetch"));
+    const { session } = await setup();
+    await vi.waitFor(() => expect(session().status).toBe("error"));
+
+    backend.failures.delete(READ_CONTEXT);
+    vi.spyOn(document, "visibilityState", "get").mockReturnValue("hidden");
+    await interact(() => document.dispatchEvent(new Event("visibilitychange")));
+
+    expect(session().status).toBe("error");
+    expect(backend.invocations).toHaveLength(1);
+  });
+
   it("does not re-read a session that is ready", async () => {
     const backend = createBackend();
     const { session } = await setup();
@@ -342,16 +359,14 @@ describe("ShopwareSessionProvider config failure", () => {
 
     const defaultMessage = testTranslator()("errors.message-default");
     await expect(run((actions) => actions.login(credentials))).resolves.toEqual(
-      { ok: false, message: defaultMessage },
+      { ok: false, message: defaultMessage, messages: [defaultMessage] },
     );
     await expect(run((actions) => actions.logout())).resolves.toEqual({
       ok: false,
       message: defaultMessage,
+      messages: [defaultMessage],
     });
-    expect(notifications).toEqual([
-      { type: "error", message: defaultMessage },
-      { type: "error", message: defaultMessage },
-    ]);
+    expect(notifications).toEqual([{ type: "error", message: defaultMessage }]);
   });
 
   it("retries the config and the first context read when an action runs after the failure", async () => {
@@ -439,7 +454,7 @@ describe("ShopwareSessionProvider actions", () => {
     expect(notifications).toEqual([]);
   });
 
-  it("notifies the resolved login error and resolves { ok: false }", async () => {
+  it("resolves the login error for the form without a toast", async () => {
     const backend = createBackend();
     backend.failures.set(
       LOGIN,
@@ -452,10 +467,10 @@ describe("ShopwareSessionProvider actions", () => {
       "errors.login_no_matching_customer_internal",
     );
     await expect(run((actions) => actions.login(credentials))).resolves.toEqual(
-      { ok: false, message },
+      { ok: false, message, messages: [message] },
     );
 
-    expect(notifications).toEqual([{ type: "error", message }]);
+    expect(notifications).toEqual([]);
     expect(session().isLoggedIn).toBe(false);
     expect(
       backend.invocations.filter(({ operation }) => operation === READ_CONTEXT),
@@ -634,7 +649,7 @@ describe("ShopwareSessionProvider client and refresh", () => {
       return <Probe />;
     }
     mounted = await mount(
-      <ShopwareSessionProvider notify={() => {}}>
+      <ShopwareSessionProvider>
         <ClientProbe />
       </ShopwareSessionProvider>,
     );
@@ -754,7 +769,7 @@ function LocaleSwitch({ initial }: { initial: Locale }) {
     localeHarness.setLocale = setLocale;
   }, []);
   return withI18n(
-    <ShopwareSessionProvider locale={locale} notify={() => {}}>
+    <ShopwareSessionProvider locale={locale}>
       <Probe />
     </ShopwareSessionProvider>,
     locale,
@@ -821,17 +836,18 @@ describe("ShopwareSessionProvider locale", () => {
 
   it("resolves action errors in the language of the page", async () => {
     createLanguageBackend();
-    const notifications: SessionNotification[] = [];
+    const notifications: Parameters<Notify>[0][] = [];
     mounted = await mount(
       withI18n(
-        <ShopwareSessionProvider
-          locale="de-DE"
+        <NotifyProvider
           notify={(notification) => {
             notifications.push(notification);
           }}
         >
-          <Probe />
-        </ShopwareSessionProvider>,
+          <ShopwareSessionProvider locale="de-DE">
+            <Probe />
+          </ShopwareSessionProvider>
+        </NotifyProvider>,
         "de-DE",
       ),
     );
@@ -846,8 +862,10 @@ describe("ShopwareSessionProvider locale", () => {
     const message = testTranslator("de-DE")(
       "errors.login_no_matching_customer_internal",
     );
-    await vi.waitFor(() => expect(result).toEqual({ ok: false, message }));
-    expect(notifications).toEqual([{ type: "error", message }]);
+    await vi.waitFor(() =>
+      expect(result).toEqual({ ok: false, message, messages: [message] }),
+    );
+    expect(notifications).toEqual([]);
   });
 });
 
@@ -867,7 +885,7 @@ function LanguagesProbe() {
 async function mountLanguages(locale: Locale) {
   mounted = await mount(
     withI18n(
-      <ShopwareSessionProvider locale={locale} notify={() => {}}>
+      <ShopwareSessionProvider locale={locale}>
         <LanguagesProbe />
       </ShopwareSessionProvider>,
       locale,
@@ -945,7 +963,7 @@ function ContentLanguageProbe() {
 async function mountContentLanguage(locale: Locale) {
   mounted = await mount(
     withI18n(
-      <ShopwareSessionProvider locale={locale} notify={() => {}}>
+      <ShopwareSessionProvider locale={locale}>
         <ContentLanguageProbe />
       </ShopwareSessionProvider>,
       locale,
@@ -1061,7 +1079,7 @@ describe("ShopwareSessionProvider currencies", () => {
   it("reads the currencies only on request, hands them to its children and switches the session currency", async () => {
     const backend = createCurrencyBackend();
     mounted = await mount(
-      <ShopwareSessionProvider notify={() => {}}>
+      <ShopwareSessionProvider>
         <CurrenciesProbe />
       </ShopwareSessionProvider>,
     );

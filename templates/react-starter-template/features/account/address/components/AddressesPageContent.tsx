@@ -1,12 +1,9 @@
 "use client";
 
-import {
-  BaseButton,
-  useCmsActions,
-} from "@shopware/cms-base-layer-react/client";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { Schemas } from "#shopware";
+import { BaseButton, useCmsActions } from "@/cms/client";
 import { AccountSectionHeader } from "@/features/account/components/AccountSectionHeader";
 import { useCustomer } from "@/features/account/customer/useCustomer";
 import { resolveApiErrorMessages } from "@/features/session/apiErrors";

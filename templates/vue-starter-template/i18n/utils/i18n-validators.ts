@@ -64,6 +64,8 @@ export const customValidators = () => {
         sameAs(other, otherName),
         getMessage("sameAs", { otherName }),
       ),
+    sameAsPassword: (other: unknown) =>
+      withMessage(sameAs(other), getMessage("newPasswordConfirm")),
     url: withMessage(url, getMessage("url")),
   };
 };

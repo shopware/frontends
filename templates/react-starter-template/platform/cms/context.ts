@@ -1,11 +1,6 @@
 import "server-only";
-import { createCmsContext } from "@shopware/cms-base-layer-react";
-import type {
-  CmsContext,
-  CmsTranslations,
-  CreateCmsContextInput,
-} from "@shopware/cms-base-layer-react";
-
+import { createCmsContext } from "@/cms";
+import type { CmsContext, CmsTranslations, CreateCmsContextInput } from "@/cms";
 import { localePrefix } from "@/i18n/config";
 import type { Locale } from "@/i18n/config";
 import { getMessagesFor } from "@/i18n/server";

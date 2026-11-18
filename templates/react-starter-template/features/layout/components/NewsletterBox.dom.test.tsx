@@ -1,10 +1,7 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
-import type {
-  CmsActions,
-  CmsNewsletterResult,
-} from "@shopware/cms-base-layer-react/client";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { CmsActionsProvider } from "@/cms/client";
+import type { CmsActions, CmsNewsletterResult } from "@/cms/client";
 import { withI18n } from "@/test/i18n";
 import {
   interact,
@@ -81,6 +78,28 @@ describe("NewsletterBox in the browser", () => {
     );
     expect(actions.subscribeNewsletter).not.toHaveBeenCalled();
     expect(actions.notify).not.toHaveBeenCalled();
+  });
+
+  it("ignores a second submit while the request runs", async () => {
+    let finish!: (result: { ok: boolean }) => void;
+    const subscribeNewsletter = vi.fn(
+      () =>
+        new Promise<{ ok: boolean }>((resolve) => {
+          finish = resolve;
+        }),
+    );
+    const { form, input } = await setup({ subscribeNewsletter });
+    const button = query<HTMLButtonElement>(form, 'button[type="submit"]');
+
+    await interact(() => setInputValue(input, "jane@example.com"));
+    await interact(() => submitForm(form));
+    await interact(() => submitForm(form));
+
+    expect(subscribeNewsletter).toHaveBeenCalledTimes(1);
+    expect(button.getAttribute("aria-busy")).toBe("true");
+
+    await interact(() => finish({ ok: true }));
+    expect(button.getAttribute("aria-busy")).toBe("false");
   });
 
   it("rejects a malformed address", async () => {
@@ -293,12 +312,32 @@ describe("NewsletterBox in the browser", () => {
     await interact(() => submitForm(form));
 
     expect(actions.subscribeNewsletter).toHaveBeenCalledTimes(1);
-    expect(button.disabled).toBe(true);
-    expect(input.disabled).toBe(true);
+    expect(button.getAttribute("aria-busy")).toBe("true");
+    expect(input.readOnly).toBe(true);
 
     await interact(() => finish({ ok: true, status: "direct" }));
 
-    expect(button.disabled).toBe(false);
+    expect(button.getAttribute("aria-busy")).toBe("false");
     expect(actions.notify).toHaveBeenCalledTimes(1);
+  });
+
+  it("reports a subscription the backend did not accept", async () => {
+    const { actions, form, input } = await setup({
+      subscribeNewsletter: vi.fn(async () => ({
+        ok: false,
+        message: "Forms are not connected to a session yet.",
+      })),
+    });
+
+    await interact(() => setInputValue(input, "jane@example.com"));
+    input.focus();
+    await interact(() => submitForm(form));
+
+    expect(actions.notify).toHaveBeenCalledWith({
+      type: "error",
+      message: "Forms are not connected to a session yet.",
+    });
+    expect(input.value).toBe("jane@example.com");
+    expect(document.activeElement).toBe(input);
   });
 });

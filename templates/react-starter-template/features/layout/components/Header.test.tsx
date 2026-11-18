@@ -60,7 +60,9 @@ function expectEveryNavigationRead(...args: unknown[]) {
 }
 
 function topLevelLink(html: string): string {
-  const match = html.match(/<a [^>]*role="menuitem"[^>]*>Clothing<\/a>/);
+  const match = html.match(
+    /<a [^>]*data-testid="header-navigation-link"[^>]*>Clothing<\/a>/,
+  );
   expect(match).not.toBeNull();
   return match?.[0] ?? "";
 }
@@ -85,7 +87,7 @@ describe("Header", () => {
     expect(resolveContentLanguage).toHaveBeenCalledWith("de-DE");
     expect(html).toContain('data-testid="meta-navigation"');
     expect(html.indexOf('data-testid="meta-navigation"')).toBeLessThan(
-      html.search(/role="menuitem"/),
+      html.search(/data-testid="header-navigation-link"/),
     );
     expectEveryNavigationRead("main-navigation", 2, "language-de");
     expect(html).toMatch(

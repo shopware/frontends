@@ -1,12 +1,9 @@
 "use client";
 
-import {
-  BaseButton,
-  useCmsActions,
-} from "@shopware/cms-base-layer-react/client";
 import { use, useCallback, useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 
+import { BaseButton, useCmsActions } from "@/cms/client";
 import { InputField } from "@/components/form/InputField";
 import { AccountPageHeader } from "@/features/account/components/AccountPageHeader";
 import { resolveApiErrorMessages } from "@/features/session/apiErrors";

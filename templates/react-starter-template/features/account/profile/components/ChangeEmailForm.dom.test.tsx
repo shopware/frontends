@@ -1,8 +1,8 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import { Suspense, use, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { CmsActionsProvider } from "@/cms/client";
 import { fakeCustomer } from "@/features/account/customer/fakeCustomer.fixture";
 import { fakeClient } from "@/features/checkout/checkout.fixture";
 import type { FakeAnswer } from "@/features/checkout/checkout.fixture";

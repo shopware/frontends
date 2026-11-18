@@ -1,8 +1,8 @@
 "use client";
 
-import { BaseButton } from "@shopware/cms-base-layer-react/client";
 import { useState } from "react";
 
+import { BaseButton } from "@/cms/client";
 import { LocaleLink } from "@/components/LocaleLink";
 import { CartTotals } from "@/features/cart/components/CartTotals";
 import { CheckoutProductTile } from "@/features/cart/components/CheckoutProductTile";

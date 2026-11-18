@@ -1,10 +1,10 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
 import { useCallback, useEffect, useId, useRef } from "react";
 import type { Ref } from "react";
 
 import type { Schemas } from "#shopware";
+import { cx } from "@/cms/client";
 import { LocaleLink } from "@/components/LocaleLink";
 import { AccountPageHeader } from "@/features/account/components/AccountPageHeader";
 import { PageSizeSelector } from "@/features/paging/components/PageSizeSelector";

@@ -1,9 +1,9 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
+import { cx } from "@/cms/client";
 import { LocaleLink } from "@/components/LocaleLink";
 import { useTranslations } from "@/i18n/I18nProvider";
 

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import type { ReactNode } from "react";
 
 import { StorefrontProviders } from "@/features/storefront/components/StorefrontProviders";
 import { locales } from "@/i18n/config";
@@ -37,7 +36,7 @@ export function generateStaticParams() {
 export default async function RootLayout({
   children,
   params,
-}: Readonly<{ children: ReactNode; params: Promise<{ locale: string }> }>) {
+}: LayoutProps<"/[locale]">) {
   const locale = await localeFromParams(params);
 
   return (

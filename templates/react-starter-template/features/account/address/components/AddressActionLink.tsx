@@ -1,7 +1,8 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
 import type { ReactNode } from "react";
+
+import { cx } from "@/cms/client";
 
 import { INACTIVE_CLASS } from "./addressButtonClasses";
 

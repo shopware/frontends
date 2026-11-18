@@ -1,14 +1,12 @@
 "use client";
 
-import {
-  BaseButton,
-  useCmsActions,
-} from "@shopware/cms-base-layer-react/client";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import type { FormEvent } from "react";
 
+import { BaseButton } from "@/cms/client";
 import { InputField } from "@/components/form/InputField";
+import { useNotify } from "@/components/NotifyContext";
 import {
   emptyLoginValues,
   validateLogin,
@@ -19,37 +17,31 @@ import { resolveRedirectFromSearch } from "@/features/account/redirect";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 
-const SIGN_UP_PATH = "/account/login#registration";
-
 type Touched = Partial<Record<keyof LoginValues, boolean>>;
 
 export type LoginFormProps = {
   idPrefix?: string;
-  hideSignUp?: boolean;
   hideHeading?: boolean;
-  redirectUrl?: string | null;
   onLoggedIn?: () => void;
 };
 
 export function LoginForm({
   idPrefix = "login",
-  hideSignUp = false,
   hideHeading = false,
-  redirectUrl = null,
   onLoggedIn,
 }: LoginFormProps) {
   const router = useRouter();
   const { login } = useSessionActions();
-  const { notify } = useCmsActions();
+  const notify = useNotify();
   const t = useTranslations();
   const localePath = useLocalePath();
   const [values, setValues] = useState<LoginValues>(emptyLoginValues);
   const [touched, setTouched] = useState<Touched>({});
   const [submitted, setSubmitted] = useState(false);
   const [pending, setPending] = useState(false);
-  const [failure, setFailure] = useState<string | null>(null);
   const [navigating, startNavigation] = useTransition();
   const [focusRequest, setFocusRequest] = useState(0);
+  const [formErrors, setFormErrors] = useState<string[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
 
   const busy = pending || navigating;
@@ -80,13 +72,18 @@ export function LoginForm({
     }
 
     setPending(true);
-    setFailure(null);
+    setFormErrors([]);
     try {
       const result = await login(values);
       if (!result.ok) {
-        if (onLoggedIn) setFailure(result.message ?? t("messages.error"));
+        setFormErrors(
+          result.messages ?? (result.message ? [result.message] : []),
+        );
         return;
       }
+      setValues(emptyLoginValues);
+      setTouched({});
+      setSubmitted(false);
       notify({
         type: "success",
         message: t("account.messages.loggedInSuccess"),
@@ -95,10 +92,7 @@ export function LoginForm({
         onLoggedIn();
         return;
       }
-      const target = resolveRedirectFromSearch(
-        window.location.search,
-        redirectUrl,
-      );
+      const target = resolveRedirectFromSearch(window.location.search);
       startNavigation(() => {
         router.push(localePath(target));
       });
@@ -159,10 +153,16 @@ export function LoginForm({
           error={errorFor("password")}
         />
         <ForgotPasswordLink />
-        {failure ? (
-          <p role="alert" className="text-sm text-states-error">
-            {failure}
-          </p>
+        {formErrors.length > 0 ? (
+          <div
+            role="alert"
+            data-testid="login-form-error"
+            className="text-sm text-states-error"
+          >
+            {formErrors.map((message) => (
+              <p key={message}>{message}</p>
+            ))}
+          </div>
         ) : null}
         <BaseButton
           type="submit"
@@ -174,15 +174,6 @@ export function LoginForm({
           {t("loginForm.submitButtonLabel")}
         </BaseButton>
       </form>
-      {hideSignUp ? null : (
-        <BaseButton
-          variant="secondary"
-          data-testid="login-sign-up-button"
-          onClick={() => router.push(localePath(SIGN_UP_PATH))}
-        >
-          {t("loginForm.signUpButtonLabel")}
-        </BaseButton>
-      )}
     </div>
   );
 }

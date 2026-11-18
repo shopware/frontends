@@ -2,6 +2,7 @@ const TECHNICAL_PREFIXES: Record<string, string> = {
   "frontend.navigation.page": "/navigation/",
   "frontend.detail.page": "/detail/",
   "frontend.landing.page": "/landingPage/",
+  "frontend.cms.page.full": "/page/cms/",
 };
 
 export function seoPathFrom(

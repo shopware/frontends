@@ -1,8 +1,4 @@
-import {
-  renderRichText,
-  richTextClassName,
-} from "@shopware/cms-base-layer-react";
-
+import { renderRichText, richTextClassName } from "@/cms";
 import { LoggedInRedirect } from "@/features/account/components/LoggedInRedirect";
 import { RegistrationForm } from "@/features/account/components/RegistrationForm";
 import { loadRegistrationReferences } from "@/features/account/registrationReferences";

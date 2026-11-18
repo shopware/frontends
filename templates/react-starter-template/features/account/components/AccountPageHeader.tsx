@@ -1,5 +1,6 @@
-import { cx } from "@shopware/cms-base-layer-react/client";
 import type { Ref } from "react";
+
+import { cx } from "@/cms/client";
 
 const HEADING_CLASS =
   "font-serif text-[40px] leading-15 text-surface-on-surface";

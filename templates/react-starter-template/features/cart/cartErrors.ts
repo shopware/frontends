@@ -1,6 +1,5 @@
-import type { CmsActionError } from "@shopware/cms-base-layer-react/client";
-
 import type { Schemas } from "#shopware";
+import type { CmsActionError } from "@/cms/client";
 
 type CartErrorMap = Exclude<
   NonNullable<Schemas["Cart"]["errors"]>,

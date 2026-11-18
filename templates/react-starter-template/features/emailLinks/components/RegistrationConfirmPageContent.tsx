@@ -1,9 +1,9 @@
 "use client";
 
-import { useCmsActions } from "@shopware/cms-base-layer-react/client";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef } from "react";
 
+import { useCmsActions } from "@/cms/client";
 import { useCart } from "@/features/cart/useCart";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import type { RegistrationConfirmResult } from "@/features/session/registrationConfirm";

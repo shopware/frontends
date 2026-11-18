@@ -1,13 +1,9 @@
 "use client";
 
-import {
-  BaseButton,
-  cx,
-  useCmsActions,
-} from "@shopware/cms-base-layer-react/client";
 import { useRef, useState } from "react";
 import type { FormEvent } from "react";
 
+import { BaseButton, cx, useCmsActions } from "@/cms/client";
 import { FieldLabel } from "@/components/form/FieldLabel";
 import { INPUT_CLASS } from "@/components/input";
 import {

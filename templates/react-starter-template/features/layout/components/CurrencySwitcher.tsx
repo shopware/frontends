@@ -1,10 +1,10 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { FocusEvent } from "react";
 
+import { cx } from "@/cms/client";
 import {
   CheckmarkIcon,
   ChevronDownIcon,

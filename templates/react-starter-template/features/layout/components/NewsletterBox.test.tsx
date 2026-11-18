@@ -1,7 +1,7 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
-import type { CmsActions } from "@shopware/cms-base-layer-react/client";
 import { describe, expect, it, vi } from "vitest";
 
+import { CmsActionsProvider } from "@/cms/client";
+import type { CmsActions } from "@/cms/client";
 import { testTranslator, withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 

@@ -1,7 +1,7 @@
-import { cx } from "@shopware/cms-base-layer-react/client";
 import { getTranslatedProperty } from "@shopware/helpers";
 
 import type { Schemas } from "#shopware";
+import { cx } from "@/cms/client";
 
 const ROW_CLASS =
   "self-stretch text-base leading-normal font-normal text-surface-on-surface";

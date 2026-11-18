@@ -1,8 +1,8 @@
 "use client";
 
-import { cx } from "@shopware/cms-base-layer-react/client";
 import type { MouseEvent } from "react";
 
+import { cx } from "@/cms/client";
 import { LocaleLink } from "@/components/LocaleLink";
 import { useTranslations } from "@/i18n/I18nProvider";
 

@@ -12,6 +12,7 @@ describe("getRouteFromPathInfo", () => {
     expect(isTechnicalPath("/navigation/123")).toBe(true);
     expect(isTechnicalPath("/detail/abc/")).toBe(true);
     expect(isTechnicalPath("/landingPage/landing-1")).toBe(true);
+    expect(isTechnicalPath("/page/cms/cms-page-1")).toBe(true);
   });
 
   it("returns false for non-technical path", () => {
@@ -39,6 +40,17 @@ describe("getRouteFromPathInfo", () => {
     });
   });
 
+  it("returns CMS page route info", () => {
+    expect(getRouteFromPathInfo("/page/cms/cms-page-1")).toEqual({
+      routeName: "frontend.cms.page.full",
+      foreignKey: "cms-page-1",
+    });
+  });
+
+  it("returns null for a CMS page path without an id", () => {
+    expect(getRouteFromPathInfo("/page/cms/")).toBeNull();
+  });
+
   it("normalizes trailing slash", () => {
     expect(getRouteFromPathInfo("/navigation/123/")).toEqual({
       routeName: "frontend.navigation.page",
@@ -60,6 +72,7 @@ describe("isTechnicalUrl", () => {
     "/detail/product-id?campaign=summer",
     "https://example.com/navigation/category-id#products",
     "landingPage/landing-id",
+    "https://example.com/page/cms/cms-page-id",
   ])("detects technical URL %s", (url) => {
     expect(isTechnicalUrl(url, "https://example.com")).toBe(true);
   });

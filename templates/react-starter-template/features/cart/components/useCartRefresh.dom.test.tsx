@@ -1,7 +1,7 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import { useEffect } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { CmsActionsProvider } from "@/cms/client";
 import { interact, mount } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 

@@ -1,15 +1,14 @@
 "use client";
 
-import { cx, useCmsActions } from "@shopware/cms-base-layer-react/client";
-import type { CmsNewsletterResult } from "@shopware/cms-base-layer-react/client";
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
+import { z } from "zod";
 
+import { cx, useCmsActions } from "@/cms/client";
+import type { CmsNewsletterResult } from "@/cms/client";
 import { SHELL_BUTTON_PRIMARY_CLASS } from "@/features/layout/shellButton";
 import { useTranslations } from "@/i18n/I18nProvider";
 import type { Translate } from "@/i18n/translate";
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const EMAIL_FIELD = "email";
 
@@ -18,17 +17,20 @@ type FocusRequest = { target: "input" | "button" };
 export function validateEmail(value: string, t: Translate): string | null {
   const trimmed = value.trim();
   if (!trimmed) return t("validations.required");
-  if (!EMAIL_PATTERN.test(trimmed)) return t("validations.email");
+  if (!z.email().safeParse(trimmed).success) return t("validations.email");
   return null;
 }
 
-function failureMessages(result: CmsNewsletterResult): {
+function failureMessages(
+  result: CmsNewsletterResult,
+  t: Translate,
+): {
   email: string | null;
   toasts: string[];
 } {
   const violations = result.violations ?? [];
   if (!violations.length) {
-    return { email: null, toasts: result.message ? [result.message] : [] };
+    return { email: null, toasts: [result.message || t("messages.error")] };
   }
   const email =
     violations.find(({ field }) => field === EMAIL_FIELD)?.message ?? null;
@@ -101,7 +103,7 @@ export function NewsletterBox({ className }: { className?: string }) {
         setFocusRequest({ target: "button" });
         return;
       }
-      const messages = failureMessages(result);
+      const messages = failureMessages(result, t);
       for (const message of messages.toasts) {
         actions.notify({ type: "error", message });
       }
@@ -155,7 +157,7 @@ export function NewsletterBox({ className }: { className?: string }) {
               autoComplete="email"
               placeholder={t("layout.footer.newsletter.placeholder")}
               value={email}
-              disabled={pending}
+              readOnly={pending}
               aria-invalid={error ? true : undefined}
               aria-describedby={error ? "newsletter-email-error" : undefined}
               data-testid="footer-newsletter-email-input"
@@ -164,7 +166,7 @@ export function NewsletterBox({ className }: { className?: string }) {
                 setServerError(null);
               }}
               onBlur={() => setTouched(true)}
-              className="w-full rounded-full border border-shell-ink/60 bg-surface-surface px-4 py-2.5 text-sm text-surface-on-surface placeholder:text-surface-on-surface-variant focus-visible:border-shell-ink focus-visible:ring-2 focus-visible:ring-shell-ink focus-visible:ring-offset-2 focus-visible:ring-offset-shell-sand focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-60 aria-invalid:border-states-error"
+              className="w-full rounded-full border border-shell-ink/60 bg-surface-surface px-4 py-2.5 text-sm text-surface-on-surface placeholder:text-surface-on-surface-variant focus-visible:border-shell-ink focus-visible:ring-2 focus-visible:ring-shell-ink focus-visible:ring-offset-2 focus-visible:ring-offset-shell-sand focus-visible:outline-hidden read-only:cursor-not-allowed read-only:opacity-60 aria-invalid:border-states-error"
             />
             {error ? (
               <p
@@ -179,11 +181,12 @@ export function NewsletterBox({ className }: { className?: string }) {
           <button
             ref={buttonRef}
             type="submit"
-            disabled={pending}
+            aria-busy={pending}
+            aria-disabled={pending || undefined}
             data-testid="footer-newsletter-submit-button"
             className={cx(
               SHELL_BUTTON_PRIMARY_CLASS,
-              "inline-flex shrink-0 items-center justify-center px-6 py-2.5 text-sm disabled:cursor-not-allowed disabled:opacity-60",
+              "inline-flex shrink-0 items-center justify-center px-6 py-2.5 text-sm aria-disabled:cursor-not-allowed aria-disabled:opacity-60",
             )}
           >
             {t("layout.footer.newsletter.button")}

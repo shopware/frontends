@@ -295,4 +295,4 @@ npm run preview
 
 <PageRef page="https://nuxt.com/docs/getting-started/layers" target="blank" title="Nuxt Layers Documentation" sub="Deep dive into Nuxt's layer system" />
 
-<PageRef page="../../packages/cms-base-layer.html#overwriting-components" title="Override CMS Components" sub="Customize CMS components from the base layer" />
+<PageRef page="../../packages/cms-base-layer.html#🔄-overwriting-components" title="Override CMS Components" sub="Customize CMS components from the base layer" />

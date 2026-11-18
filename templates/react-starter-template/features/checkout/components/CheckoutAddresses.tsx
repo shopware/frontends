@@ -1,11 +1,11 @@
 "use client";
 
-import { BaseButton, cx } from "@shopware/cms-base-layer-react/client";
 import { getTranslatedProperty } from "@shopware/helpers";
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 
 import type { Schemas } from "#shopware";
+import { BaseButton, cx } from "@/cms/client";
 import { LocaleLink } from "@/components/LocaleLink";
 import { useContentLang } from "@/i18n/ContentLanguageProvider";
 import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";

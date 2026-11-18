@@ -1,11 +1,8 @@
-"use client";
-
-import { cx } from "@shopware/cms-base-layer-react/client";
 import type { ComponentProps } from "react";
 
+import { cx } from "@/cms/client";
 import { ChevronDownIcon } from "@/components/icons";
 import { INPUT_CLASS } from "@/components/input";
-import { useTranslations } from "@/i18n/I18nProvider";
 
 import { FieldLabel } from "./FieldLabel";
 
@@ -20,7 +17,6 @@ export type SelectFieldProps = Omit<
   options: SelectOption[];
   optionsLang?: string;
   placeholder?: string;
-  loading?: boolean;
   error?: string;
   className?: string;
 };
@@ -31,13 +27,11 @@ export function SelectField({
   options,
   optionsLang,
   placeholder,
-  loading = false,
   error,
   className,
   required,
   ...rest
 }: SelectFieldProps) {
-  const t = useTranslations();
   return (
     <div className={className}>
       <FieldLabel htmlFor={id} label={label} required={required} />
@@ -53,21 +47,11 @@ export function SelectField({
           {placeholder !== undefined ? (
             <option value="">{placeholder}</option>
           ) : null}
-          {loading ? (
-            <option value="" disabled>
-              {t("form.loading")}
+          {options.map((option) => (
+            <option key={option.value} value={option.value} lang={optionsLang}>
+              {option.label}
             </option>
-          ) : (
-            options.map((option) => (
-              <option
-                key={option.value}
-                value={option.value}
-                lang={optionsLang}
-              >
-                {option.label}
-              </option>
-            ))
-          )}
+          ))}
         </select>
         <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-3 size-3 -translate-y-1/2 text-surface-on-surface-variant" />
       </div>

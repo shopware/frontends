@@ -47,6 +47,12 @@ describe("resolveRedirectTarget", () => {
     );
   });
 
+  it("refuses the login page itself", () => {
+    expect(resolveRedirectTarget("/account/login")).toBe("/");
+    expect(resolveRedirectTarget("/account/login/?redirect=%2F")).toBe("/");
+    expect(resolveRedirectTarget("/account/./login#registration")).toBe("/");
+  });
+
   it("uses the given fallback", () => {
     expect(resolveRedirectTarget(null, "/account")).toBe("/account");
     expect(resolveRedirectTarget("https://example.com", "/account")).toBe(

@@ -1,14 +1,11 @@
 "use client";
 
-import {
-  BaseButton,
-  useCmsActions,
-} from "@shopware/cms-base-layer-react/client";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 
 import type { Schemas } from "#shopware";
+import { BaseButton, useCmsActions } from "@/cms/client";
 import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
 import { useCustomer } from "@/features/account/customer/useCustomer";

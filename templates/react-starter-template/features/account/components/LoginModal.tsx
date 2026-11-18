@@ -1,7 +1,6 @@
 "use client";
 
-import { BaseButton } from "@shopware/cms-base-layer-react/client";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   createContext,
   useCallback,
@@ -13,8 +12,9 @@ import {
 } from "react";
 import type { ReactNode } from "react";
 
+import { BaseButton } from "@/cms/client";
 import { Modal } from "@/components/Modal";
-import { useTranslations } from "@/i18n/I18nProvider";
+import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 
 import { LoginForm } from "./LoginForm";
 
@@ -89,6 +89,8 @@ export function LoginModal() {
   const { open, settle } = useContext(LoginModalContext);
   const close = useCallback(() => settle(false), [settle]);
   const loggedIn = useCallback(() => settle(true), [settle]);
+  const router = useRouter();
+  const localePath = useLocalePath();
 
   return (
     <Modal
@@ -98,6 +100,15 @@ export function LoginModal() {
       onClose={close}
     >
       <LoginForm idPrefix="login-modal" hideHeading onLoggedIn={loggedIn} />
+      <BaseButton
+        variant="secondary"
+        block
+        className="mt-3"
+        data-testid="login-sign-up-button"
+        onClick={() => router.push(localePath("/account/login#registration"))}
+      >
+        {t("loginForm.signUpButtonLabel")}
+      </BaseButton>
       <BaseButton variant="ghost" block className="mt-3" onClick={close}>
         {t("account.loginModal.close")}
       </BaseButton>

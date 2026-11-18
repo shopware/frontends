@@ -67,3 +67,18 @@ export function pressKey(target: EventTarget, key: string): void {
 export function submitForm(form: HTMLFormElement): void {
   form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
 }
+
+export async function pointerClick(element: HTMLElement): Promise<void> {
+  await interact(() => {
+    const down = new MouseEvent("mousedown", {
+      bubbles: true,
+      cancelable: true,
+    });
+    element.dispatchEvent(down);
+    if (!down.defaultPrevented) element.focus();
+  });
+  await interact(() => {
+    element.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
+    element.click();
+  });
+}

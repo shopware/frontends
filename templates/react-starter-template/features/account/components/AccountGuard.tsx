@@ -1,10 +1,10 @@
 "use client";
 
-import { useCmsActions } from "@shopware/cms-base-layer-react/client";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import type { ReactNode } from "react";
 
+import { useCmsActions } from "@/cms/client";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";

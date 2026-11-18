@@ -1,12 +1,8 @@
-import {
-  CmsPage,
-  buildListingQueryParams,
-  hasListingQuery,
-} from "@shopware/cms-base-layer-react";
-import type { ListingSearchParams } from "@shopware/cms-base-layer-react";
 import { getProductListingFromCmsPage } from "@shopware/helpers";
 
 import type { Schemas } from "#shopware";
+import { CmsPage, buildListingQueryParams, hasListingQuery } from "@/cms";
+import type { ListingSearchParams } from "@/cms";
 import { toBreadcrumbItems } from "@/features/navigation/breadcrumbs";
 import { Breadcrumbs } from "@/features/navigation/components/Breadcrumbs";
 import type { Locale } from "@/i18n/config";
@@ -14,7 +10,6 @@ import { getTranslator } from "@/i18n/server";
 import { readCategoryNavigation } from "@/platform/cms/categoryNavigation";
 import { createStorefrontCmsContext } from "@/platform/cms/context";
 import { getSiteUrl } from "@/platform/seo/siteUrl";
-import { notFoundOn404 } from "@/platform/shopware/errors";
 import { readBreadcrumbOrNothing } from "@/platform/shopware/reads/breadcrumb";
 import { readCategory } from "@/platform/shopware/reads/category";
 import { resolveContentLanguage } from "@/platform/shopware/reads/languages";
@@ -35,9 +30,7 @@ export async function NavigationPage({
   languageId,
   isHome = false,
 }: NavigationPageProps) {
-  const category = await readCategory(navigationId, languageId).catch(
-    notFoundOn404,
-  );
+  const category = await readCategory(navigationId, languageId);
   const cmsPage = category.cmsPage;
 
   const cmsListing = cmsPage

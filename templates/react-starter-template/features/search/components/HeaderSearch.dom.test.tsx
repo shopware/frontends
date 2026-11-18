@@ -1,8 +1,8 @@
-import { CmsActionsProvider } from "@shopware/cms-base-layer-react/client";
 import { act, useState } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { Schemas } from "#shopware";
+import { NotifyProvider } from "@/components/NotifyContext";
 import { fakeClient } from "@/features/checkout/checkout.fixture";
 import type { FakeAnswer } from "@/features/checkout/checkout.fixture";
 import {
@@ -138,7 +138,7 @@ async function setup({
   const notify = vi.fn();
   mounted = await mount(
     withI18n(
-      <CmsActionsProvider actions={{ notify }}>
+      <NotifyProvider notify={notify}>
         <ShopwareClientHarness client={shopware.client}>
           <ContentLanguageProvider lang={contentLang}>
             <ControlledSearch initial={initial} autoFocus={autoFocus} />
@@ -147,7 +147,7 @@ async function setup({
             </button>
           </ContentLanguageProvider>
         </ShopwareClientHarness>
-      </CmsActionsProvider>,
+      </NotifyProvider>,
       locale,
     ),
   );

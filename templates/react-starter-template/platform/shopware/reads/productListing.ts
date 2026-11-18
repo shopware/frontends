@@ -1,10 +1,11 @@
 import "server-only";
-import type { ListingQueryParams } from "@shopware/cms-base-layer-react";
 import { cacheLife, cacheTag } from "next/cache";
 
 import type { Schemas } from "#shopware";
+import type { ListingQueryParams } from "@/cms";
 
 import { createShopwareClient } from "../client";
+import { notFoundOn404 } from "../errors";
 import { languageCacheTags } from "./cacheTags";
 
 export async function readProductListing(
@@ -16,14 +17,13 @@ export async function readProductListing(
   cacheLife("listing");
   cacheTag(...languageCacheTags(`sw:category:${categoryId}`, languageId));
 
-  const response = await createShopwareClient({ languageId }).invoke(
-    "readProductListingGet get /product-listing/{categoryId}",
-    {
+  const response = await createShopwareClient({ languageId })
+    .invoke("readProductListingGet get /product-listing/{categoryId}", {
       headers: { "sw-include-seo-urls": true },
       pathParams: { categoryId },
       query,
-    },
-  );
+    })
+    .catch(notFoundOn404);
 
   return response.data;
 }

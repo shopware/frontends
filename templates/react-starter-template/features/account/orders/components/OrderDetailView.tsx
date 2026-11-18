@@ -1,14 +1,11 @@
 "use client";
 
 import { isTimeoutError } from "@shopware/api-client";
-import {
-  BaseButton,
-  useCmsActions,
-} from "@shopware/cms-base-layer-react/client";
 import { getShippingMethodDeliveryTime } from "@shopware/helpers";
 import { useEffect, useRef, useState } from "react";
 
 import type { Schemas } from "#shopware";
+import { BaseButton, useCmsActions } from "@/cms/client";
 import { cartNotifications } from "@/features/cart/components/useLineItemActions";
 import { useCart } from "@/features/cart/useCart";
 import { getPaymentMethods } from "@/features/checkout/checkoutApi";

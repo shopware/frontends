@@ -1,7 +1,7 @@
-import type { ListingSearchParams } from "@shopware/cms-base-layer-react";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
+import type { ListingSearchParams } from "@/cms";
 import { PageSkeleton } from "@/features/cms/components/PageSkeleton";
 import { SearchResults } from "@/features/search/components/SearchResults";
 import { normalizeSearchTerm } from "@/features/search/searchTerm";
