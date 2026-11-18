@@ -400,6 +400,10 @@ export const sidebar = [
             text: "Paypal",
             link: "/integrations/payments/paypal.html",
           },
+          {
+            text: "ShopwarePayments",
+            link: "/integrations/payments/shopware-payments.html",
+          },
         ],
       },
       {
