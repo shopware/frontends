@@ -192,6 +192,7 @@ test.describe("WebMCP agent tools", { tag: "@webmcp" }, () => {
       });
       products = result.products;
 
+      expect(result.hint).toBeUndefined();
       expect(products.length).toBeGreaterThan(0);
       for (const { price, priceFrom } of products) {
         expect(priceFrom ?? price).toBeLessThanOrEqual(maxPrice);
@@ -322,6 +323,23 @@ test.describe("WebMCP agent tools", { tag: "@webmcp" }, () => {
       const inCart = cart.items.map(({ productId }) => productId);
       expect(inCart).toContain(product.productId);
       expect(inCart).not.toContain(other.productId);
+    });
+
+    await test.step("a call that is still running does not move a shopper who opened checkout", async () => {
+      const release = await hold(page, "**/store-api/search**");
+      const search = callTool(page, "search_products", {
+        query: product.name,
+      });
+      await page.getByTestId("header-mini-cart-button").click();
+      await page.getByTestId("checkout-cart-link").click();
+      await expect(page).toHaveURL(/\/checkout$/);
+      release();
+
+      expect(await search).toEqual({
+        error: expect.stringContaining("left this page"),
+      });
+      await page.waitForTimeout(1000);
+      await expect(page).toHaveURL(/\/checkout$/);
     });
   });
 });

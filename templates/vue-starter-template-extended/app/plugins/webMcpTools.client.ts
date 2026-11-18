@@ -14,6 +14,8 @@ export default defineNuxtPlugin({
         (unref(currentRoute.value.meta.layout) ?? "default") === "default",
     );
 
-    registerWebMcpTools(webMcpTools, active);
+    return {
+      provide: { serveWebMcpTools: registerWebMcpTools(webMcpTools, active) },
+    };
   },
 });

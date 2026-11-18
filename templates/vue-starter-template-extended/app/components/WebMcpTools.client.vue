@@ -119,8 +119,9 @@ const cartLine = (id: string) =>
   );
 
 // The app loads the cart after it mounts. A tool can be called before that.
-async function loadCart() {
+async function loadCart(stop: AbortSignal) {
   if (!cart.value) await refreshCart();
+  stop.throwIfAborted();
 }
 
 function text(value: unknown, field: string) {
@@ -165,7 +166,20 @@ async function changeCart(write: () => Promise<unknown>) {
     return te(key) ? t(key, { ...error }) : error.message;
   });
   for (const message of warnings) pushWarning(message);
-  return warnings;
+  return fit(warnings, 300);
+}
+
+// Resolves when the next page has rendered, or after 5 seconds.
+function nextPage() {
+  return new Promise<void>((resolve) => {
+    const timer = setTimeout(done, 5000);
+    const unhook = nuxtApp.hooks.hookOnce("page:finish", done);
+    function done() {
+      clearTimeout(timer);
+      unhook();
+      resolve();
+    }
+  });
 }
 
 // Opens the page with the same filters and order, so the shopper sees the same
@@ -174,24 +188,29 @@ async function showListing(
   path: string,
   query: Record<string, string | number | undefined>,
   listing: Schemas["ProductListingResult"],
+  stop: AbortSignal,
 ) {
   const to = {
     path: localePath(path),
     query: { ...query, order: listing.sorting },
   };
-  const rendered = new Promise<void>((resolve) => {
-    if (router.resolve(to).path === router.currentRoute.value.path) {
-      return resolve();
-    }
-    nuxtApp.hooks.hookOnce("page:finish", () => resolve());
-    setTimeout(resolve, 5000);
-  });
+  const target = router.resolve(to);
+  // A shopper who went on to the cart or checkout stays there.
+  stop.throwIfAborted();
+  const rendered =
+    target.path === router.currentRoute.value.path ? undefined : nextPage();
   await navigateTo(to);
-  await rendered;
+  const shown = router.currentRoute.value.fullPath === target.fullPath;
+  if (shown) await rendered;
   return {
     total: listing.total,
     currency: currency.value?.isoCode,
     products: fit(listing.elements.map(productSummary), 1300),
+    ...(shown
+      ? {}
+      : {
+          hint: "The shopper opened another page, so this list is not on screen.",
+        }),
     ...(listing.total
       ? {}
       : {
@@ -217,8 +236,8 @@ async function currentProductId() {
   throw new Error("The shopper is not on a product page. Pass a productId.");
 }
 
-useWebMcpToolHandlers({
-  async search_products(input) {
+const handlers = {
+  async search_products(input, stop) {
     const search = text(input.query, "query");
     const minPrice = price(input.minPrice, "minPrice");
     const maxPrice = price(input.maxPrice, "maxPrice");
@@ -226,11 +245,12 @@ useWebMcpToolHandlers({
     const { data } = await apiClient.invoke("searchPage post /search", {
       headers: { "sw-include-seo-urls": true },
       body: { search, limit: 10, ...filters },
+      fetchOptions: { signal: stop },
     });
-    return showListing("/search", { search, ...filters }, data);
+    return showListing("/search", { search, ...filters }, data, stop);
   },
 
-  async browse_category(input) {
+  async browse_category(input, stop) {
     const name = text(input.category, "category").toLowerCase();
     const menu = await loadCategories();
     const category = menu.find(
@@ -254,9 +274,10 @@ useWebMcpToolHandlers({
         headers: { "sw-include-seo-urls": true },
         pathParams: { categoryId: category.id },
         body: { limit: 10, ...filters },
+        fetchOptions: { signal: stop },
       },
     );
-    return showListing(getCategoryUrl(category), filters, data);
+    return showListing(getCategoryUrl(category), filters, data, stop);
   },
 
   async get_product(input) {
@@ -305,10 +326,10 @@ useWebMcpToolHandlers({
     return cartSummary();
   },
 
-  async update_cart_item(input) {
+  async update_cart_item(input, stop) {
     const id = productId(input.productId);
     const quantity = count(input.quantity, "quantity", 0);
-    await loadCart();
+    await loadCart(stop);
     const line = cartLine(id);
     if (!line) {
       throw new Error(
@@ -323,15 +344,21 @@ useWebMcpToolHandlers({
     return { ...cartSummary(), warnings };
   },
 
-  async go_to_checkout() {
-    await loadCart();
+  async go_to_checkout(_input, stop) {
+    await loadCart(stop);
     if (isEmpty.value) {
       throw new Error("The cart is empty. Add a product first.");
     }
     await navigateTo(localePath("/checkout"));
     return { url: localePath("/checkout") };
   },
-} satisfies Record<WebMcpToolName, WebMcpToolHandler>);
+} satisfies Record<WebMcpToolName, WebMcpToolHandler>;
+
+let stopServing = () => {};
+onMounted(() => {
+  stopServing = nuxtApp.$serveWebMcpTools(handlers);
+});
+onBeforeUnmount(() => stopServing());
 </script>
 
 <template>

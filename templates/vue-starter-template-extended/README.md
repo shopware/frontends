@@ -156,11 +156,11 @@ How it works:
 - `app/plugins/webMcpTools.client.ts` registers the tools when the app starts. An agent sees them before the page hydrates, and a call made that early waits for the page.
 - `app/utils/webMcpTools.ts` is the list an agent sees: names, titles, descriptions and inputs.
 - `app/components/WebMcpTools.client.vue` holds what each tool does. `app/layouts/default.vue` adds it to the starter's default layout.
-- `app/composables/useWebMcpTools.ts` runs the calls one at a time, with a 30 second limit. A call cancelled before its turn does not run.
+- `app/composables/useWebMcpTools.ts` runs the calls one at a time and answers each one within 30 seconds. When a call is cancelled, runs out of time, or the shopper goes on to checkout, it stops before its next change to the cart or the page.
 
-To add a tool, describe it in the list and write its handler in the component. The typecheck fails when the two do not match.
+To add a tool, describe it in the list and write its handler in the component. The typecheck fails when the two do not match. `pnpm test` runs the unit tests for the call queue.
 
-A problem comes back as `{ "error": "..." }` with a next step, because the browser hides thrown errors from the agent. Lists are cut so that an answer stays under 1,500 characters, as Chrome advises, and `total` gives the full count. Browsers without WebMCP ignore all of this.
+A problem comes back as `{ "error": "..." }` with a next step, because the browser hides thrown errors from the agent. Lists and error texts are cut so that an answer stays under 1,500 characters, as Chrome advises, and `total` gives the full count. Browsers without WebMCP ignore all of this.
 
 Checked with Chrome 157 and the WebMCP draft of 13 November 2026.
 
