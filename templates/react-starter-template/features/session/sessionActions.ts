@@ -38,7 +38,7 @@ export function createSessionActions({
     error: unknown,
     context?: ApiErrorContext,
   ): SessionActionResult {
-    const messages = resolveApiErrorMessages(error, context);
+    const messages = [...new Set(resolveApiErrorMessages(error, context))];
     return { ok: false, message: messages[0], messages };
   }
 

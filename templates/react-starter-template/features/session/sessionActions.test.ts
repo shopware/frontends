@@ -194,6 +194,22 @@ describe("createSessionActions().register", () => {
     expect(refreshSession).not.toHaveBeenCalled();
   });
 
+  it("resolves a registration error shared by several fields once", async () => {
+    const { actions } = setup(
+      rejectWith(
+        apiClientError([
+          { code: "VIOLATION::IS_BLANK_ERROR" },
+          { code: "VIOLATION::IS_BLANK_ERROR" },
+        ]),
+      ),
+    );
+
+    const result = await actions.register(registrationInput);
+
+    expect(result).toMatchObject({ ok: false });
+    expect(result.messages).toHaveLength(1);
+  });
+
   it("stays ok when the refresh after a successful registration fails", async () => {
     const { actions, refreshSession } = setup(() => customer({ active: true }));
     refreshSession.mockRejectedValueOnce(new Error("context down"));
