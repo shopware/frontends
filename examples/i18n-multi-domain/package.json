@@ -11,11 +11,11 @@
   },
   "dependencies": {
     "nuxt": "4.6.4",
-    "vue": "3.5.44"
+    "vue": "3.5.45"
   },
   "devDependencies": {
     "@nuxtjs/i18n": "10.4.0",
-    "@unocss/nuxt": "66.10.5",
+    "@unocss/nuxt": "66.13.0",
     "typescript": "5.9.3"
   }
 }
