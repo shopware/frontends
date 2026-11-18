@@ -1454,6 +1454,9 @@ importers:
       html-react-parser:
         specifier: 6.1.9
         version: 6.1.9(@types/react@19.3.0)(react@19.3.1)
+      js-cookie:
+        specifier: 3.0.8
+        version: 3.0.8
       next:
         specifier: 16.4.5
         version: 16.4.5(@babel/core@7.29.7(supports-color@10.2.2))(@playwright/test@1.65.0)(@types/node@24.19.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.89.2)
@@ -1469,6 +1472,9 @@ importers:
       xss:
         specifier: 1.0.17
         version: 1.0.17
+      zod:
+        specifier: 4.6.6
+        version: 4.6.6
     devDependencies:
       '@shopware/api-gen':
         specifier: canary
@@ -1476,6 +1482,9 @@ importers:
       '@tailwindcss/postcss':
         specifier: 4.3.4
         version: 4.3.4
+      '@types/js-cookie':
+        specifier: 3.0.6
+        version: 3.0.6
       '@types/node':
         specifier: 24.19.0
         version: 24.19.0
@@ -1485,6 +1494,9 @@ importers:
       '@types/react-dom':
         specifier: 19.3.0
         version: 19.3.0(@types/react@19.3.0)
+      happy-dom:
+        specifier: 21.0.4
+        version: 21.0.4
       oxfmt:
         specifier: 0.78.0
         version: 0.78.0(@astrojs/compiler-rs@0.5.2)

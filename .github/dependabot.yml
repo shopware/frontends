@@ -36,7 +36,6 @@ updates:
         update-types:
           - "version-update:semver-minor"
           - "version-update:semver-patch"
-    ignore: []
     groups:
       nuxt-vue:
         applies-to: "version-updates"
