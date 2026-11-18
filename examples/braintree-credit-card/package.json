@@ -17,10 +17,10 @@
     "@shopware/api-gen": "canary",
     "@shopware/composables": "canary",
     "@shopware/nuxt-module": "canary",
-    "@unocss/nuxt": "66.10.5",
+    "@unocss/nuxt": "66.13.0",
     "braintree-web-drop-in": "^1.46.0",
     "nuxt": "4.6.4",
-    "vue-tsc": "3.3.11",
+    "vue-tsc": "3.3.14",
     "oxfmt": "0.78.0",
     "oxlint": "1.93.0"
   }
