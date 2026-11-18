@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
 /// <reference types="@types/web-bluetooth" />
+/// <reference path="../vueuse-temporal.d.ts" />
 
 interface ImportMetaEnv {
   readonly VITE_SHOPWARE_API: string;
