@@ -32,7 +32,7 @@ Install ShopwarePayments and enable the payment methods for the sales channel. T
 
 ## Load the library
 
-Load the library with a `<script>` tag from the production host `headless.shopware-payments.services.shopware.io`.
+Load the library with a `<script>` tag from the production host `headless.shopware-payments.services.shopware.io`. The library is loaded with a `<script>` tag rather than an npm package so that payment compliance updates, security patches, and provider integrations can be delivered without redeploying the storefront.
 
 Pin the major with `/headless/v1/`. That alias is updated with each compatible release, so the page receives fixes without a breaking change. This guide is written for **1.0.0**. That release ships PayPal, Pay Later, Apple Pay, Google Pay, card fields, and `handlePayment`.
 
@@ -46,6 +46,14 @@ Pin the major with `/headless/v1/`. That alias is updated with each compatible r
 ```
 
 <!-- /automd -->
+
+`window.ShopwarePayments` is the only global, with `VERSION`, `init`, and `ShopwarePaymentsError`.
+
+## Versioning
+
+- Dependabot and Renovate do not update a `<script>` tag, so the version in the URL changes only when you edit it.
+- Releases within a major stay backward compatible. Breaking changes ship only in a new major, and older versions keep being served.
+- Moving to the next major means changing the URL, for example from `/headless/v1/` to `/headless/v2/`.
 
 ## Initialize
 
@@ -62,6 +70,8 @@ Call `window.ShopwarePayments.init()` after the script loads. Pass the shopper's
 | `storeApi.accessKey`    | Sales channel Store API access key                                                                                                             |
 | `storeApi.contextToken` | Shopper's current `sw-context-token`                                                                                                           |
 | `currencyCode`          | Active currency ISO code, such as `EUR`                                                                                                        |
+
+The examples import types from `./snippet-context`, which is a docs-only declaration to copy ([snippet-context.ts](https://github.com/shopware/frontends/blob/main/examples/docs-code-examples/src/generated/integrations/payments/shopware-payments/snippet-context.ts)). Official `.d.ts` types and an API reference are coming but not published yet.
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/shopware-payments/init-inputs.ts" code lang="ts" no-name -->
 
@@ -738,5 +748,5 @@ document.getElementById("card-pay")?.addEventListener("click", () => {
 ## Not supported yet
 
 ::: warning
-**Pay upon Invoice (PUI)**, the **express button**, and **vaulting** are **not supported yet**. Support for them is coming soon.
+**Pay upon Invoice (PUI)**, the **express button**, and **vaulting** are **not supported yet**. Support for them is coming soon. **PUI** and **vaulting** are planned for the next major version of ShopwarePayments, so they stay unsupported on the current major.
 :::
