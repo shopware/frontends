@@ -22,22 +22,26 @@
     "@shopware/helpers": "canary",
     "defu": "6.1.7",
     "html-react-parser": "6.1.9",
+    "js-cookie": "3.0.8",
     "next": "16.4.5",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "scule": "1.3.0",
-    "xss": "1.0.17"
+    "xss": "1.0.17",
+    "zod": "4.6.6"
   },
   "devDependencies": {
     "@shopware/api-gen": "canary",
     "@tailwindcss/postcss": "4.3.4",
+    "@types/js-cookie": "3.0.6",
     "@types/node": "24.19.0",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "happy-dom": "21.0.4",
     "oxfmt": "0.78.0",
     "oxlint": "1.93.0",
     "tailwindcss": "4.3.4",
     "typescript": "7.0.2",
-    "vitest": "5.0.5"
+    "vitest": "5.1.0"
   }
 }

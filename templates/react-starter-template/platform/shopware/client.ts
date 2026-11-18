@@ -3,12 +3,12 @@ import { createAPIClient } from "@shopware/api-client";
 
 import type { ApiClient, operations } from "#shopware";
 
-const DEMO_ENDPOINT = "https://demo-frontends.shopware.store/store-api/";
-const DEMO_ACCESS_TOKEN = "SWSCNWDGMUWZM0TLVUU0YKLQVW";
+import { getShopwareConfig } from "./config";
 
 export function createShopwareClient(): ApiClient {
+  const { endpoint, accessToken } = getShopwareConfig();
   return createAPIClient<operations>({
-    baseURL: process.env.SHOPWARE_ENDPOINT || DEMO_ENDPOINT,
-    accessToken: process.env.SHOPWARE_ACCESS_TOKEN || DEMO_ACCESS_TOKEN,
+    baseURL: endpoint,
+    accessToken,
   });
 }

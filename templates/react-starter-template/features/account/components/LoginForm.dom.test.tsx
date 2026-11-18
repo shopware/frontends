@@ -1,0 +1,299 @@
+import { Suspense, use, useEffect, useState } from "react";
+import type { ReactNode } from "react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+import { NotifyProvider } from "@/components/NotifyContext";
+import { SessionActionsProvider } from "@/features/session/components/SessionActionsContext";
+import type { SessionActions } from "@/features/session/components/SessionActionsContext";
+import type { SessionActionResult } from "@/features/session/types";
+import {
+  interact,
+  mount,
+  query,
+  setInputValue,
+  submitForm,
+} from "@/test/mount";
+import type { Mounted } from "@/test/mount";
+
+import { LoginForm } from "./LoginForm";
+
+const navigation = vi.hoisted(() => ({
+  push: vi.fn(),
+  startRouteLoad: undefined as (() => void) | undefined,
+}));
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ push: navigation.push }),
+}));
+
+let mounted: Mounted | undefined;
+
+beforeEach(() => {
+  navigation.push.mockReset();
+  window.history.replaceState(null, "", "/account/login");
+});
+
+afterEach(async () => {
+  await mounted?.unmount();
+  mounted = undefined;
+});
+
+function PendingRoute({ until }: { until: Promise<void> }) {
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    navigation.startRouteLoad = () => setLoading(true);
+    return () => {
+      navigation.startRouteLoad = undefined;
+    };
+  }, []);
+  if (loading) use(until);
+  return null;
+}
+
+function deferred<T>() {
+  let resolve!: (value: T) => void;
+  const promise = new Promise<T>((settle) => {
+    resolve = settle;
+  });
+  return { promise, resolve };
+}
+
+async function setup(
+  overrides: Partial<SessionActions> = {},
+  sibling: ReactNode = null,
+) {
+  const actions = {
+    login: vi.fn(async () => ({ ok: false })),
+    ...overrides,
+  };
+  const notify = vi.fn();
+  mounted = await mount(
+    <NotifyProvider notify={notify}>
+      <SessionActionsProvider actions={actions}>
+        <LoginForm />
+        {sibling}
+      </SessionActionsProvider>
+    </NotifyProvider>,
+  );
+  const { container } = mounted;
+  return {
+    actions,
+    notify,
+    container,
+    form: query<HTMLFormElement>(container, '[data-testid="login-form"]'),
+    submit: query<HTMLButtonElement>(
+      container,
+      '[data-testid="login-submit-button"]',
+    ),
+    email: query<HTMLInputElement>(
+      container,
+      '[data-testid="login-email-input"]',
+    ),
+    password: query<HTMLInputElement>(
+      container,
+      '[data-testid="login-password-input"]',
+    ),
+    error: (id: string) => container.querySelector(`#${id}-error`),
+  };
+}
+
+describe("LoginForm in the browser", () => {
+  it("rejects an empty submission without calling the port", async () => {
+    const { actions, notify, form, email, error } = await setup();
+
+    await interact(() => submitForm(form));
+
+    expect(error("login-username")?.textContent).toBe("Value is required");
+    expect(error("login-password")?.textContent).toBe("Value is required");
+    expect(email.getAttribute("aria-invalid")).toBe("true");
+    expect(email.getAttribute("aria-describedby")).toBe("login-username-error");
+    expect(document.activeElement).toBe(email);
+    expect(actions.login).not.toHaveBeenCalled();
+    expect(notify).not.toHaveBeenCalled();
+    expect(navigation.push).not.toHaveBeenCalled();
+  });
+
+  it("moves focus to the password when only the password is invalid", async () => {
+    const { actions, form, email, password } = await setup();
+
+    await interact(() => setInputValue(email, "jane@example.com"));
+    await interact(() => submitForm(form));
+
+    expect(actions.login).not.toHaveBeenCalled();
+    expect(document.activeElement).toBe(password);
+  });
+
+  it("validates a field once it is left", async () => {
+    const { email, error } = await setup();
+
+    await interact(() => setInputValue(email, "jane"));
+    expect(error("login-username")).toBeNull();
+
+    await interact(() =>
+      email.dispatchEvent(new FocusEvent("focusout", { bubbles: true })),
+    );
+    expect(error("login-username")?.textContent).toBe(
+      "Value is not a valid email address",
+    );
+  });
+
+  it("calls the port with the credentials, leaves the toast to the action and keeps the error in the form", async () => {
+    const { actions, notify, container, form, email, password, submit } =
+      await setup({
+        login: vi.fn(async () => ({
+          ok: false,
+          message: "Invalid credentials.",
+        })),
+      });
+
+    await interact(() => setInputValue(email, "jane@example.com"));
+    await interact(() => setInputValue(password, "secret"));
+    await interact(() => submitForm(form));
+
+    expect(actions.login).toHaveBeenCalledTimes(1);
+    expect(actions.login).toHaveBeenCalledWith({
+      username: "jane@example.com",
+      password: "secret",
+    });
+    expect(notify).not.toHaveBeenCalled();
+    expect(navigation.push).not.toHaveBeenCalled();
+    expect(email.value).toBe("jane@example.com");
+    expect(password.value).toBe("secret");
+    expect(submit.getAttribute("aria-busy")).toBe("false");
+    const alert = query(container, '[data-testid="login-form-error"]');
+    expect(alert.getAttribute("role")).toBe("alert");
+    expect(alert.textContent).toBe("Invalid credentials.");
+  });
+
+  it("confirms a successful login, clears the credentials and goes home", async () => {
+    const { notify, container, form, email, password } = await setup({
+      login: vi.fn(async () => ({ ok: true })),
+    });
+
+    await interact(() => setInputValue(email, "jane@example.com"));
+    await interact(() => setInputValue(password, "secret"));
+    await interact(() => submitForm(form));
+
+    expect(notify).toHaveBeenCalledWith({
+      type: "success",
+      message: "You have been logged in successfully.",
+    });
+    expect(navigation.push).toHaveBeenCalledWith("/");
+    expect(email.value).toBe("");
+    expect(password.value).toBe("");
+    expect(email.hasAttribute("aria-invalid")).toBe(false);
+    expect(
+      container.querySelector('[data-testid="login-form-error"]'),
+    ).toBeNull();
+  });
+
+  it("follows a same-origin redirect query parameter", async () => {
+    window.history.replaceState(
+      null,
+      "",
+      "/account/login?redirect=%2FClothing%2FMen%2F",
+    );
+    const { form, email, password } = await setup({
+      login: vi.fn(async () => ({ ok: true })),
+    });
+
+    await interact(() => setInputValue(email, "jane@example.com"));
+    await interact(() => setInputValue(password, "secret"));
+    await interact(() => submitForm(form));
+
+    expect(navigation.push).toHaveBeenCalledWith("/Clothing/Men/");
+  });
+
+  it("ignores an off-site redirect and the login page itself", async () => {
+    for (const redirect of [
+      "https%3A%2F%2Fexample.com",
+      "%2Faccount%2Flogin",
+    ]) {
+      window.history.replaceState(
+        null,
+        "",
+        `/account/login?redirect=${redirect}`,
+      );
+      const { email, password, form } = await setup({
+        login: vi.fn(async () => ({ ok: true })),
+      });
+
+      await interact(() => setInputValue(email, "jane@example.com"));
+      await interact(() => setInputValue(password, "secret"));
+      await interact(() => submitForm(form));
+      expect(navigation.push).toHaveBeenCalledWith("/");
+
+      await mounted?.unmount();
+      mounted = undefined;
+      navigation.push.mockReset();
+    }
+  });
+
+  it("keeps the submit button focusable but ignores a second submit while the request runs", async () => {
+    const request = deferred<SessionActionResult>();
+    const login = vi.fn<SessionActions["login"]>(() => request.promise);
+    const { submit, email, password } = await setup({ login });
+
+    await interact(() => setInputValue(email, "jane@example.com"));
+    await interact(() => setInputValue(password, "secret"));
+    await interact(() => submit.click());
+
+    expect(login).toHaveBeenCalledTimes(1);
+    expect(submit.getAttribute("aria-busy")).toBe("true");
+    expect(submit.getAttribute("aria-disabled")).toBe("true");
+    expect(submit.disabled).toBe(false);
+
+    await interact(() => submit.click());
+    expect(login).toHaveBeenCalledTimes(1);
+
+    await interact(() => request.resolve({ ok: false }));
+    expect(submit.getAttribute("aria-busy")).toBe("false");
+    expect(submit.getAttribute("aria-disabled")).toBeNull();
+  });
+
+  it("stays busy until the redirect target has rendered", async () => {
+    const route = deferred<void>();
+    navigation.push.mockImplementation(() => navigation.startRouteLoad?.());
+    const login = vi.fn<SessionActions["login"]>(async () => ({ ok: true }));
+    const { notify, submit, email, password } = await setup(
+      { login },
+      <Suspense fallback={null}>
+        <PendingRoute until={route.promise} />
+      </Suspense>,
+    );
+
+    await interact(() => setInputValue(email, "jane@example.com"));
+    await interact(() => setInputValue(password, "secret"));
+    await interact(() => submit.click());
+
+    expect(navigation.push).toHaveBeenCalledWith("/");
+    expect(submit.getAttribute("aria-busy")).toBe("true");
+    expect(submit.getAttribute("aria-disabled")).toBe("true");
+
+    await interact(() => submit.click());
+    expect(login).toHaveBeenCalledTimes(1);
+    expect(notify).toHaveBeenCalledTimes(1);
+
+    await interact(() => route.resolve());
+    expect(submit.getAttribute("aria-busy")).toBe("false");
+    expect(submit.getAttribute("aria-disabled")).toBeNull();
+  });
+
+  it("reports an unexpected thrown login error", async () => {
+    const { notify, form, email, password } = await setup({
+      login: vi.fn(async () => {
+        throw new Error("Service unavailable");
+      }),
+    });
+
+    await interact(() => setInputValue(email, "jane@example.com"));
+    await interact(() => setInputValue(password, "secret"));
+    await interact(() => submitForm(form));
+
+    expect(notify).toHaveBeenCalledWith({
+      type: "error",
+      message: "Service unavailable",
+    });
+    expect(navigation.push).not.toHaveBeenCalled();
+  });
+});

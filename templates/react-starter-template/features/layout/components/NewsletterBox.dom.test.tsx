@@ -1,0 +1,149 @@
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { CmsActionsProvider } from "@/cms/client";
+import type { CmsActions } from "@/cms/client";
+import {
+  interact,
+  mount,
+  query,
+  setInputValue,
+  submitForm,
+} from "@/test/mount";
+import type { Mounted } from "@/test/mount";
+
+import { NewsletterBox } from "./NewsletterBox";
+
+let mounted: Mounted | undefined;
+
+afterEach(async () => {
+  await mounted?.unmount();
+  mounted = undefined;
+});
+
+async function setup(overrides: Partial<CmsActions> = {}) {
+  const actions = {
+    subscribeNewsletter: vi.fn(async () => ({ ok: true })),
+    notify: vi.fn(),
+    ...overrides,
+  };
+  mounted = await mount(
+    <CmsActionsProvider actions={actions}>
+      <NewsletterBox />
+    </CmsActionsProvider>,
+  );
+  const { container } = mounted;
+  return {
+    actions,
+    form: query<HTMLFormElement>(container, "form"),
+    input: query<HTMLInputElement>(container, "input#newsletter-email"),
+    error: () =>
+      container.querySelector('[role="alert"]#newsletter-email-error'),
+  };
+}
+
+describe("NewsletterBox in the browser", () => {
+  it("rejects an empty submission and points the input at the error", async () => {
+    const { actions, form, input, error } = await setup();
+
+    await interact(() => submitForm(form));
+
+    expect(error()?.textContent).toBe("Value is required");
+    expect(input.getAttribute("aria-invalid")).toBe("true");
+    expect(input.getAttribute("aria-describedby")).toBe(
+      "newsletter-email-error",
+    );
+    expect(actions.subscribeNewsletter).not.toHaveBeenCalled();
+    expect(actions.notify).not.toHaveBeenCalled();
+  });
+
+  it("ignores a second submit while the request runs", async () => {
+    let finish!: (result: { ok: boolean }) => void;
+    const subscribeNewsletter = vi.fn(
+      () =>
+        new Promise<{ ok: boolean }>((resolve) => {
+          finish = resolve;
+        }),
+    );
+    const { form, input } = await setup({ subscribeNewsletter });
+    const button = query<HTMLButtonElement>(form, 'button[type="submit"]');
+
+    await interact(() => setInputValue(input, "jane@example.com"));
+    await interact(() => submitForm(form));
+    await interact(() => submitForm(form));
+
+    expect(subscribeNewsletter).toHaveBeenCalledTimes(1);
+    expect(button.getAttribute("aria-busy")).toBe("true");
+
+    await interact(() => finish({ ok: true }));
+    expect(button.getAttribute("aria-busy")).toBe("false");
+  });
+
+  it("rejects a malformed address", async () => {
+    const { actions, form, input, error } = await setup();
+
+    await interact(() => setInputValue(input, "foo"));
+    await interact(() => submitForm(form));
+
+    expect(error()?.textContent).toBe("Value is not a valid email address");
+    expect(input.getAttribute("aria-invalid")).toBe("true");
+    expect(actions.subscribeNewsletter).not.toHaveBeenCalled();
+  });
+
+  it("subscribes a valid address, confirms it and clears the field", async () => {
+    const { actions, form, input, error } = await setup();
+
+    await interact(() => setInputValue(input, " jane@example.com "));
+    await interact(() => submitForm(form));
+
+    expect(actions.subscribeNewsletter).toHaveBeenCalledWith({
+      email: "jane@example.com",
+      option: "subscribe",
+    });
+    expect(actions.notify).toHaveBeenCalledWith({
+      type: "success",
+      message: "Thank you! We have signed up your address.",
+    });
+    expect(input.value).toBe("");
+    expect(error()).toBeNull();
+    expect(input.hasAttribute("aria-invalid")).toBe(false);
+    expect(input.disabled).toBe(false);
+  });
+
+  it("keeps the address and reports a failed subscription", async () => {
+    const { actions, form, input } = await setup({
+      subscribeNewsletter: vi.fn(async () => {
+        throw new Error("Service unavailable");
+      }),
+    });
+
+    await interact(() => setInputValue(input, "jane@example.com"));
+    await interact(() => submitForm(form));
+
+    expect(actions.notify).toHaveBeenCalledWith({
+      type: "error",
+      message: "Service unavailable",
+    });
+    expect(input.value).toBe("jane@example.com");
+    expect(input.disabled).toBe(false);
+  });
+
+  it("reports a subscription the backend did not accept", async () => {
+    const { actions, form, input } = await setup({
+      subscribeNewsletter: vi.fn(async () => ({
+        ok: false,
+        message: "Forms are not connected to a session yet.",
+      })),
+    });
+
+    await interact(() => setInputValue(input, "jane@example.com"));
+    input.focus();
+    await interact(() => submitForm(form));
+
+    expect(actions.notify).toHaveBeenCalledWith({
+      type: "error",
+      message: "Forms are not connected to a session yet.",
+    });
+    expect(input.value).toBe("jane@example.com");
+    expect(document.activeElement).toBe(input);
+  });
+});
