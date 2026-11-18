@@ -2,7 +2,29 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import ts from "typescript";
+import type {
+  CallExpression,
+  Expression,
+  NoSubstitutionTemplateLiteral,
+  Node,
+  PropertyAssignment,
+  SourceFile,
+  StringLiteral,
+} from "typescript/unstable/ast";
+import {
+  isCallExpression,
+  isConditionalExpression,
+  isExportDeclaration,
+  isExternalModuleReference,
+  isIdentifier,
+  isImportDeclaration,
+  isLiteralTypeNode,
+  isNoSubstitutionTemplateLiteral,
+  isParenthesizedExpression,
+  isPropertyAssignment,
+  isStringLiteral,
+} from "typescript/unstable/ast/is";
+import { API } from "typescript/unstable/sync";
 import { describe, expect, it } from "vitest";
 
 import { locales } from "./config";
@@ -50,88 +72,95 @@ function sourceFiles(): string[] {
   ];
 }
 
-function literalTexts(node: ts.Expression): string[] {
-  if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) {
+function literalTexts(node: Expression): string[] {
+  if (isStringLiteral(node) || isNoSubstitutionTemplateLiteral(node)) {
     return [node.text];
   }
-  if (ts.isParenthesizedExpression(node)) return literalTexts(node.expression);
-  if (ts.isConditionalExpression(node)) {
+  if (isParenthesizedExpression(node)) return literalTexts(node.expression);
+  if (isConditionalExpression(node)) {
     return [...literalTexts(node.whenTrue), ...literalTexts(node.whenFalse)];
   }
   return [];
 }
 
-function isTranslateCall(node: ts.CallExpression): boolean {
+function isTranslateCall(node: CallExpression): boolean {
   const callee = node.expression;
-  if (ts.isIdentifier(callee)) return TRANSLATE_CALLEES.has(callee.text);
+  if (isIdentifier(callee)) return TRANSLATE_CALLEES.has(callee.text);
   return (
-    ts.isCallExpression(callee) &&
-    ts.isIdentifier(callee.expression) &&
+    isCallExpression(callee) &&
+    isIdentifier(callee.expression) &&
     TRANSLATOR_FACTORIES.has(callee.expression.text)
   );
 }
 
-function isKeyProperty(node: ts.Node): node is ts.PropertyAssignment & {
-  initializer: ts.StringLiteral | ts.NoSubstitutionTemplateLiteral;
+function isKeyProperty(
+  node: Node,
+  source: SourceFile,
+): node is PropertyAssignment & {
+  initializer: StringLiteral | NoSubstitutionTemplateLiteral;
 } {
   return (
-    ts.isPropertyAssignment(node) &&
-    node.name.getText().endsWith("Key") &&
-    (ts.isStringLiteral(node.initializer) ||
-      ts.isNoSubstitutionTemplateLiteral(node.initializer)) &&
+    isPropertyAssignment(node) &&
+    node.name.getText(source).endsWith("Key") &&
+    (isStringLiteral(node.initializer) ||
+      isNoSubstitutionTemplateLiteral(node.initializer)) &&
     KEY_SHAPE.test(node.initializer.text)
   );
 }
 
-function isModuleSpecifier(node: ts.Node): boolean {
+function isModuleSpecifier(node: Node): boolean {
   const { parent } = node;
   return (
-    ts.isImportDeclaration(parent) ||
-    ts.isExportDeclaration(parent) ||
-    ts.isExternalModuleReference(parent) ||
-    ts.isLiteralTypeNode(parent)
+    isImportDeclaration(parent) ||
+    isExportDeclaration(parent) ||
+    isExternalModuleReference(parent) ||
+    isLiteralTypeNode(parent)
   );
 }
 
 function collectKeyUses(namespaces: Set<string>): KeyUse[] {
   const uses: KeyUse[] = [];
-  for (const file of sourceFiles()) {
-    const source = ts.createSourceFile(
-      file,
-      readFileSync(file, "utf8"),
-      ts.ScriptTarget.Latest,
-      true,
-      file.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
-    );
-    const at = (node: ts.Node) =>
-      `${relative(ROOT, file)}:${source.getLineAndCharacterOfPosition(node.getStart()).line + 1}`;
-    const visit = (node: ts.Node) => {
-      if (
-        ts.isCallExpression(node) &&
-        isTranslateCall(node) &&
-        node.arguments[0]
-      ) {
-        for (const key of literalTexts(node.arguments[0])) {
-          uses.push({ key, at: at(node), fromCall: true });
+  const api = new API({ cwd: ROOT });
+  try {
+    const tsconfig = join(ROOT, "tsconfig.json");
+    const { program } = api
+      .updateSnapshot({ openProjects: [tsconfig] })
+      .getProject(tsconfig)!;
+    for (const file of sourceFiles()) {
+      const source = program.getSourceFile(file);
+      if (!source)
+        throw new Error(`${relative(ROOT, file)} is not in the program`);
+      const at = (node: Node) =>
+        `${relative(ROOT, file)}:${source.getLineAndCharacterOfPosition(node.getStart(source)).line + 1}`;
+      const visit = (node: Node) => {
+        if (
+          isCallExpression(node) &&
+          isTranslateCall(node) &&
+          node.arguments[0]
+        ) {
+          for (const key of literalTexts(node.arguments[0])) {
+            uses.push({ key, at: at(node), fromCall: true });
+          }
+        } else if (isKeyProperty(node, source)) {
+          uses.push({
+            key: node.initializer.text,
+            at: at(node),
+            fromCall: false,
+          });
+        } else if (
+          (isStringLiteral(node) || isNoSubstitutionTemplateLiteral(node)) &&
+          !isModuleSpecifier(node) &&
+          KEY_SHAPE.test(node.text) &&
+          namespaces.has(node.text.split(".", 1)[0] ?? "")
+        ) {
+          uses.push({ key: node.text, at: at(node), fromCall: false });
         }
-      } else if (isKeyProperty(node)) {
-        uses.push({
-          key: node.initializer.text,
-          at: at(node),
-          fromCall: false,
-        });
-      } else if (
-        (ts.isStringLiteral(node) ||
-          ts.isNoSubstitutionTemplateLiteral(node)) &&
-        !isModuleSpecifier(node) &&
-        KEY_SHAPE.test(node.text) &&
-        namespaces.has(node.text.split(".", 1)[0] ?? "")
-      ) {
-        uses.push({ key: node.text, at: at(node), fromCall: false });
-      }
-      ts.forEachChild(node, visit);
-    };
-    visit(source);
+        node.forEachChild(visit);
+      };
+      visit(source);
+    }
+  } finally {
+    api.close();
   }
   return uses;
 }
