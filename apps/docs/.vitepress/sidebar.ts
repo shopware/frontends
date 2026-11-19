@@ -402,7 +402,7 @@ export const sidebar = [
             link: "/integrations/payments/paypal.html",
           },
           {
-            text: "ShopwarePayments",
+            text: "Shopware Payments",
             link: "/integrations/payments/shopware-payments.html",
           },
         ],
