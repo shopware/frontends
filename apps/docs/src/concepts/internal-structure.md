@@ -79,7 +79,7 @@ If you want to use these packages with a different Vue.js framework, see the gui
     <img src="../.assets/framework-icons/tailwind.png" alt="This package depends on UnoCSS / Tailwind.css" title="This package depends on UnoCSS / Tailwind.css" class="w-6 aspect-square hover:scale-125 transition hover:drop-shadow-md" /> | <a href="https://www.npmjs.com/package/@shopware/cms-base-layer" target="_blank">@shopware/cms-base-layer</a>
 </div>
 
-The CMS base is a Nuxt module that provides an implementation of all CMS components in Shopware [based on utility-classes](./styling.html) in unocss/Tailwind.css syntax. The layer does not install UnoCSS; the UnoCSS setup comes from `@shopware/unocss-design-tokens-layer` or your own config. It is useful for projects that want to use the CMS components but design their own layout.
+The CMS base is a Nuxt layer that provides an implementation of all CMS components in Shopware [based on utility-classes](./styling.html) in unocss/Tailwind.css syntax. The layer does not install UnoCSS; the UnoCSS setup comes from `@shopware/unocss-design-tokens-layer` or your own config. It is useful for projects that want to use the CMS components but design their own layout.
 
 Head to the [Rendering CMS Pages recipe](../frontends-recipes/cms/rendering.html) to learn more.
 

@@ -26,14 +26,18 @@ Although images are not always contained in API responses, we try to keep the co
 
 Which means if you need to work with images, ensure the requests contains additional [associations](https://shopware.stoplight.io/docs/store-api/cf710bf73d0cd-search-queries#associations).
 
-Example of request's payload with media association included, to avoid an empty `media` object within the response:
+Example payload for a product request. The outer `media` loads the gallery items (`ProductMedia`). The inner `media` loads the file of each item. Without it, every item comes back with `media: null`:
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/guides/page-elements/images/example.json" code lang="json" no-name -->
 
 ```json
 {
   "associations": {
-    "media": {}
+    "media": {
+      "associations": {
+        "media": {}
+      }
+    }
   }
 }
 ```

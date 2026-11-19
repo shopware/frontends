@@ -96,21 +96,19 @@ export class LoginForm {
   readonly usernameInput: Locator;
   readonly passwordInput: Locator;
   readonly submitButton: Locator;
-  readonly closeLoginPopup: Locator;
 
   // Init selectors using constructor.
   constructor(page: Page) {
     this.page = page;
-    this.usernameInput = page.locator("[data-testid='login-email-input']");
-    this.passwordInput = page.locator("[data-testid='login-password-input']");
-    this.submitButton = page.locator("[data-testid='login-submit-button']");
-    this.closeLoginPopup = page.locator("text=close");
+    this.usernameInput = page.getByTestId("login-email-input");
+    this.passwordInput = page.getByTestId("login-password-input");
+    this.submitButton = page.getByTestId("login-submit-button");
   }
 
   // Define login page methods.
   async login(username: string, password: string) {
-    await this.usernameInput.type(username);
-    await this.passwordInput.type(password);
+    await this.usernameInput.fill(username);
+    await this.passwordInput.fill(password);
     await this.submitButton.click();
   }
 }
@@ -150,25 +148,13 @@ data-testid="header-search-input"
 import { test, expect } from "@playwright/test";
 
 test("failed login", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/account/login");
 
-  await Promise.all([
-    page.waitForNavigation(),
-    page.click("[data-testid='header-sign-in-link']"),
-  ]);
+  await page.getByTestId("login-email-input").fill("test@shopware.com");
+  await page.getByTestId("login-password-input").fill("Password123!@#");
+  await page.getByTestId("login-submit-button").click();
 
-  await page
-    .locator("[data-testid='login-email-input']")
-    .fill("test@shopware.com");
-  await page
-    .locator("[data-testid='login-password-input']")
-    .fill("Password123!@#");
-
-  await Promise.all([await page.click("[data-testid='login-submit-button']")]);
-
-  await expect(
-    page.locator("[data-testid='login-errors-container']"),
-  ).toBeVisible();
+  await expect(page.getByTestId("notification-element-danger")).toBeVisible();
 });
 ```
 
