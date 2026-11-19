@@ -1,6 +1,14 @@
 import { describe, expect, it } from "vitest";
 
-import { toPlainText, truncate } from "./text";
+import { stripTags, toPlainText, truncate } from "./text";
+
+describe("stripTags", () => {
+  it("removes tags without adding spaces, an unclosed tag included", () => {
+    expect(stripTags('Set one <a href="%url%">here</a>. <script')).toBe(
+      "Set one here. ",
+    );
+  });
+});
 
 describe("toPlainText", () => {
   it("strips tags, decodes entities and collapses whitespace", () => {

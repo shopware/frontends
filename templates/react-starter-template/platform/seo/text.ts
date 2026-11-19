@@ -38,6 +38,16 @@ export function toPlainText(html: string | null | undefined): string {
     .trim();
 }
 
+export function stripTags(html: string): string {
+  let text = html;
+  let previous;
+  do {
+    previous = text;
+    text = text.replace(/<[^>]*>?/g, "");
+  } while (text !== previous);
+  return text;
+}
+
 export function truncate(text: string, max: number): string {
   if (text.length <= max) return text;
   return `${text.slice(0, max - 1).trimEnd()}…`;

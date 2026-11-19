@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import type { Schemas } from "#shopware";
 import type { Locale } from "@/i18n/config";
 import { ContentLanguageProvider } from "@/i18n/ContentLanguageProvider";
+import { stripTags } from "@/platform/seo/text";
 import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
@@ -53,7 +54,7 @@ function render(props: CartTotalsProps = {}, locale?: Locale) {
 
 function texts(html: string): string[] {
   return [...html.matchAll(/<(dt|dd)[^>]*>(.*?)<\/\1>/g)].map(([, , inner]) =>
-    (inner ?? "").replace(/<[^>]*>?/g, "").replace(/\s/g, " "),
+    stripTags(inner ?? "").replace(/\s/g, " "),
   );
 }
 

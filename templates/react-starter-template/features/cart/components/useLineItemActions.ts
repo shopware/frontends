@@ -9,6 +9,7 @@ import { useCart } from "@/features/cart/useCart";
 import { useTranslations } from "@/i18n/I18nProvider";
 import { hasTranslation } from "@/i18n/translate";
 import type { Translate } from "@/i18n/translate";
+import { stripTags } from "@/platform/seo/text";
 
 export type CartNotificationError = CmsActionError & { level?: number };
 
@@ -20,7 +21,6 @@ export type CartNotificationSource = {
 
 type FocusAnchor = { item: Element; list: Element; index: number };
 
-const HTML_TAG = /<[^>]*>?/g;
 const REMOVE_BUTTON = "[data-line-item-remove]";
 const PROMOTION_CODE_INPUT = 'input[name="promoCode"]';
 
@@ -35,7 +35,7 @@ function translatedText(
   translated: unknown,
 ): string | null {
   if (typeof translated !== "string") return null;
-  const text = translated.replace(HTML_TAG, "").trim();
+  const text = stripTags(translated).trim();
   return text && text !== `checkout.${messageKey}` ? text : null;
 }
 
