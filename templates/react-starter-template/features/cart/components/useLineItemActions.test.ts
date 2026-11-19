@@ -87,6 +87,10 @@ describe("cartNotifications", () => {
                 translatedMessage: 'Please set one <a href="%url%">here</a>.',
               },
             },
+            {
+              messageKey: "custom-plugin-error",
+              params: { translatedMessage: "Cart <b>changed</b> <script" },
+            },
             { messageKey: "custom-plugin-error" },
           ],
         },
@@ -97,6 +101,7 @@ describe("cartNotifications", () => {
       "Raw text",
       "Raw text",
       "Please set one here.",
+      "Cart changed",
     ]);
   });
 

@@ -20,7 +20,7 @@ export type CartNotificationSource = {
 
 type FocusAnchor = { item: Element; list: Element; index: number };
 
-const HTML_TAG = /<[^>]*>/g;
+const HTML_TAG = /<[^>]*>?/g;
 const REMOVE_BUTTON = "[data-line-item-remove]";
 const PROMOTION_CODE_INPUT = 'input[name="promoCode"]';
 

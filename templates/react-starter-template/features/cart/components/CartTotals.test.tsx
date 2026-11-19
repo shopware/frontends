@@ -53,7 +53,7 @@ function render(props: CartTotalsProps = {}, locale?: Locale) {
 
 function texts(html: string): string[] {
   return [...html.matchAll(/<(dt|dd)[^>]*>(.*?)<\/\1>/g)].map(([, , inner]) =>
-    (inner ?? "").replace(/<[^>]+>/g, "").replace(/\s/g, " "),
+    (inner ?? "").replace(/<[^>]*>?/g, "").replace(/\s/g, " "),
   );
 }
 
