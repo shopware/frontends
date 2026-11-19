@@ -6,6 +6,7 @@ import type { FormEvent } from "react";
 
 import { BaseButton, useCmsActions } from "@/cms/client";
 import { InputField } from "@/components/form/InputField";
+import { LOGIN_PATH } from "@/features/account/redirect";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
 import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
@@ -28,8 +29,6 @@ export type ResetPasswordFormProps = {
   minLength?: number;
   onLinkRejected(problem: RecoveryLinkProblem): void;
 };
-
-const LOGIN_PATH = "/account/login";
 
 const ACCOUNT_PATH = "/account";
 

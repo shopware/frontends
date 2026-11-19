@@ -164,6 +164,22 @@ describe("ChangePasswordForm in the browser", () => {
     expect(navigation.push).toHaveBeenCalledExactlyOnceWith("/account/profile");
   });
 
+  it("clears the fields and errors after a successful change", async () => {
+    const { newPassword, confirmation, current, submit, error } = await setup();
+
+    await interact(() => setInputValue(newPassword, "new-secret"));
+    await interact(() => setInputValue(confirmation, "new-secret"));
+    await interact(() => setInputValue(current, "old-secret"));
+    await interact(() => submit.click());
+
+    expect([newPassword.value, confirmation.value, current.value]).toEqual([
+      "",
+      "",
+      "",
+    ]);
+    expect(error("currentPassword")).toBeNull();
+  });
+
   it("shows the API error for a wrong current password and stays", async () => {
     const {
       notify,

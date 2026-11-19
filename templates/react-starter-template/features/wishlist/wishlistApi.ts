@@ -1,6 +1,5 @@
-import { ApiClientError } from "@shopware/api-client";
-
 import type { ApiClient, Schemas } from "#shopware";
+import { hasApiErrorCode } from "@/features/session/apiErrors";
 import { READ_TIMEOUT_MS } from "@/features/session/readTimeout";
 
 export type WishlistClient = Pick<ApiClient, "invoke">;
@@ -24,17 +23,6 @@ export type WishlistIds = {
   productIds: string[];
   total: number;
 };
-
-export function hasApiErrorCode(error: unknown, code: string): boolean {
-  if (!(error instanceof ApiClientError)) return false;
-  const errors: unknown = error.details?.errors;
-  return (
-    Array.isArray(errors) &&
-    errors.some(
-      (apiError: { code?: unknown } | null) => apiError?.code === code,
-    )
-  );
-}
 
 async function readWishlist(
   client: WishlistClient,

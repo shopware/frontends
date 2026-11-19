@@ -1,34 +1,24 @@
 import "server-only";
 import type { Locale } from "@/i18n/config";
-import { readCountries } from "@/platform/shopware/reads/countries";
-import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
+import { loadCountryOptions } from "@/platform/shopware/loadCountryOptions";
+import type { CountryOptions } from "@/platform/shopware/loadCountryOptions";
+import { loadShopSettings } from "@/platform/shopware/loadShopSettings";
 import { resolveLanguageId } from "@/platform/shopware/reads/languages";
 import { readSalutations } from "@/platform/shopware/reads/salutations";
 import type { SalutationOption } from "@/platform/shopware/reads/salutations";
 
-export type AddressReferences = {
-  countries: CountryOption[];
-  countriesUnavailable: boolean;
+import type { AddressFieldSettings } from "./addressSchema";
+
+export type AddressReferences = CountryOptions & {
   salutations: SalutationOption[];
   salutationsUnavailable: boolean;
+  settings: AddressFieldSettings;
 };
 
-async function loadCountries(languageId: string | null) {
+async function loadSalutations(locale: Locale) {
   try {
     return {
-      countries: await readCountries(languageId),
-      countriesUnavailable: false,
-    };
-  } catch (error) {
-    console.error("[Address] reading countries failed", error);
-    return { countries: [], countriesUnavailable: true };
-  }
-}
-
-async function loadSalutations(languageId: string | null) {
-  try {
-    return {
-      salutations: await readSalutations(languageId),
+      salutations: await readSalutations(await resolveLanguageId(locale)),
       salutationsUnavailable: false,
     };
   } catch (error) {
@@ -40,10 +30,10 @@ async function loadSalutations(languageId: string | null) {
 export async function loadAddressReferences(
   locale: Locale,
 ): Promise<AddressReferences> {
-  const languageId = await resolveLanguageId(locale);
-  const [countries, salutations] = await Promise.all([
-    loadCountries(languageId),
-    loadSalutations(languageId),
+  const [countries, salutations, { loginRegistration }] = await Promise.all([
+    loadCountryOptions(locale, "Address"),
+    loadSalutations(locale),
+    loadShopSettings(),
   ]);
-  return { ...countries, ...salutations };
+  return { ...countries, ...salutations, settings: loginRegistration };
 }

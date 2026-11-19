@@ -181,6 +181,25 @@ describe("resolveLocaleSwitchPath", () => {
     },
   );
 
+  it.each(["\\evil.com", "/\\evil.com", "Furniture/\tChairs"])(
+    "ignores an unsafe SEO URL %j in the chosen language and links the technical path",
+    async (seoPathInfo) => {
+      const { getClient } = seoBackend(async (languageId) =>
+        languageId === "language-en"
+          ? [{ ...furniture, seoPathInfo: "Furniture/" }]
+          : [{ ...furniture, seoPathInfo }],
+      );
+
+      await expect(
+        resolveLocaleSwitchPath(
+          getClient,
+          location("/Furniture/"),
+          englishToGerman,
+        ),
+      ).resolves.toBe("/de-DE/navigation/category-furniture");
+    },
+  );
+
   it("sends a route without a technical path to the home page of the chosen locale", async () => {
     const { getClient } = seoBackend(async (languageId) =>
       languageId === "language-en"

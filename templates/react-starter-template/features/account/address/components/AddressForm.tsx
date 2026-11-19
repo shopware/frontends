@@ -10,12 +10,17 @@ import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
 import type { SelectOption } from "@/components/form/SelectField";
 import { LocaleLink } from "@/components/LocaleLink";
+import { REGISTRATION_MAX_LENGTHS } from "@/features/account/registrationSchema";
 import { useContentLang } from "@/i18n/ContentLanguageProvider";
 import { useTranslations } from "@/i18n/I18nProvider";
 import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
 
 import { emptyAddressValues, validateAddress } from "../addressSchema";
-import type { AddressField, AddressValues } from "../addressSchema";
+import type {
+  AddressField,
+  AddressFieldSettings,
+  AddressValues,
+} from "../addressSchema";
 import { SECONDARY_BUTTON_CLASS } from "./addressButtonClasses";
 
 export const ADDRESS_LIST_PATH = "/account/address";
@@ -25,6 +30,7 @@ type Touched = Partial<Record<AddressField, boolean>>;
 export type AddressFormProps = {
   countries: CountryOption[];
   salutations: SelectOption[];
+  settings: AddressFieldSettings;
   countriesUnavailable?: boolean;
   salutationsUnavailable?: boolean;
   initialValues?: AddressValues;
@@ -35,6 +41,7 @@ export type AddressFormProps = {
 export function AddressForm({
   countries,
   salutations,
+  settings,
   countriesUnavailable = false,
   salutationsUnavailable = false,
   initialValues = emptyAddressValues,
@@ -56,7 +63,7 @@ export function AddressForm({
   const states =
     countries.find((country) => country.id === values.countryId)?.states ?? [];
   const countryHasStates = states.length > 0;
-  const errors = validateAddress(values, { countryHasStates }, t);
+  const errors = validateAddress(values, { countryHasStates, settings }, t);
   const referencesUnavailable = countriesUnavailable || salutationsUnavailable;
   const inactive = pending || busy;
 
@@ -99,7 +106,10 @@ export function AddressForm({
     event.preventDefault();
     if (pendingRef.current || busy) return;
     setSubmitted(true);
-    if (Object.keys(validateAddress(values, { countryHasStates }, t)).length) {
+    if (
+      Object.keys(validateAddress(values, { countryHasStates, settings }, t))
+        .length
+    ) {
       setFocusRequest((count) => count + 1);
       return;
     }
@@ -173,12 +183,42 @@ export function AddressForm({
         label={t("form.streetAddress")}
         placeholder={t("form.streetPlaceholder")}
         required
-        autoComplete="street-address"
+        autoComplete={
+          settings.showAdditionalAddressField1 ||
+          settings.showAdditionalAddressField2
+            ? "address-line1"
+            : "street-address"
+        }
         value={values.street}
         onChange={inputHandler("street")}
         onBlur={touch("street")}
         error={errorFor("street")}
       />
+
+      {settings.showAdditionalAddressField1 ? (
+        <InputField
+          id="additionalAddressLine1"
+          label={t("form.additionalAddressLine1")}
+          required={settings.additionalAddressField1Required}
+          autoComplete="address-line2"
+          value={values.additionalAddressLine1}
+          onChange={inputHandler("additionalAddressLine1")}
+          onBlur={touch("additionalAddressLine1")}
+          error={errorFor("additionalAddressLine1")}
+        />
+      ) : null}
+      {settings.showAdditionalAddressField2 ? (
+        <InputField
+          id="additionalAddressLine2"
+          label={t("form.additionalAddressLine2")}
+          required={settings.additionalAddressField2Required}
+          autoComplete="address-line3"
+          value={values.additionalAddressLine2}
+          onChange={inputHandler("additionalAddressLine2")}
+          onBlur={touch("additionalAddressLine2")}
+          error={errorFor("additionalAddressLine2")}
+        />
+      ) : null}
 
       <div className="flex flex-col gap-4 sm:flex-row">
         <InputField
@@ -242,6 +282,21 @@ export function AddressForm({
           />
         ) : null}
       </div>
+
+      {settings.showPhoneNumberField ? (
+        <InputField
+          id="phoneNumber"
+          type="tel"
+          label={t("form.phone")}
+          required={settings.phoneNumberFieldRequired}
+          autoComplete="tel"
+          maxLength={REGISTRATION_MAX_LENGTHS.phoneNumber}
+          value={values.phoneNumber}
+          onChange={inputHandler("phoneNumber")}
+          onBlur={touch("phoneNumber")}
+          error={errorFor("phoneNumber")}
+        />
+      ) : null}
 
       {referencesUnavailable ? (
         <BaseButton

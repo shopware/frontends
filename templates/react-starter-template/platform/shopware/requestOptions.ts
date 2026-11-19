@@ -127,57 +127,26 @@ function warnOnce(message: string): void {
   console.warn(message);
 }
 
-function memoizeLatest<ARGS extends readonly unknown[], RESULT>(
-  compute: (...args: ARGS) => RESULT,
-): (...args: ARGS) => RESULT {
-  let latest: { args: ARGS; result: RESULT } | undefined;
-  return (...args) => {
-    if (latest?.args.every((arg, index) => Object.is(arg, args[index]))) {
-      return latest.result;
-    }
-    const result = compute(...args);
-    latest = { args, result };
-    return result;
-  };
-}
-
-const readTimeout = memoizeLatest((raw: string | undefined) =>
-  parseApiTimeout(raw, warnOnce),
-);
-
-const readPrivateHeaders = memoizeLatest((raw: string | undefined) =>
-  parseApiHeaders(raw, API_HEADERS_VARIABLE, serverHeaderPolicy, warnOnce),
-);
-
-const readPublicHeaders = memoizeLatest((raw: string | undefined) =>
-  parseApiHeaders(
-    raw,
+export function getPublicApiHeaders(): ApiHeaders {
+  return parseApiHeaders(
+    process.env.SHOPWARE_PUBLIC_API_HEADERS,
     PUBLIC_API_HEADERS_VARIABLE,
     publicHeaderPolicy,
     warnOnce,
-  ),
-);
-
-const combineServerOptions = memoizeLatest(
-  (
-    timeout: number | undefined,
-    publicHeaders: ApiHeaders,
-    privateHeaders: ApiHeaders,
-  ): ApiRequestOptions =>
-    Object.freeze({
-      timeout,
-      headers: Object.freeze({ ...publicHeaders, ...privateHeaders }),
-    }),
-);
-
-export function getPublicApiHeaders(): ApiHeaders {
-  return readPublicHeaders(process.env.SHOPWARE_PUBLIC_API_HEADERS);
+  );
 }
 
 export function getServerApiRequestOptions(): ApiRequestOptions {
-  return combineServerOptions(
-    readTimeout(process.env.SHOPWARE_API_TIMEOUT),
-    getPublicApiHeaders(),
-    readPrivateHeaders(process.env.SHOPWARE_API_HEADERS),
-  );
+  return {
+    timeout: parseApiTimeout(process.env.SHOPWARE_API_TIMEOUT, warnOnce),
+    headers: {
+      ...getPublicApiHeaders(),
+      ...parseApiHeaders(
+        process.env.SHOPWARE_API_HEADERS,
+        API_HEADERS_VARIABLE,
+        serverHeaderPolicy,
+        warnOnce,
+      ),
+    },
+  };
 }

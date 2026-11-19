@@ -24,6 +24,7 @@ import {
   salutations,
   sentBody,
 } from "../address.fixture";
+import { hiddenAddressFields } from "../addressSchema";
 import {
   chooseCountry,
   field,
@@ -100,6 +101,7 @@ async function setup(
                 params={Promise.resolve({ id })}
                 countries={countries}
                 salutations={salutations}
+                settings={hiddenAddressFields}
               />
             </Suspense>
           </ShopwareClientHarness>

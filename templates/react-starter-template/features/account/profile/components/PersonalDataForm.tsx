@@ -123,7 +123,10 @@ function PersonalDataFields({
     setPending(true);
     try {
       try {
-        await changeProfile(await getClient(), toChangeProfileBody(values));
+        await changeProfile(
+          await getClient(),
+          toChangeProfileBody(values, customer),
+        );
       } catch (error) {
         for (const message of resolveApiErrorMessages(error, t)) {
           notify({ type: "error", message });

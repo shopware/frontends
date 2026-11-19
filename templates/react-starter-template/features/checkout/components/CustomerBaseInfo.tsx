@@ -9,12 +9,13 @@ import type { CheckoutErrors, CheckoutField } from "../checkoutSchema";
 import { PlusIcon } from "./CheckoutIcons";
 
 const TOGGLE_CLASS =
-  "inline-flex items-center gap-1 rounded-sm text-sm text-brand-primary hover:underline focus-visible:ring-2 focus-visible:ring-outline-outline-focus focus-visible:outline-hidden";
+  "inline-flex items-center gap-1 rounded-sm text-sm text-brand-primary hover:underline focus-visible:ring-2 focus-visible:ring-outline-outline-focus focus-visible:outline-hidden disabled:opacity-50";
 
 export type CustomerBaseInfoProps = {
   email: string;
   password: string;
   createAccount: boolean;
+  readOnly?: boolean;
   errors: CheckoutErrors;
   onFieldChange: (field: CheckoutField, value: string) => void;
   onFieldBlur: (field: CheckoutField) => void;
@@ -26,6 +27,7 @@ export function CustomerBaseInfo({
   email,
   password,
   createAccount,
+  readOnly = false,
   errors,
   onFieldChange,
   onFieldBlur,
@@ -73,6 +75,7 @@ export function CustomerBaseInfo({
         label={t("checkout.customerBaseInfo.emailLabel")}
         placeholder={t("checkout.customerBaseInfo.emailPlaceholder")}
         required
+        readOnly={readOnly}
         value={email}
         onChange={(event) => onFieldChange("email", event.target.value)}
         onBlur={() => onFieldBlur("email")}
@@ -90,6 +93,7 @@ export function CustomerBaseInfo({
             label={t("checkout.customerBaseInfo.passwordLabel")}
             placeholder={t("checkout.customerBaseInfo.passwordPlaceholder")}
             required
+            readOnly={readOnly}
             value={password}
             onChange={(event) => onFieldChange("password", event.target.value)}
             onBlur={() => onFieldBlur("password")}
@@ -98,6 +102,7 @@ export function CustomerBaseInfo({
           <button
             type="button"
             className={TOGGLE_CLASS}
+            disabled={readOnly}
             onClick={switchToGuest}
           >
             {t("checkout.customerBaseInfo.continueAsGuestToggleLabel")}
@@ -110,6 +115,7 @@ export function CustomerBaseInfo({
             type="button"
             className={TOGGLE_CLASS}
             data-testid="checkout-create-account-toggle"
+            disabled={readOnly}
             onClick={switchToAccount}
           >
             <PlusIcon className="size-4" />

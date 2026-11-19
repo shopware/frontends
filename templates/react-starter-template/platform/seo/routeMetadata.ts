@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { withLocale } from "@/i18n/config";
 import type { Locale } from "@/i18n/config";
 import { getTranslator } from "@/i18n/server";
+import { readCanonicalSeoPath } from "@/platform/shopware/reads/canonicalSeoPath";
 import { readCategory } from "@/platform/shopware/reads/category";
 import { readCmsPage } from "@/platform/shopware/reads/cmsPage";
 import { readSalesChannelContext } from "@/platform/shopware/reads/context";
@@ -51,6 +52,21 @@ function seoContext(
   };
 }
 
+async function variantCanonicalPath(
+  productId: string,
+  languageId: string | null,
+): Promise<string> {
+  const seoPathInfo = await readCanonicalSeoPath(
+    "frontend.detail.page",
+    productId,
+    languageId,
+  ).catch(() => null);
+  return (
+    seoPathFrom([{ seoPathInfo: seoPathInfo ?? undefined }]) ??
+    technicalPath("frontend.detail.page", productId)
+  );
+}
+
 export async function buildRouteMetadata(
   route: MetadataRoute,
   { locale, languageId, page }: RouteMetadataOptions,
@@ -83,11 +99,16 @@ export async function buildRouteMetadata(
     case "frontend.detail.page": {
       const { product } = await readProductDetail(route.foreignKey, languageId);
       const seoPath = seoPathFrom(product.seoUrls);
+      const canonicalId = product.canonicalProductId;
+      const canonicalPath =
+        canonicalId && canonicalId !== product.id
+          ? await variantCanonicalPath(canonicalId, languageId)
+          : (seoPath ?? technicalPath(route.routeName, product.id));
       return productMetadata(
         product,
         seoContext(
           locale,
-          seoPath ?? technicalPath(route.routeName, product.id),
+          canonicalPath,
           siteUrl,
           await alternates(product.id, seoPath),
         ),

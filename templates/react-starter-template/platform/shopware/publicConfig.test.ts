@@ -40,26 +40,6 @@ describe("parsePublicShopwareConfig", () => {
     });
   });
 
-  it("lowercases header names and drops what the client owns or the browser refuses", () => {
-    expect(
-      parsePublicShopwareConfig({
-        ...config,
-        headers: {
-          "X-Edge-Region": "eu",
-          "sw-context-token": "shared",
-          "SW-Access-Key": "SWSCOTHER",
-          accept: "text/html",
-          host: "shop.test",
-          cookie: "a=b",
-          "sec-fetch-site": "none",
-          "bad name": "x",
-          "x-line-break": "a\r\nb",
-          "x-empty": "",
-        },
-      }).headers,
-    ).toEqual({ "x-edge-region": "eu" });
-  });
-
   it.each([
     ["no object", null],
     ["a string", "config"],

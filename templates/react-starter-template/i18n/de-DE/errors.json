@@ -34,6 +34,7 @@
     "message-403": "Ihre Sitzung ist abgelaufen. Bitte kehren Sie zur letzten Seite zurück und versuchen Sie es erneut.",
     "rateLimitExceeded": "Zu viele Anfragen. Bitte warten Sie {seconds} Sekunden, bevor Sie es erneut versuchen.",
     "CHECKOUT__CART_INVALID_LINE_ITEM_QUANTITY": "Die Menge muss eine positive ganze Zahl sein. Gegeben: {quantity}",
+    "VIOLATION::CUSTOMER_EMAIL_NOT_UNIQUE": "Die E-Mail-Adresse {email} wird bereits verwendet",
     "VIOLATION::IS_BLANK_ERROR": "{field} sollte nicht leer sein.",
     "VIOLATION::TOO_LOW_ERROR": "{field} sollte nicht leer sein.",
     "VIOLATION::STRICT_CHECK_FAILED_ERROR": "{field} ist ungültig.",

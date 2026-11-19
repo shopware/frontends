@@ -8,7 +8,7 @@ import { languageCacheTags } from "./cacheTags";
 export async function readCanonicalSeoPath(
   routeName: string,
   foreignKey: string,
-  languageId: string,
+  languageId: string | null,
 ): Promise<string | null> {
   "use cache";
   cacheLife("seo");

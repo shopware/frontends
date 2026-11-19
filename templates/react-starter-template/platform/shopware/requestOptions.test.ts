@@ -332,22 +332,6 @@ describe("getServerApiRequestOptions", () => {
     });
   });
 
-  it("parses once per value and again after the variable changes", async () => {
-    stubRequestEnv({ SHOPWARE_API_HEADERS: '{"x-edge":"one"}' });
-    const { getServerApiRequestOptions } = await freshModule();
-
-    const first = getServerApiRequestOptions();
-
-    expect(getServerApiRequestOptions()).toBe(first);
-
-    vi.stubEnv("SHOPWARE_API_HEADERS", '{"x-edge":"two"}');
-    vi.stubEnv("SHOPWARE_API_TIMEOUT", "2500");
-    const second = getServerApiRequestOptions();
-
-    expect(second).not.toBe(first);
-    expect(second).toEqual({ timeout: 2500, headers: { "x-edge": "two" } });
-  });
-
   it("warns once per problem across requests and never prints the values", async () => {
     const warn = silentWarn();
     stubRequestEnv({

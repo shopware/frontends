@@ -1,5 +1,6 @@
 import { encodeForQuery } from "@shopware/api-client/helpers";
 import {
+  getFrontendRouteName,
   getRouteFromPathInfo,
   isTechnicalPath,
   normalizePath,
@@ -67,7 +68,9 @@ type SeoUrlFilter =
   | { type: "equalsAny"; field: string; value: string[] };
 
 function isRendered(row: SeoUrlRow): boolean {
-  return !!row.foreignKey && isRenderedRouteName(row.routeName);
+  return (
+    !!row.foreignKey && isRenderedRouteName(getFrontendRouteName(row.routeName))
+  );
 }
 
 function redirectTo(seoPathInfo: string): SeoResolution | null {

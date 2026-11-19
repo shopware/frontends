@@ -172,7 +172,7 @@ describe("loadPublicConfig", () => {
     const fetchImpl = vi.fn(async () =>
       jsonResponse({
         ...config,
-        headers: { "X-Edge-Region": "eu", "sw-context-token": "shared" },
+        headers: { "x-edge-region": "eu" },
       }),
     );
 

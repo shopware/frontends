@@ -4,8 +4,14 @@ import { useSyncExternalStore } from "react";
 
 import { searchTermFromLocation } from "./searchTerm";
 
-function subscribe(): () => void {
-  return () => {};
+function subscribe(onChange: () => void): () => void {
+  const onEntryChange = () => queueMicrotask(onChange);
+  window.addEventListener("popstate", onChange);
+  window.navigation?.addEventListener("currententrychange", onEntryChange);
+  return () => {
+    window.removeEventListener("popstate", onChange);
+    window.navigation?.removeEventListener("currententrychange", onEntryChange);
+  };
 }
 
 function readSearchPageTerm(): string {

@@ -225,6 +225,11 @@ describe("readDeepLinkOrder", () => {
       ["CHECKOUT__GUEST_NOT_AUTHENTICATED", { status: "authRequired" }],
       ["CHECKOUT__GUEST_WRONG_CREDENTIALS", { status: "wrongCredentials" }],
       ["CHECKOUT__CART_ORDER_DEEP_LINK_NOT_FOUND", { status: "notFound" }],
+      ["CHECKOUT__CUSTOMER_NOT_LOGGED_IN", { status: "loginRequired" }],
+      [
+        "FRAMEWORK__ROUTING_CUSTOMER_NOT_LOGGED_IN",
+        { status: "loginRequired" },
+      ],
     ] as const;
 
     for (const [code, expected] of cases) {
@@ -256,16 +261,16 @@ describe("readDeepLinkOrder", () => {
         apiError(
           [
             {
-              code: "CHECKOUT__CUSTOMER_NOT_LOGGED_IN",
-              status: "403",
-              detail: "Customer is not logged in.",
+              code: "CHECKOUT__ORDER_NOT_FOUND",
+              status: "404",
+              detail: "Order not found.",
             },
           ],
-          403,
+          404,
         ),
         testTranslator(),
       ),
-    ).toEqual({ status: "failed", messages: ["Customer is not logged in."] });
+    ).toEqual({ status: "failed", messages: ["Order not found."] });
     expect(
       classifyDeepLinkError(new Error("offline"), testTranslator()),
     ).toEqual({

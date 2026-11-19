@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { germany } from "@/components/form/countries.fixture";
 import { loadAddressReferences } from "@/features/account/address/addressReferences";
 import type { AddressReferences } from "@/features/account/address/addressReferences";
+import { hiddenAddressFields } from "@/features/account/address/addressSchema";
 import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
@@ -34,6 +35,7 @@ const references: AddressReferences = {
   countriesUnavailable: false,
   salutations: [{ label: "Mr.", value: "salutation-mr" }],
   salutationsUnavailable: true,
+  settings: hiddenAddressFields,
 };
 
 beforeEach(() => {

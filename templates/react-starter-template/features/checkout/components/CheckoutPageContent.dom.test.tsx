@@ -1,3 +1,5 @@
+import { Activity, useEffect, useState } from "react";
+import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Mock } from "vitest";
 
@@ -93,6 +95,20 @@ const guestSession = checkoutSession({
   customer: checkoutCustomer({ guest: true, id: "guest-1" }),
 });
 
+const visibility: { set: (hidden: boolean) => void } = {
+  set: () => {
+    throw new Error("PageActivity is not mounted");
+  },
+};
+
+function PageActivity({ children }: { children: ReactNode }) {
+  const [hidden, setHidden] = useState(false);
+  useEffect(() => {
+    visibility.set = setHidden;
+  }, []);
+  return <Activity mode={hidden ? "hidden" : "visible"}>{children}</Activity>;
+}
+
 let mounted: Mounted | undefined;
 
 beforeEach(() => {
@@ -158,7 +174,9 @@ async function setup({
     <CmsActionsProvider actions={{ notify }}>
       <SessionHarness initial={session}>
         <SessionActionsProvider actions={actions}>
-          <CheckoutPageContent countries={countries} settings={settings} />
+          <PageActivity>
+            <CheckoutPageContent countries={countries} settings={settings} />
+          </PageActivity>
         </SessionActionsProvider>
       </SessionHarness>
     </CmsActionsProvider>
@@ -605,6 +623,8 @@ describe("CheckoutPageContent", () => {
     expect(refreshSession).toHaveBeenCalledTimes(1);
     expect(cart.refreshWithResult).toHaveBeenCalledTimes(2);
     expect(cart.refresh).not.toHaveBeenCalled();
+    expect(shopware.calls(READ_SHIPPING_METHODS)).toHaveLength(2);
+    expect(shopware.calls(READ_PAYMENT_METHODS)).toHaveLength(2);
     expect(
       radio(container, "shipping-method", "shipping-express").checked,
     ).toBe(true);
@@ -878,6 +898,84 @@ describe("CheckoutPageContent", () => {
     expect(shopware.calls(CHANGE_PROFILE)).toHaveLength(1);
     expect(shopware.calls(CREATE_ORDER)).toHaveLength(2);
     expect(push).toHaveBeenCalledWith("/checkout/success/order-1");
+  });
+
+  it("waits for a pending method change before the order can be placed", async () => {
+    const change = deferred<unknown>();
+    const { container, button, shopware } = await setup({
+      session: loggedIn,
+      answers: { [UPDATE_CONTEXT]: () => change.promise },
+    });
+
+    await acceptTerms(container);
+    await interact(() =>
+      radio(container, "payment-method", "payment-cash").click(),
+    );
+    expect(button().disabled).toBe(true);
+    await interact(() => button().click());
+    expect(shopware.calls(CREATE_ORDER)).toHaveLength(0);
+
+    await interact(() => change.resolve({}));
+    expect(button().disabled).toBe(false);
+    await interact(() => button().click());
+    expect(shopware.calls(CREATE_ORDER)).toHaveLength(1);
+  });
+
+  it("locks the email, the password and the account toggle once the customer registered", async () => {
+    const register = vi.fn<SessionActions["register"]>(async () => {
+      sessionControl.set(
+        checkoutSession({ customer: checkoutCustomer({ id: "customer-2" }) }),
+      );
+      return { ok: true };
+    });
+    const { container, input, button } = await setup({
+      register,
+      answers: {
+        [CREATE_ORDER]: () => {
+          throw apiError([{ code: "CHECKOUT__UNKNOWN_PAYMENT_METHOD" }]);
+        },
+      },
+    });
+
+    await interact(() =>
+      query<HTMLButtonElement>(
+        container,
+        '[data-testid="checkout-create-account-toggle"]',
+      ).click(),
+    );
+    await fillGuestForm(container, input);
+    await fill(input, { "checkout-pi-password-input": "password123" });
+    expect(input("checkout-pi-email-input").readOnly).toBe(false);
+    await acceptTerms(container);
+    await interact(() => button().click());
+
+    expect(register).toHaveBeenCalledTimes(1);
+    expect(input("checkout-pi-email-input").readOnly).toBe(true);
+    expect(input("checkout-pi-email-input").value).toBe("jane@example.com");
+    expect(input("checkout-pi-password-input").readOnly).toBe(true);
+    expect(buttonByText(container, "Continue as guest").disabled).toBe(true);
+  });
+
+  it("offers the place order button again when the hidden page is shown after an order", async () => {
+    const { container, button, shopware } = await setup({ session: loggedIn });
+
+    await acceptTerms(container);
+    await interact(() => button().click());
+    expect(push).toHaveBeenCalledWith("/checkout/success/order-1");
+    expect(container.querySelector("[inert]")).not.toBeNull();
+
+    await interact(() => visibility.set(true));
+    await interact(() => visibility.set(false));
+
+    expect(container.querySelector("[inert]")).toBeNull();
+    expect(
+      container.querySelector('output[aria-label="Placing order…"]'),
+    ).toBeNull();
+    expect(query<HTMLInputElement>(container, TOS).checked).toBe(false);
+
+    await acceptTerms(container);
+    await interact(() => button().click());
+    expect(shopware.calls(CREATE_ORDER)).toHaveLength(2);
   });
 
   it("places one order for a double click", async () => {

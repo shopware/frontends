@@ -6,6 +6,7 @@ import { customerAddress } from "./address.fixture";
 import {
   addressValuesFrom,
   emptyAddressValues,
+  hiddenAddressFields,
   toAddressBody,
   validateAddress,
 } from "./addressSchema";
@@ -16,13 +17,25 @@ const valid: AddressValues = {
   firstName: "Jo",
   lastName: "Li",
   street: "Elm",
+  additionalAddressLine1: "",
+  additionalAddressLine2: "",
   zipcode: "12345",
   city: "Berlin",
   countryId: "country-pl",
   countryStateId: "",
+  phoneNumber: "",
 };
 
-const noStates = { countryHasStates: false };
+const noStates = { countryHasStates: false, settings: hiddenAddressFields };
+const withStates = { countryHasStates: true, settings: hiddenAddressFields };
+const allShownRequired = {
+  showAdditionalAddressField1: true,
+  additionalAddressField1Required: true,
+  showAdditionalAddressField2: true,
+  additionalAddressField2Required: true,
+  showPhoneNumberField: true,
+  phoneNumberFieldRequired: true,
+};
 
 const t = testTranslator();
 
@@ -63,14 +76,56 @@ describe("validateAddress", () => {
     });
   });
 
+  it("requires the extra fields the shop settings show as required", () => {
+    expect(
+      validateAddress(
+        valid,
+        { countryHasStates: false, settings: allShownRequired },
+        t,
+      ),
+    ).toEqual({
+      additionalAddressLine1: "Value is required",
+      additionalAddressLine2: "Value is required",
+      phoneNumber: "Value is required",
+    });
+  });
+
+  it("ignores required flags of hidden fields and limits the phone number", () => {
+    expect(
+      validateAddress(
+        valid,
+        {
+          countryHasStates: false,
+          settings: {
+            ...allShownRequired,
+            showAdditionalAddressField1: false,
+            showAdditionalAddressField2: false,
+            showPhoneNumberField: false,
+          },
+        },
+        t,
+      ),
+    ).toEqual({});
+    expect(
+      validateAddress(
+        { ...valid, phoneNumber: "1".repeat(41) },
+        {
+          countryHasStates: false,
+          settings: { ...hiddenAddressFields, showPhoneNumberField: true },
+        },
+        t,
+      ),
+    ).toEqual({ phoneNumber: "The maximum length allowed is 40" });
+  });
+
   it("requires the state only when the country has states", () => {
-    expect(validateAddress(valid, { countryHasStates: true }, t)).toEqual({
+    expect(validateAddress(valid, withStates, t)).toEqual({
       countryStateId: "The value is required",
     });
     expect(
       validateAddress(
         { ...valid, countryStateId: "state-de-by" },
-        { countryHasStates: true },
+        withStates,
         t,
       ),
     ).toEqual({});
@@ -84,10 +139,13 @@ describe("addressValuesFrom", () => {
       firstName: "Jane",
       lastName: "Doe",
       street: "Main Street 1",
+      additionalAddressLine1: "",
+      additionalAddressLine2: "",
       zipcode: "12345",
       city: "Berlin",
       countryId: "country-de",
       countryStateId: "state-de-be",
+      phoneNumber: "",
     });
   });
 
@@ -106,7 +164,7 @@ describe("addressValuesFrom", () => {
 
 describe("toAddressBody", () => {
   it("sends the form fields and the state only when one is chosen", () => {
-    expect(toAddressBody(valid)).toEqual({
+    expect(toAddressBody(valid, hiddenAddressFields)).toEqual({
       salutationId: "salutation-mr",
       firstName: "Jo",
       lastName: "Li",
@@ -116,8 +174,35 @@ describe("toAddressBody", () => {
       countryId: "country-pl",
     });
     expect(
-      toAddressBody({ ...valid, countryStateId: "state-de-by" }),
+      toAddressBody(
+        { ...valid, countryStateId: "state-de-by" },
+        hiddenAddressFields,
+      ),
     ).toMatchObject({ countryStateId: "state-de-by" });
+  });
+
+  it("sends the shown extra fields trimmed, also when cleared", () => {
+    expect(
+      toAddressBody(
+        {
+          ...valid,
+          additionalAddressLine1: " Floor 2 ",
+          additionalAddressLine2: "kept out",
+          phoneNumber: "",
+        },
+        {
+          ...hiddenAddressFields,
+          showAdditionalAddressField1: true,
+          showPhoneNumberField: true,
+        },
+      ),
+    ).toMatchObject({ additionalAddressLine1: "Floor 2", phoneNumber: "" });
+    expect(
+      toAddressBody(
+        { ...valid, additionalAddressLine2: "kept out" },
+        hiddenAddressFields,
+      ),
+    ).not.toHaveProperty("additionalAddressLine2");
   });
 });
 
@@ -128,7 +213,7 @@ describe("validateAddress in Polish", () => {
     expect(
       validateAddress(
         { ...valid, firstName: "J", city: " ", countryStateId: "" },
-        { countryHasStates: true },
+        withStates,
         pl,
       ),
     ).toEqual({

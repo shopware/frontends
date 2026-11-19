@@ -106,8 +106,12 @@ const filledCart = () =>
     subtotal: 59.97,
   });
 
+const assign = vi.fn<(url: string | URL) => void>();
+
 beforeEach(() => {
   push.mockReset();
+  assign.mockReset();
+  vi.spyOn(window.location, "assign").mockImplementation(assign);
   route.set("/");
   fakeCart.set(cartView({ status: "ready" }));
 });
@@ -412,15 +416,14 @@ describe("HeaderBar in the browser", () => {
 
     await interact(() => button.click());
     expect(logout).toHaveBeenCalledTimes(1);
-    expect(push).not.toHaveBeenCalled();
+    expect(assign).not.toHaveBeenCalled();
 
     await interact(() => {
       sessionControl.set?.({ ...anonymousSession, status: "ready" });
       request.resolve({ ok: true });
     });
 
-    expect(push).toHaveBeenCalledTimes(1);
-    expect(push).toHaveBeenCalledWith("/");
+    expect(assign).toHaveBeenCalledExactlyOnceWith("/");
     expect(menu()).toBeNull();
     expect(account.getAttribute("data-logged-in")).toBe("false");
     expect(account.hasAttribute("aria-expanded")).toBe(false);

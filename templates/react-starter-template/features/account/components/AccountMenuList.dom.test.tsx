@@ -31,14 +31,19 @@ function deferred<T>() {
 
 let mounted: Mounted | undefined;
 
+const assign = vi.fn<(url: string | URL) => void>();
+
 beforeEach(() => {
   push.mockReset();
+  assign.mockReset();
+  vi.spyOn(window.location, "assign").mockImplementation(assign);
   route.pathname = "/account";
 });
 
 afterEach(async () => {
   await mounted?.unmount();
   mounted = undefined;
+  vi.restoreAllMocks();
 });
 
 async function setup(
@@ -123,7 +128,7 @@ describe("AccountMenuList", () => {
     }
   });
 
-  it("logs out once and goes home", async () => {
+  it("logs out once and reloads the home page", async () => {
     const request = deferred<SessionActionResult>();
     const logout = vi.fn<SessionActions["logout"]>(() => request.promise);
     const { logoutButton, notify } = await setup({ logout });
@@ -136,12 +141,12 @@ describe("AccountMenuList", () => {
 
     await interact(() => logoutButton().click());
     expect(logout).toHaveBeenCalledTimes(1);
-    expect(push).not.toHaveBeenCalled();
+    expect(assign).not.toHaveBeenCalled();
 
     await interact(() => request.resolve({ ok: true }));
 
-    expect(push).toHaveBeenCalledTimes(1);
-    expect(push).toHaveBeenCalledWith("/");
+    expect(assign).toHaveBeenCalledTimes(1);
+    expect(assign).toHaveBeenCalledWith("/");
     expect(notify).not.toHaveBeenCalled();
     expect(logoutButton().getAttribute("aria-busy")).toBe("false");
     expect(logoutButton().hasAttribute("aria-disabled")).toBe(false);
@@ -157,7 +162,7 @@ describe("AccountMenuList", () => {
     await interact(() => logoutButton().click());
 
     expect(logout).toHaveBeenCalledTimes(1);
-    expect(push).not.toHaveBeenCalled();
+    expect(assign).not.toHaveBeenCalled();
     expect(notify).not.toHaveBeenCalled();
     expect(logoutButton().getAttribute("aria-busy")).toBe("false");
   });
@@ -170,7 +175,7 @@ describe("AccountMenuList", () => {
 
     await interact(() => logoutButton().click());
 
-    expect(push).not.toHaveBeenCalled();
+    expect(assign).not.toHaveBeenCalled();
     expect(notify).toHaveBeenCalledTimes(1);
     expect(notify).toHaveBeenCalledWith({
       type: "error",
@@ -206,6 +211,6 @@ describe("AccountMenuList in Polish", () => {
 
     await interact(() => logoutButton().click());
 
-    expect(push).toHaveBeenCalledExactlyOnceWith("/pl-PL");
+    expect(assign).toHaveBeenCalledExactlyOnceWith("/pl-PL");
   });
 });

@@ -59,15 +59,20 @@ function stopNavigation(event: Event) {
 
 let mounted: Mounted | undefined;
 
+const assign = vi.fn<(url: string | URL) => void>();
+
 beforeEach(() => {
   push.mockReset();
   replace.mockReset();
+  assign.mockReset();
+  vi.spyOn(window.location, "assign").mockImplementation(assign);
   route.pathname = "/";
   document.addEventListener("click", stopNavigation, { capture: true });
 });
 
 afterEach(async () => {
   document.removeEventListener("click", stopNavigation, { capture: true });
+  vi.restoreAllMocks();
   await mounted?.unmount();
   mounted = undefined;
   window.history.replaceState(null, "", "/");
@@ -250,8 +255,8 @@ describe("AccountMenu", () => {
     );
 
     expect(logout).toHaveBeenCalledTimes(1);
-    expect(push).toHaveBeenCalledTimes(1);
-    expect(push).toHaveBeenCalledWith("/");
+    expect(push).not.toHaveBeenCalled();
+    expect(assign).toHaveBeenCalledExactlyOnceWith("/");
     expect(replace).not.toHaveBeenCalled();
     expect(notify).not.toHaveBeenCalled();
     expect(onClose).toHaveBeenCalledTimes(1);

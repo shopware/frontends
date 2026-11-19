@@ -5,6 +5,7 @@ import { interact, mount, query, submitForm } from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
 import { salutations } from "../address.fixture";
+import { emptyAddressValues, hiddenAddressFields } from "../addressSchema";
 import type { AddressValues } from "../addressSchema";
 import { AddressForm } from "./AddressForm";
 import type { AddressFormProps } from "./AddressForm";
@@ -55,6 +56,7 @@ async function setup(props: Partial<AddressFormProps> = {}) {
     <AddressForm
       countries={countries}
       salutations={salutations}
+      settings={hiddenAddressFields}
       onSubmit={onSubmit}
       {...props}
     />,
@@ -127,6 +129,33 @@ describe("AddressForm in the browser", () => {
       city: "Cologne",
       countryId: "country-pl",
       countryStateId: "",
+      additionalAddressLine1: "",
+      additionalAddressLine2: "",
+      phoneNumber: "",
+    });
+  });
+
+  it("asks for the phone number when the shop requires it", async () => {
+    const { container, form, onSubmit } = await setup({
+      settings: {
+        ...hiddenAddressFields,
+        showPhoneNumberField: true,
+        phoneNumberFieldRequired: true,
+      },
+    });
+
+    await fillAddress(container);
+    await chooseCountry(container, "Poland");
+    await interact(() => submitForm(form));
+
+    expect(onSubmit).not.toHaveBeenCalled();
+    expect(errorText(container, "phoneNumber")).toBe("Value is required");
+
+    await typeInto(container, "phoneNumber", "+48 123");
+    await interact(() => submitForm(form));
+
+    expect(onSubmit.mock.calls[0]?.[0]).toMatchObject({
+      phoneNumber: "+48 123",
     });
   });
 
@@ -159,6 +188,7 @@ describe("AddressForm in the browser", () => {
   it("clears the chosen state when the country changes", async () => {
     const { container, form, onSubmit } = await setup({
       initialValues: {
+        ...emptyAddressValues,
         salutationId: "salutation-mr",
         firstName: "Jane",
         lastName: "Doe",

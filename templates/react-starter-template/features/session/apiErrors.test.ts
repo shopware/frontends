@@ -5,6 +5,7 @@ import { testTranslator } from "@/test/i18n";
 import {
   apiErrorCodes,
   apiFailureSummary,
+  hasApiErrorCode,
   resolveApiErrorMessages as resolveWith,
 } from "./apiErrors";
 import type { ApiErrorContext } from "./apiErrors";
@@ -178,7 +179,7 @@ describe("resolveApiErrorMessages", () => {
     expect(pl("errors.message-default")).not.toBe(DEFAULT_MESSAGE);
   });
 
-  it("falls back to the English message for a code the locale lacks", () => {
+  it("fills the parameters into the locale's violation message", () => {
     const error = apiClientError([
       {
         code: "VIOLATION::CUSTOMER_EMAIL_NOT_UNIQUE",
@@ -187,7 +188,7 @@ describe("resolveApiErrorMessages", () => {
     ]);
 
     expect(resolveWith(error, testTranslator("pl-PL"))).toEqual([
-      "The email address jane@example.com is already in use",
+      "Adres e-mail jane@example.com jest już używany",
     ]);
   });
 });
@@ -214,6 +215,26 @@ describe("apiErrorCodes", () => {
   it("gives no codes for anything that is not an API error", () => {
     expect(apiErrorCodes(new Error("offline"))).toEqual([]);
     expect(apiErrorCodes("offline")).toEqual([]);
+  });
+});
+
+describe("hasApiErrorCode", () => {
+  const notFound = apiClientError(
+    [{ code: "CHECKOUT__WISHLIST_NOT_FOUND", status: "404" }],
+    404,
+  );
+
+  it("finds the code among the API errors", () => {
+    expect(hasApiErrorCode(notFound, "CHECKOUT__WISHLIST_NOT_FOUND")).toBe(
+      true,
+    );
+    expect(hasApiErrorCode(notFound, "OTHER")).toBe(false);
+  });
+
+  it("is false for errors that are not API errors", () => {
+    expect(
+      hasApiErrorCode(new Error("x"), "CHECKOUT__WISHLIST_NOT_FOUND"),
+    ).toBe(false);
   });
 });
 

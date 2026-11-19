@@ -88,15 +88,20 @@ function deferred<T>() {
 
 let mounted: Mounted | undefined;
 
+const assign = vi.fn<(url: string | URL) => void>();
+
 beforeEach(() => {
   push.mockReset();
   replace.mockReset();
+  assign.mockReset();
+  vi.spyOn(window.location, "assign").mockImplementation(assign);
   window.history.replaceState(null, "", "/account/order?page=2#latest");
 });
 
 afterEach(async () => {
   await mounted?.unmount();
   mounted = undefined;
+  vi.restoreAllMocks();
   window.history.replaceState(null, "", "/");
 });
 
@@ -301,8 +306,7 @@ describe("AccountGuard", () => {
 
     expect(logout).toHaveBeenCalledTimes(1);
     expect(content()).toBeNull();
-    expect(push).toHaveBeenCalledTimes(1);
-    expect(push).toHaveBeenCalledWith("/");
+    expect(assign).toHaveBeenCalledExactlyOnceWith("/");
     expect(replace).not.toHaveBeenCalled();
     expect(notify).not.toHaveBeenCalled();
   });
@@ -323,7 +327,7 @@ describe("AccountGuard", () => {
         ?.click(),
     );
     await outside.unmount();
-    push.mockReset();
+    assign.mockReset();
 
     const guarded = await setup(loggedIn);
     await interact(() => sessionControl.set?.(anonymous));
@@ -351,7 +355,7 @@ describe("AccountGuard", () => {
     );
 
     expect(content()).not.toBeNull();
-    expect(push).not.toHaveBeenCalled();
+    expect(assign).not.toHaveBeenCalled();
 
     await interact(() => sessionControl.set?.(anonymous));
 
@@ -394,6 +398,6 @@ describe("AccountGuard in Polish", () => {
         ?.click(),
     );
 
-    expect(push).toHaveBeenCalledExactlyOnceWith("/pl-PL");
+    expect(assign).toHaveBeenCalledExactlyOnceWith("/pl-PL");
   });
 });

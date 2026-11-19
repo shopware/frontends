@@ -66,6 +66,10 @@ export function apiErrorCodes(error: unknown): string[] {
   return errors.flatMap(({ code }) => (code ? [code] : []));
 }
 
+export function hasApiErrorCode(error: unknown, code: string): boolean {
+  return apiErrorCodes(error).includes(code);
+}
+
 export function apiFailureSummary(error: unknown): {
   status?: number;
   codes?: string[];

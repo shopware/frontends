@@ -5,13 +5,12 @@ import { useEffect, useRef } from "react";
 import type { ReactNode } from "react";
 
 import { useCmsActions } from "@/cms/client";
+import { LOGIN_PATH } from "@/features/account/redirect";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 
 import { takeLogoutIntent } from "./useAccountLogout";
-
-const LOGIN_PATH = "/account/login";
 
 const PLACEHOLDER = "rounded bg-surface-surface-container";
 

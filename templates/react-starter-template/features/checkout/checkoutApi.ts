@@ -49,9 +49,6 @@ type PaymentMethodQuery = NonNullable<
 > &
   OnlyAvailableQuery;
 
-type AddressBody =
-  operations["updateCustomerAddress patch /account/address/{addressId}"]["body"];
-
 export const shippingMethodCriteria: Schemas["Criteria"] = {
   associations: {
     prices: {},
@@ -200,25 +197,6 @@ export function isAmbiguousOrderFailure(error: unknown): boolean {
   return GATEWAY_STATUSES.has(error.status);
 }
 
-function existingAddressBody(address: Schemas["CustomerAddress"]): AddressBody {
-  return {
-    salutationId: address.salutationId,
-    title: address.title,
-    firstName: address.firstName,
-    lastName: address.lastName,
-    company: address.company,
-    department: address.department,
-    street: address.street,
-    additionalAddressLine1: address.additionalAddressLine1,
-    additionalAddressLine2: address.additionalAddressLine2,
-    zipcode: address.zipcode,
-    city: address.city,
-    countryId: address.countryId,
-    countryStateId: address.countryStateId,
-    phoneNumber: address.phoneNumber,
-  };
-}
-
 type ShippingAddressSync = {
   shippingAddress: CheckoutAddressFields | null;
   createdShippingAddress: Schemas["CustomerAddress"] | null;
@@ -278,12 +256,10 @@ export async function updateCustomerDetails(
 ): Promise<void> {
   const existingAddress = customer?.defaultBillingAddress;
   if (existingAddress) {
-    await client.invoke(
-      "updateCustomerAddress patch /account/address/{addressId}",
-      {
-        pathParams: { addressId: existingAddress.id },
-        body: { ...existingAddressBody(existingAddress), ...address },
-      },
+    await updateCustomerAddress(
+      client,
+      existingAddress.id,
+      updatedAddressBody(existingAddress, address),
     );
   }
 

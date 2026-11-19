@@ -34,6 +34,12 @@ import type { Mounted } from "@/test/mount";
 import { accountOrder, orderRouteResponse } from "../orders.fixture";
 import { DeepLinkOrderPageContent } from "./DeepLinkOrderPageContent";
 
+const { replace } = vi.hoisted(() => ({ replace: vi.fn() }));
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ push: vi.fn(), replace, refresh: vi.fn() }),
+}));
+
 vi.mock("@/features/cart/useCart", async () => ({
   useCart: (await import("@/features/checkout/checkoutTestDoubles"))
     .useFakeCart,
@@ -61,6 +67,7 @@ function hasCredentials(params: unknown): boolean {
 let mounted: Mounted | undefined;
 
 beforeEach(() => {
+  replace.mockReset();
   vi.spyOn(console, "error").mockImplementation(() => {});
 });
 
@@ -255,12 +262,12 @@ describe("DeepLinkOrderPageContent", () => {
         throw apiError(
           [
             {
-              code: "CHECKOUT__CUSTOMER_NOT_LOGGED_IN",
-              status: "403",
-              detail: "Customer is not logged in.",
+              code: "CHECKOUT__ORDER_NOT_FOUND",
+              status: "404",
+              detail: "Order not found.",
             },
           ],
-          403,
+          404,
         );
       },
     });
@@ -272,7 +279,7 @@ describe("DeepLinkOrderPageContent", () => {
 
     expect(notify).toHaveBeenCalledExactlyOnceWith({
       type: "error",
-      message: "Customer is not logged in.",
+      message: "Order not found.",
     });
     expect(
       query(container, '[data-testid="deep-link-order-form"]'),
@@ -327,6 +334,28 @@ describe("DeepLinkOrderPageContent", () => {
     expect(container.querySelector("form")).toBeNull();
   });
 
+  it.each([
+    ["en-GB", "/account/order/deep-code-1?x=1", "/account/login"],
+    ["pl-PL", "/pl-PL/account/order/deep-code-1", "/pl-PL/account/login"],
+  ] as const)(
+    "sends a logged-out registered customer to the %s login and back",
+    async (locale, current, login) => {
+      window.history.replaceState(null, "", current);
+      const { container, notify } = await setup({
+        answer: guestError("CHECKOUT__CUSTOMER_NOT_LOGGED_IN"),
+        locale,
+      });
+
+      expect(replace).toHaveBeenCalledExactlyOnceWith(
+        `${login}?redirect=${encodeURIComponent(current)}`,
+      );
+      expect(notify).toHaveBeenCalledExactlyOnceWith(
+        expect.objectContaining({ type: "info" }),
+      );
+      expect(container.querySelector('[role="alert"]')).toBeNull();
+    },
+  );
+
   it("shows other errors once and lets the visitor try again", async () => {
     let fail = true;
     const { container, notify, shopware } = await setup({
@@ -335,12 +364,12 @@ describe("DeepLinkOrderPageContent", () => {
           throw apiError(
             [
               {
-                code: "CHECKOUT__CUSTOMER_NOT_LOGGED_IN",
-                status: "403",
-                detail: "Customer is not logged in.",
+                code: "CHECKOUT__ORDER_NOT_FOUND",
+                status: "404",
+                detail: "Order not found.",
               },
             ],
-            403,
+            404,
           );
         }
         return orderRouteResponse([accountOrder()]);
@@ -349,7 +378,7 @@ describe("DeepLinkOrderPageContent", () => {
 
     expect(notify).not.toHaveBeenCalled();
     const alert = query(container, '[role="alert"]');
-    expect(alert.textContent).toContain("Customer is not logged in.");
+    expect(alert.textContent).toContain("Order not found.");
 
     fail = false;
     await interact(() => query<HTMLButtonElement>(alert, "button").click());

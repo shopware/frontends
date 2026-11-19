@@ -8,6 +8,7 @@ import {
 import { cacheLife, cacheTag } from "next/cache";
 
 import type { CmsRouteName } from "@/cms";
+import { sameSeoPath } from "@/platform/routing/paths";
 
 import { createShopwareClient } from "../client";
 import { isRenderedRouteName } from "../routeNames";
@@ -42,13 +43,19 @@ async function readSeoUrl(
               value: [withoutTrailingSlash, `${withoutTrailingSlash}/`],
             },
           ],
-          limit: 1,
+          limit: 2,
         }),
       },
     },
   );
 
-  const seoUrl = response.data.elements?.[0];
+  const rows = response.data.elements ?? [];
+  const seoUrl =
+    rows.find(
+      (row) =>
+        typeof row.seoPathInfo === "string" &&
+        sameSeoPath(row.seoPathInfo, path),
+    ) ?? rows[0];
   const routeName = getFrontendRouteName(seoUrl?.routeName);
   if (!seoUrl || !isRenderedRouteName(routeName) || !seoUrl.foreignKey) {
     return null;

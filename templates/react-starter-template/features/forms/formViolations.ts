@@ -5,9 +5,9 @@ import type { CmsFormViolation } from "@/cms/client";
 import { NEWSLETTER_RECIPIENT_NOT_FOUND } from "@/features/account/profile/profileApi";
 import {
   apiFailureSummary,
+  hasApiErrorCode,
   resolveApiErrorMessages,
 } from "@/features/session/apiErrors";
-import { hasApiErrorCode } from "@/features/wishlist/wishlistApi";
 import type { Translate } from "@/i18n/translate";
 
 export const RATE_LIMIT_EXCEEDED = "FRAMEWORK__RATE_LIMIT_EXCEEDED";

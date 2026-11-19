@@ -5,7 +5,12 @@ import type { ApiClient, Schemas } from "#shopware";
 import { READ_TIMEOUT_MS } from "@/features/session/readTimeout";
 import { stripLocale, withLocale } from "@/i18n/config";
 import type { Locale } from "@/i18n/config";
-import { decodePathname, isAppRoute } from "@/platform/routing/paths";
+import {
+  decodePathname,
+  hasUnsafePathChar,
+  isAppRoute,
+  toSeoPath,
+} from "@/platform/routing/paths";
 import { isTechnicalRouteName, technicalPath } from "@/platform/seo/urls";
 
 export type LocationParts = Pick<Location, "pathname" | "search" | "hash">;
@@ -92,7 +97,9 @@ async function targetPath(
     ],
     signal,
   );
-  if (seoUrl?.seoPathInfo) return `/${seoUrl.seoPathInfo.replace(/^\/+/, "")}`;
+  if (seoUrl?.seoPathInfo && !hasUnsafePathChar(seoUrl.seoPathInfo)) {
+    return toSeoPath(seoUrl.seoPathInfo);
+  }
   return isTechnicalRouteName(route.routeName)
     ? technicalPath(route.routeName, route.foreignKey)
     : null;

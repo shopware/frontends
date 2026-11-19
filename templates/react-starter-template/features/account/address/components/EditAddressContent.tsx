@@ -1,7 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { use, useEffect, useRef, useState, useTransition } from "react";
+import {
+  use,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 
 import type { Schemas } from "#shopware";
 import { BaseButton, useCmsActions } from "@/cms/client";
@@ -64,6 +71,14 @@ function EditAddress({
   const [saved, setSaved] = useState(false);
   const savedRef = useRef(false);
 
+  useLayoutEffect(
+    () => () => {
+      savedRef.current = false;
+      setSaved(false);
+    },
+    [],
+  );
+
   useEffect(() => {
     let active = true;
     async function read() {
@@ -108,7 +123,7 @@ function EditAddress({
       await updateCustomerAddress(
         client,
         address.id,
-        updatedAddressBody(address, toAddressBody(values)),
+        updatedAddressBody(address, toAddressBody(values, references.settings)),
       );
     } catch (error) {
       notifyErrors(error);

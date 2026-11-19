@@ -30,6 +30,10 @@ const INVALID_UUID = "FRAMEWORK__INVALID_UUID";
 const DEEP_LINK_NOT_FOUND = "CHECKOUT__CART_ORDER_DEEP_LINK_NOT_FOUND";
 const GUEST_NOT_AUTHENTICATED = "CHECKOUT__GUEST_NOT_AUTHENTICATED";
 const GUEST_WRONG_CREDENTIALS = "CHECKOUT__GUEST_WRONG_CREDENTIALS";
+const LOGIN_REQUIRED_CODES = [
+  "CHECKOUT__CUSTOMER_NOT_LOGGED_IN",
+  "FRAMEWORK__ROUTING_CUSTOMER_NOT_LOGGED_IN",
+];
 const NOT_CANCELLABLE_CODES = [
   "CHECKOUT__ORDER_NOT_CANCELLABLE",
   "SYSTEM__ILLEGAL_STATE_TRANSITION",
@@ -62,6 +66,7 @@ export type DeepLinkOrderResult =
   | { status: "notFound" }
   | { status: "authRequired" }
   | { status: "wrongCredentials" }
+  | { status: "loginRequired" }
   | { status: "failed"; messages: string[] };
 
 export type LineItemDownload = {
@@ -135,6 +140,9 @@ export function classifyDeepLinkError(
   if (codes.has(DEEP_LINK_NOT_FOUND)) return { status: "notFound" };
   if (codes.has(GUEST_WRONG_CREDENTIALS)) return { status: "wrongCredentials" };
   if (codes.has(GUEST_NOT_AUTHENTICATED)) return { status: "authRequired" };
+  if (LOGIN_REQUIRED_CODES.some((code) => codes.has(code))) {
+    return { status: "loginRequired" };
+  }
   return { status: "failed", messages: resolveApiErrorMessages(error, t) };
 }
 

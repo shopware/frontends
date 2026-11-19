@@ -3,8 +3,10 @@ import type { ApiError } from "@shopware/api-client";
 
 import type { ApiClient } from "#shopware";
 import { NEWSLETTER_RECIPIENT_NOT_FOUND } from "@/features/account/profile/profileApi";
-import { apiFailureSummary } from "@/features/session/apiErrors";
-import { hasApiErrorCode } from "@/features/wishlist/wishlistApi";
+import {
+  apiFailureSummary,
+  hasApiErrorCode,
+} from "@/features/session/apiErrors";
 
 import type { EmailLinkParams } from "./emailLinkParams";
 

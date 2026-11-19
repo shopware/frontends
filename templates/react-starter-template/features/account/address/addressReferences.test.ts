@@ -9,6 +9,10 @@ import { loadAddressReferences } from "./addressReferences";
 
 vi.mock("server-only", () => ({}));
 
+vi.mock("@/platform/shopware/loadShopSettings", () => ({
+  loadShopSettings: vi.fn(async () => ({ loginRegistration: settings })),
+}));
+
 vi.mock("@/platform/shopware/reads/countries", () => ({
   readCountries: vi.fn(),
 }));
@@ -22,6 +26,14 @@ vi.mock("@/platform/shopware/reads/salutations", () => ({
 }));
 
 const countries = [germany, poland];
+const settings = vi.hoisted(() => ({
+  showAdditionalAddressField1: true,
+  additionalAddressField1Required: false,
+  showAdditionalAddressField2: false,
+  additionalAddressField2Required: false,
+  showPhoneNumberField: true,
+  phoneNumberFieldRequired: true,
+}));
 const salutations = [
   { label: "Mr.", value: "salutation-mr" },
   { label: "Mrs.", value: "salutation-mrs" },
@@ -40,7 +52,7 @@ afterEach(() => {
 });
 
 describe("loadAddressReferences", () => {
-  it("merges the countries and the salutations", async () => {
+  it("merges the countries, the salutations and the address field settings", async () => {
     vi.mocked(readCountries).mockResolvedValue(countries);
     vi.mocked(readSalutations).mockResolvedValue(salutations);
 
@@ -49,6 +61,7 @@ describe("loadAddressReferences", () => {
       countriesUnavailable: false,
       salutations,
       salutationsUnavailable: false,
+      settings,
     });
     expect(console.error).not.toHaveBeenCalled();
     expect(readCountries).toHaveBeenCalledWith(null);
@@ -62,7 +75,7 @@ describe("loadAddressReferences", () => {
 
     await loadAddressReferences("pl-PL");
 
-    expect(resolveLanguageId).toHaveBeenCalledExactlyOnceWith("pl-PL");
+    expect(resolveLanguageId).toHaveBeenCalledWith("pl-PL");
     expect(readCountries).toHaveBeenCalledWith("language-pl");
     expect(readSalutations).toHaveBeenCalledWith("language-pl");
   });
@@ -77,6 +90,7 @@ describe("loadAddressReferences", () => {
       countriesUnavailable: true,
       salutations,
       salutationsUnavailable: false,
+      settings,
     });
     expect(console.error).toHaveBeenCalledExactlyOnceWith(
       "[Address] reading countries failed",
@@ -94,6 +108,7 @@ describe("loadAddressReferences", () => {
       countriesUnavailable: false,
       salutations: [],
       salutationsUnavailable: true,
+      settings,
     });
     expect(console.error).toHaveBeenCalledExactlyOnceWith(
       "[Address] reading salutations failed",
@@ -110,6 +125,7 @@ describe("loadAddressReferences", () => {
       countriesUnavailable: true,
       salutations: [],
       salutationsUnavailable: true,
+      settings,
     });
     expect(console.error).toHaveBeenCalledTimes(2);
   });

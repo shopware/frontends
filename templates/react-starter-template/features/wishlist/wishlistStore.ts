@@ -1,11 +1,13 @@
-import { resolveApiErrorMessages } from "@/features/session/apiErrors";
+import {
+  hasApiErrorCode,
+  resolveApiErrorMessages,
+} from "@/features/session/apiErrors";
 import type { StorefrontSession } from "@/features/session/types";
 import type { Translate } from "@/i18n/translate";
 
 import {
   CUSTOMER_NOT_LOGGED_IN,
   addWishlistProduct,
-  hasApiErrorCode,
   readWishlistIds,
   removeWishlistProduct,
 } from "./wishlistApi";

@@ -1,16 +1,25 @@
 "use client";
 
-import { use, useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  use,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import type { FormEvent } from "react";
 
 import { BaseButton, useCmsActions } from "@/cms/client";
 import { InputField } from "@/components/form/InputField";
 import { AccountPageHeader } from "@/features/account/components/AccountPageHeader";
+import { LOGIN_PATH } from "@/features/account/redirect";
 import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
-import { useTranslations } from "@/i18n/I18nProvider";
+import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 
 import {
   emptyDeepLinkCredentials,
@@ -85,9 +94,21 @@ function DeepLinkOrder({
   const getClient = useShopwareClient();
   const { notify } = useCmsActions();
   const t = useTranslations();
+  const localePath = useLocalePath();
+  const router = useRouter();
   const [phase, setPhase] = useState<Phase>({ name: "loading" });
   const started = useRef(false);
   const focusResult = useRef(false);
+  const sentToLogin = useRef(false);
+
+  useLayoutEffect(
+    () => () => {
+      if (!sentToLogin.current) return;
+      sentToLogin.current = false;
+      started.current = false;
+    },
+    [],
+  );
 
   const lookup = useCallback(
     async (credentials: DeepLinkCredentials | null): Promise<void> => {
@@ -133,6 +154,19 @@ function DeepLinkOrder({
           });
           setPhase({ name: "auth", notFound: false });
           return;
+        case "loginRequired": {
+          sentToLogin.current = true;
+          setPhase({ name: "loading" });
+          notify({
+            type: "info",
+            message: t("account.messages.loginRequired"),
+          });
+          const { pathname, search } = window.location;
+          router.replace(
+            `${localePath(LOGIN_PATH)}?redirect=${encodeURIComponent(`${pathname}${search}`)}`,
+          );
+          return;
+        }
         case "failed":
           if (credentials) {
             for (const message of result.messages) {
@@ -145,7 +179,7 @@ function DeepLinkOrder({
           return;
       }
     },
-    [deepLinkCode, getClient, notify, refreshSession, t],
+    [deepLinkCode, getClient, localePath, notify, refreshSession, router, t],
   );
 
   useEffect(() => {

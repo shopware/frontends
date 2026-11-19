@@ -103,7 +103,7 @@ function requiredMinLength(t: Translate, min: number) {
   return requiredString(t).min(min, t("validations.minLength", { min }));
 }
 
-function textField(
+export function textField(
   t: Translate,
   {
     shown,

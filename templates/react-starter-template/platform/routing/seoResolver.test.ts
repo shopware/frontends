@@ -169,6 +169,20 @@ describe("createSeoResolver for SEO paths", () => {
     });
   });
 
+  it("renders a headless sales channel's store-api route names", async () => {
+    const { resolver } = setup(() => [
+      {
+        routeName: "store-api.product.detail",
+        foreignKey: ID,
+        seoPathInfo: "Shirt/SW1",
+      },
+    ]);
+
+    await expect(resolver.resolve("/Shirt/SW1", null)).resolves.toEqual({
+      type: "found",
+    });
+  });
+
   it("does not render route names the storefront has no page for", async () => {
     const { resolver } = setup(() => [
       { routeName: "frontend.unknown.page", foreignKey: ID, seoPathInfo: "x" },

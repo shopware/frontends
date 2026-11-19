@@ -140,24 +140,6 @@ describe("getMessages", () => {
     });
   });
 
-  it("falls back to en-GB for keys a locale lacks", () => {
-    const english = getMessages("en-GB") as {
-      errors: Record<string, string>;
-    };
-    for (const locale of ["pl-PL", "de-DE"] as const) {
-      const localized = getMessages(locale) as {
-        errors: Record<string, string>;
-      };
-      expect(readJson(locale, "errors.json")).not.toHaveProperty([
-        "errors",
-        "VIOLATION::CUSTOMER_EMAIL_NOT_UNIQUE",
-      ]);
-      expect(localized.errors["VIOLATION::CUSTOMER_EMAIL_NOT_UNIQUE"]).toBe(
-        english.errors["VIOLATION::CUSTOMER_EMAIL_NOT_UNIQUE"],
-      );
-    }
-  });
-
   it("gives every locale every en-GB key", () => {
     const english = leafKeys(getMessages("en-GB"));
     for (const locale of locales) {

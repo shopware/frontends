@@ -1,7 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import type { MouseEvent } from "react";
 
 import type { Schemas } from "#shopware";
@@ -205,6 +211,8 @@ export function CheckoutPageContent({
   const [focusRequest, setFocusRequest] = useState(0);
   const [headingFocusRequest, setHeadingFocusRequest] = useState(0);
   const placingOrder = useRef(false);
+  const shown = useRef(false);
+  const methodReads = useRef(0);
   const changingAddress = useRef(false);
   const registered = useRef(false);
   const restoreFocusTo = useRef<HTMLElement | null>(null);
@@ -281,8 +289,22 @@ export function CheckoutPageContent({
     };
   }, [getClient]);
 
+  useLayoutEffect(() => {
+    shown.current = true;
+    return () => {
+      shown.current = false;
+      setIsPlacingOrder(false);
+      setOrderPlaced(false);
+      setCustomerComment("");
+      setTerms(emptyCheckoutTerms);
+    };
+  }, []);
+
   async function reloadMethods() {
+    methodReads.current += 1;
+    const read = methodReads.current;
     const methods = await readCheckoutMethods(getClient);
+    if (methodReads.current !== read) return;
     if (methods.shipping) setShippingMethods(methods.shipping);
     if (methods.payment) setPaymentMethods(methods.payment);
   }
@@ -396,6 +418,7 @@ export function CheckoutPageContent({
         await setPaymentMethod(client, id);
       }
       await refreshAfterContextChange();
+      await reloadMethods();
     } catch (error) {
       notifyContextChangeError(error);
     } finally {
@@ -503,7 +526,14 @@ export function CheckoutPageContent({
   }
 
   async function handlePlaceOrder(event: MouseEvent<HTMLButtonElement>) {
-    if (placingOrder.current || changingAddress.current) return;
+    if (
+      placingOrder.current ||
+      changingAddress.current ||
+      pendingShippingMethod !== null ||
+      pendingPaymentMethod !== null
+    ) {
+      return;
+    }
     const trigger = event.currentTarget;
     const formShown = showCustomerForm;
 
@@ -549,7 +579,7 @@ export function CheckoutPageContent({
       }
 
       placed = true;
-      setOrderPlaced(true);
+      if (shown.current) setOrderPlaced(true);
       router.push(
         localePath(`/checkout/success/${encodeURIComponent(order.id)}`),
       );
@@ -560,10 +590,8 @@ export function CheckoutPageContent({
       notifyApiError(error);
       restoreFocusTo.current = trigger;
     } finally {
-      if (!placed) {
-        placingOrder.current = false;
-        setIsPlacingOrder(false);
-      }
+      placingOrder.current = false;
+      if (!placed) setIsPlacingOrder(false);
     }
   }
 
@@ -655,6 +683,7 @@ export function CheckoutPageContent({
                     email={values.email}
                     password={values.password}
                     createAccount={createAccount}
+                    readOnly={registeredDuringCheckout}
                     errors={fieldErrors}
                     onFieldChange={setField}
                     onFieldBlur={touchField}
@@ -732,6 +761,8 @@ export function CheckoutPageContent({
               disabled={
                 (isUserSession && !canPlaceOrder) ||
                 pendingAddress !== null ||
+                pendingShippingMethod !== null ||
+                pendingPaymentMethod !== null ||
                 addressUnconfirmed
               }
               onClick={(event) => {

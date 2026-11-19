@@ -2,11 +2,10 @@
 
 import { cx } from "@/cms/client";
 import { LocaleLink } from "@/components/LocaleLink";
+import { LOGIN_PATH } from "@/features/account/redirect";
 import { useTranslations } from "@/i18n/I18nProvider";
 
 export const RECOVER_PASSWORD_PATH = "/account/recover";
-
-const LOGIN_PATH = "/account/login";
 
 const TEXT_LINK_CLASS =
   "inline-flex min-h-6 items-center rounded-sm text-sm text-surface-on-surface underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-outline-outline-focus";

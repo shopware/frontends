@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 
 import { useCmsActions } from "@/cms/client";
@@ -21,7 +20,6 @@ export type AccountLogout = {
 };
 
 export function useAccountLogout(): AccountLogout {
-  const router = useRouter();
   const localePath = useLocalePath();
   const { logout } = useSessionActions();
   const { notify } = useCmsActions();
@@ -37,7 +35,7 @@ export function useAccountLogout(): AccountLogout {
     try {
       const result = await logout();
       succeeded = result.ok;
-      if (succeeded) router.push(localePath("/"));
+      if (succeeded) window.location.assign(localePath("/"));
       return succeeded;
     } catch (cause) {
       notify({
@@ -50,7 +48,7 @@ export function useAccountLogout(): AccountLogout {
       pendingRef.current = false;
       setPending(false);
     }
-  }, [logout, notify, router, localePath]);
+  }, [logout, notify, localePath]);
 
   return { pending, logout: run };
 }

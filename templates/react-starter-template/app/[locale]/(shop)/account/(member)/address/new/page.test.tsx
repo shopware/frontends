@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { germany } from "@/components/form/countries.fixture";
 import { loadAddressReferences } from "@/features/account/address/addressReferences";
+import { hiddenAddressFields } from "@/features/account/address/addressSchema";
 import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
@@ -29,6 +30,7 @@ beforeEach(() => {
     countriesUnavailable: false,
     salutations: [{ label: "Mr.", value: "salutation-mr" }],
     salutationsUnavailable: false,
+    settings: { ...hiddenAddressFields, showPhoneNumberField: true },
   });
 });
 
@@ -54,6 +56,7 @@ describe("NewAddressPage", () => {
     expect(html).toContain("Personal data</h2>");
     expect(html).toContain('<option value="salutation-mr">Mr.</option>');
     expect(html).toContain('data-testid="country-select"');
+    expect(html).toContain('id="phoneNumber"');
   });
 
   it("renders the Polish copy and loads the references for pl-PL", async () => {

@@ -50,7 +50,7 @@ beforeEach(() => {
   vi.mocked(readLanguages).mockResolvedValue(EN_DE_PL);
   vi.mocked(readCanonicalSeoPath).mockImplementation(
     async (_routeName, _foreignKey, languageId) =>
-      SEO_PATHS[languageId] ?? null,
+      SEO_PATHS[languageId ?? ""] ?? null,
   );
 });
 
@@ -121,7 +121,7 @@ describe("buildLanguageAlternates", () => {
     vi.mocked(readCanonicalSeoPath).mockImplementation(
       async (_routeName, _foreignKey, languageId) => {
         if (languageId === "language-pl") throw new Error("offline");
-        return SEO_PATHS[languageId] ?? null;
+        return SEO_PATHS[languageId ?? ""] ?? null;
       },
     );
 

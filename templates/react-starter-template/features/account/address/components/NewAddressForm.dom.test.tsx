@@ -1,3 +1,4 @@
+import { Activity, useEffect, useState } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { CmsActionsProvider } from "@/cms/client";
@@ -19,11 +20,13 @@ import {
   salutations,
   sentBody,
 } from "../address.fixture";
+import { hiddenAddressFields } from "../addressSchema";
 import {
   chooseCountry,
   fillAddress,
   setSelectValue,
   field,
+  submitButton,
 } from "./addressFormDriver.fixture";
 import { NewAddressForm } from "./NewAddressForm";
 
@@ -59,7 +62,11 @@ async function setup(
     withI18n(
       <CmsActionsProvider actions={{ notify }}>
         <ShopwareClientHarness client={shopware.client}>
-          <NewAddressForm countries={countries} salutations={salutations} />
+          <NewAddressForm
+            countries={countries}
+            salutations={salutations}
+            settings={hiddenAddressFields}
+          />
         </ShopwareClientHarness>
       </CmsActionsProvider>,
       locale,
@@ -134,6 +141,56 @@ describe("NewAddressForm in the browser", () => {
 
     expect(shopware.calls(CREATE_ADDRESS)).toHaveLength(1);
     expect(push).toHaveBeenCalledTimes(1);
+  });
+
+  it("starts fresh when the hidden form is revealed again after a save", async () => {
+    const visibility: { set?: (mode: "visible" | "hidden") => void } = {};
+    function Page() {
+      const [mode, setMode] = useState<"visible" | "hidden">("visible");
+      useEffect(() => {
+        visibility.set = setMode;
+      }, []);
+      return (
+        <Activity mode={mode}>
+          <NewAddressForm
+            countries={countries}
+            salutations={salutations}
+            settings={hiddenAddressFields}
+          />
+        </Activity>
+      );
+    }
+    const shopware = fakeClient(() => customerAddress({ id: "address-new" }));
+    mounted = await mount(
+      withI18n(
+        <CmsActionsProvider actions={{ notify: vi.fn() }}>
+          <ShopwareClientHarness client={shopware.client}>
+            <Page />
+          </ShopwareClientHarness>
+        </CmsActionsProvider>,
+      ),
+    );
+    const { container } = mounted;
+
+    await fillAddress(container);
+    await chooseCountry(container, "Poland");
+    await interact(() => submitForm(query(container, "form")));
+    expect(submitButton(container).getAttribute("aria-disabled")).toBe("true");
+
+    await interact(() => visibility.set?.("hidden"));
+    await interact(() => visibility.set?.("visible"));
+
+    expect(submitButton(container).hasAttribute("aria-disabled")).toBe(false);
+    expect(field<HTMLInputElement>(container, "street").value).toBe("");
+
+    await fillAddress(container, { street: "Hauptstraße 1" });
+    await chooseCountry(container, "Poland");
+    await interact(() => submitForm(query(container, "form")));
+
+    expect(shopware.calls(CREATE_ADDRESS)).toHaveLength(2);
+    expect(sentBody(shopware.calls(CREATE_ADDRESS)[1])).toMatchObject({
+      street: "Hauptstraße 1",
+    });
   });
 
   it("shows every API error, stays on the page and lets the customer retry", async () => {

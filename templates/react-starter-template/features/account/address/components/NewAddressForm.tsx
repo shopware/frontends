@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useRef, useState, useTransition } from "react";
+import { useLayoutEffect, useRef, useState, useTransition } from "react";
 
 import { useCmsActions } from "@/cms/client";
 import { resolveRedirectFromSearch } from "@/features/account/redirect";
@@ -28,13 +28,27 @@ export function NewAddressForm(props: NewAddressFormProps) {
   const localePath = useLocalePath();
   const [navigating, startNavigation] = useTransition();
   const [saved, setSaved] = useState(false);
+  const [formKey, setFormKey] = useState(0);
   const savedRef = useRef(false);
+
+  useLayoutEffect(
+    () => () => {
+      if (!savedRef.current) return;
+      savedRef.current = false;
+      setSaved(false);
+      setFormKey((key) => key + 1);
+    },
+    [],
+  );
 
   async function handleSubmit(values: AddressValues) {
     if (savedRef.current) return;
     try {
       const client = await getClient();
-      await createCustomerAddress(client, toAddressBody(values));
+      await createCustomerAddress(
+        client,
+        toAddressBody(values, props.settings),
+      );
     } catch (error) {
       for (const message of resolveApiErrorMessages(error, t)) {
         notify({ type: "error", message });
@@ -59,6 +73,7 @@ export function NewAddressForm(props: NewAddressFormProps) {
 
   return (
     <AddressForm
+      key={formKey}
       {...props}
       busy={saved || navigating}
       onSubmit={handleSubmit}

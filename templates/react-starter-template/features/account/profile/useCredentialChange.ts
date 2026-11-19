@@ -97,6 +97,9 @@ export function useCredentialChange<Values extends Record<string, string>>({
         }
         return;
       }
+      setValues(initialValues);
+      setTouched({});
+      setSubmitted(false);
       notify({ type: "success", message: successMessage });
       await Promise.all([refresh(), refreshSession()]);
       if (!mounted.current) return;

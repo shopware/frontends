@@ -236,25 +236,31 @@ describe("personalDataFromCustomer", () => {
 
 describe("toChangeProfileBody", () => {
   it("sends the names, salutation, title and the private account type", () => {
-    expect(toChangeProfileBody({ ...privateValues, company: "Stale" })).toEqual(
-      {
-        firstName: "Jane",
-        lastName: "Doe",
-        salutationId: "salutation-mr",
-        title: "",
-        accountType: "private",
-      },
-    );
+    expect(
+      toChangeProfileBody(
+        { ...privateValues, company: "Stale" },
+        businessCustomer({ vatIds: ["DE1", "AT2"] }),
+      ),
+    ).toEqual({
+      firstName: "Jane",
+      lastName: "Doe",
+      salutationId: "salutation-mr",
+      title: "",
+      accountType: "private",
+    });
   });
 
   it("adds the company and the VAT id for a business account", () => {
     expect(
-      toChangeProfileBody({
-        ...privateValues,
-        accountType: "business",
-        company: "Shopware AG",
-        vatIds: "DE123456789",
-      }),
+      toChangeProfileBody(
+        {
+          ...privateValues,
+          accountType: "business",
+          company: "Shopware AG",
+          vatIds: "DE123456789",
+        },
+        profileCustomer(),
+      ),
     ).toEqual({
       firstName: "Jane",
       lastName: "Doe",
@@ -264,6 +270,15 @@ describe("toChangeProfileBody", () => {
       company: "Shopware AG",
       vatIds: ["DE123456789"],
     });
+  });
+
+  it("replaces only the first VAT id and keeps the others", () => {
+    expect(
+      toChangeProfileBody(
+        { ...privateValues, accountType: "business", vatIds: "DE999" },
+        businessCustomer({ vatIds: ["DE111", "ATU222", "PL333"] }),
+      ).vatIds,
+    ).toEqual(["DE999", "ATU222", "PL333"]);
   });
 });
 

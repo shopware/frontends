@@ -6,7 +6,6 @@ import { apiClientError } from "@/features/session/session.fixture";
 
 import {
   addWishlistProduct,
-  hasApiErrorCode,
   readWishlistIds,
   readWishlistPage,
   removeWishlistProduct,
@@ -45,21 +44,6 @@ const notFound = apiClientError(
   [{ code: "CHECKOUT__WISHLIST_NOT_FOUND", status: "404" }],
   404,
 );
-
-describe("hasApiErrorCode", () => {
-  it("finds the code among the API errors", () => {
-    expect(hasApiErrorCode(notFound, "CHECKOUT__WISHLIST_NOT_FOUND")).toBe(
-      true,
-    );
-    expect(hasApiErrorCode(notFound, "OTHER")).toBe(false);
-  });
-
-  it("is false for errors that are not API errors", () => {
-    expect(
-      hasApiErrorCode(new Error("x"), "CHECKOUT__WISHLIST_NOT_FOUND"),
-    ).toBe(false);
-  });
-});
 
 describe("readWishlistIds", () => {
   it("reads up to 100 ids with an exact total and only the id field", async () => {

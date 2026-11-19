@@ -218,6 +218,7 @@ export function personalDataFromCustomer(
 
 export function toChangeProfileBody(
   values: PersonalDataValues,
+  customer: Schemas["Customer"],
 ): ChangeProfileBody {
   const base = {
     firstName: values.firstName,
@@ -230,7 +231,12 @@ export function toChangeProfileBody(
       ...base,
       accountType: "business",
       company: values.company,
-      vatIds: [values.vatIds],
+      vatIds: [
+        values.vatIds,
+        ...(customer.accountType === "business"
+          ? (customer.vatIds ?? []).slice(1)
+          : []),
+      ],
     };
   }
   return { ...base, accountType: "private" };

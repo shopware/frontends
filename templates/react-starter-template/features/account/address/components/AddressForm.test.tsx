@@ -4,7 +4,7 @@ import { germany, countries } from "@/components/form/countries.fixture";
 import { renderToHtml } from "@/test/render";
 
 import { customerAddress, salutations } from "../address.fixture";
-import { addressValuesFrom } from "../addressSchema";
+import { addressValuesFrom, hiddenAddressFields } from "../addressSchema";
 import { AddressForm } from "./AddressForm";
 import type { AddressFormProps } from "./AddressForm";
 
@@ -19,6 +19,7 @@ function renderForm(props: Partial<AddressFormProps> = {}) {
     <AddressForm
       countries={countries}
       salutations={salutations}
+      settings={hiddenAddressFields}
       onSubmit={noopSubmit}
       {...props}
     />,

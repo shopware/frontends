@@ -6,8 +6,10 @@ import {
   resolveFormFailure,
   violationField,
 } from "@/features/forms/formViolations";
-import { apiFailureSummary } from "@/features/session/apiErrors";
-import { hasApiErrorCode } from "@/features/wishlist/wishlistApi";
+import {
+  apiFailureSummary,
+  hasApiErrorCode,
+} from "@/features/session/apiErrors";
 import type { Translate } from "@/i18n/translate";
 
 import { RECOVERY_HASH_EXPIRED, RECOVERY_HASH_NOT_FOUND } from "./recoveryApi";

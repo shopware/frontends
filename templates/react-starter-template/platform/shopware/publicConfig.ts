@@ -63,30 +63,11 @@ export function isBrowserForbiddenHeader(name: string): boolean {
   );
 }
 
-function toBrowserHeaders(headers: Record<string, string>): ApiHeaders {
-  const kept = new Map<string, string>();
-  for (const [rawName, value] of Object.entries(headers)) {
-    const name = rawName.trim().toLowerCase();
-    if (
-      isValidHeaderName(name) &&
-      isValidHeaderValue(value) &&
-      !isReservedApiHeader(name) &&
-      !isBrowserForbiddenHeader(name)
-    ) {
-      kept.set(name, value);
-    }
-  }
-  return Object.fromEntries(kept);
-}
-
 const publicShopwareConfigSchema = z.object({
   publicEndpoint: z.string().min(1),
   accessToken: z.string().min(1),
   devStorefrontUrl: z.string().min(1).nullable(),
-  headers: z
-    .record(z.string(), z.string())
-    .transform(toBrowserHeaders)
-    .optional(),
+  headers: z.record(z.string(), z.string()).optional(),
 });
 
 export function parsePublicShopwareConfig(

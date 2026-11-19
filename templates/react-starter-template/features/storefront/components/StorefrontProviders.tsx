@@ -26,6 +26,7 @@ import {
   reviewViolations,
   saveProductReview,
 } from "@/features/reviews/productReviewsApi";
+import { hasApiErrorCode } from "@/features/session/apiErrors";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { ShopwareSessionProvider } from "@/features/session/components/ShopwareSessionProvider";
@@ -35,10 +36,7 @@ import {
   useWishlistStore,
 } from "@/features/wishlist/components/WishlistProvider";
 import { useWishlist } from "@/features/wishlist/useWishlist";
-import {
-  CUSTOMER_NOT_LOGGED_IN,
-  hasApiErrorCode,
-} from "@/features/wishlist/wishlistApi";
+import { CUSTOMER_NOT_LOGGED_IN } from "@/features/wishlist/wishlistApi";
 import { useLocale, useTranslations } from "@/i18n/I18nProvider";
 
 import { cmsCustomerState } from "../cmsCustomerState";

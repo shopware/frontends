@@ -101,6 +101,57 @@ describe("buildRouteMetadata", () => {
     expect(canonical(metadata)).toBe("https://shop.test/detail/variant-1");
   });
 
+  it.each([
+    ["its SEO URL", "Chair/SW1", "https://shop.test/de-DE/Chair/SW1"],
+    ["its technical path", null, "https://shop.test/de-DE/detail/canonical-1"],
+  ])(
+    "links a variant with a canonical product to that product's %s",
+    async (_, seoPathInfo, expected) => {
+      vi.mocked(readCanonicalSeoPath).mockResolvedValue(seoPathInfo);
+      vi.mocked(readProductDetail).mockResolvedValue({
+        product: {
+          id: "variant-1",
+          canonicalProductId: "canonical-1",
+          name: "Chair",
+          translated: { name: "Chair" },
+          seoUrls: [{ seoPathInfo: "Chair/SW1.1" }],
+        },
+      } as unknown as Schemas["ProductDetailResponse"]);
+
+      const metadata = await buildRouteMetadata(
+        { routeName: "frontend.detail.page", foreignKey: "variant-1" },
+        { locale: "de-DE", languageId: "language-de" },
+      );
+
+      expect(readCanonicalSeoPath).toHaveBeenCalledWith(
+        "frontend.detail.page",
+        "canonical-1",
+        "language-de",
+      );
+      expect(canonical(metadata)).toBe(expected);
+    },
+  );
+
+  it("links the canonical product itself to its own SEO URL", async () => {
+    vi.mocked(readProductDetail).mockResolvedValue({
+      product: {
+        id: "canonical-1",
+        canonicalProductId: "canonical-1",
+        name: "Chair",
+        translated: { name: "Chair" },
+        seoUrls: [{ seoPathInfo: "Chair/SW1" }],
+      },
+    } as unknown as Schemas["ProductDetailResponse"]);
+
+    const metadata = await buildRouteMetadata(
+      { routeName: "frontend.detail.page", foreignKey: "canonical-1" },
+      { locale: "en-GB", languageId: "language-en" },
+    );
+
+    expect(canonical(metadata)).toBe("https://shop.test/Chair/SW1");
+    expect(readCanonicalSeoPath).not.toHaveBeenCalled();
+  });
+
   it("links a landing page to its SEO URL", async () => {
     vi.mocked(readLandingPage).mockResolvedValue({
       name: "Summer",

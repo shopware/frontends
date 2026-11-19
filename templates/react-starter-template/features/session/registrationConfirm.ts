@@ -1,8 +1,6 @@
 import { ApiClientError } from "@shopware/api-client";
 
-import { hasApiErrorCode } from "@/features/wishlist/wishlistApi";
-
-import { apiFailureSummary } from "./apiErrors";
+import { apiFailureSummary, hasApiErrorCode } from "./apiErrors";
 
 export type RegistrationConfirmInput = { em: string; hash: string };
 
