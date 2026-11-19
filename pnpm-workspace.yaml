@@ -14,24 +14,24 @@ overrides:
   "@tiptap/pm@<3.30.5": 3.30.5
   esbuild: ^0.28.2
   vite: ^8.3.5
-  "@vueuse/core": 14.4.0
-  "@vueuse/shared": 14.4.0
-  "@vueuse/metadata": 14.4.0
-  "@vueuse/integrations": 14.4.0
-  vue: 3.5.44
-  "@vue/compiler-core": 3.5.44
-  "@vue/compiler-dom": 3.5.44
-  "@vue/compiler-sfc": 3.5.44
-  "@vue/compiler-ssr": 3.5.44
-  "@vue/reactivity": 3.5.44
-  "@vue/runtime-core": 3.5.44
-  "@vue/runtime-dom": 3.5.44
-  "@vue/server-renderer": 3.5.44
-  "@vue/shared": 3.5.44
+  "@vueuse/core": 15.0.0
+  "@vueuse/shared": 15.0.0
+  "@vueuse/metadata": 15.0.0
+  "@vueuse/integrations": 15.0.0
+  vue: 3.5.45
+  "@vue/compiler-core": 3.5.45
+  "@vue/compiler-dom": 3.5.45
+  "@vue/compiler-sfc": 3.5.45
+  "@vue/compiler-ssr": 3.5.45
+  "@vue/reactivity": 3.5.45
+  "@vue/runtime-core": 3.5.45
+  "@vue/runtime-dom": 3.5.45
+  "@vue/server-renderer": 3.5.45
+  "@vue/shared": 3.5.45
   "@tiptap/core": 3.30.5
   "js-yaml@>=4.0.0 <4.3.2": 4.3.2
   "sharp@<0.35.5": 0.35.5
-  "astro@<7.4.2": 7.4.2
+  "astro@<7.4.7": 7.4.7
   "tinypool@<2.1.2": 2.1.2
   "postcss-selector-parser@<7.1.6": 7.1.6
   "undici@>=7.0.0 <7.30.1": 7.30.1
@@ -84,3 +84,6 @@ auditConfig:
     # deepmerge: no patched release, the advisory covers <=4.3.1 and that is the latest.
     # Build-time only (@rollup/plugin-node-resolve in nitropack and unbuild). Drops out with rollup/plugins#2036.
     - GHSA-gcqx-w48m-w2h4
+    # picomatch: no patched release, the advisory covers <=4.0.7 (2.x too) and that is the latest.
+    # Needs an attacker-supplied glob; every pattern here comes from build/dev config. Drops out with micromatch/picomatch#247.
+    - GHSA-fc5q-39xc-vjpf

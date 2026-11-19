@@ -49,4 +49,10 @@ nav:
       <p class="font-normal text-gray-700 dark:text-gray-400 h-40">Accept credit card payments using the official Shopware Braintree App. Includes Drop-in UI integration for headless frontends.</p>
     </a>
   </div>
+  <div>
+    <a href="shopware-payments.html" class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow text-gray-700 hover:bg-gray-100 dark:bg-#242424 dark:border-#363636 dark:border-solid dark:hover:bg-#282828 mb-5 text-center">
+      <span class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-8 inline-block">ShopwarePayments</span>
+      <p class="font-normal text-gray-700 dark:text-gray-400 h-40">Render PayPal, Pay Later, Apple Pay, Google Pay and card fields with the ShopwarePayments browser library.</p>
+    </a>
+  </div>
 </div>
