@@ -1,5 +1,14 @@
 import { z } from "zod";
 
+import {
+  hiddenAddressFields,
+  shownAddressFields,
+} from "@/features/account/address/addressSchema";
+import type { AddressFieldSettings } from "@/features/account/address/addressSchema";
+import {
+  REGISTRATION_MAX_LENGTHS,
+  textField,
+} from "@/features/account/registrationSchema";
 import type { RegistrationInput } from "@/features/session/types";
 import type { Translate } from "@/i18n/translate";
 
@@ -11,10 +20,13 @@ export type CheckoutValues = {
   firstName: string;
   lastName: string;
   street: string;
+  additionalAddressLine1: string;
+  additionalAddressLine2: string;
   zipcode: string;
   city: string;
   countryId: string;
   countryStateId: string;
+  phoneNumber: string;
 };
 
 export type CheckoutField = keyof CheckoutValues;
@@ -25,10 +37,13 @@ export type CheckoutAddressField =
   | "firstName"
   | "lastName"
   | "street"
+  | "additionalAddressLine1"
+  | "additionalAddressLine2"
   | "zipcode"
   | "city"
   | "countryId"
-  | "countryStateId";
+  | "countryStateId"
+  | "phoneNumber";
 
 export type CheckoutAddressValues = Pick<CheckoutValues, CheckoutAddressField>;
 
@@ -38,6 +53,7 @@ export type CheckoutAddressErrors = Partial<
 
 export type CheckoutAddressOptions = {
   countryHasStates: boolean;
+  addressFields?: AddressFieldSettings;
 };
 
 export type CheckoutSchemaOptions = CheckoutAddressOptions & {
@@ -49,16 +65,20 @@ export type CheckoutRegistrationOptions = {
   createAccount: boolean;
   acceptedDataProtection: boolean;
   shippingAddress?: CheckoutAddressValues | null;
+  addressFields: AddressFieldSettings;
 };
 
 export const emptyCheckoutAddressValues: CheckoutAddressValues = {
   firstName: "",
   lastName: "",
   street: "",
+  additionalAddressLine1: "",
+  additionalAddressLine2: "",
   zipcode: "",
   city: "",
   countryId: "",
   countryStateId: "",
+  phoneNumber: "",
 };
 
 export const emptyCheckoutValues: CheckoutValues = {
@@ -81,15 +101,28 @@ function requiredMinLength(min: number, t: Translate) {
   return requiredString(t).min(min, t("validations.minLength", { min }));
 }
 
-function addressShape(t: Translate) {
+function addressShape(t: Translate, settings: AddressFieldSettings) {
   return {
-    firstName: requiredMinLength(3, t),
-    lastName: requiredMinLength(3, t),
+    firstName: requiredMinLength(2, t),
+    lastName: requiredMinLength(2, t),
     street: requiredMinLength(3, t),
+    additionalAddressLine1: textField(t, {
+      shown: settings.showAdditionalAddressField1,
+      required: settings.additionalAddressField1Required,
+    }),
+    additionalAddressLine2: textField(t, {
+      shown: settings.showAdditionalAddressField2,
+      required: settings.additionalAddressField2Required,
+    }),
     zipcode: requiredString(t),
     city: requiredString(t),
     countryId: requiredString(t),
     countryStateId: z.string(),
+    phoneNumber: textField(t, {
+      shown: settings.showPhoneNumberField,
+      required: settings.phoneNumberFieldRequired,
+      max: REGISTRATION_MAX_LENGTHS.phoneNumber,
+    }),
   };
 }
 
@@ -106,7 +139,12 @@ function requireState(countryHasStates: boolean, t: Translate) {
 }
 
 export function createCheckoutSchema(
-  { createAccount, countryHasStates, passwordMinLength }: CheckoutSchemaOptions,
+  {
+    createAccount,
+    countryHasStates,
+    passwordMinLength,
+    addressFields = hiddenAddressFields,
+  }: CheckoutSchemaOptions,
   t: Translate,
 ) {
   return z
@@ -115,17 +153,20 @@ export function createCheckoutSchema(
       password: createAccount
         ? requiredMinLength(passwordMinLength, t)
         : z.string(),
-      ...addressShape(t),
+      ...addressShape(t, addressFields),
     })
     .superRefine(requireState(countryHasStates, t));
 }
 
 export function createCheckoutAddressSchema(
-  { countryHasStates }: CheckoutAddressOptions,
+  {
+    countryHasStates,
+    addressFields = hiddenAddressFields,
+  }: CheckoutAddressOptions,
   t: Translate,
 ) {
   return z
-    .object(addressShape(t))
+    .object(addressShape(t, addressFields))
     .superRefine(requireState(countryHasStates, t));
 }
 
@@ -169,6 +210,7 @@ export function validateCheckoutAddress(
 
 export function toCheckoutAddressFields(
   values: CheckoutAddressValues,
+  addressFields: AddressFieldSettings,
 ): CheckoutAddressFields {
   return {
     firstName: values.firstName,
@@ -178,13 +220,8 @@ export function toCheckoutAddressFields(
     city: values.city,
     countryId: values.countryId,
     countryStateId: values.countryStateId || undefined,
+    ...shownAddressFields(values, addressFields),
   };
-}
-
-export function toBillingAddressFields(
-  values: CheckoutValues,
-): CheckoutAddressFields {
-  return toCheckoutAddressFields(values);
 }
 
 export function toCheckoutRegistration(
@@ -193,6 +230,7 @@ export function toCheckoutRegistration(
     createAccount,
     acceptedDataProtection,
     shippingAddress = null,
+    addressFields,
   }: CheckoutRegistrationOptions,
 ): RegistrationInput {
   return {
@@ -205,14 +243,14 @@ export function toCheckoutRegistration(
     billingAddress: {
       customerId: "",
       id: "",
-      ...toCheckoutAddressFields(values),
+      ...toCheckoutAddressFields(values, addressFields),
     },
     ...(shippingAddress
       ? {
           shippingAddress: {
             customerId: "",
             id: "",
-            ...toCheckoutAddressFields(shippingAddress),
+            ...toCheckoutAddressFields(shippingAddress, addressFields),
           },
         }
       : {}),

@@ -19,8 +19,9 @@ export async function readSearchSuggest(
   term: string,
   signal?: AbortSignal,
 ): Promise<SearchSuggestResult> {
+  const headers: SearchSuggestGetHeaders = { "sw-include-seo-urls": true };
   const { data } = await client.invoke("searchSuggestGet get /search-suggest", {
-    headers: { "sw-include-seo-urls": true } as SearchSuggestGetHeaders,
+    headers,
     query: { search: term, limit: SUGGEST_LIMIT, "no-aggregations": "1" },
     fetchOptions: { timeout: READ_TIMEOUT_MS, signal },
   });

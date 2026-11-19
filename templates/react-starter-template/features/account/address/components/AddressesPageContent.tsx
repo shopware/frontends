@@ -6,10 +6,10 @@ import type { Schemas } from "#shopware";
 import { BaseButton, useCmsActions } from "@/cms/client";
 import { AccountSectionHeader } from "@/features/account/components/AccountSectionHeader";
 import { useCustomer } from "@/features/account/customer/useCustomer";
-import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
 import { useTranslations } from "@/i18n/I18nProvider";
+import { resolveApiErrorMessages } from "@/platform/shopware/apiErrors";
 
 import {
   deleteCustomerAddress,
@@ -46,6 +46,12 @@ function withoutKey<T>(
   return next;
 }
 
+type PendingFocus = {
+  trigger: Element | null;
+  index: number;
+  settled: boolean;
+};
+
 function DefaultAddress({
   address,
   loading,
@@ -78,6 +84,8 @@ export function AddressesPageContent() {
   const [retrying, setRetrying] = useState(false);
   const requestRef = useRef(0);
   const busyRef = useRef(new Set<string>());
+  const listRef = useRef<HTMLDivElement>(null);
+  const pendingFocusRef = useRef<PendingFocus | null>(null);
 
   const readAddresses = useCallback(async (): Promise<AddressList | null> => {
     const request = ++requestRef.current;
@@ -104,6 +112,31 @@ export function AddressesPageContent() {
     void readAddresses().then(applyAddresses);
   }, [readAddresses, applyAddresses]);
 
+  useEffect(() => {
+    const pending = pendingFocusRef.current;
+    if (!pending?.settled) return;
+    pendingFocusRef.current = null;
+    if (pending.trigger?.isConnected) return;
+    const active = document.activeElement;
+    if (active && active !== document.body) return;
+    const tiles = listRef.current?.querySelectorAll("[data-address-id]") ?? [];
+    const tile = tiles[Math.min(pending.index, tiles.length - 1)];
+    tile?.querySelector<HTMLElement>("a, button")?.focus();
+  }, [deletingIds, pendingDefaults]);
+
+  function trackFocus(addressId: string): PendingFocus {
+    const pending = {
+      trigger: document.activeElement,
+      index:
+        list.status === "ready"
+          ? list.addresses.findIndex((address) => address.id === addressId)
+          : -1,
+      settled: false,
+    };
+    pendingFocusRef.current = pending;
+    return pending;
+  }
+
   async function loadAddresses() {
     applyAddresses(await readAddresses());
   }
@@ -123,9 +156,14 @@ export function AddressesPageContent() {
     if (busyRef.current.has(key)) return;
     busyRef.current.add(key);
     setDeletingIds((ids) => withId(ids, addressId));
+    const pendingFocus = trackFocus(addressId);
     try {
       const client = await getClient();
       await deleteCustomerAddress(client, addressId);
+      notify({
+        type: "success",
+        message: t("account.address.deleteSuccessMessage"),
+      });
       setList((current) =>
         current.status === "ready"
           ? {
@@ -140,6 +178,7 @@ export function AddressesPageContent() {
     } catch (error) {
       notifyErrors(error);
     } finally {
+      pendingFocus.settled = true;
       busyRef.current.delete(key);
       setDeletingIds((ids) => withoutId(ids, addressId));
     }
@@ -150,6 +189,7 @@ export function AddressesPageContent() {
     if (busyRef.current.has(key)) return;
     busyRef.current.add(key);
     setPendingDefaults((pending) => ({ ...pending, [addressId]: kind }));
+    const pendingFocus = trackFocus(addressId);
     try {
       const client = await getClient();
       if (kind === "billing") {
@@ -157,10 +197,18 @@ export function AddressesPageContent() {
       } else {
         await setDefaultShippingAddress(client, addressId);
       }
+      notify({
+        type: "success",
+        message:
+          kind === "billing"
+            ? t("account.address.defaultBillingSuccessMessage")
+            : t("account.address.defaultShippingSuccessMessage"),
+      });
       await refreshAfterChange();
     } catch (error) {
       notifyErrors(error);
     } finally {
+      pendingFocus.settled = true;
       busyRef.current.delete(key);
       setPendingDefaults((pending) => withoutKey(pending, addressId));
     }
@@ -273,7 +321,7 @@ export function AddressesPageContent() {
           className="mb-4"
           title={t("account.address.availableAddressesSectionHeader")}
         />
-        <div aria-busy={list.status === "loading" || undefined}>
+        <div ref={listRef} aria-busy={list.status === "loading" || undefined}>
           {renderAddresses()}
         </div>
       </div>

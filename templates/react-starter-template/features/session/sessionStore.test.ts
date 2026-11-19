@@ -867,6 +867,85 @@ describe("createSessionStore locale", () => {
     ]);
   });
 
+  it("sends the patch of the next locale only after the previous switch settled", async () => {
+    const { invoke } = languageBackend();
+    const answer = invoke.getMockImplementation();
+    if (!answer) throw new Error("The language backend has no answer");
+    const firstPatch = deferred<void>();
+    let patches = 0;
+    invoke.mockImplementation(async (operation: string, params?: unknown) => {
+      if (operation === UPDATE_CONTEXT && ++patches === 1) {
+        await firstPatch.promise;
+      }
+      return answer(operation, params);
+    });
+    const patchCalls = () =>
+      invoke.mock.calls.filter(([operation]) => operation === UPDATE_CONTEXT);
+    const store = createSessionStore({ locale: "en-GB" });
+    await store.start();
+
+    store.setLocale("de-DE");
+    await vi.waitFor(() => expect(patchCalls()).toHaveLength(1));
+    store.setLocale("en-GB");
+    await new Promise((settle) => setTimeout(settle, 0));
+    expect(patchCalls()).toHaveLength(1);
+
+    firstPatch.resolve();
+    await store.getLanguages();
+
+    expect(patchCalls()).toEqual([
+      [UPDATE_CONTEXT, updateLanguage("language-de")],
+      [UPDATE_CONTEXT, updateLanguage("language-en")],
+    ]);
+    expect(store.getSnapshot().context?.context?.languageIdChain).toEqual([
+      "language-en",
+    ]);
+  });
+
+  it("keeps the logged-in session when the re-read after a locale switch fails", async () => {
+    const consoleError = silenceConsoleError();
+    const failure = new TypeError("Failed to fetch");
+    const { invoke } = languageBackend();
+    let contextReads = 0;
+    invoke.mockImplementation(async (operation: string) => {
+      switch (operation) {
+        case READ_CONTEXT:
+          contextReads += 1;
+          if (contextReads > 1) throw failure;
+          return {
+            data: {
+              ...salesChannelContext(customer()),
+              context: { languageIdChain: ["language-en"] },
+            },
+          };
+        case READ_LANGUAGES:
+          return { data: { elements: shopLanguages } };
+        case UPDATE_CONTEXT:
+          return { data: { contextToken: "context-token-1" } };
+        default:
+          throw new Error(`Unexpected operation ${operation}`);
+      }
+    });
+    const store = createSessionStore({ locale: "en-GB" });
+    await store.start();
+    const ready = store.getSnapshot();
+
+    store.setLocale("de-DE");
+    await store.getLanguages();
+
+    expect(invoke).toHaveBeenCalledWith(
+      UPDATE_CONTEXT,
+      updateLanguage("language-de"),
+    );
+    expect(contextReads).toBe(2);
+    expect(store.getSnapshot()).toEqual({ ...ready, status: "error" });
+    expect(store.getSnapshot().context?.customer?.id).toBe("customer-1");
+    expect(consoleError).toHaveBeenCalledExactlyOnceWith(
+      "[Session] applying the locale to the session failed",
+      failure,
+    );
+  });
+
   it("logs a language patch that times out and still hands out the client and the languages", async () => {
     const consoleError = silenceConsoleError();
     const timeout = new DOMException(

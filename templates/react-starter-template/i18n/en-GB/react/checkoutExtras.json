@@ -33,6 +33,10 @@
       "label": "Comment on your order",
       "hint": "Optional, for example delivery instructions.",
       "summaryLabel": "Your comment"
+    },
+    "success": {
+      "paymentInfo": "Continue to the payment provider to pay for your order.",
+      "paymentStartFailed": "Your order was placed, but the payment could not be started."
     }
   }
 }

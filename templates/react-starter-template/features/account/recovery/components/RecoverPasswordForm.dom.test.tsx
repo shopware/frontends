@@ -34,9 +34,9 @@ vi.mock("@/features/session/browserClient", () => ({
   loadPublicConfig: vi.fn(),
 }));
 
-const FORM = '[data-testid="account-recover-password-form"]';
-const EMAIL = '[data-testid="account-recover-password-email-input"]';
-const SUCCESS = '[data-testid="account-recover-password-success"]';
+const FORM = '[data-testid="recover-password-form"]';
+const EMAIL = '[data-testid="recover-password-email-input"]';
+const SUCCESS = '[data-testid="recover-password-success-message"]';
 const RESEND = '[data-testid="account-recover-password-resend-button"]';
 const SENT =
   "If the provided email address is registered, a confirmation email including a password reset link has been sent.";
@@ -188,7 +188,7 @@ describe("RecoverPasswordForm in the browser", () => {
       expect(document.activeElement).toBe(success);
       expect(container.querySelector(FORM)).toBeNull();
       expect(
-        query(container, '[data-testid="account-recover-password-back-link"]')
+        query(container, '[data-testid="recover-password-login-link"]')
           .textContent,
       ).toBe("Back to sign in");
     },
@@ -218,7 +218,7 @@ describe("RecoverPasswordForm in the browser", () => {
     await submit("jane@example.com");
     const button = query<HTMLButtonElement>(
       container,
-      '[data-testid="account-recover-password-submit-button"]',
+      '[data-testid="recover-password-submit-button"]',
     );
     expect(button.getAttribute("aria-busy")).toBe("true");
     expect(button.getAttribute("aria-disabled")).toBe("true");

@@ -3,12 +3,12 @@ import type { ApiError } from "@shopware/api-client";
 
 import type { CmsFormViolation } from "@/cms/client";
 import { NEWSLETTER_RECIPIENT_NOT_FOUND } from "@/features/account/profile/profileApi";
+import type { Translate } from "@/i18n/translate";
 import {
   apiFailureSummary,
   hasApiErrorCode,
   resolveApiErrorMessages,
-} from "@/features/session/apiErrors";
-import type { Translate } from "@/i18n/translate";
+} from "@/platform/shopware/apiErrors";
 
 export const RATE_LIMIT_EXCEEDED = "FRAMEWORK__RATE_LIMIT_EXCEEDED";
 

@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { germany } from "@/components/form/countries.fixture";
+import { hiddenAddressFields } from "@/features/account/address/addressSchema";
 import type { LegalLinks } from "@/features/checkout/checkoutSettings";
 import type { CheckoutPageContentProps } from "@/features/checkout/components/CheckoutPageContent";
 import { loadCountryOptions } from "@/platform/shopware/loadCountryOptions";
@@ -47,6 +48,7 @@ const templateSettings = {
   showCustomerComment: false,
   requireDataProtectionCheckbox: false,
   passwordMinLength: 8,
+  addressFields: hiddenAddressFields,
   legalLinks: { terms: null, revocation: null },
 };
 
@@ -135,6 +137,7 @@ describe("CheckoutPage", () => {
       showCustomerComment: true,
       requireDataProtectionCheckbox: true,
       passwordMinLength: 12,
+      addressFields: hiddenAddressFields,
       legalLinks: { terms: "/navigation/terms", revocation: null },
     });
   });

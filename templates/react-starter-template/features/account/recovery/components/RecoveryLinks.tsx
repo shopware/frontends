@@ -28,7 +28,7 @@ export function BackToLoginLink() {
   return (
     <LocaleLink
       href={LOGIN_PATH}
-      data-testid="account-recover-password-back-link"
+      data-testid="recover-password-login-link"
       className={TEXT_LINK_CLASS}
     >
       {t("account.recoverPassword.backToLogin")}

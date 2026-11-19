@@ -38,15 +38,16 @@ export async function readProductSearch(
   cacheLife("listing");
   cacheTag(...languageCacheTags("sw:search", languageId));
 
+  const searchQuery: SearchPageGetQuery = {
+    ...query,
+    search,
+    _criteria: encodeForQuery(productSearchCriteria(categoryIds)),
+  };
   const response = await createShopwareClient({ languageId }).invoke(
     "searchPageGet get /search",
     {
       headers: { "sw-include-seo-urls": true },
-      query: {
-        ...query,
-        search,
-        _criteria: encodeForQuery(productSearchCriteria(categoryIds)),
-      } as SearchPageGetQuery,
+      query: searchQuery,
     },
   );
 

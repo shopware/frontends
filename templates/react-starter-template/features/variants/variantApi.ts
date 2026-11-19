@@ -2,9 +2,9 @@ import { encodeForQuery } from "@shopware/api-client/helpers";
 
 import type { ApiClient, Schemas, operations } from "#shopware";
 import type { CmsFindVariantInput, CmsFindVariantResult } from "@/cms/client";
-import { hasApiErrorCode } from "@/features/session/apiErrors";
 import { READ_TIMEOUT_MS } from "@/features/session/readTimeout";
 import { hasUnsafePathChar, toSeoPath } from "@/platform/routing/paths";
+import { hasApiErrorCode } from "@/platform/shopware/apiErrors";
 
 export const FIND_VARIANT =
   "searchProductVariantIdsGet get /product/{productId}/find-variant";

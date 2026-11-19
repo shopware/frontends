@@ -15,11 +15,11 @@ import { BaseButton, useCmsActions } from "@/cms/client";
 import { InputField } from "@/components/form/InputField";
 import { AccountPageHeader } from "@/features/account/components/AccountPageHeader";
 import { LOGIN_PATH } from "@/features/account/redirect";
-import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
 import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
+import { resolveApiErrorMessages } from "@/platform/shopware/apiErrors";
 
 import {
   emptyDeepLinkCredentials,

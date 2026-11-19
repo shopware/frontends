@@ -4,7 +4,9 @@
     "header": {
       "search": "Search",
       "closeSearch": "Close",
-      "signedInAs": "Signed in as {name}"
+      "signedInAs": "Signed in as {name}",
+      "cartWithCount": "Cart, {count} item | Cart, {count} items",
+      "wishlistWithCount": "Wishlist, {count} item | Wishlist, {count} items"
     },
     "sideMenu": {
       "open": "Open menu",

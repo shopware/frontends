@@ -515,6 +515,27 @@ describe("createCartStore promotion codes", () => {
     });
   });
 
+  it("reports an applied code without the not-eligible notice an earlier code left in the cart", async () => {
+    const promotionA = {
+      ...cartError("promotion-not-eligible", "", "", 0),
+      name: "A",
+      message: "Promotion A not eligible for cart!",
+    };
+    const errors = { "promotion-not-eligible": promotionA };
+    const { store } = setup((operation) =>
+      operation === READ_CART
+        ? cart({ lineItems: [lineItem()], errors })
+        : cart({ lineItems: [lineItem(), summer], errors }),
+    );
+    await store.refresh();
+
+    await expect(store.addPromotionCode("SUMMER")).resolves.toEqual({
+      ok: true,
+      applied: true,
+      errors: [],
+    });
+  });
+
   it("refuses a blank code without a request", async () => {
     const { store, invocations } = setup();
 

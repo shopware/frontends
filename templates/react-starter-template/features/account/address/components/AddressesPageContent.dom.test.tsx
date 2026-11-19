@@ -165,9 +165,9 @@ describe("AddressesPageContent in the browser", () => {
       },
     );
 
-    await interact(() =>
-      button(tile(container, otherAddress.id), "Delete address").click(),
-    );
+    const remove = button(tile(container, otherAddress.id), "Delete address");
+    remove.focus();
+    await interact(() => remove.click());
 
     expect(shopware.calls(DELETE_ADDRESS)).toEqual([
       {
@@ -182,7 +182,13 @@ describe("AddressesPageContent in the browser", () => {
       container.querySelector(`[data-address-id="${otherAddress.id}"]`),
     ).toBeNull();
     expect(queryAll(container, "[data-address-id]")).toHaveLength(2);
-    expect(notify).not.toHaveBeenCalled();
+    expect(notify).toHaveBeenCalledExactlyOnceWith({
+      type: "success",
+      message: "Address has been successfully deleted.",
+    });
+    expect(document.activeElement).toBe(
+      tile(container, shippingAddress.id).querySelector("a"),
+    );
   });
 
   it("marks the tile busy while the delete is in flight", async () => {
@@ -198,7 +204,11 @@ describe("AddressesPageContent in the browser", () => {
 
     const busyTile = tile(container, otherAddress.id);
     expect(busyTile.getAttribute("aria-busy")).toBe("true");
-    expect(button(busyTile, "Delete address").disabled).toBe(true);
+    const remove = button(busyTile, "Delete address");
+    expect(remove.getAttribute("aria-disabled")).toBe("true");
+    remove.focus();
+    await interact(() => remove.click());
+    expect(document.activeElement).toBe(remove);
 
     await interact(() => gate.resolve({}));
   });
@@ -233,20 +243,22 @@ describe("AddressesPageContent in the browser", () => {
     expect(refreshSession).not.toHaveBeenCalled();
     const restored = tile(container, otherAddress.id);
     expect(restored.getAttribute("aria-busy")).toBeNull();
-    expect(button(restored, "Delete address").disabled).toBe(false);
+    expect(
+      button(restored, "Delete address").hasAttribute("aria-disabled"),
+    ).toBe(false);
   });
 
   it("sets the default billing address and refreshes before it frees the action", async () => {
     const refreshed = deferred<void>();
     fakeCustomer.refresh.mockImplementation(() => refreshed.promise);
-    const { container, shopware, refreshSession } = await setup();
+    const { container, shopware, refreshSession, notify } = await setup();
 
-    await interact(() =>
-      button(
-        tile(container, otherAddress.id),
-        "Use as default billing address",
-      ).click(),
+    const useAsBilling = button(
+      tile(container, otherAddress.id),
+      "Use as default billing address",
     );
+    useAsBilling.focus();
+    await interact(() => useAsBilling.click());
 
     expect(shopware.calls(DEFAULT_BILLING)).toEqual([
       {
@@ -286,10 +298,15 @@ describe("AddressesPageContent in the browser", () => {
     expect(tile(container, billingAddress.id).textContent).toContain(
       "Use as default billing address",
     );
+    expect(notify).toHaveBeenCalledExactlyOnceWith({
+      type: "success",
+      message: "Default billing address has been changed.",
+    });
+    expect(document.activeElement).toBe(other.querySelector("a"));
   });
 
   it("sets the default shipping address with its own patch", async () => {
-    const { container, shopware } = await setup();
+    const { container, shopware, notify } = await setup();
 
     await interact(() =>
       button(
@@ -306,6 +323,10 @@ describe("AddressesPageContent in the browser", () => {
     ]);
     expect(shopware.calls(DEFAULT_BILLING)).toEqual([]);
     expect(fakeCustomer.refresh).toHaveBeenCalledTimes(1);
+    expect(notify).toHaveBeenCalledExactlyOnceWith({
+      type: "success",
+      message: "Default shipping address has been changed.",
+    });
   });
 
   it("shows the API errors when a default change fails and skips the refresh", async () => {

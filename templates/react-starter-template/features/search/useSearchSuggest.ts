@@ -2,8 +2,8 @@
 
 import { useCallback, useRef, useState } from "react";
 
-import { apiFailureSummary } from "@/features/session/apiErrors";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
+import { apiFailureSummary } from "@/platform/shopware/apiErrors";
 
 import { readSearchSuggest } from "./searchSuggestApi";
 import type { SearchSuggestResult } from "./searchSuggestApi";

@@ -4,7 +4,9 @@
     "header": {
       "search": "Suchen",
       "closeSearch": "Schließen",
-      "signedInAs": "Angemeldet als {name}"
+      "signedInAs": "Angemeldet als {name}",
+      "cartWithCount": "Warenkorb, {count} Artikel",
+      "wishlistWithCount": "Wunschliste, {count} Artikel"
     },
     "sideMenu": {
       "open": "Menü öffnen",

@@ -16,10 +16,10 @@ import {
 import { scrollToList } from "@/features/paging/scrollToList";
 import { usePagedList } from "@/features/paging/usePagedList";
 import type { PagedListRead } from "@/features/paging/usePagedList";
-import { hasApiErrorCode } from "@/features/session/apiErrors";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
+import { hasApiErrorCode } from "@/platform/shopware/apiErrors";
 
 import { CUSTOMER_NOT_LOGGED_IN, readWishlistPage } from "../wishlistApi";
 import {

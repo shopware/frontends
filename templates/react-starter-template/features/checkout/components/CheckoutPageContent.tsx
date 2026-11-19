@@ -17,11 +17,11 @@ import { useRequestLogin } from "@/features/account/components/LoginModal";
 import { useCartLoadNotices } from "@/features/cart/components/useCartLoadNotices";
 import { useCartRefresh } from "@/features/cart/components/useCartRefresh";
 import { useCart } from "@/features/cart/useCart";
-import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
 import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
+import { resolveApiErrorMessages } from "@/platform/shopware/apiErrors";
 import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
 
 import { activeCheckoutAddresses } from "../checkoutAddresses";
@@ -194,6 +194,8 @@ export function CheckoutPageContent({
   const [submitted, setSubmitted] = useState(false);
   const [registeredDuringCheckout, setRegisteredDuringCheckout] =
     useState(false);
+  const [registrationErrors, setRegistrationErrors] = useState<string[]>([]);
+  const [methodsFailed, setMethodsFailed] = useState(false);
   const [shippingMethods, setShippingMethods] = useState<
     Schemas["ShippingMethod"][]
   >([]);
@@ -211,6 +213,8 @@ export function CheckoutPageContent({
   const [focusRequest, setFocusRequest] = useState(0);
   const [headingFocusRequest, setHeadingFocusRequest] = useState(0);
   const placingOrder = useRef(false);
+  const orderDone = useRef(false);
+  const contextChanges = useRef<Promise<unknown>>(Promise.resolve());
   const shown = useRef(false);
   const methodReads = useRef(0);
   const changingAddress = useRef(false);
@@ -249,6 +253,7 @@ export function CheckoutPageContent({
       createAccount,
       countryHasStates: statesOf(countries, values.countryId).length > 0,
       passwordMinLength: settings.passwordMinLength,
+      addressFields: settings.addressFields,
     },
     t,
   );
@@ -260,6 +265,7 @@ export function CheckoutPageContent({
           {
             countryHasStates:
               statesOf(countries, shippingValues.countryId).length > 0,
+            addressFields: settings.addressFields,
           },
           t,
         )
@@ -275,17 +281,23 @@ export function CheckoutPageContent({
   };
   const termsErrors = validateCheckoutTerms(terms, termsRequirements, t);
 
+  function applyMethods(methods: CheckoutMethods) {
+    if (methods.shipping) setShippingMethods(methods.shipping);
+    if (methods.payment) setPaymentMethods(methods.payment);
+    setMethodsFailed(!methods.shipping || !methods.payment);
+  }
+
   useEffect(() => {
-    let active = true;
+    methodReads.current += 1;
+    const read = methodReads.current;
     async function load() {
       const methods = await readCheckoutMethods(getClient);
-      if (!active) return;
-      if (methods.shipping) setShippingMethods(methods.shipping);
-      if (methods.payment) setPaymentMethods(methods.payment);
+      if (methodReads.current !== read) return;
+      applyMethods(methods);
     }
     void load();
     return () => {
-      active = false;
+      methodReads.current += 1;
     };
   }, [getClient]);
 
@@ -297,6 +309,19 @@ export function CheckoutPageContent({
       setOrderPlaced(false);
       setCustomerComment("");
       setTerms(emptyCheckoutTerms);
+      if (!orderDone.current) return;
+      orderDone.current = false;
+      registered.current = false;
+      createdShippingAddress.current = null;
+      setValues(emptyCheckoutValues);
+      setCreateAccount(false);
+      setTouched({});
+      setDifferentShipping(false);
+      setShippingValues(emptyCheckoutAddressValues);
+      setShippingTouched({});
+      setSubmitted(false);
+      setRegisteredDuringCheckout(false);
+      setRegistrationErrors([]);
     };
   }, []);
 
@@ -305,8 +330,13 @@ export function CheckoutPageContent({
     const read = methodReads.current;
     const methods = await readCheckoutMethods(getClient);
     if (methodReads.current !== read) return;
-    if (methods.shipping) setShippingMethods(methods.shipping);
-    if (methods.payment) setPaymentMethods(methods.payment);
+    applyMethods(methods);
+  }
+
+  function changeContext(change: () => Promise<void>): Promise<void> {
+    const run = contextChanges.current.then(change);
+    contextChanges.current = run.catch(() => undefined);
+    return run;
   }
 
   useEffect(() => {
@@ -412,11 +442,11 @@ export function CheckoutPageContent({
     setPending(id);
     try {
       const client = await getClient();
-      if (kind === "shipping") {
-        await setShippingMethod(client, id);
-      } else {
-        await setPaymentMethod(client, id);
-      }
+      await changeContext(() =>
+        kind === "shipping"
+          ? setShippingMethod(client, id)
+          : setPaymentMethod(client, id),
+      );
       await refreshAfterContextChange();
       await reloadMethods();
     } catch (error) {
@@ -434,7 +464,8 @@ export function CheckoutPageContent({
     changingAddress.current = true;
     setPendingAddress({ kind, id: addressId });
     try {
-      await setContextAddress(await getClient(), kind, addressId);
+      const client = await getClient();
+      await changeContext(() => setContextAddress(client, kind, addressId));
       await refreshAfterContextChange();
       const next = await retrySession();
       await reloadMethods();
@@ -470,11 +501,18 @@ export function CheckoutPageContent({
         acceptedDataProtection:
           termsRequirements.dataProtection && terms.dataProtection,
         shippingAddress: differentShipping ? shippingValues : null,
+        addressFields: settings.addressFields,
       }),
     );
     if (!result.ok || result.doubleOptIn) {
       setRegisteredDuringCheckout(false);
-      if (result.ok) {
+      if (!result.ok) {
+        setRegistrationErrors(
+          result.messages?.length
+            ? result.messages
+            : [result.message ?? t("messages.error")],
+        );
+      } else {
         notify({
           type: "info",
           message: t("account.messages.signUpSuccess"),
@@ -504,9 +542,9 @@ export function CheckoutPageContent({
     try {
       await updateCustomerDetails(await getClient(), {
         customer: currentCustomer,
-        address: toCheckoutAddressFields(values),
+        address: toCheckoutAddressFields(values, settings.addressFields),
         shippingAddress: differentShipping
-          ? toCheckoutAddressFields(shippingValues)
+          ? toCheckoutAddressFields(shippingValues, settings.addressFields)
           : null,
         createdShippingAddress:
           created && created.customerId === customerId ? created.address : null,
@@ -528,6 +566,7 @@ export function CheckoutPageContent({
   async function handlePlaceOrder(event: MouseEvent<HTMLButtonElement>) {
     if (
       placingOrder.current ||
+      orderDone.current ||
       changingAddress.current ||
       pendingShippingMethod !== null ||
       pendingPaymentMethod !== null
@@ -538,6 +577,7 @@ export function CheckoutPageContent({
     const formShown = showCustomerForm;
 
     setSubmitted(true);
+    setRegistrationErrors([]);
     if (
       hasErrors(termsErrors) ||
       (formShown && (hasErrors(errors) || hasErrors(shippingErrors)))
@@ -563,9 +603,11 @@ export function CheckoutPageContent({
       const client = await getClient();
       let order: Schemas["Order"];
       try {
-        order = await createOrder(
-          client,
-          toOrderBody(settings.showCustomerComment ? customerComment : ""),
+        order = await cart.runExclusive(() =>
+          createOrder(
+            client,
+            toOrderBody(settings.showCustomerComment ? customerComment : ""),
+          ),
         );
       } catch (error) {
         if (isAmbiguousOrderFailure(error)) {
@@ -579,6 +621,7 @@ export function CheckoutPageContent({
       }
 
       placed = true;
+      orderDone.current = true;
       if (shown.current) setOrderPlaced(true);
       router.push(
         localePath(`/checkout/success/${encodeURIComponent(order.id)}`),
@@ -651,21 +694,19 @@ export function CheckoutPageContent({
           {isPlacingOrder ? (
             <div
               className={`${OVERLAY_CLASS} flex items-center justify-center`}
+              aria-hidden="true"
             >
-              <output
-                className="flex flex-col items-center gap-3"
-                aria-label={t("checkout.placingOrder")}
-              >
-                <span
-                  className="size-8 animate-spin rounded-full border-2 border-brand-primary border-t-transparent motion-reduce:animate-none"
-                  aria-hidden="true"
-                />
+              <div className="flex flex-col items-center gap-3">
+                <span className="size-8 animate-spin rounded-full border-2 border-brand-primary border-t-transparent motion-reduce:animate-none" />
                 <span className="text-sm font-bold text-surface-on-surface">
                   {t("checkout.placingOrder")}
                 </span>
-              </output>
+              </div>
             </div>
           ) : null}
+          <output className="sr-only">
+            {isPlacingOrder ? t("checkout.placingOrder") : ""}
+          </output>
           <div ref={formRef} inert={isPlacingOrder}>
             <StepHeader step={1} label={t("account.yourAddress")}>
               {showSignIn ? (
@@ -695,6 +736,7 @@ export function CheckoutPageContent({
                     errors={fieldErrors}
                     countries={countries}
                     countriesUnavailable={countriesUnavailable}
+                    fieldSettings={settings.addressFields}
                     onFieldChange={setField}
                     onFieldBlur={touchField}
                     onCountryChange={handleCountryChange}
@@ -706,6 +748,7 @@ export function CheckoutPageContent({
                     errors={shippingFieldErrors}
                     countries={countries}
                     countriesUnavailable={countriesUnavailable}
+                    fieldSettings={settings.addressFields}
                     onFieldChange={setShippingField}
                     onFieldBlur={touchShippingField}
                     onCountryChange={handleShippingCountryChange}
@@ -721,6 +764,23 @@ export function CheckoutPageContent({
                 />
               ) : null}
             </StepHeader>
+            {methodsFailed ? (
+              <div
+                role="alert"
+                className="mb-6 flex flex-col items-start gap-3 text-sm text-surface-on-surface"
+              >
+                <p>{t("messages.error")}</p>
+                <BaseButton
+                  variant="secondary"
+                  size="small"
+                  onClick={() => {
+                    void reloadMethods();
+                  }}
+                >
+                  {t("listing.retry")}
+                </BaseButton>
+              </div>
+            ) : null}
             <StepHeader step={2} label={t("checkout.steps.shipping")}>
               <ShippingMethods
                 legend={t("checkout.steps.shipping")}
@@ -755,25 +815,36 @@ export function CheckoutPageContent({
               legalLinks={settings.legalLinks}
               onChange={setTerm}
             />
-            <BaseButton
-              data-testid="checkout-place-order-button"
-              loading={isPlacingOrder}
-              disabled={
-                (isUserSession && !canPlaceOrder) ||
-                pendingAddress !== null ||
-                pendingShippingMethod !== null ||
-                pendingPaymentMethod !== null ||
-                addressUnconfirmed
-              }
-              onClick={(event) => {
-                void handlePlaceOrder(event);
-              }}
-            >
-              {isPlacingOrder
-                ? t("checkout.placingOrder")
-                : t("checkout.placeOrderButton")}
-            </BaseButton>
           </div>
+          {registrationErrors.length > 0 ? (
+            <div
+              role="alert"
+              data-testid="checkout-registration-error"
+              className="mb-3 text-sm text-states-error"
+            >
+              {registrationErrors.map((message) => (
+                <p key={message}>{message}</p>
+              ))}
+            </div>
+          ) : null}
+          <BaseButton
+            data-testid="checkout-place-order-button"
+            aria-disabled={isPlacingOrder || undefined}
+            disabled={
+              (isUserSession && !canPlaceOrder) ||
+              pendingAddress !== null ||
+              pendingShippingMethod !== null ||
+              pendingPaymentMethod !== null ||
+              addressUnconfirmed
+            }
+            onClick={(event) => {
+              void handlePlaceOrder(event);
+            }}
+          >
+            {isPlacingOrder
+              ? t("checkout.placingOrder")
+              : t("checkout.placeOrderButton")}
+          </BaseButton>
         </div>
         <div className="relative w-full lg:w-1/2" inert={isPlacingOrder}>
           {isPlacingOrder ? (

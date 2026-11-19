@@ -72,6 +72,8 @@ export type OrderConfirmationProps = {
   order: Schemas["Order"];
   paymentUrl: string | null;
   onGoToPayment: (url: string) => void;
+  paymentFailed?: boolean;
+  onRetryPayment?: () => void;
   showAccountLink?: boolean;
 };
 
@@ -79,6 +81,8 @@ export function OrderConfirmation({
   order,
   paymentUrl,
   onGoToPayment,
+  paymentFailed = false,
+  onRetryPayment,
   showAccountLink = false,
 }: OrderConfirmationProps) {
   const t = useTranslations();
@@ -150,13 +154,29 @@ export function OrderConfirmation({
           <div className="font-medium">
             {t("checkout.success.paymentProcessLabel")}
           </div>
-          <p className="mt-1">{t("checkout.success.paymentProcessInfo")}</p>
+          <p className="mt-1">{t("checkout.success.paymentInfo")}</p>
           <BaseButton
             className="mt-4"
             onClick={() => onGoToPayment(paymentUrl)}
           >
             {t("checkout.success.goToPayment")}
           </BaseButton>
+        </div>
+      ) : paymentFailed ? (
+        <div
+          className="mb-10 bg-states-error-container p-4 text-sm text-states-on-error-container"
+          role="alert"
+        >
+          <p>{t("checkout.success.paymentStartFailed")}</p>
+          {onRetryPayment ? (
+            <BaseButton
+              variant="secondary"
+              className="mt-4"
+              onClick={onRetryPayment}
+            >
+              {t("listing.retry")}
+            </BaseButton>
+          ) : null}
         </div>
       ) : null}
 

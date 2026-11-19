@@ -7,8 +7,10 @@ import { useTranslations } from "@/i18n/I18nProvider";
 
 export function CustomerUnavailable({
   onRetry,
+  retryTestId,
 }: {
   onRetry: () => Promise<void>;
+  retryTestId?: string;
 }) {
   const t = useTranslations();
   const [retrying, setRetrying] = useState(false);
@@ -31,6 +33,7 @@ export function CustomerUnavailable({
       <BaseButton
         variant="secondary"
         size="small"
+        data-testid={retryTestId}
         aria-busy={retrying}
         aria-disabled={retrying || undefined}
         className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50"

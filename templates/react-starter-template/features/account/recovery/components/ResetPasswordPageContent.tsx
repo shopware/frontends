@@ -45,7 +45,12 @@ export function ResetPasswordPageContent({
     case "checking":
       return <ResetPasswordSkeleton />;
     case "error":
-      return <CustomerUnavailable onRetry={retryCheck} />;
+      return (
+        <CustomerUnavailable
+          onRetry={retryCheck}
+          retryTestId="reset-password-retry-button"
+        />
+      );
     case "valid":
       return (
         <ResetPasswordForm
@@ -60,7 +65,7 @@ export function ResetPasswordPageContent({
           <p
             ref={messageRef}
             tabIndex={-1}
-            data-testid="account-reset-password-link-error"
+            data-testid="reset-password-expired-message"
             data-reason={state.status}
             className="max-w-md rounded-lg border-2 border-states-error bg-states-error-container p-4 text-states-on-error-container focus:outline-hidden"
           >

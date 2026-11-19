@@ -33,6 +33,10 @@
       "label": "Kommentar zu Ihrer Bestellung",
       "hint": "Optional, zum Beispiel Hinweise zur Lieferung.",
       "summaryLabel": "Ihr Kommentar"
+    },
+    "success": {
+      "paymentInfo": "Fahren Sie beim Zahlungsanbieter fort, um Ihre Bestellung zu bezahlen.",
+      "paymentStartFailed": "Ihre Bestellung wurde aufgegeben, aber die Zahlung konnte nicht gestartet werden."
     }
   }
 }

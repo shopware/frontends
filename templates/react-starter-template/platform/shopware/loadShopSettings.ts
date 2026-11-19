@@ -1,5 +1,5 @@
 import "server-only";
-import { apiFailureSummary } from "@/features/session/apiErrors";
+import { apiFailureSummary } from "@/platform/shopware/apiErrors";
 import { TEMPLATE_SHOP_SETTINGS } from "@/site/shopSettings";
 
 import { readShopSettings } from "./reads/shopSettings";

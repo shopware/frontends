@@ -106,6 +106,17 @@ describe("CheckoutProductTile", () => {
     expect(fixed).not.toContain("checkout-product-tile-remove-button");
   });
 
+  it("describes the remove button by the product label", async () => {
+    const html = await render(lineItem());
+
+    const button = tag(html, "checkout-product-tile-remove-button");
+    const labelId = button.match(/aria-describedby="([^"]+)"/)?.[1];
+    expect(labelId).toBeTruthy();
+    expect(html).toMatch(
+      new RegExp(`<div id="${labelId}"[^>]*>${lineItem().label}</div>`),
+    );
+  });
+
   it("renders a placeholder instead of an image without a cover", async () => {
     const html = await render(lineItem({ cover: null }));
 
@@ -235,8 +246,8 @@ describe("CheckoutProductTile in other locales", () => {
       ),
     );
 
-    expect(html).toContain(
-      '<div class="line-clamp-2" lang="en-US">Aerodynamic Bronze Brandix</div>',
+    expect(html).toMatch(
+      /<div id="[^"]+" class="line-clamp-2" lang="en-US">Aerodynamic Bronze Brandix<\/div>/,
     );
     expect(tag(html, "cart-product-options")).toContain('lang="en-US"');
     expect(tag(html, "checkout-product-tile-image")).not.toContain("lang=");

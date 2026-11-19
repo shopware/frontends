@@ -1,4 +1,5 @@
 import type { ApiClient, Schemas } from "#shopware";
+import { hiddenAddressFields } from "@/features/account/address/addressSchema";
 import type { StorefrontSession } from "@/features/session/types";
 import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
 
@@ -127,6 +128,7 @@ export function checkoutSettings(
     showCustomerComment: false,
     requireDataProtectionCheckbox: false,
     passwordMinLength: 8,
+    addressFields: hiddenAddressFields,
     legalLinks: { terms: null, revocation: null },
     ...overrides,
   };

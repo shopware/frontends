@@ -6,7 +6,7 @@ import { NEWSLETTER_RECIPIENT_NOT_FOUND } from "@/features/account/profile/profi
 import {
   apiFailureSummary,
   hasApiErrorCode,
-} from "@/features/session/apiErrors";
+} from "@/platform/shopware/apiErrors";
 
 import type { EmailLinkParams } from "./emailLinkParams";
 

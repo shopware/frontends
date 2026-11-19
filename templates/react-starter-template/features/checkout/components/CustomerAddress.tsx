@@ -7,6 +7,9 @@ import { BaseButton } from "@/cms/client";
 import { CountrySelect } from "@/components/form/CountrySelect";
 import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
+import { hiddenAddressFields } from "@/features/account/address/addressSchema";
+import type { AddressFieldSettings } from "@/features/account/address/addressSchema";
+import { REGISTRATION_MAX_LENGTHS } from "@/features/account/registrationSchema";
 import { useContentLang } from "@/i18n/ContentLanguageProvider";
 import { useTranslations } from "@/i18n/I18nProvider";
 import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
@@ -22,6 +25,7 @@ export type CustomerAddressProps = {
   errors: CheckoutAddressErrors;
   countries: CountryOption[];
   countriesUnavailable?: boolean;
+  fieldSettings?: AddressFieldSettings;
   onFieldChange: (field: CheckoutAddressField, value: string) => void;
   onFieldBlur: (field: CheckoutAddressField) => void;
   onCountryChange: (countryId: string) => void;
@@ -37,6 +41,7 @@ export function CustomerAddress({
   errors,
   countries,
   countriesUnavailable = false,
+  fieldSettings = hiddenAddressFields,
   onFieldChange,
   onFieldBlur,
   onCountryChange,
@@ -103,6 +108,34 @@ export function CustomerAddress({
           onBlur={() => onFieldBlur("street")}
           error={errors.street}
         />
+        {fieldSettings.showAdditionalAddressField1 ? (
+          <InputField
+            id={`${idPrefix}additional-address-line-1`}
+            autoComplete={`${autoCompletePrefix}address-line2`}
+            label={t("form.additionalAddressLine1")}
+            required={fieldSettings.additionalAddressField1Required}
+            value={values.additionalAddressLine1}
+            onChange={(event) =>
+              onFieldChange("additionalAddressLine1", event.target.value)
+            }
+            onBlur={() => onFieldBlur("additionalAddressLine1")}
+            error={errors.additionalAddressLine1}
+          />
+        ) : null}
+        {fieldSettings.showAdditionalAddressField2 ? (
+          <InputField
+            id={`${idPrefix}additional-address-line-2`}
+            autoComplete={`${autoCompletePrefix}address-line3`}
+            label={t("form.additionalAddressLine2")}
+            required={fieldSettings.additionalAddressField2Required}
+            value={values.additionalAddressLine2}
+            onChange={(event) =>
+              onFieldChange("additionalAddressLine2", event.target.value)
+            }
+            onBlur={() => onFieldBlur("additionalAddressLine2")}
+            error={errors.additionalAddressLine2}
+          />
+        ) : null}
         <div className="flex flex-col gap-4 sm:flex-row">
           <InputField
             className="sm:basis-1/2"
@@ -182,6 +215,22 @@ export function CustomerAddress({
             />
           ) : null}
         </div>
+        {fieldSettings.showPhoneNumberField ? (
+          <InputField
+            id={`${idPrefix}phone-number`}
+            type="tel"
+            autoComplete={`${autoCompletePrefix}tel`}
+            label={t("form.phone")}
+            required={fieldSettings.phoneNumberFieldRequired}
+            maxLength={REGISTRATION_MAX_LENGTHS.phoneNumber}
+            value={values.phoneNumber}
+            onChange={(event) =>
+              onFieldChange("phoneNumber", event.target.value)
+            }
+            onBlur={() => onFieldBlur("phoneNumber")}
+            error={errors.phoneNumber}
+          />
+        ) : null}
       </div>
     </div>
   );

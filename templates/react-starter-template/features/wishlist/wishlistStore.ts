@@ -1,9 +1,9 @@
+import type { StorefrontSession } from "@/features/session/types";
+import type { Translate } from "@/i18n/translate";
 import {
   hasApiErrorCode,
   resolveApiErrorMessages,
-} from "@/features/session/apiErrors";
-import type { StorefrontSession } from "@/features/session/types";
-import type { Translate } from "@/i18n/translate";
+} from "@/platform/shopware/apiErrors";
 
 import {
   CUSTOMER_NOT_LOGGED_IN,

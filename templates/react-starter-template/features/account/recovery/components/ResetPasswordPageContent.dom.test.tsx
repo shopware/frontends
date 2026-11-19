@@ -46,10 +46,10 @@ vi.mock("@/features/session/browserClient", () => ({
 }));
 
 const SKELETON = '[data-testid="account-reset-password-skeleton"]';
-const LINK_ERROR = '[data-testid="account-reset-password-link-error"]';
-const RESET_FORM = '[data-testid="account-reset-password-form"]';
-const REQUEST_FORM = '[data-testid="account-recover-password-form"]';
-const SUBMIT = '[data-testid="account-reset-password-submit-button"]';
+const LINK_ERROR = '[data-testid="reset-password-expired-message"]';
+const RESET_FORM = '[data-testid="reset-password-form"]';
+const REQUEST_FORM = '[data-testid="recover-password-form"]';
+const SUBMIT = '[data-testid="reset-password-submit-button"]';
 const EXPIRED =
   "The password reset link is no longer valid. Please request a new one.";
 const INVALID = "The password reset link is invalid. Please request a new one.";
@@ -319,6 +319,7 @@ describe("ResetPasswordPageContent in the browser", () => {
     const retry = queryAll<HTMLButtonElement>(container, "button").find(
       (button) => button.textContent === "Try again",
     );
+    expect(retry?.dataset.testid).toBe("reset-password-retry-button");
     fail = false;
     window.history.replaceState(null, "", "/account/recover/password");
 

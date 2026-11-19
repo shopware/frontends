@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 
 import { useCmsActions } from "@/cms/client";
-import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
 import { useTranslations } from "@/i18n/I18nProvider";
+import { resolveApiErrorMessages } from "@/platform/shopware/apiErrors";
 
 import { resolveNewsletterStorefrontUrl } from "../newsletterStorefrontUrl";
 import {

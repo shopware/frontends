@@ -128,7 +128,7 @@ describe("getPaymentMethods", () => {
 });
 
 describe("setShippingMethod and setPaymentMethod", () => {
-  it("patches the context with the chosen shipping method", async () => {
+  it("patches the context with the chosen shipping method and gives up after the read timeout", async () => {
     const { client, invocations } = fakeClient();
 
     await setShippingMethod(client, "shipping-express");
@@ -136,7 +136,10 @@ describe("setShippingMethod and setPaymentMethod", () => {
     expect(invocations).toEqual([
       {
         operation: "updateContext patch /context",
-        params: { body: { shippingMethodId: "shipping-express" } },
+        params: {
+          body: { shippingMethodId: "shipping-express" },
+          fetchOptions: { timeout: READ_TIMEOUT_MS },
+        },
       },
     ]);
   });
@@ -149,7 +152,10 @@ describe("setShippingMethod and setPaymentMethod", () => {
     expect(invocations).toEqual([
       {
         operation: "updateContext patch /context",
-        params: { body: { paymentMethodId: "payment-cash" } },
+        params: {
+          body: { paymentMethodId: "payment-cash" },
+          fetchOptions: { timeout: READ_TIMEOUT_MS },
+        },
       },
     ]);
   });
@@ -165,11 +171,17 @@ describe("setContextAddress", () => {
     expect(invocations).toEqual([
       {
         operation: "updateContext patch /context",
-        params: { body: { shippingAddressId: "address-2" } },
+        params: {
+          body: { shippingAddressId: "address-2" },
+          fetchOptions: { timeout: READ_TIMEOUT_MS },
+        },
       },
       {
         operation: "updateContext patch /context",
-        params: { body: { billingAddressId: "address-3" } },
+        params: {
+          body: { billingAddressId: "address-3" },
+          fetchOptions: { timeout: READ_TIMEOUT_MS },
+        },
       },
     ]);
   });
@@ -616,7 +628,6 @@ describe("readOrder", () => {
         params: {
           body: {
             ids: ["order-1"],
-            checkPromotion: true,
             associations: {
               stateMachineState: {},
               currency: {},
@@ -639,6 +650,7 @@ describe("readOrder", () => {
               },
             },
           },
+          fetchOptions: { timeout: READ_TIMEOUT_MS },
         },
       },
     ]);
@@ -652,7 +664,7 @@ describe("readOrder", () => {
 });
 
 describe("handlePayment", () => {
-  it("posts the order id with the finish and error URLs and resolves the redirect URL", async () => {
+  it("posts the order id with the finish and error URLs, gives up after the order timeout and resolves the redirect URL", async () => {
     const { client, invocations } = fakeClient(() => ({
       redirectUrl: "https://psp.test/pay",
     }));
@@ -673,6 +685,7 @@ describe("handlePayment", () => {
             finishUrl: "https://shop.test/checkout/success/order-1/paid",
             errorUrl: "https://shop.test/checkout/success/order-1/unpaid",
           },
+          fetchOptions: { timeout: ORDER_TIMEOUT_MS },
         },
       },
     ]);

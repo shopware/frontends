@@ -1,7 +1,7 @@
 "use client";
 
 import { getSmallestThumbnailUrl } from "@shopware/helpers";
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 
 import type { Schemas } from "#shopware";
 import { SwQuantitySelect, cx } from "@/cms/client";
@@ -98,6 +98,7 @@ function ProductLineItemTile({
   const contentLang = useContentLang();
   const [draft, setDraft] = useState<QuantityDraft | null>(null);
   const changeTicket = useRef(0);
+  const labelId = useId();
 
   const cover = item.cover ? getSmallestThumbnailUrl(item.cover) : undefined;
   const label = item.label || item.payload?.name || "";
@@ -146,7 +147,7 @@ function ProductLineItemTile({
       </div>
       <div className="grid grow grid-cols-2 justify-between gap-y-2 py-2.5">
         <div className="text-surface-on-surface">
-          <div className="line-clamp-2" lang={contentLang}>
+          <div id={labelId} className="line-clamp-2" lang={contentLang}>
             {item.label}
           </div>
           {options.length > 0 ? (
@@ -186,6 +187,7 @@ function ProductLineItemTile({
               type="button"
               data-testid="checkout-product-tile-remove-button"
               data-line-item-remove
+              aria-describedby={labelId}
               className="inline-flex items-center gap-1 border-b border-brand-primary bg-transparent text-sm text-brand-primary hover:border-transparent"
               onClick={() => onRemove(item.id)}
             >

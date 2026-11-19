@@ -1,8 +1,8 @@
 import { ApiClientError } from "@shopware/api-client";
 
 import type { ApiClient, operations } from "#shopware";
-import { hasApiErrorCode } from "@/features/session/apiErrors";
 import { READ_TIMEOUT_MS } from "@/features/session/readTimeout";
+import { hasApiErrorCode } from "@/platform/shopware/apiErrors";
 
 export type RecoveryClient = Pick<ApiClient, "invoke">;
 

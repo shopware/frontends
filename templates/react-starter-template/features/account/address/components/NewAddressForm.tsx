@@ -5,9 +5,9 @@ import { useLayoutEffect, useRef, useState, useTransition } from "react";
 
 import { useCmsActions } from "@/cms/client";
 import { resolveRedirectFromSearch } from "@/features/account/redirect";
-import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
 import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
+import { resolveApiErrorMessages } from "@/platform/shopware/apiErrors";
 
 import { createCustomerAddress } from "../addressApi";
 import { toAddressBody } from "../addressSchema";

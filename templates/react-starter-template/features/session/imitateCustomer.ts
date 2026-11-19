@@ -1,7 +1,7 @@
 import "server-only";
 import type { ApiClient } from "#shopware";
+import { apiFailureSummary } from "@/platform/shopware/apiErrors";
 
-import { apiFailureSummary } from "./apiErrors";
 import { READ_TIMEOUT_MS } from "./readTimeout";
 
 const CONTEXT_TOKEN_HEADER = "sw-context-token";

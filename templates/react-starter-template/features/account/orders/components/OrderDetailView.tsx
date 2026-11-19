@@ -8,7 +8,10 @@ import type { Schemas } from "#shopware";
 import { BaseButton, useCmsActions } from "@/cms/client";
 import { cartNotifications } from "@/features/cart/components/useLineItemActions";
 import { useCart } from "@/features/cart/useCart";
-import { getPaymentMethods } from "@/features/checkout/checkoutApi";
+import {
+  getPaymentMethods,
+  handlePayment,
+} from "@/features/checkout/checkoutApi";
 import { OrderAddress } from "@/features/checkout/components/OrderAddress";
 import { formatOrderDate } from "@/features/checkout/components/OrderConfirmation";
 import { OrderMethodCard } from "@/features/checkout/components/OrderMethodCard";
@@ -25,18 +28,17 @@ import {
   parsePaymentUrl,
   redirectToPayment,
 } from "@/features/checkout/paymentRedirect";
+import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
+import { useLocale, useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 import {
   apiFailureSummary,
   resolveApiErrorMessages,
-} from "@/features/session/apiErrors";
-import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
-import { useLocale, useLocalePath, useTranslations } from "@/i18n/I18nProvider";
+} from "@/platform/shopware/apiErrors";
 
 import {
   cancelOrder,
   cancelOrderErrorMessages,
   documentFileName,
-  handleOrderPayment,
   isOrderCancellable,
   isOrderNotCancellableError,
   isOrderPaymentChangeable,
@@ -205,7 +207,7 @@ export function OrderDetailView({
       let paymentUrl: string | null = null;
       let paymentFailed = false;
       try {
-        const { redirectUrl } = await handleOrderPayment(client, {
+        const { redirectUrl } = await handlePayment(client, {
           orderId: order.id,
           ...returnUrls,
         });

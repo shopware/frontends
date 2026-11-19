@@ -68,7 +68,10 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
       setMiniCartOpen(false);
       return;
     }
-    if (cartQuantity === 0) return;
+    if (cartQuantity === 0) {
+      router.push(localePath("/checkout/cart"));
+      return;
+    }
     setAccountMenuOpen(false);
     setMiniCartOpen(true);
   };
@@ -137,6 +140,7 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
   const accountLabel = t("layout.header.myAccount");
   const wishlistLabel = t("wishlist.header");
   const cartLabel = t("layout.header.cart");
+  const showWishlistCount = wishlistCount > 0 && isLoggedIn;
 
   return (
     <div className="relative mx-auto flex w-full max-w-screen-2xl items-center justify-between gap-2 px-4 py-3 sm:gap-6 lg:gap-10">
@@ -224,11 +228,19 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
               href="/wishlist"
               className={HEADER_ACTION_CLASS}
               data-testid="header-wishlist-button"
-              aria-label={wishlistLabel}
+              aria-label={
+                showWishlistCount
+                  ? t(
+                      "layout.header.wishlistWithCount",
+                      { count: wishlistCount },
+                      wishlistCount,
+                    )
+                  : wishlistLabel
+              }
             >
               <span className="relative flex">
                 <HeartIcon className={HEADER_ACTION_ICON_CLASS} />
-                {wishlistCount > 0 && isLoggedIn ? (
+                {showWishlistCount ? (
                   <MainCounter
                     count={wishlistCount}
                     className={COUNTER_CLASS}
@@ -243,9 +255,17 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
               type="button"
               className={HEADER_ACTION_CLASS}
               data-testid="header-mini-cart-button"
-              aria-label={cartLabel}
-              aria-expanded={showMiniCart}
-              aria-controls={miniCartId}
+              aria-label={
+                cartQuantity > 0
+                  ? t(
+                      "layout.header.cartWithCount",
+                      { count: cartQuantity },
+                      cartQuantity,
+                    )
+                  : cartLabel
+              }
+              aria-expanded={cartQuantity > 0 ? showMiniCart : undefined}
+              aria-controls={showMiniCart ? miniCartId : undefined}
               onClick={toggleMiniCart}
             >
               <span className="relative flex">

@@ -34,6 +34,7 @@ export const unavailableCartStore: CartStore = {
   }),
   removeItem: async () => notWired("removeItem"),
   changeQuantity: async () => notWired("changeQuantity"),
+  runExclusive: (task) => task(),
 };
 
 const CartStoreContext = createContext<CartStore>(unavailableCartStore);

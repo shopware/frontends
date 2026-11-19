@@ -1,8 +1,8 @@
 import type { ApiClient, Schemas } from "#shopware";
-import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { READ_TIMEOUT_MS } from "@/features/session/readTimeout";
 import type { StorefrontSession } from "@/features/session/types";
 import type { Translate } from "@/i18n/translate";
+import { resolveApiErrorMessages } from "@/platform/shopware/apiErrors";
 
 import { promotionNotEligibleErrors, toCartActionErrors } from "./cartErrors";
 import type { CartActionError } from "./cartErrors";
@@ -34,6 +34,7 @@ export type CartStore = {
   addPromotionCode(code: string): Promise<PromotionCodeResult>;
   removeItem(id: string): Promise<CartActionResult>;
   changeQuantity(id: string, quantity: number): Promise<CartActionResult>;
+  runExclusive<T>(task: () => Promise<T>): Promise<T>;
 };
 
 export type CartSummary = {
@@ -212,6 +213,7 @@ export function createCartStore(
   }
 
   return {
+    runExclusive: enqueue,
     getSnapshot: () => snapshot,
     subscribe(listener) {
       listeners.add(listener);

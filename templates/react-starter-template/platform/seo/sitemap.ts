@@ -1,5 +1,5 @@
 import "server-only";
-import { apiFailureSummary } from "@/features/session/apiErrors";
+import { apiFailureSummary } from "@/platform/shopware/apiErrors";
 import { readSalesChannelContext } from "@/platform/shopware/reads/context";
 import { readSitemapFiles } from "@/platform/shopware/reads/sitemap";
 

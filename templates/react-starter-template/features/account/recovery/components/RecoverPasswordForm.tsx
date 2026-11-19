@@ -120,7 +120,7 @@ export function RecoverPasswordForm({
         <div
           ref={successRef}
           tabIndex={-1}
-          data-testid="account-recover-password-success"
+          data-testid="recover-password-success-message"
           className="rounded-lg border-2 border-states-success bg-states-success-container p-6 text-states-on-success-container focus:outline-hidden"
         >
           {t("account.recoverPassword.sent")}
@@ -143,7 +143,7 @@ export function RecoverPasswordForm({
     <form
       ref={formRef}
       className="flex max-w-md flex-col gap-4"
-      data-testid="account-recover-password-form"
+      data-testid="recover-password-form"
       noValidate
       onSubmit={(event) => {
         void handleSubmit(event);
@@ -157,7 +157,7 @@ export function RecoverPasswordForm({
       </p>
       <InputField
         id={`${idPrefix}-email`}
-        data-testid="account-recover-password-email-input"
+        data-testid="recover-password-email-input"
         type="email"
         label={t("form.email")}
         required
@@ -175,7 +175,7 @@ export function RecoverPasswordForm({
       <div className={BUTTON_ROW_CLASS}>
         <BaseButton
           type="submit"
-          data-testid="account-recover-password-submit-button"
+          data-testid="recover-password-submit-button"
           aria-busy={pending}
           aria-disabled={pending || undefined}
           className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50"

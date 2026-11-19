@@ -1,5 +1,3 @@
-export const PAYMENT_REDIRECT_DELAY_MS = 5000;
-
 const PAYMENT_PROTOCOLS = new Set(["http:", "https:"]);
 
 export function parsePaymentUrl(value: unknown): string | null {

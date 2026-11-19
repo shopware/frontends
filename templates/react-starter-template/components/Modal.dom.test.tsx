@@ -12,6 +12,7 @@ afterEach(async () => {
   await mounted?.unmount();
   mounted = undefined;
   document.body.style.overflow = "";
+  vi.restoreAllMocks();
 });
 
 function Harness({ onClose = () => {} }: { onClose?: () => void }) {
@@ -56,17 +57,6 @@ async function openModal(onClose?: () => void) {
   };
 }
 
-function pressTab(shiftKey = false): KeyboardEvent {
-  const event = new KeyboardEvent("keydown", {
-    key: "Tab",
-    shiftKey,
-    bubbles: true,
-    cancelable: true,
-  });
-  document.activeElement?.dispatchEvent(event);
-  return event;
-}
-
 describe("Modal", () => {
   it("renders nothing while closed", async () => {
     mounted = await mount(<Harness />);
@@ -75,7 +65,11 @@ describe("Modal", () => {
   });
 
   it("is a modal dialog labelled by its title, portalled to the body and focused", async () => {
+    const showModal = vi.spyOn(HTMLDialogElement.prototype, "showModal");
     const { dialog } = await openModal();
+
+    expect(showModal).toHaveBeenCalledOnce();
+    expect(showModal.mock.contexts[0]).toBe(dialog);
 
     expect(dialog.tagName).toBe("DIALOG");
     expect(dialog.hasAttribute("open")).toBe(true);
@@ -117,24 +111,26 @@ describe("Modal", () => {
     expect(document.querySelector("dialog")).toBeNull();
   });
 
-  it("traps the focus inside the dialog", async () => {
+  it("closes on the dialog's cancel event and keeps the dialog from closing itself", async () => {
+    const onClose = vi.fn();
+    const { dialog, opener } = await openModal(onClose);
+    const cancel = new Event("cancel", { cancelable: true });
+
+    await interact(() => dialog.dispatchEvent(cancel));
+
+    expect(cancel.defaultPrevented).toBe(true);
+    expect(onClose).toHaveBeenCalledTimes(1);
+    expect(document.querySelector("dialog")).toBeNull();
+    expect(document.activeElement).toBe(opener);
+  });
+
+  it("keeps the backdrop inside the modal dialog so it stays clickable", async () => {
     const { dialog } = await openModal();
-    const first = query<HTMLButtonElement>(dialog, '[data-testid="first"]');
-    const last = query<HTMLButtonElement>(dialog, '[data-testid="last"]');
 
-    last.focus();
-    expect(pressTab().defaultPrevented).toBe(true);
-    expect(document.activeElement).toBe(first);
-
-    expect(pressTab(true).defaultPrevented).toBe(true);
-    expect(document.activeElement).toBe(last);
-
-    dialog.focus();
-    expect(pressTab(true).defaultPrevented).toBe(true);
-    expect(document.activeElement).toBe(last);
-
-    query<HTMLButtonElement>(document.body, '[data-testid="opener"]').focus();
-    expect(pressTab().defaultPrevented).toBe(true);
-    expect(document.activeElement).toBe(first);
+    expect(
+      dialog.contains(
+        query<HTMLButtonElement>(document.body, 'button[aria-label="Close"]'),
+      ),
+    ).toBe(true);
   });
 });

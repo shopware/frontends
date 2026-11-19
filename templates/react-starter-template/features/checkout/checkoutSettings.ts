@@ -1,3 +1,4 @@
+import type { AddressFieldSettings } from "@/features/account/address/addressSchema";
 import { hasUnsafePathChar } from "@/platform/routing/paths";
 import type { ShopSettings } from "@/platform/shopware/shopSettings";
 
@@ -10,6 +11,7 @@ export type CheckoutSettings = {
   showCustomerComment: boolean;
   requireDataProtectionCheckbox: boolean;
   passwordMinLength: number;
+  addressFields: AddressFieldSettings;
   legalLinks: LegalLinks;
 };
 
@@ -24,6 +26,19 @@ export function toLegalLinkHref(value: string | null): string | null {
   return WEB_PROTOCOLS.has(url.protocol) ? url.href : null;
 }
 
+function addressFieldsOf({
+  loginRegistration: settings,
+}: ShopSettings): AddressFieldSettings {
+  return {
+    showAdditionalAddressField1: settings.showAdditionalAddressField1,
+    additionalAddressField1Required: settings.additionalAddressField1Required,
+    showAdditionalAddressField2: settings.showAdditionalAddressField2,
+    additionalAddressField2Required: settings.additionalAddressField2Required,
+    showPhoneNumberField: settings.showPhoneNumberField,
+    phoneNumberFieldRequired: settings.phoneNumberFieldRequired,
+  };
+}
+
 export function toCheckoutSettings(
   shopSettings: ShopSettings,
   legalLinks: LegalLinks,
@@ -33,6 +48,7 @@ export function toCheckoutSettings(
     requireDataProtectionCheckbox:
       shopSettings.loginRegistration.requireDataProtectionCheckbox,
     passwordMinLength: shopSettings.loginRegistration.passwordMinLength,
+    addressFields: addressFieldsOf(shopSettings),
     legalLinks: {
       terms: toLegalLinkHref(legalLinks.terms),
       revocation: toLegalLinkHref(legalLinks.revocation),

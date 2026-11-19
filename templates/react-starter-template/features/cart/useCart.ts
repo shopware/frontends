@@ -21,6 +21,7 @@ export type UseCartResult = CartSummary & {
     | "addPromotionCode"
     | "removeItem"
     | "changeQuantity"
+    | "runExclusive"
   >;
 
 function getServerCart(): CartState {
@@ -46,6 +47,7 @@ export function useCart(): UseCartResult {
       addPromotionCode: store.addPromotionCode,
       removeItem: store.removeItem,
       changeQuantity: store.changeQuantity,
+      runExclusive: store.runExclusive,
     }),
     [status, cart, store],
   );

@@ -143,7 +143,7 @@ describe("OrderConfirmation", () => {
       /<div class="[^"]*bg-states-info-container[^"]*" role="alert"><div class="font-medium">Finish payment process.<\/div>/,
     );
     expect(html).toContain(
-      "You will be redirected to the payment gateway in 5 seconds.",
+      "Continue to the payment provider to pay for your order.",
     );
     expect(html).toContain(">Go to payment</span></button>");
   });

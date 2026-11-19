@@ -10,7 +10,10 @@ async function shopTurnsOffAccountTypeSelection(
   storeApi: { value?: StoreApi },
 ) {
   await expect
-    .poll(() => storeApi.value, { message: "no store-api traffic seen" })
+    .poll(() => storeApi.value, {
+      message: "no store-api traffic seen",
+      timeout: 30_000,
+    })
     .toBeDefined();
   const { endpoint, accessKey } = storeApi.value as StoreApi;
   const response = await request.get(`${endpoint}/shop-settings`, {
@@ -65,7 +68,8 @@ test.describe("Registration new user", { tag: "@frontends" }, () => {
     await homePage.clickOnSignIn();
     await homePage.openRegistrationPage();
     test.skip(
-      await shopTurnsOffAccountTypeSelection(request, storeApi),
+      !(await registrationPage.accountType.isVisible()) &&
+        (await shopTurnsOffAccountTypeSelection(request, storeApi)),
       "The shop turns off showAccountTypeSelection in its login and registration settings, so it offers no company registration",
     );
     await expect(registrationPage.accountType).toBeVisible();

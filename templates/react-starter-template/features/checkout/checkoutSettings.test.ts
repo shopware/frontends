@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { hiddenAddressFields } from "@/features/account/address/addressSchema";
 import { shopSettings } from "@/platform/shopware/shopSettings.fixture";
 
 import { toCheckoutSettings, toLegalLinkHref } from "./checkoutSettings";
@@ -22,10 +23,31 @@ describe("toCheckoutSettings", () => {
       showCustomerComment: true,
       requireDataProtectionCheckbox: true,
       passwordMinLength: 10,
+      addressFields: hiddenAddressFields,
       legalLinks: {
         terms: "/navigation/terms",
         revocation: "https://shop.test/cancel",
       },
+    });
+  });
+
+  it("passes the address field settings the registration uses", () => {
+    expect(
+      toCheckoutSettings(
+        shopSettings({
+          loginRegistration: {
+            showPhoneNumberField: true,
+            phoneNumberFieldRequired: true,
+            showAdditionalAddressField1: true,
+          },
+        }),
+        { terms: null, revocation: null },
+      ).addressFields,
+    ).toEqual({
+      ...hiddenAddressFields,
+      showPhoneNumberField: true,
+      phoneNumberFieldRequired: true,
+      showAdditionalAddressField1: true,
     });
   });
 

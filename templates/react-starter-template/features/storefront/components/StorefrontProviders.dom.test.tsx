@@ -1,4 +1,5 @@
 import { encodeForQuery } from "@shopware/api-client/helpers";
+import { useState } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { ApiClient, Schemas } from "#shopware";
@@ -9,6 +10,7 @@ import type {
   CmsFindVariantResult,
   CmsNotification,
 } from "@/cms/client";
+import { Modal } from "@/components/Modal";
 import { cart, cartError, lineItem } from "@/features/cart/cart.fixture";
 import { useCart } from "@/features/cart/useCart";
 import { productReviewsCriteria } from "@/features/reviews/productReviewsApi";
@@ -466,6 +468,28 @@ async function showToast(notification: CmsNotification, locale?: Locale) {
   return container;
 }
 
+function ModalNotifier() {
+  const { notify } = useCmsActions();
+  const [open, setOpen] = useState(true);
+  return (
+    <Modal
+      open={open}
+      title="Change payment method"
+      closeLabel="Close"
+      onClose={() => setOpen(false)}
+      data-testid="modal"
+    >
+      <button
+        type="button"
+        data-testid="notify-in-modal"
+        onClick={() => notify({ type: "error", message: "Payment failed" })}
+      >
+        notify
+      </button>
+    </Modal>
+  );
+}
+
 async function advance(ms: number) {
   await interact(() => {
     vi.advanceTimersByTime(ms);
@@ -523,6 +547,39 @@ describe("StorefrontProviders toasts", () => {
     await interact(() => close.click());
 
     expect(queryAll(container, MESSAGE)).toHaveLength(0);
+  });
+
+  it("shows a toast inside an open modal dialog and back on the page once it closes", async () => {
+    mounted = await mount(
+      withI18n(
+        <StorefrontProviders>
+          <ModalNotifier />
+        </StorefrontProviders>,
+      ),
+    );
+    const dialog = query<HTMLDialogElement>(
+      document.body,
+      '[data-testid="modal"]',
+    );
+
+    await interact(() =>
+      query<HTMLButtonElement>(
+        dialog,
+        '[data-testid="notify-in-modal"]',
+      ).click(),
+    );
+
+    expect(query(dialog, MESSAGE).textContent).toBe("Payment failed");
+    expect(dialog.querySelector('[aria-live="polite"]')).not.toBeNull();
+
+    await interact(() =>
+      query<HTMLButtonElement>(dialog, 'button[aria-label="Close"]').click(),
+    );
+
+    expect(document.querySelector('[data-testid="modal"]')).toBeNull();
+    expect(query(mounted.container, MESSAGE).textContent).toBe(
+      "Payment failed",
+    );
   });
 
   it("closes the toast when its action link is followed", async () => {

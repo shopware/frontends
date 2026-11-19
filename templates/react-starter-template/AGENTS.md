@@ -331,7 +331,10 @@ Next.js code: 16.4 differs from most training data (Cache Components,
 - The config fetch and the `/context` read give up after `READ_TIMEOUT_MS`,
   because every action waits for them. `createOrder` gives up after
   `ORDER_TIMEOUT_MS`, and ofetch never retries a POST, so the timeout cannot
-  place a second order. Other mutations have no timeout.
+  place a second order. The checkout's `PATCH /context` calls give up after
+  `READ_TIMEOUT_MS`: they are idempotent, and a hung one would keep Place
+  order disabled. The order payment and cancel calls use `ORDER_TIMEOUT_MS`.
+  Other mutations have no timeout.
 - A failed first `/context` read, and a failed re-read inside `login`,
   `register` or `logout` (the identity changed), give a logged-out session. A
   failed `refreshSession()` or `retrySession()` keeps the last good session
@@ -355,10 +358,14 @@ Next.js code: 16.4 differs from most training data (Cache Components,
 - The actions never reject. `login` and `register` do not toast: their forms
   show the messages in one `role="alert"` block, and a toast as well would be
   read twice. `hasApiErrorCode`, `resolveApiErrorMessages` and
-  `apiFailureSummary` live in `features/session/apiErrors.ts`.
+  `apiFailureSummary` live in `platform/shopware/apiErrors.ts`.
 - A toast's `action` link renders after the
   `data-testid="notification-element-message"` element, never inside it: e2e
   asserts that the message ends with "has been added to cart.".
+- `Modal` opens with `showModal()`, which makes everything outside the dialog
+  inert, the toast region included. `ModalHostContext` moves the toast region
+  into the open dialog, so a toast raised while a modal is open stays visible
+  and is announced.
 - `StorefrontProviders` is the app side of the CMS actions port. Wire a new
   member there, not in the CMS components.
 - `browserClient.ts` re-exports `CONTEXT_TOKEN_COOKIE` because several tests
@@ -444,12 +451,26 @@ Next.js code: 16.4 differs from most training data (Cache Components,
   registering twice.
 - The `placingOrder` ref covers only the request in flight. The overlay, the
   comment and the terms reset in a `useLayoutEffect` cleanup when Next hides
-  the page.
+  the page; after a placed order the cleanup also clears the customer form and
+  the registration state, or a later login revives the previous guest's form
+  and Place order writes it into the new account.
+- `createOrder` runs through `cart.runExclusive`, so it waits for a quantity,
+  remove or promotion change from the summary. The method and address
+  `PATCH /context` calls run one after another: the backend merges the context
+  payload without a lock, so two in flight can revert each other's key.
+- Place order keeps focus while the order is placed (`aria-disabled`, no
+  `loading`), and `BaseButton` still fires `onClick` under `aria-disabled`, so
+  `handlePlaceOrder` also returns once `orderDone` is set; the status is an
+  always-mounted `<output>`. A failed checkout
+  registration shows its messages in one `role="alert"` block above the
+  button, like the registration form.
 - A `createOrder` failure whose outcome is unknown (`isAmbiguousOrderFailure`)
   shows `errors.order-timeout`, since the order may exist. Every failed
   `createOrder` re-reads the cart, so a committed order shows the empty cart.
 - The success page reads the order once behind a ref, so StrictMode does not
-  start the payment twice. Only an http(s) `redirectUrl` redirects. The
+  start the payment twice. It never redirects on its own (WCAG 2.2.1; the
+  Vue starter redirects after 5 s): the shopper presses "Go to payment". A
+  failed `handle-payment` shows an alert with "Try again". Only an http(s) `redirectUrl` redirects. The
   backend pays only the newest open transaction and answers
   `redirectUrl: null` when none is left.
 - A guest order by a returning customer is not blocked (`RegisterRoute`
@@ -507,14 +528,18 @@ Next.js code: 16.4 differs from most training data (Cache Components,
   keeps a business type. Extra VAT IDs after the first are kept.
 - An address update sends every stored field merged with the form values
   (`updatedAddressBody`), because `UpsertAddressRoute` nulls the fields it
-  does not get.
+  does not get. The account and checkout forms both send the optional fields
+  through `shownAddressFields`: a shown field goes out trimmed, empty included,
+  so a cleared value is cleared; a hidden one is left out and kept.
 - `<Activity>` resets: the new and edit address forms reset their saved state
   in a `useLayoutEffect` cleanup; the email and password change forms clear
   after a success.
 - Order details send `checkPromotion` in the body and the query: `OrderRoute`
   reads it only from the query, and without it `paymentChangeable` never comes
-  back. `handleOrderPayment` lives in `ordersApi.ts` because `checkoutApi`'s
-  `handlePayment` takes no timeout.
+  back. The checkout success page does not need it, so its `readOrder` sends
+  neither. Both pages start a payment with `checkoutApi`'s `handlePayment`.
+  The order params are built in a typed `const`, not an `as` cast: a cast
+  skips the excess-property check, so a misspelled key would compile.
 - Cancelling requires the state `open`, like the Storefront, although the
   state machine also cancels `in_progress`. There is no e2e spec: the demo has
   refunds off, and a cancellation cannot be undone.

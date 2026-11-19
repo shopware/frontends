@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { apiClientError } from "@/features/session/session.fixture";
+import { resolveApiErrorMessages } from "@/platform/shopware/apiErrors";
 import { testTranslator } from "@/test/i18n";
 
 import { VALID_HASH, violation } from "./recovery.fixture";

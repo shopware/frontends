@@ -1,6 +1,6 @@
 import type { ApiClient, Schemas } from "#shopware";
-import { hasApiErrorCode } from "@/features/session/apiErrors";
 import { READ_TIMEOUT_MS } from "@/features/session/readTimeout";
+import { hasApiErrorCode } from "@/platform/shopware/apiErrors";
 
 export type WishlistClient = Pick<ApiClient, "invoke">;
 

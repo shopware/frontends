@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
 
+import {
+  apiClientError,
+  apiClientErrorWithBody,
+} from "@/features/session/session.fixture";
 import { testTranslator } from "@/test/i18n";
 
 import {
@@ -9,7 +13,6 @@ import {
   resolveApiErrorMessages as resolveWith,
 } from "./apiErrors";
 import type { ApiErrorContext } from "./apiErrors";
-import { apiClientError, apiClientErrorWithBody } from "./session.fixture";
 
 const en = testTranslator("en-GB");
 const DEFAULT_MESSAGE = en("errors.message-default");

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { use, useEffect, useRef, useState } from "react";
+import { use, useCallback, useEffect, useRef, useState } from "react";
 
 import type { Schemas } from "#shopware";
 import { LocaleLink } from "@/components/LocaleLink";
@@ -10,8 +10,8 @@ import { useShopwareClient } from "@/features/storefront/components/ShopwareClie
 import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 
 import { handlePayment, readOrder } from "../checkoutApi";
+import type { CheckoutClient } from "../checkoutApi";
 import {
-  PAYMENT_REDIRECT_DELAY_MS,
   parsePaymentUrl,
   paymentReturnUrls,
   redirectToPayment,
@@ -41,7 +41,9 @@ function OrderSuccess({ orderId }: { orderId: string }) {
   const localePath = useLocalePath();
   const [orderLoad, setOrderLoad] = useState<OrderLoad>({ status: "loading" });
   const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
+  const [paymentFailed, setPaymentFailed] = useState(false);
   const started = useRef(false);
+  const paying = useRef(false);
 
   const isUserSession = session.isLoggedIn || session.isGuestSession;
   const anonymous = session.status === "ready" && !isUserSession;
@@ -49,6 +51,36 @@ function OrderSuccess({ orderId }: { orderId: string }) {
   useEffect(() => {
     if (anonymous) router.replace(localePath("/"));
   }, [anonymous, router, localePath]);
+
+  const startPayment = useCallback(
+    async (client: CheckoutClient) => {
+      if (paying.current) return;
+      paying.current = true;
+      setPaymentFailed(false);
+      try {
+        const { redirectUrl } = await handlePayment(client, {
+          orderId,
+          ...paymentReturnUrls(window.location.origin, orderId, localePath),
+        });
+        setPaymentUrl(parsePaymentUrl(redirectUrl));
+      } catch (error) {
+        console.error("[Checkout] handling the payment failed", error);
+        setPaymentFailed(true);
+      } finally {
+        paying.current = false;
+      }
+    },
+    [orderId, localePath],
+  );
+
+  async function retryPayment() {
+    try {
+      await startPayment(await getClient());
+    } catch (error) {
+      console.error("[Checkout] the Store API client is not available", error);
+      setPaymentFailed(true);
+    }
+  }
 
   useEffect(() => {
     if (session.status === "loading" || anonymous) return;
@@ -71,28 +103,11 @@ function OrderSuccess({ orderId }: { orderId: string }) {
         return;
       }
       setOrderLoad({ status: "ready", order });
-
-      try {
-        const { redirectUrl } = await handlePayment(client, {
-          orderId,
-          ...paymentReturnUrls(window.location.origin, orderId, localePath),
-        });
-        setPaymentUrl(parsePaymentUrl(redirectUrl));
-      } catch (error) {
-        console.error("[Checkout] handling the payment failed", error);
-      }
+      await startPayment(client);
     }
 
     void load();
-  }, [session.status, anonymous, getClient, orderId, localePath]);
-
-  useEffect(() => {
-    if (!paymentUrl) return;
-    const timer = setTimeout(() => {
-      redirectToPayment(paymentUrl);
-    }, PAYMENT_REDIRECT_DELAY_MS);
-    return () => clearTimeout(timer);
-  }, [paymentUrl]);
+  }, [session.status, anonymous, getClient, orderId, startPayment]);
 
   if (orderLoad.status === "error") {
     return (
@@ -119,6 +134,10 @@ function OrderSuccess({ orderId }: { orderId: string }) {
       order={orderLoad.order}
       paymentUrl={paymentUrl}
       onGoToPayment={redirectToPayment}
+      paymentFailed={paymentFailed}
+      onRetryPayment={() => {
+        void retryPayment();
+      }}
       showAccountLink={session.isLoggedIn}
     />
   );

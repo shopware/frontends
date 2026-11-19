@@ -9,10 +9,10 @@ import {
   ShopwareClientHarness,
   deferred,
 } from "@/features/checkout/checkoutTestDoubles";
-import { apiFailureSummary } from "@/features/session/apiErrors";
 import { apiClientError } from "@/features/session/session.fixture";
 import type { Locale } from "@/i18n/config";
 import { ContentLanguageProvider } from "@/i18n/ContentLanguageProvider";
+import { apiFailureSummary } from "@/platform/shopware/apiErrors";
 import { withI18n } from "@/test/i18n";
 import {
   interact,

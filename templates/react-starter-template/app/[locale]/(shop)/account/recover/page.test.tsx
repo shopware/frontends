@@ -42,11 +42,11 @@ describe("RecoverPasswordPage", () => {
       ">Fields marked with asterisks (*) are required.</p>",
     );
     const form = tag(html, /<form [^>]*>/);
-    expect(form).toContain('data-testid="account-recover-password-form"');
+    expect(form).toContain('data-testid="recover-password-form"');
     expect(form.toLowerCase()).toContain("novalidate");
     const email = tag(
       html,
-      /<input[^>]*data-testid="account-recover-password-email-input"[^>]*>/,
+      /<input[^>]*data-testid="recover-password-email-input"[^>]*>/,
     );
     expect(email).toContain('id="recover-password-email"');
     expect(email).toContain('type="email"');
@@ -56,19 +56,16 @@ describe("RecoverPasswordPage", () => {
     expect(
       tag(
         html,
-        /<button[^>]*data-testid="account-recover-password-submit-button"[^>]*>/,
+        /<button[^>]*data-testid="recover-password-submit-button"[^>]*>/,
       ),
     ).toContain('type="submit"');
     expect(html).toContain(">Request email</span>");
     expect(
-      tag(
-        html,
-        /<a[^>]*data-testid="account-recover-password-back-link"[^>]*>/,
-      ),
+      tag(html, /<a[^>]*data-testid="recover-password-login-link"[^>]*>/),
     ).toContain('href="/account/login"');
     expect(html).toContain(">Back to sign in</a>");
     expect(html).not.toContain('role="alert"');
-    expect(html).not.toContain("account-recover-password-success");
+    expect(html).not.toContain("recover-password-success-message");
   });
 
   it("speaks Polish and links to the prefixed login page", async () => {
@@ -79,10 +76,7 @@ describe("RecoverPasswordPage", () => {
     expect(html).toMatch(/<h1[^>]*>Odzyskiwanie hasła<\/h1>/);
     expect(html).toContain(">Wyślij e-mail</span>");
     expect(
-      tag(
-        html,
-        /<a[^>]*data-testid="account-recover-password-back-link"[^>]*>/,
-      ),
+      tag(html, /<a[^>]*data-testid="recover-password-login-link"[^>]*>/),
     ).toContain('href="/pl-PL/account/login"');
     expect(html).toContain(">Wróć do logowania</a>");
   });

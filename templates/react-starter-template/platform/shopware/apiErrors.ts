@@ -59,6 +59,8 @@ export function resolveApiErrorMessages(
   return errors.map((apiError) => resolveApiError(apiError, t, context));
 }
 
+export const INVALID_UUID = "FRAMEWORK__INVALID_UUID";
+
 export function apiErrorCodes(error: unknown): string[] {
   if (!(error instanceof ApiClientError)) return [];
   const errors: ApiError[] | undefined = error.details?.errors;

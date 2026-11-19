@@ -148,7 +148,7 @@ export function ResetPasswordForm({
     <form
       ref={formRef}
       className="flex max-w-md flex-col gap-4"
-      data-testid="account-reset-password-form"
+      data-testid="reset-password-form"
       noValidate
       onSubmit={(event) => {
         void handleSubmit(event);
@@ -159,7 +159,7 @@ export function ResetPasswordForm({
       </p>
       <InputField
         id="newPassword"
-        data-testid="account-reset-password-new-password-input"
+        data-testid="reset-password-new-password-input"
         type="password"
         label={t("account.changePassword.form.newPasswordLabel")}
         hint={t(
@@ -176,7 +176,7 @@ export function ResetPasswordForm({
       />
       <InputField
         id="newPasswordConfirm"
-        data-testid="account-reset-password-confirm-password-input"
+        data-testid="reset-password-confirm-password-input"
         type="password"
         label={t("account.changePassword.form.confirmPasswordLabel")}
         aria-required="true"
@@ -194,7 +194,7 @@ export function ResetPasswordForm({
       <div>
         <BaseButton
           type="submit"
-          data-testid="account-reset-password-submit-button"
+          data-testid="reset-password-submit-button"
           aria-busy={busy}
           aria-disabled={busy || undefined}
           className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50"

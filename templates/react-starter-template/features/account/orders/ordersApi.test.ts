@@ -23,7 +23,6 @@ import {
   cancelOrderErrorMessages,
   classifyDeepLinkError,
   documentFileName,
-  handleOrderPayment,
   isOrderCancellable,
   isOrderId,
   isOrderNotCancellableError,
@@ -300,46 +299,6 @@ describe("setOrderPaymentMethod", () => {
         },
       },
     ]);
-  });
-});
-
-describe("handleOrderPayment", () => {
-  it("starts the payment of the order with the return urls and a timeout", async () => {
-    const shopware = fakeClient(() => ({
-      redirectUrl: "https://psp.test/pay",
-    }));
-    const urls = {
-      finishUrl: `https://shop.test/checkout/success/${ORDER_ID}/paid`,
-      errorUrl: `https://shop.test/checkout/success/${ORDER_ID}/unpaid`,
-    };
-
-    const result = await handleOrderPayment(shopware.client, {
-      orderId: ORDER_ID,
-      ...urls,
-    });
-
-    expect(shopware.invocations).toEqual([
-      {
-        operation: "handlePaymentMethod post /handle-payment",
-        params: {
-          body: { orderId: ORDER_ID, ...urls },
-          fetchOptions: { timeout: ORDER_TIMEOUT_MS },
-        },
-      },
-    ]);
-    expect(result).toEqual({ redirectUrl: "https://psp.test/pay" });
-  });
-
-  it("reports no redirect when the backend sends none", async () => {
-    const shopware = fakeClient(() => ({}));
-
-    await expect(
-      handleOrderPayment(shopware.client, {
-        orderId: ORDER_ID,
-        finishUrl: "https://shop.test/paid",
-        errorUrl: "https://shop.test/unpaid",
-      }),
-    ).resolves.toEqual({ redirectUrl: null });
   });
 });
 

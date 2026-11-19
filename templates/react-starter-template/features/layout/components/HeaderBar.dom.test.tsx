@@ -602,18 +602,22 @@ describe("HeaderBar in the browser", () => {
     ).toBe("false");
   });
 
-  it("keeps the mini cart closed for an empty cart without a toast", async () => {
-    const { cartButton, miniCart, notify } = await setup();
+  it("opens the cart page for an empty cart instead of the mini cart", async () => {
+    const { cartButton, miniCart, notify } = await setup(
+      undefined,
+      {},
+      "pl-PL",
+    );
 
-    expect(cartButton.getAttribute("aria-expanded")).toBe("false");
-    expect(cartButton.getAttribute("aria-controls")).toBeTruthy();
+    expect(cartButton.getAttribute("aria-label")).toBe("Koszyk");
+    expect(cartButton.hasAttribute("aria-expanded")).toBe(false);
+    expect(cartButton.hasAttribute("aria-controls")).toBe(false);
 
     await interact(() => cartButton.click());
 
+    expect(push).toHaveBeenCalledExactlyOnceWith("/pl-PL/checkout/cart");
     expect(miniCart()).toBeNull();
-    expect(cartButton.getAttribute("aria-expanded")).toBe("false");
     expect(notify).not.toHaveBeenCalled();
-    expect(push).not.toHaveBeenCalled();
   });
 
   it("toggles the mini cart for a cart with products", async () => {
@@ -621,6 +625,9 @@ describe("HeaderBar in the browser", () => {
     const { cartButton, miniCart, notify } = await setup();
 
     expect(cartButton.textContent).toBe("3Cart");
+    expect(cartButton.getAttribute("aria-label")).toBe("Cart, 3 items");
+    expect(cartButton.getAttribute("aria-expanded")).toBe("false");
+    expect(cartButton.hasAttribute("aria-controls")).toBe(false);
 
     await interact(() => cartButton.click());
 
@@ -702,8 +709,9 @@ describe("HeaderBar in the browser", () => {
     await interact(() => fakeCart.set(cartView({ lineItems: [] })));
 
     expect(miniCart()).toBeNull();
-    expect(cartButton.getAttribute("aria-expanded")).toBe("false");
+    expect(cartButton.hasAttribute("aria-expanded")).toBe(false);
     expect(cartButton.textContent).toBe("Cart");
+    expect(cartButton.getAttribute("aria-label")).toBe("Cart");
     expect(document.activeElement).toBe(cartButton);
 
     await interact(() => fakeCart.set(filledCart()));

@@ -10,11 +10,11 @@ import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
 import { useCustomer } from "@/features/account/customer/useCustomer";
 import type { AccountType } from "@/features/account/registrationSchema";
-import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
 import { useContentLang } from "@/i18n/ContentLanguageProvider";
 import { useTranslations } from "@/i18n/I18nProvider";
+import { resolveApiErrorMessages } from "@/platform/shopware/apiErrors";
 import type { SalutationOption } from "@/platform/shopware/reads/salutations";
 
 import { changeProfile } from "../profileApi";

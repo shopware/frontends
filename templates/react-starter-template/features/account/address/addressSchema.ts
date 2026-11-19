@@ -172,6 +172,28 @@ export function addressValuesFrom(
   };
 }
 
+type OptionalAddressField =
+  | "additionalAddressLine1"
+  | "additionalAddressLine2"
+  | "phoneNumber";
+
+export function shownAddressFields(
+  values: Pick<AddressValues, OptionalAddressField>,
+  settings: AddressFieldSettings,
+): Partial<Record<OptionalAddressField, string>> {
+  return {
+    ...(settings.showAdditionalAddressField1
+      ? { additionalAddressLine1: values.additionalAddressLine1.trim() }
+      : {}),
+    ...(settings.showAdditionalAddressField2
+      ? { additionalAddressLine2: values.additionalAddressLine2.trim() }
+      : {}),
+    ...(settings.showPhoneNumberField
+      ? { phoneNumber: values.phoneNumber.trim() }
+      : {}),
+  };
+}
+
 export function toAddressBody(
   values: AddressValues,
   settings: AddressFieldSettings,
@@ -185,14 +207,6 @@ export function toAddressBody(
     city: values.city,
     countryId: values.countryId,
     ...(values.countryStateId ? { countryStateId: values.countryStateId } : {}),
-    ...(settings.showAdditionalAddressField1
-      ? { additionalAddressLine1: values.additionalAddressLine1.trim() }
-      : {}),
-    ...(settings.showAdditionalAddressField2
-      ? { additionalAddressLine2: values.additionalAddressLine2.trim() }
-      : {}),
-    ...(settings.showPhoneNumberField
-      ? { phoneNumber: values.phoneNumber.trim() }
-      : {}),
+    ...shownAddressFields(values, settings),
   };
 }

@@ -57,8 +57,12 @@ describe("AddressTile in the browser", () => {
 
   it("does not react to clicks while the address is being deleted", async () => {
     const { container, ...handlers } = await setup({ isDeleting: true });
+    const remove = button(container, "Delete address");
+    remove.focus();
 
-    await interact(() => button(container, "Delete address").click());
+    await interact(() => remove.click());
+    expect(remove.getAttribute("aria-disabled")).toBe("true");
+    expect(document.activeElement).toBe(remove);
     await interact(() =>
       button(container, "Use as default billing address").click(),
     );

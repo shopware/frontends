@@ -5,13 +5,17 @@ import type { Mock } from "vitest";
 
 import type { ApiClient, Schemas } from "#shopware";
 import { CmsActionsProvider } from "@/cms/client";
+import { hiddenAddressFields } from "@/features/account/address/addressSchema";
 import { cart as cartData, cartError } from "@/features/cart/cart.fixture";
 import { toCartActionErrors } from "@/features/cart/cartErrors";
 import type { CartErrorEntry } from "@/features/cart/cartErrors";
 import type { CartReadResult } from "@/features/cart/types";
 import { SessionActionsProvider } from "@/features/session/components/SessionActionsContext";
 import type { SessionActions } from "@/features/session/components/SessionActionsContext";
-import { ORDER_TIMEOUT_MS } from "@/features/session/readTimeout";
+import {
+  ORDER_TIMEOUT_MS,
+  READ_TIMEOUT_MS,
+} from "@/features/session/readTimeout";
 import { unavailableSession } from "@/features/session/sessionFromContext";
 import type {
   RegistrationInput,
@@ -451,9 +455,9 @@ describe("CheckoutPageContent", () => {
     ).toHaveLength(2);
     expect(push).toHaveBeenCalledWith("/checkout/success/order-1");
     expect(cart.refresh).toHaveBeenCalled();
-    expect(
-      query(container, 'output[aria-label="Placing order…"]').textContent,
-    ).toContain("Placing order…");
+    expect(query(container, "output.sr-only").textContent).toContain(
+      "Placing order…",
+    );
     expect(container.querySelector("[inert]")).not.toBeNull();
   });
 
@@ -478,7 +482,11 @@ describe("CheckoutPageContent", () => {
     expect(notify).not.toHaveBeenCalled();
     expect(button().disabled).toBe(false);
     expect(document.activeElement).toBe(button());
-    expect(container.querySelector("output")).toBeNull();
+    expect(query(container, "output.sr-only").textContent).toBe("");
+    expect(
+      query(container, '[data-testid="checkout-registration-error"]')
+        .textContent,
+    ).toBe("The email address jane@example.com is already in use");
     expect(input("checkout-pi-email-input")).toBeDefined();
   });
 
@@ -617,7 +625,10 @@ describe("CheckoutPageContent", () => {
     expect(shopware.calls(UPDATE_CONTEXT)).toEqual([
       {
         operation: UPDATE_CONTEXT,
-        params: { body: { shippingMethodId: "shipping-express" } },
+        params: {
+          body: { shippingMethodId: "shipping-express" },
+          fetchOptions: { timeout: READ_TIMEOUT_MS },
+        },
       },
     ]);
     expect(refreshSession).toHaveBeenCalledTimes(1);
@@ -645,6 +656,7 @@ describe("CheckoutPageContent", () => {
 
     expect(shopware.calls(UPDATE_CONTEXT)[0]?.params).toEqual({
       body: { paymentMethodId: "payment-cash" },
+      fetchOptions: { timeout: READ_TIMEOUT_MS },
     });
     expect(notify).toHaveBeenCalledWith({
       type: "error",
@@ -968,9 +980,7 @@ describe("CheckoutPageContent", () => {
     await interact(() => visibility.set(false));
 
     expect(container.querySelector("[inert]")).toBeNull();
-    expect(
-      container.querySelector('output[aria-label="Placing order…"]'),
-    ).toBeNull();
+    expect(query(container, "output.sr-only").textContent).toBe("");
     expect(query<HTMLInputElement>(container, TOS).checked).toBe(false);
 
     await acceptTerms(container);
@@ -1057,10 +1067,25 @@ describe("CheckoutPageContent", () => {
     expect(push).toHaveBeenCalledWith("/checkout/success/order-1");
     expect(fakeCart.get().isEmpty).toBe(true);
     expect(query(container, "h1").textContent).toBe("Checkout");
-    expect(
-      container.querySelector('output[aria-label="Placing order…"]'),
-    ).not.toBeNull();
+    expect(query(container, "output.sr-only").textContent).toBe(
+      "Placing order…",
+    );
     expect(container.textContent).not.toContain("Your cart is empty");
+  });
+
+  it("ignores another click on place order after the order is placed", async () => {
+    const { container, button, shopware, notify } = await setup({
+      session: checkoutSession({ customer: checkoutCustomer() }),
+    });
+
+    await acceptTerms(container);
+    await interact(() => button().click());
+    await interact(() => button().click());
+
+    expect(shopware.calls(CREATE_ORDER)).toHaveLength(1);
+    expect(notify).not.toHaveBeenCalledWith(
+      expect.objectContaining({ type: "error" }),
+    );
   });
 
   it("asks for the state of a country with states and sends it", async () => {
@@ -1155,7 +1180,7 @@ describe("CheckoutPageContent", () => {
     expect(register).not.toHaveBeenCalled();
     expect(shopware.calls(CREATE_ORDER)).toHaveLength(0);
     expect(input("checkout-pi-email-input")).toBeDefined();
-    expect(container.querySelector("output")).toBeNull();
+    expect(query(container, "output.sr-only").textContent).toBe("");
   });
 
   it("reports a cart that could not be read, reads it once on its own and again on retry", async () => {
@@ -1845,7 +1870,10 @@ describe("CheckoutPageContent address choice", () => {
     expect(shopware.calls(UPDATE_CONTEXT)).toEqual([
       {
         operation: UPDATE_CONTEXT,
-        params: { body: { shippingAddressId: "address-2" } },
+        params: {
+          body: { shippingAddressId: "address-2" },
+          fetchOptions: { timeout: READ_TIMEOUT_MS },
+        },
       },
     ]);
     expect(button().disabled).toBe(true);
@@ -2218,5 +2246,347 @@ describe("CheckoutPageContent in other locales", () => {
     const link = query<HTMLAnchorElement>(container, "a");
     expect(link.textContent).toBe("Kontynuuj zakupy");
     expect(link.getAttribute("href")).toBe("/pl-PL");
+  });
+});
+
+describe("CheckoutPageContent hidden page", () => {
+  it("clears the guest form after an order and shows the addresses of the customer found on reveal", async () => {
+    const register = vi.fn<SessionActions["register"]>(async () => {
+      sessionControl.set(guestSession);
+      return { ok: true };
+    });
+    const { container, input, button } = await setup({ register });
+
+    await fillGuestForm(container, input);
+    await acceptTerms(container);
+    await interact(() => button().click());
+    expect(push).toHaveBeenCalledWith("/checkout/success/order-1");
+
+    await interact(() => visibility.set(true));
+    await interact(() =>
+      sessionControl.set(
+        checkoutSession({ customer: checkoutCustomer({ id: "customer-2" }) }),
+      ),
+    );
+    await interact(() => visibility.set(false));
+
+    expect(
+      container.querySelector('[data-testid="checkout-pi-email-input"]'),
+    ).toBeNull();
+    expect(
+      byTestId(container, "checkout-chosen-address").textContent,
+    ).toContain("Main Street 1");
+
+    await interact(() => sessionControl.set(checkoutSession()));
+
+    expect(input("checkout-pi-email-input").value).toBe("");
+    expect(input("checkout-pi-email-input").readOnly).toBe(false);
+    expect(input("checkout-pi-city-input").value).toBe("");
+  });
+
+  it("keeps the typed values when the page is hidden without an order", async () => {
+    const { container, input } = await setup();
+
+    await fillGuestForm(container, input);
+    await interact(() => visibility.set(true));
+    await interact(() => visibility.set(false));
+
+    expect(input("checkout-pi-email-input").value).toBe("jane@example.com");
+    expect(input("checkout-pi-city-input").value).toBe("Warsaw");
+  });
+});
+
+describe("CheckoutPageContent method requests", () => {
+  function shippingIds(container: HTMLElement) {
+    return queryAll<HTMLInputElement>(
+      container,
+      'input[type="radio"][name="shipping-method"]',
+    ).map((input) => input.value);
+  }
+
+  it.each([
+    ["shipping", READ_SHIPPING_METHODS],
+    ["payment", READ_PAYMENT_METHODS],
+  ])(
+    "offers a retry when the %s methods cannot be read and drops it once both lists load",
+    async (_, failing) => {
+      let reads = 0;
+      const { container, shopware } = await setup({
+        answers: {
+          [failing]: (operation, params) => {
+            reads += 1;
+            if (reads === 1) throw apiError([], 503);
+            return checkoutAnswer()(operation, params);
+          },
+        },
+      });
+
+      const alert = query<HTMLElement>(container, '[role="alert"]');
+      expect(alert.textContent).toContain(GENERIC_ERROR);
+
+      await interact(() => buttonByText(alert, "Try again").click());
+
+      expect(shopware.calls(READ_SHIPPING_METHODS)).toHaveLength(2);
+      expect(shopware.calls(READ_PAYMENT_METHODS)).toHaveLength(2);
+      expect(container.querySelector('[role="alert"]')).toBeNull();
+      expect(shippingIds(container)).toEqual([
+        "shipping-standard",
+        "shipping-express",
+      ]);
+      expect(radio(container, "payment-method", "payment-cash")).toBeDefined();
+    },
+  );
+
+  it("renders the newest method list when an older read answers last", async () => {
+    const slow = deferred<unknown>();
+    let reads = 0;
+    requestLogin.mockImplementation(async () => {
+      sessionControl.set(loggedIn);
+      return true;
+    });
+    const { container, shopware } = await setup({
+      answers: {
+        [READ_SHIPPING_METHODS]: () => {
+          reads += 1;
+          return reads === 1
+            ? slow.promise
+            : { elements: shippingMethods.slice(1) };
+        },
+      },
+    });
+
+    await interact(() => query<HTMLButtonElement>(container, SIGN_IN).click());
+
+    expect(shopware.calls(READ_SHIPPING_METHODS)).toHaveLength(2);
+    expect(shippingIds(container)).toEqual(["shipping-express"]);
+
+    await interact(() => slow.resolve({ elements: shippingMethods }));
+
+    expect(shippingIds(container)).toEqual(["shipping-express"]);
+  });
+
+  it("renders the newest method list when an older retry answers last", async () => {
+    const slow = deferred<unknown>();
+    let reads = 0;
+    const { container } = await setup({
+      answers: {
+        [READ_SHIPPING_METHODS]: () => {
+          reads += 1;
+          if (reads === 1) throw apiError([], 503);
+          return reads === 2
+            ? slow.promise
+            : { elements: shippingMethods.slice(1) };
+        },
+      },
+    });
+
+    const retry = buttonByText(
+      query<HTMLElement>(container, '[role="alert"]'),
+      "Try again",
+    );
+    await interact(() => retry.click());
+    await interact(() => retry.click());
+
+    expect(shippingIds(container)).toEqual(["shipping-express"]);
+    expect(container.querySelector('[role="alert"]')).toBeNull();
+
+    await interact(() => slow.resolve({ elements: shippingMethods }));
+
+    expect(shippingIds(container)).toEqual(["shipping-express"]);
+  });
+
+  it.each([
+    [
+      "succeeded",
+      (patch: ReturnType<typeof deferred<unknown>>) => {
+        patch.resolve({});
+      },
+    ],
+    [
+      "failed",
+      (patch: ReturnType<typeof deferred<unknown>>) => {
+        patch.reject(apiError([], 503));
+      },
+    ],
+  ])(
+    "sends a payment change only after the pending shipping change %s",
+    async (_, settle) => {
+      const first = deferred<unknown>();
+      let patches = 0;
+      const { container, shopware } = await setup({
+        answers: {
+          [UPDATE_CONTEXT]: () => {
+            patches += 1;
+            return patches === 1 ? first.promise : {};
+          },
+        },
+      });
+
+      await interact(() =>
+        radio(container, "shipping-method", "shipping-express").click(),
+      );
+      await interact(() =>
+        radio(container, "payment-method", "payment-cash").click(),
+      );
+
+      expect(shopware.calls(UPDATE_CONTEXT)).toMatchObject([
+        { params: { body: { shippingMethodId: "shipping-express" } } },
+      ]);
+
+      await interact(() => settle(first));
+
+      expect(shopware.calls(UPDATE_CONTEXT)).toMatchObject([
+        { params: { body: { shippingMethodId: "shipping-express" } } },
+        { params: { body: { paymentMethodId: "payment-cash" } } },
+      ]);
+    },
+  );
+});
+
+describe("CheckoutPageContent placing the order", () => {
+  it("creates a new shipping address instead of updating the one created for another guest", async () => {
+    let orders = 0;
+    const createdIds = ["address-new", "address-b-shipping"];
+    const register = vi.fn<SessionActions["register"]>(async () => {
+      sessionControl.set(guestSession);
+      return { ok: true };
+    });
+    const { container, input, button, shopware } = await setup({
+      register,
+      answers: {
+        [CREATE_ADDRESS]: () => shippingAddress({ id: createdIds.shift() }),
+        [CREATE_ORDER]: () => {
+          orders += 1;
+          if (orders < 3) {
+            throw apiError([{ code: "CHECKOUT__UNKNOWN_PAYMENT_METHOD" }]);
+          }
+          return order();
+        },
+      },
+    });
+
+    await fillGuestForm(container, input);
+    await interact(() =>
+      byTestId<HTMLInputElement>(
+        container,
+        "checkout-custom-shipping-address-checkbox",
+      ).click(),
+    );
+    await fillShippingAddress(container, input);
+    await acceptTerms(container);
+    await interact(() => button().click());
+    await interact(() => button().click());
+    expect(shopware.calls(CREATE_ADDRESS)).toHaveLength(1);
+
+    await interact(() =>
+      sessionControl.set(
+        checkoutSession({
+          customer: checkoutCustomer({
+            guest: true,
+            id: "guest-2",
+            defaultBillingAddress: billingAddress({
+              id: "address-b",
+              customerId: "guest-2",
+            }),
+          }),
+        }),
+      ),
+    );
+    await interact(() => button().click());
+
+    expect(shopware.calls(CREATE_ADDRESS)).toHaveLength(2);
+    expect(
+      shopware
+        .calls(UPDATE_ADDRESS)
+        .map(({ params }) => (params as { pathParams: unknown }).pathParams),
+    ).toEqual([{ addressId: "address-1" }, { addressId: "address-b" }]);
+    expect(shopware.calls(DEFAULT_SHIPPING).at(-1)?.params).toEqual({
+      pathParams: { addressId: "address-b-shipping" },
+    });
+    expect(push).toHaveBeenCalledWith("/checkout/success/order-1");
+  });
+
+  it("keeps the focus on the place order button while the order is placed", async () => {
+    const pending = deferred<unknown>();
+    const { container, button } = await setup({
+      session: loggedIn,
+      answers: { [CREATE_ORDER]: () => pending.promise },
+    });
+
+    await acceptTerms(container);
+    button().focus();
+    await interact(() => button().click());
+
+    expect(document.activeElement).toBe(button());
+    expect(button().getAttribute("aria-disabled")).toBe("true");
+    expect(button().disabled).toBe(false);
+    expect(button().closest("[inert]")).toBeNull();
+    expect(query(container, "output.sr-only").textContent).toBe(
+      "Placing order…",
+    );
+
+    await interact(() => pending.resolve(order()));
+    expect(push).toHaveBeenCalledTimes(1);
+  });
+
+  it("places the order through the cart queue", async () => {
+    const gate = deferred<void>();
+    const queued = vi.fn();
+    function runExclusive<T>(task: () => Promise<T>): Promise<T> {
+      queued();
+      return gate.promise.then(task);
+    }
+    const { container, button, shopware } = await setup({
+      session: loggedIn,
+      cart: cartResult({ runExclusive }),
+    });
+
+    await acceptTerms(container);
+    await interact(() => button().click());
+
+    expect(queued).toHaveBeenCalledTimes(1);
+    expect(shopware.calls(CREATE_ORDER)).toHaveLength(0);
+    expect(push).not.toHaveBeenCalled();
+
+    await interact(() => gate.resolve());
+
+    expect(shopware.calls(CREATE_ORDER)).toHaveLength(1);
+    expect(push).toHaveBeenCalledWith("/checkout/success/order-1");
+  });
+
+  it("asks for a required phone number and registers the guest with it", async () => {
+    const { container, input, button, register } = await setup({
+      settings: checkoutSettings({
+        addressFields: {
+          ...hiddenAddressFields,
+          showPhoneNumberField: true,
+          phoneNumberFieldRequired: true,
+        },
+      }),
+    });
+    const phone = () => query<HTMLInputElement>(container, "#phone-number");
+
+    expect(phone().type).toBe("tel");
+    expect(phone().required).toBe(true);
+
+    await fillGuestForm(container, input);
+    await acceptTerms(container);
+    await interact(() => button().click());
+
+    expect(register).not.toHaveBeenCalled();
+    expect(phone().getAttribute("aria-invalid")).toBe("true");
+    expect(document.activeElement).toBe(phone());
+
+    await interact(() => setInputValue(phone(), "+48 123 456 789"));
+    await interact(() => button().click());
+
+    expect(register).toHaveBeenCalledTimes(1);
+    expect(register.mock.calls[0]?.[0]).toEqual({
+      ...expectedRegistration,
+      billingAddress: {
+        ...expectedRegistration.billingAddress,
+        phoneNumber: "+48 123 456 789",
+      },
+    });
   });
 });

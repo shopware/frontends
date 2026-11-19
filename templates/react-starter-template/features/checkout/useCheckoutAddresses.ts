@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { Schemas } from "#shopware";
-import { apiFailureSummary } from "@/features/session/apiErrors";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
+import { apiFailureSummary } from "@/platform/shopware/apiErrors";
 
 import { listCheckoutAddresses } from "./checkoutApi";
 

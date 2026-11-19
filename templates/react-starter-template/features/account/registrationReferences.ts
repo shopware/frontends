@@ -1,7 +1,7 @@
 import "server-only";
 import type { RegistrationSettings } from "@/features/account/registrationSchema";
-import { apiFailureSummary } from "@/features/session/apiErrors";
 import type { Locale } from "@/i18n/config";
+import { apiFailureSummary } from "@/platform/shopware/apiErrors";
 import { loadShopSettings } from "@/platform/shopware/loadShopSettings";
 import { resolveLanguageId } from "@/platform/shopware/reads/languages";
 import { readSalutations } from "@/platform/shopware/reads/salutations";

@@ -42,7 +42,8 @@ describe("NotFoundContent", () => {
     const fallback = await renderToHtml(withI18n(<LocaleNotFound />, "de-DE"));
 
     expect(shop).not.toContain("<main");
-    expect(shop).toContain('data-testid="not-found"');
+    expect(shop).toContain('data-testid="error-page"');
+    expect(shop).toContain('data-testid="error-page-home-button"');
     expect(fallback).toContain('<main class="flex min-h-dvh flex-col">');
     expect(fallback).toContain("Zurück zur Startseite");
   });

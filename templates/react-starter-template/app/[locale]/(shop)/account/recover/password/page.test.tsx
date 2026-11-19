@@ -38,7 +38,7 @@ describe("ResetPasswordPage", () => {
     expect(html).toContain('<output class="sr-only">Loading...</output>');
     expect(html).not.toContain("<form");
     expect(html).not.toContain('type="password"');
-    expect(html).not.toContain("account-reset-password-link-error");
+    expect(html).not.toContain("reset-password-expired-message");
   });
 
   it("speaks Polish", async () => {

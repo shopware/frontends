@@ -3,9 +3,9 @@ import type { ApiError } from "@shopware/api-client";
 
 import type { ApiClient, Schemas } from "#shopware";
 import type { Translate } from "@/i18n/translate";
+import { resolveApiErrorMessages } from "@/platform/shopware/apiErrors";
+import type { ApiErrorContext } from "@/platform/shopware/apiErrors";
 
-import { resolveApiErrorMessages } from "./apiErrors";
-import type { ApiErrorContext } from "./apiErrors";
 import type { SessionActions } from "./components/SessionActionsContext";
 import { READ_TIMEOUT_MS } from "./readTimeout";
 import {

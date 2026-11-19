@@ -4,7 +4,9 @@
     "header": {
       "search": "Szukaj",
       "closeSearch": "Zamknij",
-      "signedInAs": "Zalogowano jako {name}"
+      "signedInAs": "Zalogowano jako {name}",
+      "cartWithCount": "Koszyk, {count} produkt | Koszyk, {count} produkty | Koszyk, {count} produktów",
+      "wishlistWithCount": "Lista życzeń, {count} produkt | Lista życzeń, {count} produkty | Lista życzeń, {count} produktów"
     },
     "sideMenu": {
       "open": "Otwórz menu",

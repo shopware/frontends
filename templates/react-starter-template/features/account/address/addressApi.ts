@@ -1,13 +1,10 @@
-import { ApiClientError } from "@shopware/api-client";
-
 import type { ApiClient, Schemas, operations } from "#shopware";
+import { INVALID_UUID, hasApiErrorCode } from "@/platform/shopware/apiErrors";
 
 export type AddressClient = Pick<ApiClient, "invoke">;
 
 export type AddressBody =
   operations["createCustomerAddress post /account/address"]["body"];
-
-const INVALID_UUID = "FRAMEWORK__INVALID_UUID";
 
 export const addressAssociations: NonNullable<
   Schemas["Criteria"]["associations"]
@@ -39,9 +36,7 @@ export async function listCustomerAddresses(
 }
 
 export function isInvalidUuidError(error: unknown): boolean {
-  if (!(error instanceof ApiClientError)) return false;
-  const errors: { code?: string }[] | undefined = error.details?.errors;
-  return Array.isArray(errors) && errors.some((e) => e?.code === INVALID_UUID);
+  return hasApiErrorCode(error, INVALID_UUID);
 }
 
 export async function readCustomerAddress(

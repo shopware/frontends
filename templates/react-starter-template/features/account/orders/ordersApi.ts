@@ -1,13 +1,14 @@
-import { ApiClientError } from "@shopware/api-client";
-import type { ApiError } from "@shopware/api-client";
-
 import type { ApiClient, Schemas, operations } from "#shopware";
 import type { AddProductInput } from "@/features/cart/cartStore";
 import { orderAssociations } from "@/features/checkout/checkoutApi";
 import { paymentReturnUrls } from "@/features/checkout/paymentRedirect";
-import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { ORDER_TIMEOUT_MS } from "@/features/session/readTimeout";
 import type { Translate } from "@/i18n/translate";
+import {
+  INVALID_UUID,
+  apiErrorCodes,
+  resolveApiErrorMessages,
+} from "@/platform/shopware/apiErrors";
 
 export type OrdersClient = Pick<ApiClient, "invoke">;
 
@@ -26,7 +27,6 @@ const ALLOWED_TRANSACTION_STATES = new Set([
 
 const ORDER_ID_PATTERN = /^[0-9a-f]{32}$/i;
 
-const INVALID_UUID = "FRAMEWORK__INVALID_UUID";
 const DEEP_LINK_NOT_FOUND = "CHECKOUT__CART_ORDER_DEEP_LINK_NOT_FOUND";
 const GUEST_NOT_AUTHENTICATED = "CHECKOUT__GUEST_NOT_AUTHENTICATED";
 const GUEST_WRONG_CREDENTIALS = "CHECKOUT__GUEST_WRONG_CREDENTIALS";
@@ -110,14 +110,15 @@ export async function readOrderDetails(
 ): Promise<OrderDetails | null> {
   if (!isOrderId(orderId)) return null;
   try {
-    const { data } = await client.invoke("readOrder post /order", {
+    const params: ReadOrderParams = {
       body: {
         ids: [orderId],
         associations: orderAssociations,
         checkPromotion: true,
       },
       query: { checkPromotion: true },
-    } as ReadOrderParams);
+    };
+    const { data } = await client.invoke("readOrder post /order", params);
     return toOrderDetails(data);
   } catch (error) {
     if (errorCodes(error).has(INVALID_UUID)) return null;
@@ -126,10 +127,7 @@ export async function readOrderDetails(
 }
 
 function errorCodes(error: unknown): Set<string> {
-  if (!(error instanceof ApiClientError)) return new Set();
-  const errors: ApiError[] | undefined = error.details?.errors;
-  if (!Array.isArray(errors)) return new Set();
-  return new Set(errors.flatMap(({ code }) => (code ? [code] : [])));
+  return new Set(apiErrorCodes(error));
 }
 
 export function classifyDeepLinkError(
@@ -155,7 +153,7 @@ export async function readDeepLinkOrder(
   t: Translate,
 ): Promise<DeepLinkOrderResult> {
   try {
-    const { data } = await client.invoke("readOrder post /order", {
+    const params: ReadOrderParams = {
       body: {
         ...(credentials
           ? { email: credentials.email, zipcode: credentials.zipcode }
@@ -168,7 +166,8 @@ export async function readDeepLinkOrder(
         checkPromotion: true,
       },
       query: { checkPromotion: true },
-    } as ReadOrderParams);
+    };
+    const { data } = await client.invoke("readOrder post /order", params);
     const details = toOrderDetails(data);
     return details ? { status: "found", details } : { status: "notFound" };
   } catch (error) {
@@ -184,24 +183,6 @@ export async function setOrderPaymentMethod(
     body: { orderId, paymentMethodId },
     fetchOptions: { timeout: ORDER_TIMEOUT_MS },
   });
-}
-
-export async function handleOrderPayment(
-  client: OrdersClient,
-  {
-    orderId,
-    finishUrl,
-    errorUrl,
-  }: { orderId: string; finishUrl: string; errorUrl: string },
-): Promise<{ redirectUrl: string | null }> {
-  const { data } = await client.invoke(
-    "handlePaymentMethod post /handle-payment",
-    {
-      body: { orderId, finishUrl, errorUrl },
-      fetchOptions: { timeout: ORDER_TIMEOUT_MS },
-    },
-  );
-  return { redirectUrl: data?.redirectUrl ?? null };
 }
 
 export async function cancelOrder(

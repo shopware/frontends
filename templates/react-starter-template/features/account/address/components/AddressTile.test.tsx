@@ -114,7 +114,8 @@ describe("AddressTile", () => {
     expect(
       tags(html, "a", 'aria-disabled="true"', 'tabindex="-1"'),
     ).toHaveLength(1);
-    expect(tags(html, "button", 'disabled=""')).toHaveLength(3);
+    expect(tags(html, "button", 'aria-disabled="true"')).toHaveLength(3);
+    expect(tags(html, "button", 'disabled=""')).toHaveLength(0);
     expect(buttonWithText(html, "Delete address")).toContain(
       'aria-busy="true"',
     );
@@ -127,7 +128,8 @@ describe("AddressTile", () => {
     expect(buttonWithText(html, "Use as default shipping address")).toContain(
       'aria-busy="true"',
     );
-    expect(tags(html, "button", 'disabled=""')).toHaveLength(3);
+    expect(tags(html, "button", 'aria-disabled="true"')).toHaveLength(3);
+    expect(tags(html, "button", 'disabled=""')).toHaveLength(0);
   });
 });
 

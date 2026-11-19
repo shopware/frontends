@@ -2,6 +2,10 @@ import { StrictMode, Suspense } from "react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import {
+  ORDER_TIMEOUT_MS,
+  READ_TIMEOUT_MS,
+} from "@/features/session/readTimeout";
 import { unavailableSession } from "@/features/session/sessionFromContext";
 import type { StorefrontSession } from "@/features/session/types";
 import { withI18n } from "@/test/i18n";
@@ -96,7 +100,8 @@ describe("SuccessPageContent", () => {
 
     expect(shopware.calls(READ_ORDER)).toHaveLength(1);
     expect(shopware.calls(READ_ORDER)[0]?.params).toMatchObject({
-      body: { ids: ["order-1"], checkPromotion: true },
+      body: { ids: ["order-1"] },
+      fetchOptions: { timeout: READ_TIMEOUT_MS },
     });
     const page = query<HTMLElement>(container, SUCCESS_PAGE);
     expect(query(page, "h1").textContent).toBe("Thank you for your order");
@@ -135,6 +140,7 @@ describe("SuccessPageContent", () => {
         finishUrl: `${successPage}/paid`,
         errorUrl: `${successPage}/unpaid`,
       },
+      fetchOptions: { timeout: ORDER_TIMEOUT_MS },
     });
   });
 
@@ -159,7 +165,7 @@ describe("SuccessPageContent", () => {
     expect(replace).not.toHaveBeenCalled();
   });
 
-  it("shows the payment alert and redirects to the gateway after five seconds", async () => {
+  it("shows the payment alert and leaves the redirect to the shopper", async () => {
     vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
     const { container } = await setup({
       answers: {
@@ -170,19 +176,14 @@ describe("SuccessPageContent", () => {
     const alert = query<HTMLElement>(container, '[role="alert"]');
     expect(alert.textContent).toContain("Finish payment process.");
     expect(alert.textContent).toContain(
-      "You will be redirected to the payment gateway in 5 seconds.",
+      "Continue to the payment provider to pay for your order.",
     );
 
-    await interact(() => vi.advanceTimersByTime(4999));
+    await interact(() => vi.advanceTimersByTime(60_000));
     expect(redirectToPayment).not.toHaveBeenCalled();
-
-    await interact(() => vi.advanceTimersByTime(1));
-    expect(redirectToPayment).toHaveBeenCalledTimes(1);
-    expect(redirectToPayment).toHaveBeenCalledWith("https://psp.test/pay/1");
   });
 
-  it("goes to the payment right away from the alert button", async () => {
-    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+  it("goes to the payment from the alert button", async () => {
     const { container } = await setup({
       answers: {
         [HANDLE_PAYMENT]: () => ({ redirectUrl: "https://psp.test/pay/1" }),
@@ -194,43 +195,30 @@ describe("SuccessPageContent", () => {
     );
     await interact(() => button?.click());
 
+    expect(redirectToPayment).toHaveBeenCalledTimes(1);
     expect(redirectToPayment).toHaveBeenCalledWith("https://psp.test/pay/1");
   });
 
-  it("does not redirect for a redirect URL that is not http or https", async () => {
-    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+  it("shows no payment alert for a redirect URL that is not http or https", async () => {
     const { container } = await setup({
       answers: {
         [HANDLE_PAYMENT]: () => ({ redirectUrl: "javascript:alert(1)" }),
       },
     });
 
-    await interact(() => vi.advanceTimersByTime(10000));
-
     expect(container.querySelector('[role="alert"]')).toBeNull();
     expect(redirectToPayment).not.toHaveBeenCalled();
   });
 
-  it("cancels the pending redirect when the page unmounts", async () => {
-    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
-    await setup({
-      answers: {
-        [HANDLE_PAYMENT]: () => ({ redirectUrl: "https://psp.test/pay/1" }),
-      },
-    });
-
-    await mounted?.unmount();
-    mounted = undefined;
-    vi.advanceTimersByTime(10000);
-
-    expect(redirectToPayment).not.toHaveBeenCalled();
-  });
-
-  it("keeps the confirmation when starting the payment fails", async () => {
-    const { container } = await setup({
+  it("keeps the confirmation and offers a retry when starting the payment fails", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    let attempts = 0;
+    const { container, shopware } = await setup({
       answers: {
         [HANDLE_PAYMENT]: () => {
-          throw new Error("payment failed");
+          attempts += 1;
+          if (attempts === 1) throw new Error("payment failed");
+          return { redirectUrl: "https://psp.test/pay/1" };
         },
       },
     });
@@ -238,7 +226,20 @@ describe("SuccessPageContent", () => {
     expect(query(container, '[data-testid="order-total"]').textContent).toBe(
       "€64.97",
     );
-    expect(container.querySelector('[role="alert"]')).toBeNull();
+    const alert = query<HTMLElement>(container, '[role="alert"]');
+    expect(alert.textContent).toContain(
+      "Your order was placed, but the payment could not be started.",
+    );
+
+    const retry = queryAll<HTMLButtonElement>(alert, "button").find(
+      (candidate) => candidate.textContent === "Try again",
+    );
+    await interact(() => retry?.click());
+
+    expect(shopware.calls(HANDLE_PAYMENT)).toHaveLength(2);
+    expect(query(container, '[role="alert"]').textContent).toContain(
+      "Go to payment",
+    );
   });
 
   it("sends an anonymous visitor home without reading the order", async () => {
@@ -336,6 +337,7 @@ describe("SuccessPageContent in Polish", () => {
         finishUrl: `${successPage}/paid`,
         errorUrl: `${successPage}/unpaid`,
       },
+      fetchOptions: { timeout: ORDER_TIMEOUT_MS },
     });
   });
 

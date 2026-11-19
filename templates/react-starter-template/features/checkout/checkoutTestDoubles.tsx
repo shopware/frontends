@@ -73,6 +73,7 @@ export function cartResult(
     addPromotionCode: vi.fn(async () => ({ ok: true, applied: true })),
     removeItem: vi.fn(async () => ({ ok: true })),
     changeQuantity: vi.fn(async () => ({ ok: true })),
+    runExclusive: vi.fn((task) => task()),
     ...overrides,
   };
 }

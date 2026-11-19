@@ -1,5 +1,6 @@
 "use client";
 
+import type { AddressFieldSettings } from "@/features/account/address/addressSchema";
 import { useTranslations } from "@/i18n/I18nProvider";
 import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
 
@@ -19,6 +20,7 @@ export type DifferentShippingAddressProps = {
   errors: CheckoutAddressErrors;
   countries: CountryOption[];
   countriesUnavailable?: boolean;
+  fieldSettings?: AddressFieldSettings;
   onFieldChange: (field: CheckoutAddressField, value: string) => void;
   onFieldBlur: (field: CheckoutAddressField) => void;
   onCountryChange: (countryId: string) => void;
@@ -32,6 +34,7 @@ export function DifferentShippingAddress({
   errors,
   countries,
   countriesUnavailable = false,
+  fieldSettings,
   onFieldChange,
   onFieldBlur,
   onCountryChange,
@@ -67,6 +70,7 @@ export function DifferentShippingAddress({
             errors={errors}
             countries={countries}
             countriesUnavailable={countriesUnavailable}
+            fieldSettings={fieldSettings}
             onFieldChange={onFieldChange}
             onFieldBlur={onFieldBlur}
             onCountryChange={onCountryChange}

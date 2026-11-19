@@ -14,10 +14,10 @@ import type { Schemas } from "#shopware";
 import { BaseButton, useCmsActions } from "@/cms/client";
 import { LocaleLink } from "@/components/LocaleLink";
 import { useCustomer } from "@/features/account/customer/useCustomer";
-import { resolveApiErrorMessages } from "@/features/session/apiErrors";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useShopwareClient } from "@/features/storefront/components/ShopwareClientContext";
 import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
+import { resolveApiErrorMessages } from "@/platform/shopware/apiErrors";
 
 import {
   readCustomerAddress,

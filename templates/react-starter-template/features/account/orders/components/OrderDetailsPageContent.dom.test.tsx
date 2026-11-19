@@ -144,6 +144,14 @@ async function setup({
   return { container: mounted.container, shopware, notify, cart };
 }
 
+function restorePage() {
+  return interact(() => {
+    window.dispatchEvent(
+      Object.assign(new Event("pageshow"), { persisted: true }),
+    );
+  });
+}
+
 async function openPaymentModal(container: HTMLElement) {
   await interact(() =>
     query<HTMLButtonElement>(
@@ -266,6 +274,85 @@ describe("OrderDetailsPageContent", () => {
     expect(shopware.calls(READ_ORDER)).toHaveLength(2);
     expect(query(container, '[data-testid="order-total"]').textContent).toBe(
       "€64.97",
+    );
+  });
+
+  it("keeps the order without a skeleton while a reload runs and after it fails", async () => {
+    const reload = deferred<unknown>();
+    const reads = [orderRouteResponse([accountOrder()]), reload.promise];
+    const { container, shopware } = await setup({
+      answers: { [READ_ORDER]: () => reads.shift() },
+    });
+
+    await restorePage();
+
+    expect(shopware.calls(READ_ORDER)).toHaveLength(2);
+    expect(container.querySelector('[data-testid="loading"]')).toBeNull();
+    expect(query(container, '[data-testid="order-total"]').textContent).toBe(
+      "€64.97",
+    );
+
+    await interact(() => reload.reject(new Error("offline")));
+
+    expect(container.querySelector('[role="alert"]')).toBeNull();
+    expect(query(container, '[data-testid="order-total"]').textContent).toBe(
+      "€64.97",
+    );
+  });
+
+  it("keeps the order when a reload no longer finds it", async () => {
+    const reads = [
+      orderRouteResponse([accountOrder()]),
+      orderRouteResponse([]),
+    ];
+    const { container, shopware } = await setup({
+      answers: { [READ_ORDER]: () => reads.shift() },
+    });
+
+    await restorePage();
+
+    expect(shopware.calls(READ_ORDER)).toHaveLength(2);
+    expect(container.querySelector('[role="alert"]')).toBeNull();
+    expect(query(container, '[data-testid="order-total"]').textContent).toBe(
+      "€64.97",
+    );
+  });
+
+  it("keeps the newest reload when older ones answer or fail later", async () => {
+    const oldest = deferred<unknown>();
+    const older = deferred<unknown>();
+    const newest = deferred<unknown>();
+    const reads = [
+      orderRouteResponse([accountOrder()]),
+      oldest.promise,
+      older.promise,
+      newest.promise,
+    ];
+    const { container, shopware } = await setup({
+      answers: { [READ_ORDER]: () => reads.shift() },
+    });
+
+    await restorePage();
+    await restorePage();
+    await restorePage();
+    expect(shopware.calls(READ_ORDER)).toHaveLength(4);
+
+    await interact(() =>
+      newest.resolve(
+        orderRouteResponse([accountOrder({ orderNumber: "10044" })]),
+      ),
+    );
+    await interact(() =>
+      older.resolve(
+        orderRouteResponse([accountOrder({ orderNumber: "10043" })]),
+      ),
+    );
+    await interact(() => oldest.reject(new Error("offline")));
+
+    expect(query(container, "h1").textContent).toBe("Order #10044");
+    expect(console.error).not.toHaveBeenCalledWith(
+      "[Account] reading the order failed",
+      expect.anything(),
     );
   });
 

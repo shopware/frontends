@@ -99,10 +99,8 @@ describe("HeaderBar", () => {
 
     const cart = buttonWithTestId(html, "header-mini-cart-button");
     expect(cart).toContain('aria-label="Cart"');
-    expect(cart).toContain('aria-expanded="false"');
-    const controls = cart.match(/aria-controls="([^"]+)"/)?.[1];
-    expect(controls).toBeTruthy();
-    expect(html).not.toContain(`id="${controls}"`);
+    expect(cart).not.toContain("aria-expanded");
+    expect(cart).not.toContain("aria-controls");
     expect(html).not.toContain("mini-cart-container");
 
     expect(html).toContain('aria-label="Search"');
@@ -244,6 +242,13 @@ describe("HeaderBar", () => {
       /data-testid="header-wishlist-counter"[^>]*>3<\/span>/,
     );
     expect(html).toMatch(/data-testid="header-cart-counter"[^>]*>2<\/span>/);
+    expect(linkWithTestId(html, "header-wishlist-button")).toContain(
+      'aria-label="Wishlist, 3 items"',
+    );
+    const cart = buttonWithTestId(html, "header-mini-cart-button");
+    expect(cart).toContain('aria-label="Cart, 2 items"');
+    expect(cart).toContain('aria-expanded="false"');
+    expect(cart).not.toContain("aria-controls");
   });
 
   it("renders a closed account disclosure for a logged-in customer", async () => {

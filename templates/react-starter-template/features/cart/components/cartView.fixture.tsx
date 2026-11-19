@@ -96,6 +96,7 @@ export function cartView(overrides: Partial<CartView> = {}): CartView {
     addPromotionCode: async () => ({ ok: true, applied: true }),
     removeItem: async () => ({ ok: true }),
     changeQuantity: async () => ({ ok: true }),
+    runExclusive: (task) => task(),
     ...overrides,
   };
 }

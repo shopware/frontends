@@ -28,10 +28,10 @@ export function AddressActionLink({
         "inline-flex h-6 w-fit items-center gap-1 border-b border-brand-primary bg-transparent leading-0 text-brand-primary transition-all duration-200 hover:border-transparent focus-visible:ring-2 focus-visible:ring-outline-outline-focus focus-visible:outline-hidden motion-reduce:transition-none",
         disabled && INACTIVE_CLASS,
       )}
-      disabled={disabled}
+      aria-disabled={disabled || undefined}
       aria-busy={busy || undefined}
       aria-describedby={describedBy}
-      onClick={onClick}
+      onClick={disabled ? undefined : onClick}
     >
       {children}
     </button>

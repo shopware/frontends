@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
+import { createPortal } from "react-dom";
 
 import { CmsActionsProvider } from "@/cms/client";
 import type {
@@ -11,6 +12,7 @@ import type {
 } from "@/cms/client";
 import { CloseIcon } from "@/components/icons";
 import { LocaleLink } from "@/components/LocaleLink";
+import { ModalHostContext } from "@/components/Modal";
 import { NotifyProvider } from "@/components/NotifyContext";
 import type { Notify } from "@/components/NotifyContext";
 import {
@@ -26,7 +28,6 @@ import {
   reviewViolations,
   saveProductReview,
 } from "@/features/reviews/productReviewsApi";
-import { hasApiErrorCode } from "@/features/session/apiErrors";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
 import { ShopwareSessionProvider } from "@/features/session/components/ShopwareSessionProvider";
@@ -38,6 +39,7 @@ import {
 import { useWishlist } from "@/features/wishlist/useWishlist";
 import { CUSTOMER_NOT_LOGGED_IN } from "@/features/wishlist/wishlistApi";
 import { useLocale, useTranslations } from "@/i18n/I18nProvider";
+import { hasApiErrorCode } from "@/platform/shopware/apiErrors";
 
 import { cmsCustomerState } from "../cmsCustomerState";
 import { useShopwareClient } from "./ShopwareClientContext";
@@ -220,6 +222,7 @@ function ToastMessage({
 export function StorefrontProviders({ children }: { children: ReactNode }) {
   const locale = useLocale();
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const [modalHost, setModalHost] = useState<HTMLDialogElement | null>(null);
   const nextId = useRef(0);
   const timers = useRef(new Map<number, ReturnType<typeof setTimeout>>());
 
@@ -254,32 +257,36 @@ export function StorefrontProviders({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  const toastRegion = (
+    <div
+      aria-live="polite"
+      className="pointer-events-none fixed right-4 bottom-4 z-60 flex max-w-sm flex-col gap-2"
+    >
+      {toasts.map((toast) => (
+        <ToastMessage key={toast.id} toast={toast} onDismiss={dismiss} />
+      ))}
+    </div>
+  );
+
   return (
     <NotifyProvider notify={notify}>
-      <ShopwareSessionProvider locale={locale}>
-        <CartProvider>
-          <WishlistProvider>
-            <LoginModalProvider>
-              <StorefrontCmsActions notify={notify}>
-                {children}
-                <LoginModal />
-                <div
-                  aria-live="polite"
-                  className="pointer-events-none fixed right-4 bottom-4 z-60 flex max-w-sm flex-col gap-2"
-                >
-                  {toasts.map((toast) => (
-                    <ToastMessage
-                      key={toast.id}
-                      toast={toast}
-                      onDismiss={dismiss}
-                    />
-                  ))}
-                </div>
-              </StorefrontCmsActions>
-            </LoginModalProvider>
-          </WishlistProvider>
-        </CartProvider>
-      </ShopwareSessionProvider>
+      <ModalHostContext value={setModalHost}>
+        <ShopwareSessionProvider locale={locale}>
+          <CartProvider>
+            <WishlistProvider>
+              <LoginModalProvider>
+                <StorefrontCmsActions notify={notify}>
+                  {children}
+                  <LoginModal />
+                  {modalHost
+                    ? createPortal(toastRegion, modalHost)
+                    : toastRegion}
+                </StorefrontCmsActions>
+              </LoginModalProvider>
+            </WishlistProvider>
+          </CartProvider>
+        </ShopwareSessionProvider>
+      </ModalHostContext>
     </NotifyProvider>
   );
 }

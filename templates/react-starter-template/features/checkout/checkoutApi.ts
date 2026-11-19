@@ -26,6 +26,9 @@ export type CheckoutAddressFields = {
   city: string;
   countryId: string;
   countryStateId?: string;
+  additionalAddressLine1?: string;
+  additionalAddressLine2?: string;
+  phoneNumber?: string;
 };
 
 export type CheckoutCustomer = Pick<
@@ -105,14 +108,13 @@ export function sortByPosition<T extends { position?: number }>(
 export async function getShippingMethods(
   client: CheckoutClient,
 ): Promise<Schemas["ShippingMethod"][]> {
+  const query: ShippingMethodQuery = {
+    onlyAvailable: true,
+    _criteria: encodeForQuery(shippingMethodCriteria),
+  };
   const { data } = await client.invoke(
     "readShippingMethodGet get /shipping-method",
-    {
-      query: {
-        onlyAvailable: true,
-        _criteria: encodeForQuery(shippingMethodCriteria),
-      } as ShippingMethodQuery,
-    },
+    { query },
   );
   return sortByPosition(data.elements ?? []);
 }
@@ -120,11 +122,10 @@ export async function getShippingMethods(
 export async function getPaymentMethods(
   client: CheckoutClient,
 ): Promise<Schemas["PaymentMethod"][]> {
+  const query: PaymentMethodQuery = { onlyAvailable: true };
   const { data } = await client.invoke(
     "readPaymentMethodGet get /payment-method",
-    {
-      query: { onlyAvailable: true } as PaymentMethodQuery,
-    },
+    { query },
   );
   return data.elements ?? [];
 }
@@ -135,6 +136,7 @@ export async function setShippingMethod(
 ): Promise<void> {
   await client.invoke("updateContext patch /context", {
     body: { shippingMethodId },
+    fetchOptions: { timeout: READ_TIMEOUT_MS },
   });
 }
 
@@ -144,6 +146,7 @@ export async function setPaymentMethod(
 ): Promise<void> {
   await client.invoke("updateContext patch /context", {
     body: { paymentMethodId },
+    fetchOptions: { timeout: READ_TIMEOUT_MS },
   });
 }
 
@@ -157,6 +160,7 @@ export async function setContextAddress(
       kind === "shipping"
         ? { shippingAddressId: addressId }
         : { billingAddressId: addressId },
+    fetchOptions: { timeout: READ_TIMEOUT_MS },
   });
 }
 
@@ -287,11 +291,8 @@ export async function readOrder(
   orderId: string,
 ): Promise<Schemas["Order"] | null> {
   const { data } = await client.invoke("readOrder post /order", {
-    body: {
-      ids: [orderId],
-      associations: orderAssociations,
-      checkPromotion: true,
-    },
+    body: { ids: [orderId], associations: orderAssociations },
+    fetchOptions: { timeout: READ_TIMEOUT_MS },
   });
   return data.orders?.elements?.[0] ?? null;
 }
@@ -308,6 +309,7 @@ export async function handlePayment(
     "handlePaymentMethod post /handle-payment",
     {
       body: { orderId, finishUrl, errorUrl },
+      fetchOptions: { timeout: ORDER_TIMEOUT_MS },
     },
   );
   return { redirectUrl: data?.redirectUrl ?? null };

@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
 
+import { hiddenAddressFields } from "@/features/account/address/addressSchema";
 import { testTranslator } from "@/test/i18n";
 
 import {
   emptyCheckoutAddressValues,
   emptyCheckoutValues,
-  toBillingAddressFields,
   toCheckoutAddressFields,
   toCheckoutRegistration,
   validateCheckout,
@@ -14,10 +14,12 @@ import {
 import type { CheckoutAddressValues, CheckoutValues } from "./checkoutSchema";
 
 const REQUIRED = "Value is required";
+const MIN_2 = "This minimum length should be at least 2";
 const MIN_3 = "This minimum length should be at least 3";
 const MIN_8 = "This minimum length should be at least 8";
 
 const valid: CheckoutValues = {
+  ...emptyCheckoutValues,
   email: "jane@example.com",
   password: "",
   firstName: "Jane",
@@ -36,6 +38,7 @@ const guest = {
 };
 
 const shipping: CheckoutAddressValues = {
+  ...emptyCheckoutAddressValues,
   firstName: "John",
   lastName: "Smith",
   street: "Harbour Road 7",
@@ -76,14 +79,41 @@ describe("validateCheckout", () => {
     });
   });
 
-  it("needs at least three characters for the names and the street", () => {
+  it("needs two characters for the names and three for the street, like the account address form", () => {
     expect(
       validateCheckout(
-        { ...valid, firstName: "Jo", lastName: "Do", street: "St" },
+        { ...valid, firstName: "J", lastName: "D", street: "St" },
         guest,
         t,
       ),
-    ).toEqual({ firstName: MIN_3, lastName: MIN_3, street: MIN_3 });
+    ).toEqual({ firstName: MIN_2, lastName: MIN_2, street: MIN_3 });
+    expect(
+      validateCheckout({ ...valid, firstName: "Li", lastName: "Wu" }, guest, t),
+    ).toEqual({});
+  });
+
+  it("requires the phone number and the address lines only when the shop asks for them", () => {
+    const addressFields = {
+      showAdditionalAddressField1: true,
+      additionalAddressField1Required: true,
+      showAdditionalAddressField2: true,
+      additionalAddressField2Required: false,
+      showPhoneNumberField: true,
+      phoneNumberFieldRequired: true,
+    };
+
+    expect(validateCheckout(valid, guest, t)).toEqual({});
+    expect(validateCheckout(valid, { ...guest, addressFields }, t)).toEqual({
+      additionalAddressLine1: REQUIRED,
+      phoneNumber: REQUIRED,
+    });
+    expect(
+      validateCheckout(
+        { ...valid, additionalAddressLine1: "Floor 2", phoneNumber: "123" },
+        { ...guest, addressFields },
+        t,
+      ),
+    ).toEqual({});
   });
 
   it("requires a password of eight characters only when an account is created", () => {
@@ -134,13 +164,13 @@ describe("validateCheckout in other locales", () => {
   it("returns Polish messages with the Polish translator", () => {
     expect(
       validateCheckout(
-        { ...valid, email: "", firstName: "Jo" },
+        { ...valid, email: "", firstName: "J" },
         guest,
         testTranslator("pl-PL"),
       ),
     ).toEqual({
       email: "Wartość jest wymagana",
-      firstName: "Minimalna długość 3",
+      firstName: "Minimalna długość 2",
     });
     expect(
       validateCheckout(
@@ -190,11 +220,11 @@ describe("validateCheckoutAddress", () => {
     });
     expect(
       validateCheckoutAddress(
-        { ...shipping, firstName: "Jo", street: "St", countryStateId: "" },
+        { ...shipping, firstName: "J", street: "St", countryStateId: "" },
         { countryHasStates: false },
         t,
       ),
-    ).toEqual({ firstName: MIN_3, street: MIN_3 });
+    ).toEqual({ firstName: MIN_2, street: MIN_3 });
   });
 
   it("returns Polish messages with the Polish translator", () => {
@@ -210,7 +240,7 @@ describe("validateCheckoutAddress", () => {
 
 describe("toCheckoutAddressFields", () => {
   it("maps an address and keeps its state", () => {
-    expect(toCheckoutAddressFields(shipping)).toEqual({
+    expect(toCheckoutAddressFields(shipping, hiddenAddressFields)).toEqual({
       firstName: "John",
       lastName: "Smith",
       street: "Harbour Road 7",
@@ -220,11 +250,9 @@ describe("toCheckoutAddressFields", () => {
       countryStateId: "state-hh",
     });
   });
-});
 
-describe("toBillingAddressFields", () => {
   it("maps the address fields and drops an empty state", () => {
-    expect(toBillingAddressFields(valid)).toEqual({
+    expect(toCheckoutAddressFields(valid, hiddenAddressFields)).toEqual({
       firstName: "Jane",
       lastName: "Doe",
       street: "Main Street 1",
@@ -234,9 +262,33 @@ describe("toBillingAddressFields", () => {
       countryStateId: undefined,
     });
     expect(
-      toBillingAddressFields({ ...valid, countryStateId: "state-by" })
-        .countryStateId,
+      toCheckoutAddressFields(
+        { ...valid, countryStateId: "state-by" },
+        hiddenAddressFields,
+      ).countryStateId,
     ).toBe("state-by");
+  });
+
+  it("sends a shown optional field trimmed, empty so an update clears it, and leaves a hidden one out", () => {
+    const fields = toCheckoutAddressFields(
+      {
+        ...valid,
+        additionalAddressLine1: " Floor 2 ",
+        additionalAddressLine2: "  ",
+        phoneNumber: "+49 30 1234",
+      },
+      {
+        ...hiddenAddressFields,
+        showAdditionalAddressField1: true,
+        showAdditionalAddressField2: true,
+      },
+    );
+
+    expect(fields).toMatchObject({
+      additionalAddressLine1: "Floor 2",
+      additionalAddressLine2: "",
+    });
+    expect(fields).not.toHaveProperty("phoneNumber");
   });
 });
 
@@ -245,7 +297,11 @@ describe("toCheckoutRegistration", () => {
     expect(
       toCheckoutRegistration(
         { ...valid, password: "ignored" },
-        { createAccount: false, acceptedDataProtection: false },
+        {
+          createAccount: false,
+          acceptedDataProtection: false,
+          addressFields: hiddenAddressFields,
+        },
       ),
     ).toEqual({
       accountType: "private",
@@ -272,7 +328,11 @@ describe("toCheckoutRegistration", () => {
   it("registers a customer account with the password", () => {
     const input = toCheckoutRegistration(
       { ...valid, password: "password123" },
-      { createAccount: true, acceptedDataProtection: false },
+      {
+        createAccount: true,
+        acceptedDataProtection: false,
+        addressFields: hiddenAddressFields,
+      },
     );
 
     expect(input.guest).toBe(false);
@@ -284,6 +344,7 @@ describe("toCheckoutRegistration", () => {
       toCheckoutRegistration(valid, {
         createAccount: false,
         acceptedDataProtection: true,
+        addressFields: hiddenAddressFields,
       }).acceptedDataProtection,
     ).toBe(true);
   });
@@ -293,6 +354,7 @@ describe("toCheckoutRegistration", () => {
       createAccount: false,
       acceptedDataProtection: false,
       shippingAddress: shipping,
+      addressFields: hiddenAddressFields,
     });
 
     expect(withShipping.shippingAddress).toEqual({
@@ -312,12 +374,14 @@ describe("toCheckoutRegistration", () => {
         createAccount: false,
         acceptedDataProtection: false,
         shippingAddress: null,
+        addressFields: hiddenAddressFields,
       }),
     ).not.toHaveProperty("shippingAddress");
     expect(
       toCheckoutRegistration(valid, {
         createAccount: false,
         acceptedDataProtection: false,
+        addressFields: hiddenAddressFields,
       }),
     ).not.toHaveProperty("shippingAddress");
   });

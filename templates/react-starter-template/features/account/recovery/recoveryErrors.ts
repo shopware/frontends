@@ -6,11 +6,11 @@ import {
   resolveFormFailure,
   violationField,
 } from "@/features/forms/formViolations";
+import type { Translate } from "@/i18n/translate";
 import {
   apiFailureSummary,
   hasApiErrorCode,
-} from "@/features/session/apiErrors";
-import type { Translate } from "@/i18n/translate";
+} from "@/platform/shopware/apiErrors";
 
 import { RECOVERY_HASH_EXPIRED, RECOVERY_HASH_NOT_FOUND } from "./recoveryApi";
 import { RESET_PASSWORD_MIN_LENGTH } from "./recoverySchema";
