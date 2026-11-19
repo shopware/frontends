@@ -2,15 +2,24 @@
 import {
   getCategoryUrl,
   getProductRoute,
-  getProductTierPrices,
   getTranslatedProperty,
 } from "@shopware/helpers";
 
 import type { Schemas } from "#shopware";
-import type { WebMcpToolHandler } from "~/composables/useWebMcpTools";
-import type { WebMcpToolName } from "~/utils/webMcpTools";
-
-const PRODUCT_ID = /^[0-9a-f]{32}$/i;
+import {
+  cartAnswer,
+  listingAnswer,
+  pathWithoutLocale,
+  productSummary,
+  readCount,
+  readPrice,
+  readProductId,
+  readText,
+  shorten,
+} from "~/utils/webmcp/answers";
+import type { WebMcpToolHandler } from "~/utils/webmcp/register";
+import { webMcpLabels } from "~/utils/webmcp/tools";
+import type { WebMcpToolName } from "~/utils/webmcp/tools";
 
 const { apiClient } = useShopwareContext();
 const { search: readProduct } = useProductSearch();
@@ -35,16 +44,6 @@ const localePath = useLocalePath();
 const router = useRouter();
 const nuxtApp = useNuxtApp();
 
-// Chrome advises at most 1.5K characters per tool answer, so lists are cut to fit.
-function shorten<T>(items: T[], room: number) {
-  let size = 0;
-  const end = items.findIndex((item) => {
-    size += JSON.stringify(item).length + 1;
-    return size > room;
-  });
-  return end === -1 ? items : items.slice(0, end);
-}
-
 const categories = computed(() => {
   const menu = navigationElements.value ?? [];
   return [
@@ -62,55 +61,12 @@ async function loadCategories() {
   return categories.value;
 }
 
-type LinePayload = { options?: { option: string }[] };
-
-function productSummary(product: Schemas["Product"]) {
-  const options = (product.options ?? []).map((option) =>
-    getTranslatedProperty(option, "name"),
-  );
-  // With volume prices, the first one is the price of a single item.
-  const [single] = getProductTierPrices(product);
-  const unitPrice = single?.unitPrice ?? product.calculatedPrice?.unitPrice;
-  // The price filters and the product card use the lowest volume or variant price.
-  const lowest = product.calculatedCheapestPrice?.unitPrice;
-  return {
-    productId: product.id,
-    name: getTranslatedProperty(product, "name"),
-    ...(options.length ? { options } : {}),
-    price: unitPrice,
-    ...(lowest !== undefined && unitPrice !== undefined && lowest < unitPrice
-      ? { priceFrom: lowest }
-      : {}),
-    ...(product.available ? {} : { available: false }),
-  };
-}
-
-function cartSummary() {
-  const lines = cartItems.value.map((item) => {
-    const payload = item.payload as LinePayload | undefined;
-    const options = payload?.options?.map(({ option }) => option) ?? [];
-    return {
-      ...(item.type === "product"
-        ? { productId: item.referencedId }
-        : { type: item.type }),
-      name: item.label,
-      ...(options.length ? { options } : {}),
-      quantity: item.quantity,
-      unitPrice: item.price?.unitPrice,
-      lineTotal: item.price?.totalPrice,
-    };
-  });
-  const items = shorten(lines, 1000);
-  return {
-    items,
-    ...(items.length < lines.length
-      ? { moreItems: lines.length - items.length }
-      : {}),
+const currentCart = () =>
+  cartAnswer(cartItems.value, {
     subtotal: subtotal.value,
     total: totalPrice.value,
     currency: currency.value?.isoCode,
-  };
-}
+  });
 
 const cartLine = (id: string) =>
   cartItems.value.find(
@@ -123,48 +79,16 @@ async function loadCart(stop: AbortSignal) {
   stop.throwIfAborted();
 }
 
-function text(value: unknown, field: string) {
-  if (typeof value === "string" && value.trim()) return value.trim();
-  throw new TypeError(`${field} must be a non-empty string.`);
-}
-
-// Agents often send numbers as text.
-const toNumber = (value: unknown) =>
-  typeof value === "string" && value.trim() ? Number(value) : value;
-
-function count(value: unknown, field: string, min: number) {
-  const parsed = toNumber(value);
-  if (Number.isInteger(parsed) && (parsed as number) >= min) {
-    return parsed as number;
-  }
-  throw new TypeError(`${field} must be a whole number of at least ${min}.`);
-}
-
-function price(value: unknown, field: string) {
-  if (value === undefined || value === null) return undefined;
-  const parsed = toNumber(value);
-  if (typeof parsed === "number" && Number.isFinite(parsed) && parsed >= 0) {
-    return parsed;
-  }
-  throw new TypeError(`${field} must be a number of 0 or more.`);
-}
-
-function productId(value: unknown) {
-  if (typeof value === "string" && PRODUCT_ID.test(value)) return value;
-  throw new TypeError(
-    "productId must be a productId from search_products or browse_category.",
-  );
-}
-
 // Cart errors pile up in shared state, so drop old ones before each write.
-async function changeCart(write: () => Promise<unknown>) {
+// A stopped call shows nothing more to the shopper.
+async function changeCart(write: () => Promise<unknown>, stop: AbortSignal) {
   getErrorsCodes();
   await write();
   const warnings = getErrorsCodes().map((error) => {
     const key = `errors.${error.messageKey}`;
     return te(key) ? t(key, { ...error }) : error.message;
   });
-  for (const message of warnings) pushWarning(message);
+  if (!stop.aborted) for (const message of warnings) pushWarning(message);
   return shorten(warnings, 300);
 }
 
@@ -181,8 +105,10 @@ function nextPage() {
   });
 }
 
-// Opens the page with the same filters and order, so the shopper sees the same
-// list. A new page must render before the next call changes its query.
+// The tool reads the list itself, so its answer does not depend on when the
+// page loads. The page then reads it again: two requests per call, on purpose.
+// It opens the page with the same filters and order, so the shopper sees the
+// same list. A new page must render before the next call changes its query.
 async function showListing(
   path: string,
   query: Record<string, string | number | undefined>,
@@ -201,26 +127,13 @@ async function showListing(
   await navigateTo(to);
   const shown = router.currentRoute.value.fullPath === target.fullPath;
   if (shown) await rendered;
-  const products = shorten(listing.elements.map(productSummary), 1300);
-  const total = listing.total ?? products.length;
-  let hint: string | undefined;
-  if (!shown) {
-    hint = "The shopper opened another page, so this list is not on screen.";
-  } else if (products.length < total) {
-    hint = `Showing ${products.length} of ${total} products. Set minPrice or maxPrice to see others.`;
-  }
-  return {
-    total: listing.total,
+  return listingAnswer(listing, {
     currency: currency.value?.isoCode,
-    products,
-    ...(hint ? { hint } : {}),
-    ...(listing.total
-      ? {}
-      : {
-          hint: "No products found. Try other words, another price range, or browse_category with one of these categories.",
-          categories: categoryNames(await loadCategories()),
-        }),
-  };
+    shown,
+    categories: listing.total
+      ? undefined
+      : categoryNames(await loadCategories()),
+  });
 }
 
 function plainText(html: string) {
@@ -231,9 +144,7 @@ function plainText(html: string) {
 
 // The router follows the URL at once. useRoute() waits for the next page.
 async function currentProductId() {
-  const { path: url } = router.currentRoute.value;
-  const prefix = `/${locale.value}/`;
-  const path = url.startsWith(prefix) ? url.slice(prefix.length - 1) : url;
+  const path = pathWithoutLocale(router.currentRoute.value.path, locale.value);
   const seoUrl = await resolvePath(path);
   if (seoUrl?.routeName === "frontend.detail.page") return seoUrl.foreignKey;
   throw new Error("The shopper is not on a product page. Pass a productId.");
@@ -241,9 +152,9 @@ async function currentProductId() {
 
 const handlers = {
   async search_products(input, stop) {
-    const search = text(input.query, "query");
-    const minPrice = price(input.minPrice, "minPrice");
-    const maxPrice = price(input.maxPrice, "maxPrice");
+    const search = readText(input.query, "query");
+    const minPrice = readPrice(input.minPrice, "minPrice");
+    const maxPrice = readPrice(input.maxPrice, "maxPrice");
     const filters = { "min-price": minPrice, "max-price": maxPrice };
     const { data } = await apiClient.invoke("searchPage post /search", {
       headers: { "sw-include-seo-urls": true },
@@ -254,7 +165,7 @@ const handlers = {
   },
 
   async browse_category(input, stop) {
-    const name = text(input.category, "category").toLowerCase();
+    const name = readText(input.category, "category").toLowerCase();
     const menu = await loadCategories();
     const category = menu.find(
       (item) => categoryName(item).toLowerCase() === name,
@@ -268,8 +179,8 @@ const handlers = {
         categories: categoryNames(menu),
       };
     }
-    const minPrice = price(input.minPrice, "minPrice");
-    const maxPrice = price(input.maxPrice, "maxPrice");
+    const minPrice = readPrice(input.minPrice, "minPrice");
+    const maxPrice = readPrice(input.maxPrice, "maxPrice");
     const filters = { "min-price": minPrice, "max-price": maxPrice };
     const { data } = await apiClient.invoke(
       "readProductListing post /product-listing/{categoryId}",
@@ -287,7 +198,7 @@ const handlers = {
     const id =
       input.productId === undefined || input.productId === null
         ? await currentProductId()
-        : productId(input.productId);
+        : readProductId(input.productId);
     const { product } = await readProduct(id, {
       associations: { options: {} },
     });
@@ -300,13 +211,13 @@ const handlers = {
     };
   },
 
-  async add_to_cart(input) {
-    const id = productId(input.productId);
+  async add_to_cart(input, stop) {
+    const id = readProductId(input.productId);
     const quantity =
       input.quantity === undefined || input.quantity === null
         ? 1
-        : count(input.quantity, "quantity", 1);
-    const warnings = await changeCart(() => addProduct({ id, quantity }));
+        : readCount(input.quantity, "quantity", 1);
+    const warnings = await changeCart(() => addProduct({ id, quantity }), stop);
     const line = cartLine(id);
     if (!line) {
       throw new Error(
@@ -314,7 +225,7 @@ const handlers = {
           "The product was not added. If it has variants, call get_product with this productId and add the productId it returns.",
       );
     }
-    if (!warnings.length) {
+    if (!warnings.length && !stop.aborted) {
       pushSuccess(`${line.label} ${t("product.addedToCart")}`, {
         action: {
           label: t("product.viewCart"),
@@ -322,17 +233,17 @@ const handlers = {
         },
       });
     }
-    return { ...cartSummary(), warnings };
+    return { ...currentCart(), warnings };
   },
 
   async get_cart() {
     await refreshCart();
-    return cartSummary();
+    return currentCart();
   },
 
   async update_cart_item(input, stop) {
-    const id = productId(input.productId);
-    const quantity = count(input.quantity, "quantity", 0);
+    const id = readProductId(input.productId);
+    const quantity = readCount(input.quantity, "quantity", 0);
     await loadCart(stop);
     const line = cartLine(id);
     if (!line) {
@@ -340,12 +251,14 @@ const handlers = {
         "This product is not in the cart. Call get_cart to see the items.",
       );
     }
-    const warnings = await changeCart(() =>
-      quantity === 0
-        ? removeItemById(line.id)
-        : changeProductQuantity({ id: line.id, quantity }),
+    const warnings = await changeCart(
+      () =>
+        quantity === 0
+          ? removeItemById(line.id)
+          : changeProductQuantity({ id: line.id, quantity }),
+      stop,
     );
-    return { ...cartSummary(), warnings };
+    return { ...currentCart(), warnings };
   },
 
   async go_to_checkout(_input, stop) {

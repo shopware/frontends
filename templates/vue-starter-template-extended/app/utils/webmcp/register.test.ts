@@ -3,8 +3,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { effectScope, nextTick, ref } from "vue";
 import type { EffectScope } from "vue";
 
-import { registerWebMcpTools } from "./useWebMcpTools";
-import type { WebMcpToolHandler } from "./useWebMcpTools";
+import { registerWebMcpTools } from "./register";
+import type { WebMcpToolHandler } from "./register";
 
 type Execute = (
   input: Record<string, unknown>,
@@ -187,6 +187,19 @@ describe("registerWebMcpTools", () => {
     slow.open();
     await settle();
     expect(read).not.toHaveBeenCalled();
+  });
+
+  it("stops waiting for a hung call after twice the time limit", async () => {
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    start({ timeout: 50 })({
+      write: () => new Promise(() => {}),
+      read: async () => "read",
+    });
+
+    expect(await call("write")).toEqual(TOO_SLOW);
+    await settle(60);
+    expect(await call("read")).toBe("read");
+    expect(console.warn).toHaveBeenCalledOnce();
   });
 
   it("never runs a call that was cancelled in the queue", async () => {

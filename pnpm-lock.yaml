@@ -1724,6 +1724,9 @@ importers:
       '@shopware/api-client':
         specifier: canary
         version: link:../../packages/api-client
+      '@shopware/helpers':
+        specifier: canary
+        version: link:../../packages/helpers
       nuxt:
         specifier: 4.6.4
         version: 4.6.4(103a3384014f1a7dd5dc7633d95f5c77)

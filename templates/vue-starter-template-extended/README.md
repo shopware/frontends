@@ -154,15 +154,15 @@ To try it:
 How it works:
 
 - `app/plugins/webMcpTools.client.ts` registers the tools when the app starts. An agent sees them before the page hydrates, and a call made that early waits for the page.
-- `app/utils/webMcpTools.ts` is the list an agent sees: names, titles, descriptions and inputs. Titles come in the page language. The tools whose ids feed later calls also declare the shape of their answer (`outputSchema`, Chrome 159 and newer). Error answers match it too.
-- `app/components/WebMcpTools.client.vue` holds what each tool does and shows the status line. `app/layouts/default.vue` adds it to the starter's default layout.
-- `app/composables/useWebMcpTools.ts` runs the calls one at a time and answers each one within 30 seconds. When a call is cancelled, runs out of time, or the shopper goes on to checkout, it stops before its next change to the cart or the page.
+- `app/utils/webmcp/tools.ts` is the list an agent sees: names, titles, descriptions and inputs. Titles come in the page language. The tools whose ids feed later calls also declare the shape of their answer (`outputSchema`, Chrome 159 and newer). Error answers match it too.
+- `app/components/WebMcpTools.client.vue` holds what each tool does and shows the status line. `app/layouts/default.vue` adds it to the starter's default layout. `app/utils/webmcp/answers.ts` builds the answers and reads the agent's input.
+- `app/utils/webmcp/register.ts` runs the calls one at a time and answers each one within 30 seconds. When a call is cancelled, runs out of time, or the shopper goes on to checkout, it stops before its next change to the cart or the page. A request that hangs blocks the next call for at most 60 seconds.
 
-To add a tool, describe it in the list and write its handler in the component. The typecheck fails when the two do not match. `pnpm test` runs the unit tests for the call queue.
+To add a tool, describe it in the list and write its handler in the component. The typecheck fails when the two do not match. `pnpm test` runs the unit tests next to each file in `app/utils/webmcp/`.
 
-A problem comes back as `{ "error": "..." }` with a next step, because the browser hides thrown errors from the agent. Lists and error texts are cut so that an answer stays under 1,500 characters, as Chrome advises, and `total` gives the full count. Browsers without WebMCP ignore all of this.
+A problem comes back as `{ "error": "..." }` with a next step, because the browser hides thrown errors from the agent. Lists and error texts are cut so that an answer stays under 1,500 characters, as Chrome advises, and `total` gives the full count. A search or category call reads the list for the agent, and the page reads it again. Browsers without WebMCP ignore all of this.
 
-To offer the tools without a browser flag, register your shop's address for Chrome's [WebMCP origin trial](https://developer.chrome.com/origintrials/#/register_trial/4163014905550602241) and set the token as `NUXT_PUBLIC_WEBMCP_ORIGIN_TRIAL`. The trial covers Chrome 149 to 162 on desktop.
+To offer the tools without a browser flag, register your shop's address for Chrome's [WebMCP origin trial](https://developer.chrome.com/origintrials/#/register_trial/4163014905550602241) and set the token as `NUXT_PUBLIC_WEBMCP_ORIGIN_TRIAL`. `server/plugins/webmcpOriginTrial.ts` puts it into every page. The trial covers Chrome 149 to 162 on desktop.
 
 Checked with Chrome 157, 158 and 159 and the WebMCP draft of 13 November 2026.
 

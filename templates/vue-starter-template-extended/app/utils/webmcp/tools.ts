@@ -1,4 +1,4 @@
-import type { WebMcpTool } from "~/composables/useWebMcpTools";
+import type { WebMcpTool } from "./register";
 
 const noInput = { type: "object", properties: {} };
 

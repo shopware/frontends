@@ -37,8 +37,10 @@ const LEFT_PAGE =
   "The shopper left this page, so the tool stopped. Nothing was changed.";
 const CANCELLED =
   "The call was cancelled, so the tool stopped. Nothing was changed.";
-const BUSY =
-  "The shop is busy, so the tool did not run. Try again in a few seconds.";
+const WAITING =
+  "An earlier call is still running, so this one did not run. Try again in a minute.";
+const NOT_READY =
+  "The page is still loading, so the tool did not run. Try again in a few seconds.";
 const TOO_SLOW =
   "The shop did not answer in time. The call may still finish, so check the result before you try again.";
 const NO_ANSWER = "The shop did not answer. Wait a minute, then try again.";
@@ -100,31 +102,40 @@ export function registerWebMcpTools(
               ]);
               const reason = () => {
                 if (page.signal.aborted) return LEFT_PAGE;
-                return caller?.aborted ? CANCELLED : undefined;
+                if (caller?.aborted) return CANCELLED;
+                return handlers ? WAITING : NOT_READY;
               };
               let running = false;
 
               const work = queue.then(async () => {
                 if ((await unless(stop, served())) === STOPPED) {
-                  return { error: reason() ?? BUSY };
+                  return { error: reason() };
                 }
                 const handler = handlers?.[tool.name];
-                if (!handler) return { error: BUSY };
+                if (!handler) return { error: NOT_READY };
                 running = true;
                 // The browser drops the reason of a rejected tool, so errors go back as data.
                 try {
                   return await handler(input, stop);
                 } catch (error) {
-                  if (stop.aborted) return { error: reason() ?? TOO_SLOW };
-                  return { error: toMessage(error) };
+                  if (!stop.aborted) return { error: toMessage(error) };
+                  return { error: deadline.aborted ? TOO_SLOW : reason() };
                 }
               });
-              // The next call waits for this handler, also after its answer went out.
-              queue = work;
+              // The next call waits for this handler, also after its answer went out,
+              // but a request that hangs must not block the tools for good.
+              queue = unless(AbortSignal.timeout(2 * timeout), work).then(
+                (result) => {
+                  if (result !== STOPPED) return;
+                  console.warn(
+                    `[WebMCP] ${tool.name} still runs, the next call starts.`,
+                  );
+                },
+              );
 
               return unless(deadline, work).then((answer) => {
                 if (answer !== STOPPED) return answer;
-                return { error: running ? TOO_SLOW : (reason() ?? BUSY) };
+                return { error: running ? TOO_SLOW : reason() };
               });
             },
           },

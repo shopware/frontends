@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { webMcpLabels, webMcpTools } from "./webMcpTools";
+import { webMcpLabels, webMcpTools } from "./tools";
 
 type Schema = { properties?: Record<string, { description?: string }> };
 

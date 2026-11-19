@@ -1,3 +1,6 @@
+import { registerWebMcpTools } from "~/utils/webmcp/register";
+import { webMcpLabels, webMcpTools } from "~/utils/webmcp/tools";
+
 export default defineNuxtPlugin({
   name: "webmcp-tools",
   // Runs right after the router, before the plugins that wait for the network.
@@ -14,8 +17,9 @@ export default defineNuxtPlugin({
         (unref(currentRoute.value.meta.layout) ?? "default") === "default",
     );
 
-    // The server sets the page language on <html>. The i18n plugin runs later.
-    const labels = webMcpLabels(document.documentElement.lang);
+    // i18n names each route "<page>___<locale>", like app.vue reads it. It runs later.
+    const [, locale = ""] = String(currentRoute.value.name ?? "").split("___");
+    const labels = webMcpLabels(locale);
     const tools = webMcpTools.map((tool) => ({
       ...tool,
       title: labels[tool.name],
