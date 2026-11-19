@@ -13,7 +13,7 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
-    "@nuxtjs/i18n": "10.2.4",
+    "@nuxtjs/i18n": "10.6.0",
     "@shopware/api-client": "canary",
     "@shopware/composables": "canary",
     "@shopware/helpers": "canary",
