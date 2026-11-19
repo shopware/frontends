@@ -36,7 +36,7 @@ const router = useRouter();
 const nuxtApp = useNuxtApp();
 
 // Chrome advises at most 1.5K characters per tool answer, so lists are cut to fit.
-function fit<T>(items: T[], room: number) {
+function shorten<T>(items: T[], room: number) {
   let size = 0;
   const end = items.findIndex((item) => {
     size += JSON.stringify(item).length + 1;
@@ -55,7 +55,7 @@ const categories = computed(() => {
 const categoryName = (category: Schemas["Category"]) =>
   getTranslatedProperty(category, "name");
 const categoryNames = (menu: Schemas["Category"][]) =>
-  fit([...new Set(menu.map(categoryName))], 1000);
+  shorten([...new Set(menu.map(categoryName))], 1000);
 
 async function loadCategories() {
   if (!categories.value.length) await loadNavigationElements({ depth: 2 });
@@ -82,7 +82,6 @@ function productSummary(product: Schemas["Product"]) {
       ? { priceFrom: lowest }
       : {}),
     ...(product.available ? {} : { available: false }),
-    url: localePath(getProductRoute(product).path),
   };
 }
 
@@ -101,7 +100,7 @@ function cartSummary() {
       lineTotal: item.price?.totalPrice,
     };
   });
-  const items = fit(lines, 1000);
+  const items = shorten(lines, 1000);
   return {
     items,
     ...(items.length < lines.length
@@ -166,7 +165,7 @@ async function changeCart(write: () => Promise<unknown>) {
     return te(key) ? t(key, { ...error }) : error.message;
   });
   for (const message of warnings) pushWarning(message);
-  return fit(warnings, 300);
+  return shorten(warnings, 300);
 }
 
 // Resolves when the next page has rendered, or after 5 seconds.
@@ -202,15 +201,19 @@ async function showListing(
   await navigateTo(to);
   const shown = router.currentRoute.value.fullPath === target.fullPath;
   if (shown) await rendered;
+  const products = shorten(listing.elements.map(productSummary), 1300);
+  const total = listing.total ?? products.length;
+  let hint: string | undefined;
+  if (!shown) {
+    hint = "The shopper opened another page, so this list is not on screen.";
+  } else if (products.length < total) {
+    hint = `Showing ${products.length} of ${total} products. Set minPrice or maxPrice to see others.`;
+  }
   return {
     total: listing.total,
     currency: currency.value?.isoCode,
-    products: fit(listing.elements.map(productSummary), 1300),
-    ...(shown
-      ? {}
-      : {
-          hint: "The shopper opened another page, so this list is not on screen.",
-        }),
+    products,
+    ...(hint ? { hint } : {}),
     ...(listing.total
       ? {}
       : {
@@ -290,6 +293,7 @@ const handlers = {
     });
     return {
       ...productSummary(product),
+      url: localePath(getProductRoute(product).path),
       currency: currency.value?.isoCode,
       stock: product.availableStock,
       description: plainText(getTranslatedProperty(product, "description")),
@@ -354,13 +358,48 @@ const handlers = {
   },
 } satisfies Record<WebMcpToolName, WebMcpToolHandler>;
 
+// The shopper sees every step, also the ones that change nothing on the page.
+const activity = ref("");
+let fade: ReturnType<typeof setTimeout> | undefined;
+
+function announced(name: WebMcpToolName): WebMcpToolHandler {
+  return async (input, stop) => {
+    const labels = webMcpLabels(locale.value);
+    clearTimeout(fade);
+    activity.value = `${labels.assistant}: ${labels[name]}`;
+    try {
+      return await handlers[name](input, stop);
+    } finally {
+      fade = setTimeout(() => {
+        activity.value = "";
+      }, 3000);
+    }
+  };
+}
+
 let stopServing = () => {};
 onMounted(() => {
-  stopServing = nuxtApp.$serveWebMcpTools(handlers);
+  const names = Object.keys(handlers) as WebMcpToolName[];
+  stopServing = nuxtApp.$serveWebMcpTools(
+    Object.fromEntries(names.map((name) => [name, announced(name)])),
+  );
 });
-onBeforeUnmount(() => stopServing());
+onBeforeUnmount(() => {
+  stopServing();
+  clearTimeout(fade);
+});
 </script>
 
 <template>
-  <span hidden />
+  <p
+    role="status"
+    data-testid="agent-activity"
+    :class="
+      activity
+        ? 'pointer-events-none fixed bottom-4 left-4 z-40 m-0 rounded-md bg-surface-inverse-surface px-4 py-2 text-sm text-surface-inverse-on-surface shadow-lg'
+        : 'sr-only'
+    "
+  >
+    {{ activity }}
+  </p>
 </template>

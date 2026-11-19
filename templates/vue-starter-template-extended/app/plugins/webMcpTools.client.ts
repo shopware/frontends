@@ -14,8 +14,15 @@ export default defineNuxtPlugin({
         (unref(currentRoute.value.meta.layout) ?? "default") === "default",
     );
 
+    // The server sets the page language on <html>. The i18n plugin runs later.
+    const labels = webMcpLabels(document.documentElement.lang);
+    const tools = webMcpTools.map((tool) => ({
+      ...tool,
+      title: labels[tool.name],
+    }));
+
     return {
-      provide: { serveWebMcpTools: registerWebMcpTools(webMcpTools, active) },
+      provide: { serveWebMcpTools: registerWebMcpTools(tools, active) },
     };
   },
 });

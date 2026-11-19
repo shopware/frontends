@@ -108,6 +108,18 @@ describe("registerWebMcpTools", () => {
     expect(() => serve({ read: async () => "ok" })()).not.toThrow();
   });
 
+  it("registers on the next page when the API was turned on late", async () => {
+    const withWebMcp = document;
+    vi.stubGlobal("document", {});
+    active.value = false;
+    start();
+
+    vi.stubGlobal("document", withWebMcp);
+    active.value = true;
+    await nextTick();
+    expect(registered.size).toBe(2);
+  });
+
   it("lets a call wait for the handlers", async () => {
     const serve = start();
     const answer = call("read");

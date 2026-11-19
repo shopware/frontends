@@ -8,7 +8,6 @@ type ToolProduct = {
   price: number;
   /** Set when a volume or variant price is lower. The price filters use it. */
   priceFrom?: number;
-  url: string;
 };
 
 type ToolCart = {
@@ -192,7 +191,12 @@ test.describe("WebMCP agent tools", { tag: "@webmcp" }, () => {
       });
       products = result.products;
 
-      expect(result.hint).toBeUndefined();
+      expect(result.hint ?? "").not.toContain("not on screen");
+      if (result.total > products.length) {
+        expect(result.hint).toContain(
+          `Showing ${products.length} of ${result.total}`,
+        );
+      }
       expect(products.length).toBeGreaterThan(0);
       for (const { price, priceFrom } of products) {
         expect(priceFrom ?? price).toBeLessThanOrEqual(maxPrice);
@@ -240,18 +244,22 @@ test.describe("WebMCP agent tools", { tag: "@webmcp" }, () => {
     });
 
     await test.step("get_product reads the product on screen", async () => {
-      await page
-        .locator(
-          `[data-testid="product-box-product-name-link"][href="${product.url}"]`,
-        )
-        .first()
-        .click();
-      await page.waitForURL(`**${product.url}`);
+      const link = page
+        .getByTestId("product-box-product-name-link")
+        .filter({ hasText: product.name })
+        .first();
+      const href = await link.getAttribute("href");
+      await link.click();
+      await page.waitForURL(`**${href}`);
       await waitForTools(page);
 
       const result = await callTool(page, "get_product");
       expect(result.productId).toBe(product.productId);
+      expect(result.url).toBe(href);
       expect(result.stock).toEqual(expect.any(Number));
+      await expect(page.getByTestId("agent-activity")).toHaveText(
+        "Assistant: Get product details",
+      );
     });
 
     await test.step("parallel add_to_cart calls both land, also with a quantity sent as text", async () => {

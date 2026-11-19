@@ -17,6 +17,7 @@ export type WebMcpTool = {
   title: string;
   description: string;
   inputSchema?: Record<string, unknown>;
+  outputSchema?: Record<string, unknown>;
   annotations?: { readOnlyHint?: boolean };
 };
 
@@ -67,11 +68,6 @@ export function registerWebMcpTools(
     };
   }
 
-  const { modelContext } = document as Document & {
-    modelContext?: ModelContext;
-  };
-  if (!modelContext) return serve;
-
   const served = () =>
     new Promise<void>((resolve) => {
       if (handlers) resolve();
@@ -82,7 +78,11 @@ export function registerWebMcpTools(
   watch(
     active,
     (isActive, _wasActive, onCleanup) => {
-      if (!isActive) return;
+      // Looked up each time: an origin trial token can turn the API on late.
+      const { modelContext } = document as Document & {
+        modelContext?: ModelContext;
+      };
+      if (!isActive || !modelContext) return;
       const page = new AbortController();
       onCleanup(() => page.abort());
 
