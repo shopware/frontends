@@ -333,6 +333,70 @@ test.describe("WebMCP agent tools", { tag: "@webmcp" }, () => {
       expect(inCart).not.toContain(other.productId);
     });
 
+    await test.step("a search does not move a shopper who opened a product meanwhile", async () => {
+      await callTool(page, "search_products", { query: other.name });
+      const release = await hold(page, "**/store-api/search**");
+      const search = callTool(page, "search_products", {
+        query: product.name,
+      });
+      const link = page
+        .getByTestId("product-box-product-name-link")
+        .filter({ hasText: other.name })
+        .first();
+      const href = await link.getAttribute("href");
+      await link.click();
+      await page.waitForURL(`**${href}`);
+      release();
+
+      expect((await search).hint).toContain("not on screen");
+      await page.waitForTimeout(1000);
+      expect(new URL(page.url()).pathname).toBe(href);
+    });
+
+    await test.step("a cart change waits for the page's first cart read", async () => {
+      // The server reads the cart before the add, and that old answer lands last.
+      let readDone = () => {};
+      const read = new Promise<void>((resolve) => {
+        readDone = resolve;
+      });
+      let landed = () => {};
+      const late = new Promise<void>((resolve) => {
+        landed = resolve;
+      });
+      let first = true;
+      await page.route("**/store-api/checkout/cart", async (route) => {
+        if (route.request().method() !== "GET" || !first) {
+          await route.continue();
+          return;
+        }
+        first = false;
+        const response = await route.fetch();
+        readDone();
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await route.fulfill({ response }).catch(() => {});
+        landed();
+      });
+      await page.route(
+        "**/store-api/checkout/cart/line-item",
+        async (route) => {
+          await read;
+          await route.continue();
+        },
+      );
+      await page.reload();
+      await waitForTools(page);
+
+      await callTool(page, "add_to_cart", { productId: other.productId });
+      await late;
+      const cart: ToolCart = await callTool(page, "update_cart_item", {
+        productId: other.productId,
+        quantity: 0,
+      });
+      expect(cart.error).toBeUndefined();
+      await page.unroute("**/store-api/checkout/cart");
+      await page.unroute("**/store-api/checkout/cart/line-item");
+    });
+
     await test.step("a call that is still running does not move a shopper who opened checkout", async () => {
       const release = await hold(page, "**/store-api/search**");
       const search = callTool(page, "search_products", {

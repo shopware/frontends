@@ -73,10 +73,35 @@ const cartLine = (id: string) =>
     (item) => item.type === "product" && item.referencedId === id,
   );
 
-// The app loads the cart after it mounts. A tool can be called before that.
+// app.vue reads the cart after it mounts and does not wait for the answer.
+// A cart change made before that answer lands would be undone on screen.
+const firstCartRead = new Promise<void>((resolve) => {
+  if (cart.value) return resolve();
+  const timer = setTimeout(done, 10_000);
+  const unwatch = watch(cart, (value) => value && done());
+  function done() {
+    clearTimeout(timer);
+    unwatch();
+    resolve();
+  }
+});
+
 async function loadCart(stop: AbortSignal) {
+  await firstCartRead;
   if (!cart.value) await refreshCart();
   stop.throwIfAborted();
+}
+
+// Counts navigations, so a call never moves a shopper who opened another page.
+let navigations = 0;
+onBeforeUnmount(
+  router.beforeEach(() => {
+    navigations++;
+  }),
+);
+function sinceNow() {
+  const start = navigations;
+  return () => navigations !== start;
 }
 
 // Cart errors pile up in shared state, so drop old ones before each write.
@@ -114,6 +139,7 @@ async function showListing(
   query: Record<string, string | number | undefined>,
   listing: Schemas["ProductListingResult"],
   stop: AbortSignal,
+  movedOn: () => boolean,
 ) {
   const to = {
     path: localePath(path),
@@ -122,11 +148,15 @@ async function showListing(
   const target = router.resolve(to);
   // A shopper who went on to the cart or checkout stays there.
   stop.throwIfAborted();
-  const rendered =
-    target.path === router.currentRoute.value.path ? undefined : nextPage();
-  await navigateTo(to);
-  const shown = router.currentRoute.value.fullPath === target.fullPath;
-  if (shown) await rendered;
+  // So does a shopper who opened another page while the list loaded.
+  let shown = false;
+  if (!movedOn()) {
+    const rendered =
+      target.path === router.currentRoute.value.path ? undefined : nextPage();
+    await navigateTo(to);
+    shown = router.currentRoute.value.fullPath === target.fullPath;
+    if (shown) await rendered;
+  }
   return listingAnswer(listing, {
     currency: currency.value?.isoCode,
     shown,
@@ -152,6 +182,7 @@ async function currentProductId() {
 
 const handlers = {
   async search_products(input, stop) {
+    const movedOn = sinceNow();
     const search = readText(input.query, "query");
     const minPrice = readPrice(input.minPrice, "minPrice");
     const maxPrice = readPrice(input.maxPrice, "maxPrice");
@@ -161,10 +192,11 @@ const handlers = {
       body: { search, limit: 10, ...filters },
       fetchOptions: { signal: stop },
     });
-    return showListing("/search", { search, ...filters }, data, stop);
+    return showListing("/search", { search, ...filters }, data, stop, movedOn);
   },
 
   async browse_category(input, stop) {
+    const movedOn = sinceNow();
     const name = readText(input.category, "category").toLowerCase();
     const menu = await loadCategories();
     const category = menu.find(
@@ -191,7 +223,7 @@ const handlers = {
         fetchOptions: { signal: stop },
       },
     );
-    return showListing(getCategoryUrl(category), filters, data, stop);
+    return showListing(getCategoryUrl(category), filters, data, stop, movedOn);
   },
 
   async get_product(input) {
@@ -217,6 +249,7 @@ const handlers = {
       input.quantity === undefined || input.quantity === null
         ? 1
         : readCount(input.quantity, "quantity", 1);
+    await loadCart(stop);
     const warnings = await changeCart(() => addProduct({ id, quantity }), stop);
     const line = cartLine(id);
     if (!line) {
@@ -237,6 +270,7 @@ const handlers = {
   },
 
   async get_cart() {
+    await firstCartRead;
     await refreshCart();
     return currentCart();
   },
@@ -262,9 +296,15 @@ const handlers = {
   },
 
   async go_to_checkout(_input, stop) {
+    const movedOn = sinceNow();
     await loadCart(stop);
     if (isEmpty.value) {
       throw new Error("The cart is empty. Add a product first.");
+    }
+    if (movedOn()) {
+      throw new Error(
+        "The shopper opened another page meanwhile, so checkout was not opened.",
+      );
     }
     await navigateTo(localePath("/checkout"));
     return { url: localePath("/checkout") };

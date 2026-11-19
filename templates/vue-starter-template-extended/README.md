@@ -155,7 +155,7 @@ How it works:
 
 - `app/plugins/webMcpTools.client.ts` registers the tools when the app starts. An agent sees them before the page hydrates, and a call made that early waits for the page.
 - `app/utils/webmcp/tools.ts` is the list an agent sees: names, titles, descriptions and inputs. Titles come in the page language. The tools whose ids feed later calls also declare the shape of their answer (`outputSchema`, Chrome 159 and newer). Error answers match it too.
-- `app/components/WebMcpTools.client.vue` holds what each tool does and shows the status line. `app/layouts/default.vue` adds it to the starter's default layout. `app/utils/webmcp/answers.ts` builds the answers and reads the agent's input.
+- `app/components/WebMcpTools.client.vue` holds what each tool does and shows the status line. `app/layouts/default.vue` adds it to the starter's default layout. `app/utils/webmcp/answers.ts` builds the answers and reads the agent's input. Cart tools wait for the page's first cart read. A tool never moves a shopper who opened another page meanwhile.
 - `app/utils/webmcp/register.ts` runs the calls one at a time and answers each one within 30 seconds. When a call is cancelled, runs out of time, or the shopper goes on to checkout, it stops before its next change to the cart or the page. A request that hangs blocks the next call for at most 60 seconds.
 
 To add a tool, describe it in the list and write its handler in the component. The typecheck fails when the two do not match. `pnpm test` runs the unit tests next to each file in `app/utils/webmcp/`.
