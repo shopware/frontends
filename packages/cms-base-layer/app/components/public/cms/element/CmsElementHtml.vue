@@ -2,7 +2,8 @@
 import type { CmsElementHtml } from "@shopware/composables";
 import { getCmsLayoutConfiguration } from "@shopware/helpers";
 import { computed, h } from "vue";
-import xss from "xss";
+
+import { sanitizeHtml } from "../../../../helpers/cms/sanitizeHtml";
 
 const props = defineProps<{
   content: CmsElementHtml;
@@ -10,9 +11,10 @@ const props = defineProps<{
 
 const { cssClasses, layoutStyles } = getCmsLayoutConfiguration(props.content);
 
-// Same default xss whitelist as CmsElementProductDescriptionReviews.vue, so the
-// markup is identical on SSR and on hydration.
-const sanitizedContent = computed(() => xss(props.content.data?.content || ""));
+// String-only sanitizing, so the markup is identical on SSR and on hydration.
+const sanitizedContent = computed(() =>
+  sanitizeHtml(props.content.data?.content),
+);
 
 const HtmlComponent = () => {
   return h("div", {

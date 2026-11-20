@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import xss from "xss";
+import { sanitizeHtml } from "../../../helpers/cms/sanitizeHtml";
 
 const props = defineProps<{
   navigationId: string;
@@ -21,7 +21,9 @@ const { data: registrationResponse } = await useAsyncData(
 );
 
 const registrationIntroduction = computed(() =>
-  xss(registrationResponse.value?.translated?.registrationIntroduction || ""),
+  sanitizeHtml(
+    registrationResponse.value?.translated?.registrationIntroduction,
+  ),
 );
 
 useSeoMeta({
