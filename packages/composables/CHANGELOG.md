@@ -1,5 +1,13 @@
 # @shopware/composables
 
+## 1.15.1
+
+### Patch Changes
+
+- [#2900](https://github.com/shopware/frontends/pull/2900) [`48fbb6f`](https://github.com/shopware/frontends/commit/48fbb6f03b1829ae3291323490f00410d4e32466) Thanks [@patzick](https://github.com/patzick)! - Build and test against the `vue` (`3.5.45`) and `@vueuse/core` (`15.0.0`) versions the package declares. The workspace overrides still pinned `vue` to `3.5.44` and `@vueuse/*` to `14.4.0`, so the released code was verified against older versions than the ones it ships with.
+
+  If your project type-checks with TypeScript 5.9 and `skipLibCheck: false`, `@vueuse/core` 15 types fail on the missing global `Temporal` (TypeScript adds it in the `ESNext` lib from 6.0), so upgrade to TypeScript 6 or add the `Temporal` types, e.g. `temporal-polyfill/global` in `compilerOptions.types`.
+
 ## 1.15.0
 
 ### Minor Changes
