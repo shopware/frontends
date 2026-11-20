@@ -1,3 +1,4 @@
+import { ApiClientError } from "@shopware/api-client";
 import { cacheLife, cacheTag } from "next/cache";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -89,4 +90,35 @@ describe("readSitemapFile", () => {
 
     await expect(readSitemapFile(FILE_PATH, "l1")).resolves.toBeNull();
   });
+
+  it.each([400, 404, 410])(
+    "gives nothing for a %i, so the route answers 404",
+    async (status) => {
+      invoke.mockRejectedValue(apiError(status));
+
+      await expect(readSitemapFile(FILE_PATH, "l1")).resolves.toBeNull();
+    },
+  );
+
+  it.each([429, 500, 503])(
+    "lets a %i throw, so the route answers 503",
+    async (status) => {
+      const error = apiError(status);
+      invoke.mockRejectedValue(error);
+
+      await expect(readSitemapFile(FILE_PATH, "l1")).rejects.toBe(error);
+    },
+  );
+
+  it("lets a network failure throw", async () => {
+    invoke.mockRejectedValue(new Error("offline"));
+
+    await expect(readSitemapFile(FILE_PATH, "l1")).rejects.toThrow("offline");
+  });
 });
+
+function apiError(status: number) {
+  return new ApiClientError(
+    Object.assign(new Response(null, { status }), { _data: { errors: [] } }),
+  );
+}

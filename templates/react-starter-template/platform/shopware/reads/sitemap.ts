@@ -1,4 +1,5 @@
 import "server-only";
+import { ApiClientError } from "@shopware/api-client";
 import { cacheLife, cacheTag } from "next/cache";
 
 import type { Schemas } from "#shopware";
@@ -23,10 +24,24 @@ export async function readSitemapFile(
   filePath: string,
   languageId: string,
 ): Promise<ArrayBuffer | null> {
-  const { data, status } = await createShopwareClient({ languageId }).invoke(
-    "getSitemapFile get /sitemap/{filePath}",
-    { accept: "application/gzip", pathParams: { filePath } },
+  try {
+    const { data, status } = await createShopwareClient({ languageId }).invoke(
+      "getSitemapFile get /sitemap/{filePath}",
+      { accept: "application/gzip", pathParams: { filePath } },
+    );
+    if (status !== 200 || !(data instanceof Blob)) return null;
+    return data.arrayBuffer();
+  } catch (error) {
+    if (isMissingFile(error)) return null;
+    throw error;
+  }
+}
+
+function isMissingFile(error: unknown): boolean {
+  return (
+    error instanceof ApiClientError &&
+    error.status >= 400 &&
+    error.status < 500 &&
+    error.status !== 429
   );
-  if (status !== 200 || !(data instanceof Blob)) return null;
-  return data.arrayBuffer();
 }
