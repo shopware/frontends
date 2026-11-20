@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { getOptionsFromNode } from "./getOptionsFromNode";
+import { getOptionsFromNode, isSafeUrl } from "./getOptionsFromNode";
 import type { NodeObject } from "./getOptionsFromNode";
 
 describe("getOptionsFromNode", () => {
@@ -126,5 +126,86 @@ describe("getOptionsFromNode", () => {
       attrs: {},
     });
     expect(consoleErrorSpy).toBeCalled();
+  });
+
+  it("decodes entities in attribute values so Vue escapes them only once", () => {
+    const node = {
+      attrs: {
+        href: "/x?a=1&amp;b=2",
+        title: "Tom &amp; Jerry",
+        class: "a&#x20;b",
+        style: "font-family:&quot;Inter&quot;",
+      },
+    };
+
+    const options = getOptionsFromNode(
+      node as unknown as NodeObject,
+      (url) => url,
+    );
+
+    expect(options.attrs.href).toBe("/x?a=1&b=2");
+    expect(options.attrs.title).toBe("Tom & Jerry");
+    expect(options.class).toBe("a b");
+    expect(options.style).toBe('font-family:"Inter"');
+  });
+
+  it.each([
+    "javascript:alert(1)",
+    "JaVaScRiPt:alert(1)",
+    "javascript&colon;alert(1)",
+    "java&Tab;script:alert(1)",
+    "java&NewLine;script:alert(1)",
+    "java&#9;script:alert(1)",
+    "java&#x0A;script:alert(1)",
+    "&#x20;&#x01;javascript:alert(1)",
+    "&#106;avascript&#58;alert(1)",
+    "vbscript:msgbox(1)",
+    "data:text/html,<script>alert(1)</script>",
+  ])("drops an unsafe href after decoding (%s)", (href) => {
+    const options = getOptionsFromNode(
+      { attrs: { href } } as unknown as NodeObject,
+      urlResolverMock,
+    );
+
+    expect(options.attrs).not.toHaveProperty("href");
+    expect(urlResolverMock).not.toHaveBeenCalled();
+  });
+
+  it("drops unsafe URLs in other URL attributes", () => {
+    const options = getOptionsFromNode(
+      {
+        attrs: {
+          src: "javascript&colon;alert(1)",
+          poster: "java&Tab;script:alert(1)",
+          alt: "kept",
+        },
+      } as unknown as NodeObject,
+      urlResolverMock,
+    );
+
+    expect(options.attrs).toEqual({ alt: "kept" });
+  });
+
+  it("keeps a raster data: image in src", () => {
+    const src = "data:image/png;base64,iVBORw0KGgo=";
+    const options = getOptionsFromNode(
+      { attrs: { src } } as unknown as NodeObject,
+      urlResolverMock,
+    );
+
+    expect(options.attrs.src).toBe(src);
+  });
+
+  it("isSafeUrl accepts ordinary URLs", () => {
+    for (const url of [
+      "/path",
+      "https://example.com/?a=1&b=2",
+      "mailto:a@b.c",
+      "tel:+123",
+      "#anchor",
+      "relative/javascript:x",
+    ]) {
+      expect(isSafeUrl(url)).toBe(true);
+    }
   });
 });

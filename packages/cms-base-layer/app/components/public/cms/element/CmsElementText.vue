@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { CmsElementText } from "@shopware/composables";
-import { decodeHTML } from "entities";
+import { decodeHTML, decodeHTMLAttribute } from "entities";
 import { computed, defineComponent, getCurrentInstance, h } from "vue";
 import type { CSSProperties, VNode, VNodeArrayChildren } from "vue";
 
@@ -115,8 +115,8 @@ const CmsTextRender = defineComponent({
             let newStyle = null;
             const styleColor = node?.attrs?.color;
             if (styleColor && node.attrs) {
-              const currentStyle = node.attrs?.style ?? "";
-              newStyle = `color:${styleColor};${currentStyle}`;
+              const currentStyle = decodeHTMLAttribute(node.attrs?.style ?? "");
+              newStyle = `color:${decodeHTMLAttribute(styleColor)};${currentStyle}`;
               const { color: _, ...attrsWithoutColor } = node.attrs;
               node.attrs = attrsWithoutColor;
             }
