@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import xss from "xss";
+
 const props = defineProps<{
   navigationId: string;
 }>();
@@ -16,6 +18,10 @@ const { data: registrationResponse } = await useAsyncData(
     );
     return response.data || {};
   },
+);
+
+const registrationIntroduction = computed(() =>
+  xss(registrationResponse.value?.translated?.registrationIntroduction || ""),
 );
 
 useSeoMeta({
@@ -37,9 +43,9 @@ useSeoMeta({
       class="text-lg font-normal text-surface-on-surface-variant lg:text-xl"
     >
       <div
-        v-if="registrationResponse?.translated.registrationIntroduction"
+        v-if="registrationIntroduction"
         class="cms-element-text px-6 sm:px-4 mb-6"
-        v-html="registrationResponse.translated.registrationIntroduction"
+        v-html="registrationIntroduction"
       />
       <AccountRegistrationForm
         :customer-group-id="registrationResponse?.id"
