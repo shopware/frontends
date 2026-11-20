@@ -47,6 +47,19 @@ until curl -sf -o /dev/null http://localhost:3000/; do sleep 2; done
 BASE_E2E_URL=http://localhost:3000/ pnpm run test:e2e --project=chromium
 ```
 
+## Run the WebMCP check
+
+The `@webmcp` specs call the shop's [WebMCP](https://webmachinelearning.github.io/webmcp/) tools the way a browser agent does. Only `vue-starter-template-extended` registers these tools, so point the run at it. The spec turns on the Chrome flag itself and skips Firefox. `test:e2e` and the nightly workflow do not run it. The demo backend is rate limited, so wait a minute between runs.
+
+```sh
+pnpm --filter lumora-demo-store dev &
+
+until curl -sf -o /dev/null http://localhost:3000/; do sleep 2; done
+
+BASE_E2E_URL=http://localhost:3000/ \
+  pnpm exec playwright test --grep @webmcp --project=chromium --retries=0
+```
+
 ## Run the accessibility check
 
 The `@accessibility` specs use the same page objects, so the same targets apply. CI runs them against the supported starter template:
