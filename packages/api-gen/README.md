@@ -424,15 +424,8 @@ await split({
 
 Full changelog for stable version is available [here](https://github.com/shopware/frontends/blob/main/packages/api-gen/CHANGELOG.md)
 
-### Latest changes: 1.6.0
-
-### Minor Changes
-
-- [#2874](https://github.com/shopware/frontends/pull/2874) [`411d673`](https://github.com/shopware/frontends/commit/411d67334615c301d61ea75ce6a9aa7b89424f3d) Thanks [@patzick](https://github.com/patzick)! - Generate open string enums with autocompletion. A schema that combines string `enum` or `const` branches with a plain `string` branch in `anyOf` (`oneOf` is handled the same way) now becomes `"invoice" | "storno" | (string & {})` instead of a union that TypeScript collapses to `string`.
-
-  Regenerated types can narrow: a `Record` or mapped type keyed by such a field now requires every known value, so use `Partial<Record<…>>` there.
+### Latest changes: 1.6.1
 
 ### Patch Changes
 
-- Updated dependencies [[`14fb094`](https://github.com/shopware/frontends/commit/14fb0946f8e7d12720b28cf9c6ccac05a4f72789)]:
-  - @shopware/api-client@1.8.0
+- [#2891](https://github.com/shopware/frontends/pull/2891) [`3bcbaba`](https://github.com/shopware/frontends/commit/3bcbaba14dfd3d0f28b9c73ed0e1d6186626e1b1) Thanks [@patzick](https://github.com/patzick)! - Declare `dotenv` as a runtime dependency. It was imported (`dotenv/config`) but not declared, so the build inlined whatever version pnpm happened to hoist from other packages; it is now an external dependency pinned to `18.0.10`, like the package's other runtime dependencies.

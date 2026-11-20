@@ -1,5 +1,12 @@
 # @shopware/nuxt-module
 
+## 1.6.2
+
+### Patch Changes
+
+- Updated dependencies [[`48fbb6f`](https://github.com/shopware/frontends/commit/48fbb6f03b1829ae3291323490f00410d4e32466)]:
+  - @shopware/composables@1.15.1
+
 ## 1.6.1
 
 ### Patch Changes
