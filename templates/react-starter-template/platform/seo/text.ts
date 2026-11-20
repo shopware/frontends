@@ -39,13 +39,7 @@ export function toPlainText(html: string | null | undefined): string {
 }
 
 export function stripTags(html: string): string {
-  let text = html;
-  let previous;
-  do {
-    previous = text;
-    text = text.replace(/<[^>]*>?/g, "");
-  } while (text !== previous);
-  return text;
+  return html.replace(/<[^>]*>?/g, "").replace(/</g, "");
 }
 
 export function truncate(text: string, max: number): string {

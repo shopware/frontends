@@ -8,6 +8,10 @@ describe("stripTags", () => {
       "Set one here. ",
     );
   });
+
+  it("leaves no tag opener behind nested or split tags", () => {
+    expect(stripTags("<<b>script>alert(1)<</b>/script>")).not.toContain("<");
+  });
 });
 
 describe("toPlainText", () => {
