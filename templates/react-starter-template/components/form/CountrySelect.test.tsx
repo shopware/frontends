@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
 import { countries, germany, poland } from "./countries.fixture";
@@ -49,6 +50,29 @@ describe("filterCountries", () => {
 });
 
 describe("CountrySelect", () => {
+  it("renders the German control labels and load error under the de-DE provider", async () => {
+    const props = {
+      label: "Land",
+      placeholder: "Land wählen...",
+      countries,
+      onChange: () => {},
+    };
+    const html = await renderToHtml(
+      withI18n(<CountrySelect {...props} value={germany.id} />, "de-DE"),
+    );
+    const failed = await renderToHtml(
+      withI18n(<CountrySelect {...props} value="" loadError />, "de-DE"),
+    );
+
+    expect(
+      tag(html, /<button[^>]*data-testid="country-select-clear"[^>]*>/),
+    ).toContain('aria-label="Länderauswahl löschen"');
+    expect(
+      tag(failed, /<button[^>]*data-testid="country-select-toggle"[^>]*>/),
+    ).toContain('aria-label="Länderliste ein-/ausblenden"');
+    expect(failed).toContain(">Länder konnten nicht geladen werden</p>");
+  });
+
   it("renders a closed combobox with its label, test ids and toggle", async () => {
     const html = await render();
     const input = tag(html, /<input[^>]*role="combobox"[^>]*>/);

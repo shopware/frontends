@@ -1,0 +1,20 @@
+{
+  "account": {
+    "address": {
+      "deleteSuccessMessage": "Address has been successfully deleted.",
+      "defaultBillingSuccessMessage": "Default billing address has been changed.",
+      "defaultShippingSuccessMessage": "Default shipping address has been changed."
+    },
+    "registration": {
+      "minLengthHint": "At least {min} character | At least {min} characters"
+    },
+    "changeEmail": {
+      "form": {
+        "emailFieldName": "email"
+      }
+    },
+    "loginModal": {
+      "close": "Close"
+    }
+  }
+}

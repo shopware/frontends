@@ -3,7 +3,7 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "env": ["SHOPWARE_*"]
+      "env": ["SHOPWARE_*", "STOREFRONT_URL"]
     }
   }
 }

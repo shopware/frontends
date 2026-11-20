@@ -1,60 +1,89 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { z } from "zod";
 
-import { BaseButton, cx, useCmsActions } from "@/cms/client";
-import { INPUT_CLASS } from "@/components/input";
+import { cx, useCmsActions } from "@/cms/client";
+import type { CmsNewsletterResult } from "@/cms/client";
+import { SHELL_BUTTON_PRIMARY_CLASS } from "@/features/layout/shellButton";
+import { useTranslations } from "@/i18n/I18nProvider";
+import type { Translate } from "@/i18n/translate";
 
-const t = {
-  layout: {
-    footer: {
-      newsletter: {
-        title: "Subscribe",
-        description:
-          "Receive the latest updates about offers and community updates.",
-        placeholder: "Enter Email Address",
-        button: "Submit",
-        privacyPolicy:
-          "By submitting you automatically agree to our privacy policy.",
-        messages: {
-          subscribed: "Thank you! We have signed up your address.",
-          failed: "An error occurred. Please try again.",
-        },
-      },
-    },
-  },
-  form: {
-    email: "Email address",
-  },
-  validations: {
-    required: "Value is required",
-    email: "Value is not a valid email address",
-  },
-};
+const EMAIL_FIELD = "email";
 
-export function validateEmail(value: string): string | null {
+type FocusRequest = { target: "input" | "button" };
+
+export function validateEmail(value: string, t: Translate): string | null {
   const trimmed = value.trim();
-  if (!trimmed) return t.validations.required;
-  if (!z.email().safeParse(trimmed).success) return t.validations.email;
+  if (!trimmed) return t("validations.required");
+  if (!z.email().safeParse(trimmed).success) return t("validations.email");
   return null;
+}
+
+function failureMessages(
+  result: CmsNewsletterResult,
+  t: Translate,
+): {
+  email: string | null;
+  toasts: string[];
+} {
+  const violations = result.violations ?? [];
+  if (!violations.length) {
+    return { email: null, toasts: [result.message || t("messages.error")] };
+  }
+  const email =
+    violations.find(({ field }) => field === EMAIL_FIELD)?.message ?? null;
+  const toasts = [
+    ...new Set(
+      violations
+        .filter(({ field }) => field !== EMAIL_FIELD)
+        .map(({ message }) => message),
+    ),
+  ];
+  return { email, toasts };
+}
+
+function focusIfFocusWasLost(element: HTMLElement | null) {
+  if (!element) return;
+  const { activeElement, body } = element.ownerDocument;
+  if (!activeElement || activeElement === body) element.focus();
 }
 
 export function NewsletterBox({ className }: { className?: string }) {
   const actions = useCmsActions();
+  const t = useTranslations();
   const [email, setEmail] = useState("");
   const [touched, setTouched] = useState(false);
   const [pending, setPending] = useState(false);
-  const error = touched ? validateEmail(email) : null;
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [focusRequest, setFocusRequest] = useState<FocusRequest | null>(null);
+  const inFlight = useRef(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const error = (touched ? validateEmail(email, t) : null) ?? serverError;
+
+  useEffect(() => {
+    if (!focusRequest) return;
+    if (focusRequest.target === "input") {
+      inputRef.current?.focus();
+      return;
+    }
+    focusIfFocusWasLost(buttonRef.current);
+  }, [focusRequest]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (pending) return;
+    if (inFlight.current) return;
     setTouched(true);
-    if (validateEmail(email)) return;
+    if (validateEmail(email, t)) {
+      setFocusRequest({ target: "input" });
+      return;
+    }
 
+    inFlight.current = true;
     setPending(true);
+    setServerError(null);
     try {
       const result = await actions.subscribeNewsletter({
         email: email.trim(),
@@ -63,91 +92,109 @@ export function NewsletterBox({ className }: { className?: string }) {
       if (result.ok) {
         actions.notify({
           type: "success",
-          message: t.layout.footer.newsletter.messages.subscribed,
+          message: t(
+            result.status === "notSet"
+              ? "form.messages.newsletterConfirmationSent"
+              : "layout.footer.newsletter.messages.subscribed",
+          ),
         });
         setEmail("");
         setTouched(false);
-      } else {
-        actions.notify({
-          type: "error",
-          message: result.message || t.layout.footer.newsletter.messages.failed,
-        });
+        setFocusRequest({ target: "button" });
+        return;
       }
+      const messages = failureMessages(result, t);
+      for (const message of messages.toasts) {
+        actions.notify({ type: "error", message });
+      }
+      setServerError(messages.email);
+      setFocusRequest({ target: messages.email ? "input" : "button" });
     } catch (cause) {
       actions.notify({
         type: "error",
         message: cause instanceof Error ? cause.message : String(cause),
       });
+      setFocusRequest({ target: "button" });
     } finally {
+      inFlight.current = false;
       setPending(false);
     }
   }
 
   return (
-    <div className={className}>
-      <p className="mb-2 text-surface-inverse-on-surface">
-        {t.layout.footer.newsletter.title}
-      </p>
-      <p className="mb-4 text-surface-inverse-on-surface">
-        {t.layout.footer.newsletter.description}
-      </p>
+    <div
+      className={cx(
+        "grid gap-6 md:grid-cols-2 md:items-center md:gap-12",
+        className,
+      )}
+    >
+      <div>
+        <p className="text-2xl font-semibold tracking-tight text-shell-ink md:text-3xl">
+          {t("layout.footer.newsletter.title")}
+        </p>
+        <p className="mt-2 max-w-prose text-surface-on-surface-variant">
+          {t("layout.footer.newsletter.description")}
+        </p>
+      </div>
       <form
         noValidate
+        data-testid="footer-newsletter-form"
         onSubmit={(event) => {
           void handleSubmit(event);
         }}
       >
-        <div className="flex gap-2">
-          <div>
-            <div className={error ? "mb-4" : "mb-1"}>
-              <label htmlFor="newsletter-email" className="sr-only">
-                {t.form.email}
-              </label>
-              <input
-                id="newsletter-email"
-                name="email"
-                type="email"
-                required
-                autoComplete="email"
-                placeholder={t.layout.footer.newsletter.placeholder}
-                value={email}
-                readOnly={pending}
-                aria-invalid={error ? true : undefined}
-                aria-describedby={error ? "newsletter-email-error" : undefined}
-                onChange={(event) => setEmail(event.target.value)}
-                onBlur={() => setTouched(true)}
-                className={cx(
-                  INPUT_CLASS,
-                  "px-3 focus-visible:outline-brand-secondary!",
-                )}
-              />
-              {error ? (
-                <p
-                  id="newsletter-email-error"
-                  role="alert"
-                  className="mt-1 text-xs text-states-error-container"
-                >
-                  {error}
-                </p>
-              ) : null}
-            </div>
-            <p className="text-xs leading-5 text-surface-inverse-on-surface">
-              {t.layout.footer.newsletter.privacyPolicy}
-            </p>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
+          <div className="min-w-0 flex-1">
+            <label htmlFor="newsletter-email" className="sr-only">
+              {t("form.email")}
+            </label>
+            <input
+              ref={inputRef}
+              id="newsletter-email"
+              name="email"
+              type="email"
+              required
+              autoComplete="email"
+              placeholder={t("layout.footer.newsletter.placeholder")}
+              value={email}
+              readOnly={pending}
+              aria-invalid={error ? true : undefined}
+              aria-describedby={error ? "newsletter-email-error" : undefined}
+              data-testid="footer-newsletter-email-input"
+              onChange={(event) => {
+                setEmail(event.target.value);
+                setServerError(null);
+              }}
+              onBlur={() => setTouched(true)}
+              className="w-full rounded-full border border-shell-ink/60 bg-surface-surface px-4 py-2.5 text-sm text-surface-on-surface placeholder:text-surface-on-surface-variant focus-visible:border-shell-ink focus-visible:ring-2 focus-visible:ring-shell-ink focus-visible:ring-offset-2 focus-visible:ring-offset-shell-sand focus-visible:outline-hidden read-only:cursor-not-allowed read-only:opacity-60 aria-invalid:border-states-error"
+            />
+            {error ? (
+              <p
+                id="newsletter-email-error"
+                role="alert"
+                className="mt-1 px-4 text-xs text-states-error"
+              >
+                {error}
+              </p>
+            ) : null}
           </div>
-          <div>
-            <BaseButton
-              className="mt-0.5"
-              type="submit"
-              variant="secondary"
-              size="small"
-              aria-busy={pending}
-              aria-disabled={pending || undefined}
-            >
-              {t.layout.footer.newsletter.button}
-            </BaseButton>
-          </div>
+          <button
+            ref={buttonRef}
+            type="submit"
+            aria-busy={pending}
+            aria-disabled={pending || undefined}
+            data-testid="footer-newsletter-submit-button"
+            className={cx(
+              SHELL_BUTTON_PRIMARY_CLASS,
+              "inline-flex shrink-0 items-center justify-center px-6 py-2.5 text-sm aria-disabled:cursor-not-allowed aria-disabled:opacity-60",
+            )}
+          >
+            {t("layout.footer.newsletter.button")}
+          </button>
         </div>
+        <p className="mt-3 text-xs leading-5 text-surface-on-surface-variant">
+          {t("layout.footer.newsletter.privacyPolicy")}
+        </p>
       </form>
     </div>
   );

@@ -41,6 +41,7 @@ test.describe("Create Order", { tag: "@frontends" }, () => {
       .getByTestId("checkout-shipping-method")
       .first()
       .waitFor({ state: "visible" });
+    await checkoutPage.markTerms();
     await checkoutPage.placeOrder();
     await expect(page.getByTestId("order-total")).toHaveCount(1);
   });
@@ -59,6 +60,7 @@ test.describe("Create Order", { tag: "@frontends" }, () => {
     await productPage.addToCart();
     await cartPage.openMiniCart();
     await checkoutPage.goToCheckout();
+    await checkoutPage.markTerms();
     await checkoutPage.placeOrder();
     await expect(page.getByTestId("order-total")).toHaveCount(1);
   });
@@ -88,6 +90,7 @@ test.describe("Create Order", { tag: "@frontends" }, () => {
       faker.location.city(),
       accountPassword,
     );
+    await checkoutPage.markTerms();
     await checkoutPage.placeOrder();
     await expect(page.getByTestId("order-total")).toHaveCount(1);
 
@@ -126,6 +129,7 @@ test.describe("Create Order", { tag: "@frontends" }, () => {
       faker.location.zipCode(),
       faker.location.city(),
     );
+    await checkoutPage.markTerms();
     await checkoutPage.placeOrder();
     await expect(page.getByTestId("order-total")).toHaveCount(1);
   });

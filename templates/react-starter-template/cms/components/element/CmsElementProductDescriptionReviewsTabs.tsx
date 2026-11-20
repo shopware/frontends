@@ -3,9 +3,13 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { ReactNode, TransitionEvent } from "react";
 
+import { useCmsActions } from "../../actions/CmsActionsContext";
+import type { CmsCustomerState } from "../../actions/CmsActionsContext";
 import { cx } from "../../helpers/cx";
+import { useProductReviewList } from "../../reviews/useProductReviewList";
 import type { CmsTranslations } from "../../translations";
 import { CheckCircleIcon, ChevronDownIcon, UserIcon } from "../icons";
+import { SwProductReviews } from "../shared/SwProductReviews";
 import { SwProductReviewsForm } from "../shared/SwProductReviewsForm";
 
 export type CmsElementProductDescriptionReviewsTabsTranslations = {
@@ -22,8 +26,10 @@ export type CmsElementProductDescriptionReviewsTabsTranslations = {
 
 export type CmsElementProductDescriptionReviewsTabsProps = {
   productId?: string;
-  reviewCount: number;
+  reviewsProductId?: string;
+  initialReviewCount: number;
   isLoggedIn: boolean;
+  locale: string;
   translations: CmsElementProductDescriptionReviewsTabsTranslations;
   description: ReactNode;
   reviews: ReactNode;
@@ -33,6 +39,20 @@ export type CmsElementProductDescriptionReviewsTabsProps = {
 const DESCRIPTION_SECTION = 1;
 const REVIEWS_SECTION = 2;
 const CATEGORY_SECTION = 3;
+
+const CONTEXT_CUSTOMER_ID = "cms-context-customer";
+
+function customerFromContext(isLoggedIn: boolean): CmsCustomerState {
+  return isLoggedIn
+    ? { status: "customer", customerId: CONTEXT_CUSTOMER_ID }
+    : { status: "guest" };
+}
+
+function focusIfFocusWasLost(element: HTMLElement | null) {
+  if (!element) return;
+  const { activeElement, body } = element.ownerDocument;
+  if (!activeElement || activeElement === body) element.focus();
+}
 
 type SectionToggleProps = {
   title: string;
@@ -143,17 +163,37 @@ function SectionPanel({
 
 export function CmsElementProductDescriptionReviewsTabs({
   productId,
-  reviewCount,
+  reviewsProductId,
+  initialReviewCount,
   isLoggedIn,
+  locale,
   translations,
   description,
   reviews,
   categories,
 }: CmsElementProductDescriptionReviewsTabsProps) {
+  const actions = useCmsActions();
   const [openSections, setOpenSections] = useState<ReadonlySet<number>>(
     () => new Set([DESCRIPTION_SECTION]),
   );
-  const [reviewAdded, setReviewAdded] = useState(false);
+  const [reviewAddedFor, setReviewAddedFor] = useState<string | null>(null);
+  const trackedCustomer = actions.getCustomerState();
+  const customer = trackedCustomer ?? customerFromContext(isLoggedIn);
+  const customerId =
+    customer.status === "customer" ? customer.customerId : null;
+  const reviewAdded = customerId !== null && reviewAddedFor === customerId;
+  const [previousCustomerId, setPreviousCustomerId] = useState(customerId);
+  const [customerLeft, setCustomerLeft] = useState(false);
+  if (previousCustomerId !== customerId) {
+    setPreviousCustomerId(customerId);
+    setCustomerLeft(previousCustomerId !== null && customerId === null);
+  }
+  const reviewsOpen = openSections.has(REVIEWS_SECTION);
+  const list = useProductReviewList({
+    productId: reviewsProductId,
+    customerId: trackedCustomer ? customerId : null,
+    open: reviewsOpen,
+  });
 
   function toggleSection(section: number) {
     setOpenSections((current) => {
@@ -171,6 +211,11 @@ export function CmsElementProductDescriptionReviewsTabs({
     return openSections.has(section);
   }
 
+  function handleReviewAdded() {
+    setReviewAddedFor(customerId);
+    void list.reload();
+  }
+
   return (
     <>
       <SectionToggle
@@ -182,22 +227,37 @@ export function CmsElementProductDescriptionReviewsTabs({
         {description}
       </SectionPanel>
       <SectionToggle
-        title={`${translations.product.reviews} (${reviewCount})`}
-        open={isSectionOpen(REVIEWS_SECTION)}
+        title={`${translations.product.reviews} (${list.reviews?.length ?? initialReviewCount})`}
+        open={reviewsOpen}
         testId="product-reviews-tab"
         onToggle={() => toggleSection(REVIEWS_SECTION)}
       />
-      <SectionPanel open={isSectionOpen(REVIEWS_SECTION)}>
-        {reviews}
-        {productId && isLoggedIn && !reviewAdded ? (
+      <SectionPanel open={reviewsOpen}>
+        <div aria-busy={list.loading || undefined}>
+          {list.reviews ? (
+            <SwProductReviews
+              reviews={list.reviews}
+              locale={locale}
+              translations={translations}
+            />
+          ) : (
+            reviews
+          )}
+        </div>
+        {productId && customerId && !reviewAdded ? (
           <SwProductReviewsForm
+            key={customerId}
             productId={productId}
             translations={translations}
-            onSuccess={() => setReviewAdded(true)}
+            onSuccess={handleReviewAdded}
           />
         ) : null}
-        {productId && !isLoggedIn ? (
-          <div className="mt-4 p-3 bg-surface-surface-container border border-surface-on-surface-variant rounded-md flex gap-2 md:gap-3 items-center">
+        {productId && customer.status === "guest" ? (
+          <div
+            ref={customerLeft ? focusIfFocusWasLost : undefined}
+            tabIndex={-1}
+            className="mt-4 p-3 bg-surface-surface-container border border-surface-on-surface-variant rounded-md flex gap-2 md:gap-3 items-center"
+          >
             <div className="w-5 h-5 text-surface-on-surface-variant flex-shrink-0">
               <UserIcon width={20} height={20} aria-label="User" />
             </div>
@@ -208,6 +268,8 @@ export function CmsElementProductDescriptionReviewsTabs({
         ) : null}
         {reviewAdded ? (
           <div
+            ref={focusIfFocusWasLost}
+            tabIndex={-1}
             data-testid="review-success-message"
             className="mt-4 p-3 bg-surface-surface-container border border-states-success rounded-md flex gap-2 md:gap-3 items-center"
           >

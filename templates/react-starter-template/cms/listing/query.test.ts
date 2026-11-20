@@ -111,6 +111,35 @@ describe("buildListingQueryParams", () => {
     });
   });
 
+  it("uses the given defaults for the values the URL leaves out", () => {
+    expect(
+      buildListingQueryParams({ p: "2" }, { limit: 24, order: "topseller" }),
+    ).toEqual({ p: 2, limit: 24, order: "topseller" });
+  });
+
+  it("prefers the URL over the defaults and converts strings to numbers and booleans", () => {
+    expect(
+      buildListingQueryParams(
+        {
+          manufacturer: "m",
+          "min-price": "5",
+          "shipping-free": "true",
+          limit: "30",
+          order: "price-asc",
+          p: "2",
+        },
+        { limit: 24, order: "name-asc" },
+      ),
+    ).toEqual({
+      limit: 30,
+      p: 2,
+      order: "price-asc",
+      manufacturer: "m",
+      "min-price": 5,
+      "shipping-free": true,
+    });
+  });
+
   it("applies explicit defaults and lets the URL override them", () => {
     expect(
       buildListingQueryParams(

@@ -1,15 +1,50 @@
 "use client";
 
-import Link from "next/link";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
+import { createPortal } from "react-dom";
 
 import { CmsActionsProvider } from "@/cms/client";
-import type { CmsActions, CmsNotification } from "@/cms/client";
+import type {
+  CmsActions,
+  CmsCustomerState,
+  CmsNotification,
+} from "@/cms/client";
+import { CloseIcon } from "@/components/icons";
+import { LocaleLink } from "@/components/LocaleLink";
+import { ModalHostContext } from "@/components/Modal";
 import { NotifyProvider } from "@/components/NotifyContext";
+import type { Notify } from "@/components/NotifyContext";
+import {
+  LoginModal,
+  LoginModalProvider,
+  useRequestLogin,
+} from "@/features/account/components/LoginModal";
+import { CartProvider } from "@/features/cart/components/CartProvider";
+import { useCart } from "@/features/cart/useCart";
+import { createFormActions } from "@/features/forms/formActions";
+import {
+  readProductReviews,
+  reviewViolations,
+  saveProductReview,
+} from "@/features/reviews/productReviewsApi";
+import { useSessionActions } from "@/features/session/components/SessionActionsContext";
+import { useSession } from "@/features/session/components/SessionProvider";
 import { ShopwareSessionProvider } from "@/features/session/components/ShopwareSessionProvider";
+import { findProductVariant } from "@/features/variants/variantApi";
+import {
+  WishlistProvider,
+  useWishlistStore,
+} from "@/features/wishlist/components/WishlistProvider";
+import { useWishlist } from "@/features/wishlist/useWishlist";
+import { CUSTOMER_NOT_LOGGED_IN } from "@/features/wishlist/wishlistApi";
+import { useLocale, useTranslations } from "@/i18n/I18nProvider";
+import { hasApiErrorCode } from "@/platform/shopware/apiErrors";
 
-import { NOT_WIRED_MESSAGES } from "../notWired";
+import { cmsCustomerState } from "../cmsCustomerState";
+import { useShopwareClient } from "./ShopwareClientContext";
+
+export const TOAST_TIMEOUT_MS = 5000;
 
 type Toast = CmsNotification & { id: number };
 
@@ -20,61 +55,238 @@ const TOAST_CLASSES: Record<CmsNotification["type"], string> = {
   info: "bg-states-info-container text-states-on-info-container",
 };
 
-export function StorefrontProviders({ children }: { children: ReactNode }) {
-  const [toasts, setToasts] = useState<Toast[]>([]);
-  const nextId = useRef(0);
+const TOAST_TEST_IDS: Record<CmsNotification["type"], string> = {
+  success: "notification-element-success",
+  error: "notification-element-danger",
+  warning: "notification-element-warning",
+  info: "notification-element-info",
+};
 
-  const notify = useCallback((notification: CmsNotification) => {
-    nextId.current += 1;
-    const id = nextId.current;
-    setToasts((current) => [...current, { ...notification, id }]);
-    setTimeout(() => {
-      setToasts((current) => current.filter((toast) => toast.id !== id));
-    }, notification.timeout ?? 5000);
-  }, []);
+function toastTimeout({ timeout }: CmsNotification): number | null {
+  if (timeout === undefined) return TOAST_TIMEOUT_MS;
+  return Number.isFinite(timeout) && timeout > 0 ? timeout : null;
+}
+
+function customerIdOf(state: CmsCustomerState): string | null {
+  return state.status === "customer" ? state.customerId : null;
+}
+
+function StorefrontCmsActions({
+  notify,
+  children,
+}: {
+  notify: Notify;
+  children: ReactNode;
+}) {
+  const { addProduct } = useCart();
+  const { has: isInWishlist } = useWishlist();
+  const wishlistStore = useWishlistStore();
+  const { retrySession, refreshSession } = useSessionActions();
+  const requestLogin = useRequestLogin();
+  const t = useTranslations();
+  const getClient = useShopwareClient();
+  const session = useSession();
+  const customerState = useMemo(() => cmsCustomerState(session), [session]);
 
   const actions = useMemo<Partial<CmsActions>>(() => {
-    const notWired = (message: string) => async () => ({ ok: false, message });
     return {
       notify,
-      addToCart: notWired(NOT_WIRED_MESSAGES.cart),
-      toggleWishlist: notWired(NOT_WIRED_MESSAGES.wishlist),
-      submitContactForm: notWired(NOT_WIRED_MESSAGES.forms),
-      subscribeNewsletter: notWired(NOT_WIRED_MESSAGES.forms),
-      submitProductReview: notWired(NOT_WIRED_MESSAGES.forms),
-      findVariant: async () => {
-        notify({ type: "warning", message: NOT_WIRED_MESSAGES.variants });
-        return null;
+      ...createFormActions({ getClient, getSession: retrySession, t }),
+      addToCart: ({ productId, quantity }) =>
+        addProduct({ id: productId, quantity }),
+      isInWishlist,
+      toggleWishlist: async (productId) => {
+        const adding = !isInWishlist(productId);
+        const write = () =>
+          adding
+            ? wishlistStore.add(productId)
+            : wishlistStore.remove(productId);
+        if ((await retrySession()).isLoggedIn) {
+          const result = await write();
+          if (!result.loggedOut) return result;
+          await refreshSession();
+        }
+        if (!(await requestLogin())) return { ok: false, cancelled: true };
+        wishlistStore.syncSession(await retrySession());
+        return write();
       },
+      getCustomerState: () => customerState,
+      loadProductReviews: async (input) => {
+        try {
+          return {
+            ok: true,
+            ...(await readProductReviews(await getClient(), input)),
+          };
+        } catch (error) {
+          console.error("[Reviews] reading the product reviews failed", error);
+          return { ok: false };
+        }
+      },
+      submitProductReview: async (input) => {
+        const save = async () => {
+          try {
+            await saveProductReview(await getClient(), input);
+            return { ok: true, error: null };
+          } catch (error) {
+            return { ok: false, error };
+          }
+        };
+        const failed = (error: unknown) => {
+          const violations = reviewViolations(error);
+          if (violations) return { ok: false, violations };
+          console.error("[Reviews] saving the product review failed", error);
+          return { ok: false, message: t("errors.message-default") };
+        };
+        const first = await save();
+        if (first.ok) return { ok: true };
+        if (!hasApiErrorCode(first.error, CUSTOMER_NOT_LOGGED_IN)) {
+          return failed(first.error);
+        }
+        if (!(await requestLogin())) {
+          await refreshSession();
+          return failed(first.error);
+        }
+        const author = customerIdOf(customerState);
+        if (
+          !author ||
+          customerIdOf(cmsCustomerState(await retrySession())) !== author
+        ) {
+          return { ok: false };
+        }
+        const retried = await save();
+        return retried.ok ? { ok: true } : failed(retried.error);
+      },
+      findVariant: (input) => findProductVariant(getClient, input),
     };
-  }, [notify]);
+  }, [
+    notify,
+    addProduct,
+    isInWishlist,
+    wishlistStore,
+    retrySession,
+    refreshSession,
+    requestLogin,
+    t,
+    getClient,
+    customerState,
+  ]);
+
+  return <CmsActionsProvider actions={actions}>{children}</CmsActionsProvider>;
+}
+
+function ToastMessage({
+  toast,
+  onDismiss,
+}: {
+  toast: Toast;
+  onDismiss: (id: number) => void;
+}) {
+  const t = useTranslations();
+  const dismiss = () => onDismiss(toast.id);
+  return (
+    <div
+      data-testid={TOAST_TEST_IDS[toast.type]}
+      className={`pointer-events-auto flex items-start gap-3 rounded-md px-4 py-3 text-sm shadow-lg ${TOAST_CLASSES[toast.type]}`}
+    >
+      <div className="flex min-w-0 flex-1 flex-col items-start gap-1">
+        <p
+          data-testid="notification-element-message"
+          className="whitespace-pre-line"
+        >
+          {toast.message}
+        </p>
+        {toast.action ? (
+          <LocaleLink
+            href={toast.action.href}
+            data-testid="notification-element-action"
+            className="inline-flex min-h-8 items-center font-bold underline underline-offset-2"
+            onClick={dismiss}
+          >
+            {toast.action.label}
+          </LocaleLink>
+        ) : null}
+      </div>
+      <button
+        type="button"
+        data-testid="notification-element-button"
+        aria-label={t("layout.ariaLabels.closeNotification")}
+        className="-my-1 -mr-2 inline-flex size-8 shrink-0 items-center justify-center rounded-md focus-visible:outline-2 focus-visible:outline-outline-outline-focus"
+        onClick={dismiss}
+      >
+        <CloseIcon className="size-3" />
+      </button>
+    </div>
+  );
+}
+
+export function StorefrontProviders({ children }: { children: ReactNode }) {
+  const locale = useLocale();
+  const [toasts, setToasts] = useState<Toast[]>([]);
+  const [modalHost, setModalHost] = useState<HTMLDialogElement | null>(null);
+  const nextId = useRef(0);
+  const timers = useRef(new Map<number, ReturnType<typeof setTimeout>>());
+
+  const dismiss = useCallback((id: number) => {
+    const timer = timers.current.get(id);
+    if (timer !== undefined) clearTimeout(timer);
+    timers.current.delete(id);
+    setToasts((current) => current.filter((toast) => toast.id !== id));
+  }, []);
+
+  const notify = useCallback<Notify>(
+    (notification) => {
+      nextId.current += 1;
+      const id = nextId.current;
+      setToasts((current) => [...current, { ...notification, id }]);
+      const timeout = toastTimeout(notification);
+      if (timeout !== null) {
+        timers.current.set(
+          id,
+          setTimeout(() => dismiss(id), timeout),
+        );
+      }
+    },
+    [dismiss],
+  );
+
+  useEffect(() => {
+    const pending = timers.current;
+    return () => {
+      for (const timer of pending.values()) clearTimeout(timer);
+      pending.clear();
+    };
+  }, []);
+
+  const toastRegion = (
+    <div
+      aria-live="polite"
+      className="pointer-events-none fixed right-4 bottom-4 z-60 flex max-w-sm flex-col gap-2"
+    >
+      {toasts.map((toast) => (
+        <ToastMessage key={toast.id} toast={toast} onDismiss={dismiss} />
+      ))}
+    </div>
+  );
 
   return (
     <NotifyProvider notify={notify}>
-      <ShopwareSessionProvider>
-        <CmsActionsProvider actions={actions}>
-          {children}
-          <div
-            aria-live="polite"
-            className="pointer-events-none fixed right-4 bottom-4 z-50 flex max-w-sm flex-col gap-2"
-          >
-            {toasts.map((toast) => (
-              <p
-                key={toast.id}
-                data-testid="notification-element-message"
-                className={`pointer-events-auto rounded-md px-4 py-3 text-sm shadow-lg ${TOAST_CLASSES[toast.type]}`}
-              >
-                {toast.message}
-                {toast.action && (
-                  <Link href={toast.action.href} className="ml-2 underline">
-                    {toast.action.label}
-                  </Link>
-                )}
-              </p>
-            ))}
-          </div>
-        </CmsActionsProvider>
-      </ShopwareSessionProvider>
+      <ModalHostContext value={setModalHost}>
+        <ShopwareSessionProvider locale={locale}>
+          <CartProvider>
+            <WishlistProvider>
+              <LoginModalProvider>
+                <StorefrontCmsActions notify={notify}>
+                  {children}
+                  <LoginModal />
+                  {modalHost
+                    ? createPortal(toastRegion, modalHost)
+                    : toastRegion}
+                </StorefrontCmsActions>
+              </LoginModalProvider>
+            </WishlistProvider>
+          </CartProvider>
+        </ShopwareSessionProvider>
+      </ModalHostContext>
     </NotifyProvider>
   );
 }

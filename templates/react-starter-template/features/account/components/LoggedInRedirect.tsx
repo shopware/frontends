@@ -3,20 +3,33 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 
-import { resolveRedirectFromSearch } from "@/features/account/redirect";
+import {
+  DEFAULT_REDIRECT,
+  resolveRedirectFromSearch,
+} from "@/features/account/redirect";
 import { useSession } from "@/features/session/components/SessionProvider";
+import { useLocalePath } from "@/i18n/I18nProvider";
 
-export function LoggedInRedirect() {
+export type LoggedInRedirectProps = { fallback?: string };
+
+export function LoggedInRedirect({
+  fallback = DEFAULT_REDIRECT,
+}: LoggedInRedirectProps) {
   const { status, isLoggedIn } = useSession();
   const router = useRouter();
+  const localePath = useLocalePath();
   const settled = useRef(false);
 
   useEffect(() => {
     if (settled.current || status !== "ready") return;
     settled.current = true;
     if (!isLoggedIn) return;
-    router.replace(resolveRedirectFromSearch(window.location.search));
-  }, [status, isLoggedIn, router]);
+    router.replace(
+      localePath(
+        resolveRedirectFromSearch(window.location.search, null, fallback),
+      ),
+    );
+  }, [status, isLoggedIn, router, localePath, fallback]);
 
   useEffect(
     () => () => {

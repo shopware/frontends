@@ -1,8 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { ApiClient } from "#shopware";
+import { testTranslator } from "@/test/i18n";
 
-import { errorMessages } from "./errorMessages";
+import { READ_TIMEOUT_MS } from "./readTimeout";
 import {
   apiClientError,
   apiClientErrorWithBody,
@@ -15,9 +16,10 @@ import type { SessionNotification } from "./sessionActions";
 type Invocation = { operation: string; params: unknown };
 
 const STOREFRONT_URL = "https://shop.test/en";
-const DEFAULT_MESSAGE = errorMessages.errors["message-default"];
+const en = testTranslator("en-GB");
+const DEFAULT_MESSAGE = en("errors.message-default");
 
-function setup(answer: (operation: string) => unknown = () => ({})) {
+function setup(answer: (operation: string) => unknown = () => ({}), t = en) {
   const invocations: Invocation[] = [];
   const order: string[] = [];
   const invoke = (async (operation: string, params?: unknown) => {
@@ -37,6 +39,7 @@ function setup(answer: (operation: string) => unknown = () => ({})) {
     notify: (notification) => {
       notifications.push(notification);
     },
+    t,
   });
   return {
     actions,
@@ -97,8 +100,8 @@ describe("createSessionActions().login", () => {
       actions.login({ username: "jane@example.com", password: "wrong" }),
     ).resolves.toEqual({
       ok: false,
-      message: errorMessages.errors.login_no_matching_customer_internal,
-      messages: [errorMessages.errors.login_no_matching_customer_internal],
+      message: en("errors.login_no_matching_customer_internal"),
+      messages: [en("errors.login_no_matching_customer_internal")],
     });
 
     expect(notifications).toEqual([]);
@@ -186,7 +189,7 @@ describe("createSessionActions().register", () => {
       message: "The email address jane@example.com is already in use",
       messages: [
         "The email address jane@example.com is already in use",
-        errorMessages.errors["VIOLATION::ZIP_CODE_INVALID"],
+        en("errors.VIOLATION::ZIP_CODE_INVALID"),
       ],
     });
 
@@ -218,6 +221,126 @@ describe("createSessionActions().register", () => {
       ok: true,
       doubleOptIn: false,
     });
+  });
+});
+
+describe("createSessionActions().confirmRegistration", () => {
+  const REGISTER_CONFIRM = "registerConfirm post /account/register-confirm";
+  const HASH = "0f1e2d3c4b5a69788796a5b4c3d2e1f0";
+  const link = { em: "5d41402abc4b2a76b9719d911017c592", hash: HASH };
+
+  it("confirms the link, re-reads the session as a new identity and resolves confirmed", async () => {
+    const { actions, invocations, order, refreshSession, notifications } =
+      setup(() => customer({ guest: false }));
+
+    await expect(actions.confirmRegistration(link)).resolves.toEqual({
+      status: "confirmed",
+      guest: false,
+    });
+
+    expect(invocations).toEqual([
+      { operation: REGISTER_CONFIRM, params: { body: link } },
+    ]);
+    expect(order).toEqual([REGISTER_CONFIRM, "refreshSession"]);
+    expect(refreshSession).toHaveBeenCalledExactlyOnceWith(undefined);
+    expect(notifications).toEqual([]);
+  });
+
+  it("tells a guest order confirmation apart", async () => {
+    const { actions } = setup(() => customer({ guest: true }));
+
+    await expect(actions.confirmRegistration(link)).resolves.toEqual({
+      status: "confirmed",
+      guest: true,
+    });
+  });
+
+  it("stays confirmed when the re-read after the confirmation fails", async () => {
+    const { actions, refreshSession, notifications } = setup(() => customer());
+    refreshSession.mockRejectedValueOnce(new Error("context down"));
+
+    await expect(actions.confirmRegistration(link)).resolves.toEqual({
+      status: "confirmed",
+      guest: false,
+    });
+    expect(notifications).toEqual([]);
+  });
+
+  it.each([
+    [
+      "alreadyConfirmed",
+      apiClientError(
+        [{ code: "CHECKOUT__CUSTOMER_IS_ALREADY_CONFIRMED", detail: "Done" }],
+        412,
+      ),
+    ],
+    [
+      "invalidLink",
+      apiClientError(
+        [
+          {
+            code: "CHECKOUT__CUSTOMER_NOT_FOUND_BY_HASH",
+            detail: `No matching customer for the hash "${HASH}" was found.`,
+          },
+        ],
+        404,
+      ),
+    ],
+    ["failed", new TypeError("Failed to fetch")],
+  ])(
+    "resolves %s without a toast and without touching the session",
+    async (status, error) => {
+      const { actions, refreshSession, notifications } = setup(
+        rejectWith(error),
+      );
+
+      await expect(actions.confirmRegistration(link)).resolves.toEqual({
+        status,
+      });
+      expect(notifications).toEqual([]);
+      expect(refreshSession).not.toHaveBeenCalled();
+    },
+  );
+
+  it("logs only the status and the codes of a failure, never the hash", async () => {
+    const { actions } = setup(
+      rejectWith(
+        apiClientError(
+          [
+            {
+              code: "CHECKOUT__CUSTOMER_NOT_FOUND_BY_HASH",
+              detail: `No matching customer for the hash "${HASH}" was found.`,
+            },
+          ],
+          503,
+        ),
+      ),
+    );
+
+    await expect(actions.confirmRegistration(link)).resolves.toEqual({
+      status: "failed",
+    });
+    expect(consoleError).toHaveBeenCalledExactlyOnceWith(
+      "[Session] confirming the registration failed",
+      { status: 503, codes: ["CHECKOUT__CUSTOMER_NOT_FOUND_BY_HASH"] },
+    );
+    expect(JSON.stringify(consoleError.mock.calls)).not.toContain(HASH);
+    expect(JSON.stringify(consoleError.mock.calls)).not.toContain(link.em);
+  });
+
+  it("does not log an expected outcome", async () => {
+    const { actions } = setup(
+      rejectWith(
+        apiClientError(
+          [{ code: "CHECKOUT__CUSTOMER_IS_ALREADY_CONFIRMED" }],
+          412,
+        ),
+      ),
+    );
+
+    await actions.confirmRegistration(link);
+
+    expect(consoleError).not.toHaveBeenCalled();
   });
 });
 
@@ -298,6 +421,63 @@ describe("createSessionActions().logout", () => {
   });
 });
 
+describe("createSessionActions().setCurrency", () => {
+  it("patches the context currency, refreshes the session keeping the last good one and resolves ok", async () => {
+    const { actions, invocations, order, refreshSession, notifications } =
+      setup();
+
+    await expect(actions.setCurrency("currency-usd")).resolves.toEqual({
+      ok: true,
+    });
+
+    expect(invocations).toEqual([
+      {
+        operation: "updateContext patch /context",
+        params: {
+          body: { currencyId: "currency-usd" },
+          fetchOptions: { timeout: READ_TIMEOUT_MS },
+        },
+      },
+    ]);
+    expect(order).toEqual(["updateContext patch /context", "refreshSession"]);
+    expect(refreshSession).toHaveBeenCalledExactlyOnceWith({
+      keepLastGood: true,
+    });
+    expect(notifications).toEqual([]);
+  });
+
+  it("notifies the resolved error and resolves it without refreshing", async () => {
+    const { actions, refreshSession, notifications } = setup(
+      rejectWith(
+        apiClientError(
+          [{ code: "VIOLATION::CURRENCY_NOT_FOUND", detail: "No currency" }],
+          400,
+        ),
+      ),
+    );
+
+    await expect(actions.setCurrency("currency-xxx")).resolves.toEqual({
+      ok: false,
+      message: "No currency",
+      messages: ["No currency"],
+    });
+
+    expect(notifications).toEqual([{ type: "error", message: "No currency" }]);
+    expect(refreshSession).not.toHaveBeenCalled();
+  });
+
+  it("stays ok when the refresh after a successful switch fails", async () => {
+    const { actions, refreshSession, notifications } = setup();
+    refreshSession.mockRejectedValueOnce(new Error("context down"));
+
+    await expect(actions.setCurrency("currency-usd")).resolves.toEqual({
+      ok: true,
+    });
+    expect(notifications).toEqual([]);
+    expect(consoleError).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe("createSessionActions", () => {
   it.each([
     ["nothing", undefined],
@@ -312,6 +492,7 @@ describe("createSessionActions", () => {
       actions.login({ username: "jane@example.com", password: "secret" }),
       actions.register(registrationInput),
       actions.logout(),
+      actions.setCurrency("currency-usd"),
     ]);
 
     const failed = {
@@ -322,7 +503,10 @@ describe("createSessionActions", () => {
         messages: [DEFAULT_MESSAGE],
       },
     };
-    expect(results).toEqual([failed, failed, failed]);
+    expect(results).toEqual([failed, failed, failed, failed]);
+    await expect(
+      actions.confirmRegistration({ em: "em", hash: "hash" }),
+    ).resolves.toEqual({ status: "failed" });
   });
 
   it("resolves not ok when the storefront URL cannot be determined", async () => {
@@ -335,5 +519,34 @@ describe("createSessionActions", () => {
       messages: [DEFAULT_MESSAGE],
     });
     expect(invocations).toEqual([]);
+  });
+});
+
+describe("createSessionActions translations", () => {
+  it("resolves the messages in the language of the translator", async () => {
+    const de = testTranslator("de-DE");
+    const { actions, notifications } = setup(
+      rejectWith(apiClientError([{ code: "0" }], 401)),
+      de,
+    );
+
+    const message = de("errors.login_no_matching_customer_internal");
+    await expect(
+      actions.login({ username: "jane@example.com", password: "wrong" }),
+    ).resolves.toEqual({ ok: false, message, messages: [message] });
+    expect(message).toBe("Ungültiger Benutzername und/oder Passwort.");
+    expect(notifications).toEqual([]);
+  });
+
+  it("notifies the messages in the language of the translator", async () => {
+    const de = testTranslator("de-DE");
+    const { actions, notifications } = setup(
+      rejectWith(new TypeError("Failed to fetch")),
+      de,
+    );
+
+    const message = de("errors.message-default");
+    await actions.logout();
+    expect(notifications).toEqual([{ type: "error", message }]);
   });
 });

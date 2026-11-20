@@ -1,0 +1,17 @@
+{
+  "cart": {
+    "title": "Mein Warenkorb",
+    "emptyCartLabel": "Ihr Warenkorb ist leer",
+    "proceedToCheckout": "Zur Kasse",
+    "continueShopping": "Mit dem Einkauf fortfahren",
+    "digital": "Digital",
+    "promotion": "Aktion",
+    "miniCart": {
+      "title": "Mein Warenkorb",
+      "subtotal": "Zwischensumme",
+      "taxEstimation": "Steuern & Versandkosten werden beim Checkout berechnet.",
+      "proceedToCheckout": "Zur Kasse",
+      "goToShoppingCart": "Zum Warenkorb"
+    }
+  }
+}

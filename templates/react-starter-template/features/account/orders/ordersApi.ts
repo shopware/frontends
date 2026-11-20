@@ -1,0 +1,311 @@
+import type { ApiClient, Schemas, operations } from "#shopware";
+import type { AddProductInput } from "@/features/cart/cartStore";
+import { orderAssociations } from "@/features/checkout/checkoutApi";
+import { paymentReturnUrls } from "@/features/checkout/paymentRedirect";
+import { ORDER_TIMEOUT_MS } from "@/features/session/readTimeout";
+import type { Translate } from "@/i18n/translate";
+import {
+  INVALID_UUID,
+  apiErrorCodes,
+  resolveApiErrorMessages,
+} from "@/platform/shopware/apiErrors";
+
+export type OrdersClient = Pick<ApiClient, "invoke">;
+
+export const ORDER_LIST_SORT: Schemas["Sort"][] = [
+  { field: "createdAt", order: "DESC" },
+];
+
+const ALLOWED_TRANSACTION_STATES = new Set([
+  "open",
+  "cancelled",
+  "reminded",
+  "failed",
+  "chargeback",
+  "unconfirmed",
+]);
+
+const ORDER_ID_PATTERN = /^[0-9a-f]{32}$/i;
+
+const DEEP_LINK_NOT_FOUND = "CHECKOUT__CART_ORDER_DEEP_LINK_NOT_FOUND";
+const GUEST_NOT_AUTHENTICATED = "CHECKOUT__GUEST_NOT_AUTHENTICATED";
+const GUEST_WRONG_CREDENTIALS = "CHECKOUT__GUEST_WRONG_CREDENTIALS";
+const LOGIN_REQUIRED_CODES = [
+  "CHECKOUT__CUSTOMER_NOT_LOGGED_IN",
+  "FRAMEWORK__ROUTING_CUSTOMER_NOT_LOGGED_IN",
+];
+const NOT_CANCELLABLE_CODES = [
+  "CHECKOUT__ORDER_NOT_CANCELLABLE",
+  "SYSTEM__ILLEGAL_STATE_TRANSITION",
+];
+
+type ReadOrderBody = operations["readOrder post /order"]["body"];
+
+type ReadOrderParams = {
+  body: ReadOrderBody;
+  query?: { checkPromotion?: boolean };
+};
+
+export type OrderPage = {
+  elements: Schemas["Order"][];
+  total: number;
+};
+
+export type OrderDetails = {
+  order: Schemas["Order"];
+  paymentChangeable: boolean;
+};
+
+export type DeepLinkCredentials = {
+  email: string;
+  zipcode: string;
+};
+
+export type DeepLinkOrderResult =
+  | { status: "found"; details: OrderDetails }
+  | { status: "notFound" }
+  | { status: "authRequired" }
+  | { status: "wrongCredentials" }
+  | { status: "loginRequired" }
+  | { status: "failed"; messages: string[] };
+
+export type LineItemDownload = {
+  id: string;
+  fileName: string;
+};
+
+export async function readOrders(
+  client: OrdersClient,
+  { page, limit }: { page: number; limit: number },
+): Promise<OrderPage> {
+  const { data } = await client.invoke("readOrder post /order", {
+    body: {
+      page,
+      limit,
+      associations: orderAssociations,
+      "total-count-mode": "exact",
+      sort: ORDER_LIST_SORT,
+    },
+  });
+  return {
+    elements: data.orders?.elements ?? [],
+    total: data.orders?.total ?? 0,
+  };
+}
+
+function toOrderDetails(
+  data: Schemas["OrderRouteResponse"],
+): OrderDetails | null {
+  const order = data.orders?.elements?.[0];
+  if (!order) return null;
+  return {
+    order,
+    paymentChangeable: data.paymentChangeable?.[order.id] === true,
+  };
+}
+
+export async function readOrderDetails(
+  client: OrdersClient,
+  orderId: string,
+): Promise<OrderDetails | null> {
+  if (!isOrderId(orderId)) return null;
+  try {
+    const params: ReadOrderParams = {
+      body: {
+        ids: [orderId],
+        associations: orderAssociations,
+        checkPromotion: true,
+      },
+      query: { checkPromotion: true },
+    };
+    const { data } = await client.invoke("readOrder post /order", params);
+    return toOrderDetails(data);
+  } catch (error) {
+    if (errorCodes(error).has(INVALID_UUID)) return null;
+    throw error;
+  }
+}
+
+function errorCodes(error: unknown): Set<string> {
+  return new Set(apiErrorCodes(error));
+}
+
+export function classifyDeepLinkError(
+  error: unknown,
+  t: Translate,
+): DeepLinkOrderResult {
+  const codes = errorCodes(error);
+  if (codes.has(DEEP_LINK_NOT_FOUND)) return { status: "notFound" };
+  if (codes.has(GUEST_WRONG_CREDENTIALS)) return { status: "wrongCredentials" };
+  if (codes.has(GUEST_NOT_AUTHENTICATED)) return { status: "authRequired" };
+  if (LOGIN_REQUIRED_CODES.some((code) => codes.has(code))) {
+    return { status: "loginRequired" };
+  }
+  return { status: "failed", messages: resolveApiErrorMessages(error, t) };
+}
+
+export async function readDeepLinkOrder(
+  client: OrdersClient,
+  {
+    deepLinkCode,
+    credentials = null,
+  }: { deepLinkCode: string; credentials?: DeepLinkCredentials | null },
+  t: Translate,
+): Promise<DeepLinkOrderResult> {
+  try {
+    const params: ReadOrderParams = {
+      body: {
+        ...(credentials
+          ? { email: credentials.email, zipcode: credentials.zipcode }
+          : {}),
+        login: true,
+        filter: [
+          { field: "deepLinkCode", type: "equals", value: deepLinkCode },
+        ],
+        associations: orderAssociations,
+        checkPromotion: true,
+      },
+      query: { checkPromotion: true },
+    };
+    const { data } = await client.invoke("readOrder post /order", params);
+    const details = toOrderDetails(data);
+    return details ? { status: "found", details } : { status: "notFound" };
+  } catch (error) {
+    return classifyDeepLinkError(error, t);
+  }
+}
+
+export async function setOrderPaymentMethod(
+  client: OrdersClient,
+  { orderId, paymentMethodId }: { orderId: string; paymentMethodId: string },
+): Promise<void> {
+  await client.invoke("orderSetPayment post /order/payment", {
+    body: { orderId, paymentMethodId },
+    fetchOptions: { timeout: ORDER_TIMEOUT_MS },
+  });
+}
+
+export async function cancelOrder(
+  client: OrdersClient,
+  orderId: string,
+): Promise<Schemas["StateMachineState"]> {
+  const { data } = await client.invoke("cancelOrder post /order/state/cancel", {
+    body: { orderId },
+    fetchOptions: { timeout: ORDER_TIMEOUT_MS },
+  });
+  return data;
+}
+
+export function isOrderCancellable(
+  { order }: OrderDetails,
+  orderRefundsEnabled: boolean,
+): boolean {
+  return (
+    orderRefundsEnabled && order.stateMachineState?.technicalName === "open"
+  );
+}
+
+export function isOrderNotCancellableError(error: unknown): boolean {
+  const codes = errorCodes(error);
+  return NOT_CANCELLABLE_CODES.some((code) => codes.has(code));
+}
+
+export function cancelOrderErrorMessages(
+  error: unknown,
+  t: Translate,
+): string[] {
+  return isOrderNotCancellableError(error)
+    ? [t("account.messages.orderNotCancellable")]
+    : resolveApiErrorMessages(error, t);
+}
+
+export function isOrderId(value: unknown): value is string {
+  return typeof value === "string" && ORDER_ID_PATTERN.test(value);
+}
+
+export function orderPaymentReturnUrls(
+  origin: string,
+  orderId: string,
+  localePath?: (path: string) => string,
+): { finishUrl: string; errorUrl: string } | null {
+  return isOrderId(orderId)
+    ? paymentReturnUrls(origin, orderId, localePath)
+    : null;
+}
+
+function lastTransaction(
+  order: Schemas["Order"],
+): Schemas["OrderTransaction"] | undefined {
+  const transactions = order.transactions;
+  return transactions?.length
+    ? transactions[transactions.length - 1]
+    : undefined;
+}
+
+export function isOrderPaymentChangeable({
+  order,
+  paymentChangeable,
+}: OrderDetails): boolean {
+  if (!paymentChangeable) return false;
+  if (order.stateMachineState?.technicalName !== "open") return false;
+  const transactionState =
+    lastTransaction(order)?.stateMachineState?.technicalName;
+  return !transactionState || ALLOWED_TRANSACTION_STATES.has(transactionState);
+}
+
+export function reorderItems(order: Schemas["Order"]): AddProductInput[] {
+  return (order.lineItems ?? []).flatMap((lineItem) => {
+    if (lineItem.type !== "product" || lineItem.good === false) return [];
+    const id = lineItem.productId || lineItem.identifier;
+    return id ? [{ id, quantity: lineItem.quantity }] : [];
+  });
+}
+
+export function lineItemDownloads(
+  lineItem: Schemas["OrderLineItem"],
+): LineItemDownload[] {
+  return (lineItem.downloads ?? []).flatMap((download) =>
+    download.accessGranted && download.media
+      ? [
+          {
+            id: download.id,
+            fileName: `${download.media.fileName}.${download.media.fileExtension}`,
+          },
+        ]
+      : [],
+  );
+}
+
+export async function readOrderDownload(
+  client: OrdersClient,
+  { orderId, downloadId }: { orderId: string; downloadId: string },
+): Promise<Blob> {
+  const { data } = await client.invoke(
+    "orderDownloadFile get /order/download/{orderId}/{downloadId}",
+    {
+      accept: "application/octet-stream",
+      pathParams: { orderId, downloadId },
+    },
+  );
+  return data;
+}
+
+export async function readOrderDocument(
+  client: OrdersClient,
+  { documentId, deepLinkCode }: { documentId: string; deepLinkCode: string },
+): Promise<Blob> {
+  const { data } = await client.invoke(
+    "downloadGet get /document/download/{documentId}/{deepLinkCode}",
+    {
+      accept: "application/pdf",
+      pathParams: { documentId, deepLinkCode },
+    },
+  );
+  return typeof data === "string"
+    ? new Blob([data], { type: "application/pdf" })
+    : data;
+}
+
+export function documentFileName(document: Schemas["Document"]): string {
+  return `${document.config.name}.${document.fileType || "pdf"}`;
+}

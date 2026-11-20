@@ -9,8 +9,19 @@ export type {
   CmsActions,
   CmsActionsProviderProps,
   CmsApiViolation,
+  CmsContactFormEntityName,
+  CmsContactFormInput,
+  CmsContactFormResult,
+  CmsCustomerState,
+  CmsFindVariantInput,
+  CmsFindVariantResult,
+  CmsFormResult,
+  CmsFormViolation,
+  CmsNewsletterInput,
+  CmsNewsletterResult,
   CmsNotification,
   CmsNotificationAction,
+  CmsProductReviewsResult,
   CmsReviewResult,
   CmsVariantResult,
 } from "./actions/CmsActionsContext";
@@ -60,3 +71,5 @@ export type {
   ListingSortOption,
   SelectedListingFilters,
 } from "./components/shared/listingFilterTypes";
+export { getProductPrice } from "./components/shared/productPrice";
+export type { ProductPrice } from "./components/shared/productPrice";

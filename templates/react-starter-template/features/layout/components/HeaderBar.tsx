@@ -1,65 +1,90 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
-import { IconButton } from "@/cms/client";
+import { cx } from "@/cms/client";
 import {
   HeartIcon,
   SearchIcon,
   ShoppingCartIcon,
   UserIcon,
 } from "@/components/icons";
-import { useNotify } from "@/components/NotifyContext";
+import { LocaleLink } from "@/components/LocaleLink";
 import { LOGIN_PATH } from "@/features/account/redirect";
+import { MiniCart } from "@/features/cart/components/MiniCart";
+import { useCart } from "@/features/cart/useCart";
 import { AccountMenu } from "@/features/layout/components/AccountMenu";
 import { MainCounter } from "@/features/layout/components/MainCounter";
-import { HEADER_ACTION_CLASS } from "@/features/layout/headerAction";
+import {
+  HEADER_ACTION_CLASS,
+  HEADER_ACTION_ICON_CLASS,
+  HEADER_ACTION_LABEL_CLASS,
+} from "@/features/layout/headerAction";
 import { HeaderSearch } from "@/features/search/components/HeaderSearch";
+import { useSearchPageTerm } from "@/features/search/useSearchPageTerm";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
-import { NOT_WIRED_MESSAGES } from "@/features/storefront/notWired";
+import { useWishlist } from "@/features/wishlist/useWishlist";
+import { stripLocale } from "@/i18n/config";
+import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 
-const t = {
-  "layout.header.myAccount": "My Account",
-  "layout.header.cart": "Cart",
-  "wishlist.header": "Wishlist",
-  search: "Search",
-  close: "Close",
-  logo: "Shopware Frontends Demo Store",
-};
-
-const ICON_CLASS = "size-5 text-brand-primary";
 const COUNTER_CLASS = "absolute -top-2 left-1/2";
 
 export function HeaderBar({ menu }: { menu: ReactNode }) {
-  const { status, isLoggedIn, customerName, cartCount, wishlistCount } =
-    useSession();
+  const { status, isLoggedIn, customerName } = useSession();
+  const { count: cartQuantity } = useCart();
+  const { count: wishlistCount } = useWishlist();
   const { retrySession } = useSessionActions();
-  const notify = useNotify();
   const router = useRouter();
+  const t = useTranslations();
+  const localePath = useLocalePath();
   const [mobileSearchActive, setMobileSearchActive] = useState(false);
+  const searchPageTerm = useSearchPageTerm();
+  const [typedSearchText, setTypedSearchText] = useState<string | null>(null);
+  const searchText = typedSearchText ?? searchPageTerm;
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const [miniCartOpen, setMiniCartOpen] = useState(false);
   const [checkingSession, setCheckingSession] = useState(false);
   const checkingSessionRef = useRef(false);
   const searchButtonRef = useRef<HTMLButtonElement>(null);
   const accountButtonRef = useRef<HTMLButtonElement>(null);
+  const cartButtonRef = useRef<HTMLButtonElement>(null);
   const restoreFocus = useRef(false);
+  const miniCartShown = useRef(false);
   const accountMenuId = useId();
+  const miniCartId = useId();
+  const showMiniCart = miniCartOpen && cartQuantity > 0;
 
   if (accountMenuOpen && !isLoggedIn) setAccountMenuOpen(false);
-
-  const notWired = (message: string) => () => notify({ type: "info", message });
+  if (miniCartOpen && cartQuantity === 0) setMiniCartOpen(false);
 
   const closeAccountMenu = useCallback(() => setAccountMenuOpen(false), []);
+  const closeMiniCart = useCallback(() => setMiniCartOpen(false), []);
+
+  const toggleMiniCart = () => {
+    if (miniCartOpen) {
+      setMiniCartOpen(false);
+      return;
+    }
+    if (cartQuantity === 0) {
+      router.push(localePath("/checkout/cart"));
+      return;
+    }
+    setAccountMenuOpen(false);
+    setMiniCartOpen(true);
+  };
 
   const goToLogin = () => {
     const { pathname, search, hash } = window.location;
-    if (pathname.replace(/\/+$/, "") === LOGIN_PATH) return;
+    if (stripLocale(pathname).pathname.replace(/\/+$/, "") === LOGIN_PATH) {
+      return;
+    }
     router.push(
-      `${LOGIN_PATH}?redirect=${encodeURIComponent(`${pathname}${search}${hash}`)}`,
+      localePath(
+        `${LOGIN_PATH}?redirect=${encodeURIComponent(`${pathname}${search}${hash}`)}`,
+      ),
     );
   };
 
@@ -81,6 +106,7 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
 
   const openAccount = () => {
     if (isLoggedIn) {
+      setMiniCartOpen(false);
       setAccountMenuOpen((open) => !open);
       return;
     }
@@ -97,65 +123,98 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
   };
 
   useEffect(() => {
+    const wasShown = miniCartShown.current;
+    miniCartShown.current = showMiniCart;
+    if (!wasShown || showMiniCart || cartQuantity > 0) return;
+    if (document.activeElement === document.body) {
+      cartButtonRef.current?.focus();
+    }
+  }, [showMiniCart, cartQuantity]);
+
+  useEffect(() => {
     if (mobileSearchActive || !restoreFocus.current) return;
     restoreFocus.current = false;
     searchButtonRef.current?.focus();
   }, [mobileSearchActive]);
 
+  const accountLabel = t("layout.header.myAccount");
+  const wishlistLabel = t("wishlist.header");
+  const cartLabel = t("layout.header.cart");
+  const showWishlistCount = wishlistCount > 0 && isLoggedIn;
+
   return (
-    <div className="mx-auto flex w-full max-w-screen-2xl items-center justify-between gap-4 px-4 py-3.5 sm:grid sm:grid-cols-3">
+    <div className="relative mx-auto flex w-full max-w-screen-2xl items-center justify-between gap-2 px-4 py-3 sm:gap-6 lg:gap-10">
       {mobileSearchActive ? (
         <>
-          <HeaderSearch className="w-full" autoFocus />
+          <HeaderSearch
+            value={searchText}
+            onValueChange={setTypedSearchText}
+            className="w-full"
+            autoFocus
+          />
           <button
             type="button"
-            className="shrink-0 border-b border-brand-primary text-sm text-brand-primary hover:border-transparent"
+            className="shrink-0 border-b border-shell-accent-strong text-sm font-medium text-shell-accent-strong hover:border-transparent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-shell-ink"
             onClick={closeMobileSearch}
           >
-            {t.close}
+            {t("layout.header.closeSearch")}
           </button>
         </>
       ) : (
         <>
-          <Link href="/" className="shrink-0 sm:justify-self-start">
+          <LocaleLink
+            href="/"
+            className="shrink-0 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shell-ink"
+          >
             <img
               src="/logo.svg"
-              alt={t.logo}
+              alt={t("layout.logo")}
               width={93}
               height={39}
-              className="h-20 w-auto max-sm:h-10"
+              className="h-10 w-auto sm:h-12"
             />
-          </Link>
-          <HeaderSearch className="w-full justify-self-center max-sm:hidden" />
-          <div className="flex shrink-0 items-center gap-4 sm:justify-self-end">
-            <IconButton
+          </LocaleLink>
+          <HeaderSearch
+            value={searchText}
+            onValueChange={setTypedSearchText}
+            className="flex-1 max-sm:hidden lg:mr-auto lg:max-w-xl"
+          />
+          <div className="flex shrink-0 items-center sm:gap-1 lg:gap-2">
+            <button
               ref={searchButtonRef}
-              variant="ghost"
-              className={`${HEADER_ACTION_CLASS} sm:hidden`}
-              aria-label={t.search}
+              type="button"
+              className={cx(HEADER_ACTION_CLASS, "sm:hidden")}
+              aria-label={t("layout.header.search")}
               onClick={() => {
                 setAccountMenuOpen(false);
+                setMiniCartOpen(false);
                 setMobileSearchActive(true);
               }}
             >
-              <SearchIcon className={ICON_CLASS} />
-            </IconButton>
+              <SearchIcon className={HEADER_ACTION_ICON_CLASS} />
+            </button>
             <div className="relative flex">
-              <IconButton
+              <button
                 ref={accountButtonRef}
-                variant="ghost"
-                className={`${HEADER_ACTION_CLASS} aria-disabled:cursor-progress aria-disabled:opacity-50`}
+                type="button"
+                className={cx(
+                  HEADER_ACTION_CLASS,
+                  "aria-disabled:cursor-progress aria-disabled:opacity-50",
+                )}
                 data-testid="header-account-button"
                 data-logged-in={String(isLoggedIn)}
-                aria-label={t["layout.header.myAccount"]}
+                aria-label={accountLabel}
                 aria-expanded={isLoggedIn ? accountMenuOpen : undefined}
                 aria-controls={isLoggedIn ? accountMenuId : undefined}
                 aria-busy={checkingSession || undefined}
                 aria-disabled={checkingSession || undefined}
                 onClick={openAccount}
               >
-                <UserIcon className={ICON_CLASS} />
-              </IconButton>
+                <UserIcon className={HEADER_ACTION_ICON_CLASS} />
+                <span className={HEADER_ACTION_LABEL_CLASS}>
+                  {accountLabel}
+                </span>
+              </button>
               {isLoggedIn && accountMenuOpen ? (
                 <AccountMenu
                   id={accountMenuId}
@@ -165,16 +224,23 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
                 />
               ) : null}
             </div>
-            <IconButton
-              variant="ghost"
+            <LocaleLink
+              href="/wishlist"
               className={HEADER_ACTION_CLASS}
               data-testid="header-wishlist-button"
-              aria-label={t["wishlist.header"]}
-              onClick={notWired(NOT_WIRED_MESSAGES.wishlist)}
+              aria-label={
+                showWishlistCount
+                  ? t(
+                      "layout.header.wishlistWithCount",
+                      { count: wishlistCount },
+                      wishlistCount,
+                    )
+                  : wishlistLabel
+              }
             >
               <span className="relative flex">
-                <HeartIcon className={ICON_CLASS} />
-                {wishlistCount > 0 && isLoggedIn ? (
+                <HeartIcon className={HEADER_ACTION_ICON_CLASS} />
+                {showWishlistCount ? (
                   <MainCounter
                     count={wishlistCount}
                     className={COUNTER_CLASS}
@@ -182,29 +248,50 @@ export function HeaderBar({ menu }: { menu: ReactNode }) {
                   />
                 ) : null}
               </span>
-            </IconButton>
-            <IconButton
-              variant="ghost"
+              <span className={HEADER_ACTION_LABEL_CLASS}>{wishlistLabel}</span>
+            </LocaleLink>
+            <button
+              ref={cartButtonRef}
+              type="button"
               className={HEADER_ACTION_CLASS}
               data-testid="header-mini-cart-button"
-              aria-label={t["layout.header.cart"]}
-              onClick={notWired(NOT_WIRED_MESSAGES.cart)}
+              aria-label={
+                cartQuantity > 0
+                  ? t(
+                      "layout.header.cartWithCount",
+                      { count: cartQuantity },
+                      cartQuantity,
+                    )
+                  : cartLabel
+              }
+              aria-expanded={cartQuantity > 0 ? showMiniCart : undefined}
+              aria-controls={showMiniCart ? miniCartId : undefined}
+              onClick={toggleMiniCart}
             >
               <span className="relative flex">
-                <ShoppingCartIcon className={ICON_CLASS} />
-                {cartCount > 0 ? (
+                <ShoppingCartIcon className={HEADER_ACTION_ICON_CLASS} />
+                {cartQuantity > 0 ? (
                   <MainCounter
-                    count={cartCount}
+                    count={cartQuantity}
                     className={COUNTER_CLASS}
                     testId="header-cart-counter"
                   />
                 ) : null}
               </span>
-            </IconButton>
+              <span className={HEADER_ACTION_LABEL_CLASS}>{cartLabel}</span>
+            </button>
             {menu}
           </div>
         </>
       )}
+      {showMiniCart ? (
+        <MiniCart
+          id={miniCartId}
+          triggerRef={cartButtonRef}
+          onClose={closeMiniCart}
+          className="absolute top-full right-0"
+        />
+      ) : null}
     </div>
   );
 }

@@ -15,6 +15,7 @@ export type SelectFieldProps = Omit<
   id: string;
   label: string;
   options: SelectOption[];
+  optionsLang?: string;
   placeholder?: string;
   error?: string;
   className?: string;
@@ -24,6 +25,7 @@ export function SelectField({
   id,
   label,
   options,
+  optionsLang,
   placeholder,
   error,
   className,
@@ -46,7 +48,7 @@ export function SelectField({
             <option value="">{placeholder}</option>
           ) : null}
           {options.map((option) => (
-            <option key={option.value} value={option.value}>
+            <option key={option.value} value={option.value} lang={optionsLang}>
               {option.label}
             </option>
           ))}

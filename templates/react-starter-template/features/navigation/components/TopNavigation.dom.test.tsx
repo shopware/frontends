@@ -95,6 +95,11 @@ describe("TopNavigation in the browser", () => {
     expect(labels(container)).toEqual(["Clothing", "Men", "Shirts", "Food"]);
     const flyout = query(container, "nav li > a + div");
     expect(flyout.textContent).toContain("Men");
+    expect(flyout.className).toContain(
+      "max-h-[calc(100dvh_-_var(--sticky-header-height))]",
+    );
+    expect(flyout.className).toContain("overflow-y-auto");
+    expect(flyout.className).toContain("overscroll-contain");
     expect(
       [
         ...container.querySelectorAll('[data-testid="header-navigation-link"]'),

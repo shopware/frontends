@@ -33,7 +33,7 @@ const VARIANT_CLASSES: Record<BaseButtonVariant, string> = {
   primary:
     "bg-brand-primary hover:bg-brand-primary-hover text-brand-on-primary focus:ring-brand-primary",
   secondary:
-    "bg-brand-secondary hover:bg-brand-secondary-hover text-brand-on-secondary focus:ring-brand-secondary",
+    "bg-brand-secondary hover:bg-brand-secondary-hover text-brand-on-secondary focus:ring-outline-outline-focus",
   success:
     "bg-states-success hover:opacity-90 text-white focus:ring-states-success transition-opacity",
   warning:
