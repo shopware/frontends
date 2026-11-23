@@ -1,3 +1,5 @@
+import { readdirSync } from "node:fs";
+
 import { describe, expect, it } from "vitest";
 
 import { webMcpLabels, webMcpTools } from "./tools";
@@ -46,8 +48,16 @@ describe("webMcpLabels", () => {
     expect(webMcpLabels("fr-FR")).toEqual(labels);
   });
 
-  it("has every tool title in the shop's other languages", () => {
-    for (const language of ["de-DE", "pl-PL"]) {
+  it("has every tool title in each language the shop ships", () => {
+    const languages = readdirSync(
+      new URL("../../../../vue-starter-template/i18n/", import.meta.url),
+      { withFileTypes: true },
+    )
+      .map((entry) => (entry.isDirectory() ? entry.name : ""))
+      .filter((name) => /^[a-z]{2}-[A-Z]{2}$/.test(name))
+      .filter((name) => !name.startsWith("en"));
+    expect(languages).toEqual(expect.arrayContaining(["de-DE", "pl-PL"]));
+    for (const language of languages) {
       const labels = webMcpLabels(language);
       expect(labels.assistant).not.toBe("Assistant");
       for (const { name, title } of webMcpTools) {

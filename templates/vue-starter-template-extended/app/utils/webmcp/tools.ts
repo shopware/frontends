@@ -196,7 +196,8 @@ export type WebMcpToolName = (typeof webMcpTools)[number]["name"];
 
 type Labels = Record<WebMcpToolName | "assistant", string>;
 
-// The words match the shop's own buttons in each language.
+// The tools register before i18n starts, so these labels cannot live in the
+// i18n files. The words match the shop's own buttons in each language.
 const translated: Record<string, Labels> = {
   de: {
     assistant: "Assistent",

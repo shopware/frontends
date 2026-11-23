@@ -5,10 +5,15 @@ import type { Ref } from "vue";
 
 export type WebMcpToolInput = Record<string, unknown>;
 
-/** `stop` fires when the shopper leaves, the caller cancels or the time runs out. */
+/**
+ * `stop` fires when the shopper leaves, the caller cancels or the time runs out.
+ * `madeAt` is when the agent made the call (`performance.now()`). The call may
+ * wait behind others before the handler runs.
+ */
 export type WebMcpToolHandler = (
   input: WebMcpToolInput,
   stop: AbortSignal,
+  madeAt: number,
 ) => Promise<unknown>;
 type WebMcpToolHandlers = Record<string, WebMcpToolHandler>;
 
@@ -59,6 +64,9 @@ export function registerWebMcpTools(
   active: Ref<boolean>,
   { timeout = 30_000 } = {},
 ) {
+  const { modelContext } = document as Document & {
+    modelContext?: ModelContext;
+  };
   let handlers: WebMcpToolHandlers | undefined;
   let wake: (() => void) | undefined;
 
@@ -92,10 +100,6 @@ export function registerWebMcpTools(
   watch(
     active,
     (isActive, _wasActive, onCleanup) => {
-      // Looked up each time: an origin trial token can turn the API on late.
-      const { modelContext } = document as Document & {
-        modelContext?: ModelContext;
-      };
       if (!isActive || !modelContext) return;
       const page = new AbortController();
       onCleanup(() => page.abort());
@@ -105,6 +109,7 @@ export function registerWebMcpTools(
           {
             ...tool,
             execute(input, call) {
+              const madeAt = performance.now();
               const caller = call?.signal;
               const deadline = AbortSignal.timeout(timeout);
               const stop = AbortSignal.any([
@@ -128,7 +133,7 @@ export function registerWebMcpTools(
                 running = true;
                 // The browser drops the reason of a rejected tool, so errors go back as data.
                 try {
-                  return await handler(input, stop);
+                  return await handler(input, stop, madeAt);
                 } catch (error) {
                   if (!stop.aborted) return { error: toMessage(error) };
                   return { error: deadline.aborted ? TOO_SLOW : reason() };

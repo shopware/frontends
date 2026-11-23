@@ -116,12 +116,40 @@ describe("productAnswer", () => {
     expect(answer).toMatchObject({ url: "/a-very-long-path", currency: "EUR" });
   });
 
+  it("keeps a long product URL whole, because a cut one would not open", () => {
+    const url = `/${"long-candle-name-".repeat(15)}/SW10001`;
+    const answer = productAnswer(product({}), {
+      url,
+      description: "Hand made.",
+    });
+    expect(answer.url).toBe(url);
+  });
+
   it("keeps a short description whole", () => {
     const answer = productAnswer(product({ availableStock: 7 }), {
       url: "/wooden-iplug",
       description: "Hand made.",
     });
     expect(answer).toMatchObject({ stock: 7, description: "Hand made." });
+  });
+
+  it("returns when a name of control characters already fills the answer", () => {
+    const answer = productAnswer(
+      product({
+        translated: { name: "\u0001".repeat(150) },
+        options: Array.from({ length: 40 }, (_, index) => ({
+          name: `Option ${index}`,
+        })),
+        availableStock: 5,
+      }),
+      {
+        url: `/${"p".repeat(300)}`,
+        currency: "EUR",
+        description: "Hand made.",
+      },
+    );
+    expect(answer.description).toBe("");
+    expect(JSON.stringify(answer).length).toBeGreaterThan(1500);
   });
 });
 

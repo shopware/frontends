@@ -96,7 +96,7 @@ export function productAnswer(
     ...summary,
     name: name.slice(0, 150),
     ...(options ? { options: shorten(options, 300) } : {}),
-    url: extra.url.slice(0, 200),
+    url: extra.url,
     currency: extra.currency,
     stock: product.availableStock,
     description: "",
@@ -104,7 +104,10 @@ export function productAnswer(
   const room = 1500 - JSON.stringify(answer).length;
   let description = extra.description.slice(0, Math.max(0, room));
   // Quotes and other escaped characters take more room in JSON.
-  while (JSON.stringify({ ...answer, description }).length > 1500) {
+  while (
+    description &&
+    JSON.stringify({ ...answer, description }).length > 1500
+  ) {
     description = description.slice(0, -20);
   }
   return { ...answer, description };

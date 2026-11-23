@@ -108,18 +108,6 @@ describe("registerWebMcpTools", () => {
     expect(() => serve({ read: async () => "ok" })()).not.toThrow();
   });
 
-  it("registers on the next page when the API was turned on late", async () => {
-    const withWebMcp = document;
-    vi.stubGlobal("document", {});
-    active.value = false;
-    start();
-
-    vi.stubGlobal("document", withWebMcp);
-    active.value = true;
-    await nextTick();
-    expect(registered.size).toBe(2);
-  });
-
   it("warns once when calls find no handlers on the page", async () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     start({ timeout: 30 });
@@ -162,6 +150,27 @@ describe("registerWebMcpTools", () => {
     first.open();
     await answers;
     expect(steps).toEqual(["read starts", "read ends", "write starts"]);
+  });
+
+  it("gives each handler the time its call was made, not when it ran", async () => {
+    const first = gate();
+    const times: number[] = [];
+    start()({
+      write: () => first.closed,
+      read: async (_input, _stop, madeAt) => {
+        times.push(madeAt, performance.now());
+      },
+    });
+
+    void call("write");
+    const before = performance.now();
+    const answer = call("read");
+    await settle(5);
+    first.open();
+    await answer;
+    const [madeAt = 0, ran = 0] = times;
+    expect(madeAt).toBeGreaterThanOrEqual(before);
+    expect(ran - madeAt).toBeGreaterThanOrEqual(4);
   });
 
   it("keeps the next call waiting after a timeout, until the slow handler ends", async () => {

@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { nextTick, ref } from "vue";
 import type { NavigationGuard } from "vue-router";
 
-import { countNavigations, whenSet } from "./guards";
+import { trackNavigations, unlessStopped, whenSet } from "./guards";
 
 describe("whenSet", () => {
   it("resolves at once when the value is there", async () => {
@@ -38,7 +38,37 @@ describe("whenSet", () => {
   });
 });
 
-describe("countNavigations", () => {
+describe("unlessStopped", () => {
+  it("gives the answer when nothing stops it", async () => {
+    const stop = new AbortController().signal;
+    await expect(unlessStopped(stop, Promise.resolve("cart"))).resolves.toBe(
+      "cart",
+    );
+  });
+
+  it("stops waiting when the call is stopped, and ignores a late failure", async () => {
+    const controller = new AbortController();
+    let fail = (_error: Error) => {};
+    const read = new Promise((_resolve, reject) => {
+      fail = reject;
+    });
+    const answer = unlessStopped(controller.signal, read);
+    controller.abort(new Error("cancelled"));
+    await expect(answer).rejects.toThrow("cancelled");
+    fail(new Error("too late"));
+    await Promise.resolve();
+  });
+
+  it("does not wait at all when the call is already stopped", async () => {
+    const controller = new AbortController();
+    controller.abort(new Error("cancelled"));
+    await expect(
+      unlessStopped(controller.signal, new Promise(() => {})),
+    ).rejects.toThrow("cancelled");
+  });
+});
+
+describe("trackNavigations", () => {
   function fakeRouter() {
     const guards = new Set<NavigationGuard>();
     return {
@@ -55,20 +85,32 @@ describe("countNavigations", () => {
     };
   }
 
-  it("tells a call whether the shopper started a navigation since", () => {
+  const later = () => new Promise((resolve) => setTimeout(resolve, 2));
+
+  it("tells a call whether the shopper navigated after it was made", async () => {
     const router = fakeRouter();
-    const { sinceNow } = countNavigations(router);
-    const movedOn = sinceNow();
+    const { since } = trackNavigations(router);
+    const movedOn = since(performance.now());
     expect(movedOn()).toBe(false);
 
+    await later();
     router.navigate();
     expect(movedOn()).toBe(true);
-    expect(sinceNow()()).toBe(false);
+    expect(since(performance.now())()).toBe(false);
+  });
+
+  it("does not count the tools' own navigations", async () => {
+    const router = fakeRouter();
+    const { own, since } = trackNavigations(router);
+    const movedOn = since(performance.now());
+    await later();
+    await own(() => router.navigate());
+    expect(movedOn()).toBe(false);
   });
 
   it("removes its router guard when stopped", () => {
     const router = fakeRouter();
-    const { stop } = countNavigations(router);
+    const { stop } = trackNavigations(router);
     expect(router.guards.size).toBe(1);
     stop();
     expect(router.guards.size).toBe(0);

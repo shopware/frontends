@@ -19,19 +19,38 @@ export function whenSet(source: MaybeRefOrGetter<unknown>, timeout: number) {
   });
 }
 
+/** Settles like `promise`, or rejects with the stop reason when `stop` fires first. */
+export function unlessStopped<T>(stop: AbortSignal, promise: Promise<T>) {
+  return new Promise<T>((resolve, reject) => {
+    const abort = () => reject(stop.reason);
+    stop.addEventListener("abort", abort, { once: true });
+    if (stop.aborted) abort();
+    promise
+      .then(resolve, reject)
+      .finally(() => stop.removeEventListener("abort", abort));
+  });
+}
+
 /**
- * Counts the router's navigations. `sinceNow()` returns a check that says
- * whether any navigation started after it was taken.
+ * Remembers when the shopper last started a navigation. The tools wrap
+ * their own navigations in `own()`, so those do not count.
  */
-export function countNavigations(router: Pick<Router, "beforeEach">) {
-  let started = 0;
+export function trackNavigations(router: Pick<Router, "beforeEach">) {
+  let last = -Infinity;
+  let own = 0;
   const stop = router.beforeEach(() => {
-    started++;
+    if (!own) last = performance.now();
   });
   return {
-    sinceNow() {
-      const start = started;
-      return () => started !== start;
+    /** A check that says whether the shopper navigated after `time`. */
+    since: (time: number) => () => last > time,
+    async own<T>(navigate: () => T) {
+      own++;
+      try {
+        return await navigate();
+      } finally {
+        own--;
+      }
     },
     stop,
   };

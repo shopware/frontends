@@ -10,11 +10,15 @@ export default defineNuxtPlugin({
     let serveWebMcpTools: ServeWebMcpTools | undefined;
     // Most browsers have no WebMCP. They load none of the tool code.
     if (!("modelContext" in document)) return { provide: { serveWebMcpTools } };
-    const [{ registerWebMcpTools }, { webMcpLabels, webMcpTools }] =
-      await Promise.all([
-        import("~/utils/webmcp/register"),
-        import("~/utils/webmcp/tools"),
-      ]);
+    const modules = await Promise.all([
+      import("~/utils/webmcp/register"),
+      import("~/utils/webmcp/tools"),
+    ]).catch((error: unknown) => {
+      // The shop works without the tools, so a failed download only skips them.
+      console.warn("[WebMCP] The tools did not load:", error);
+    });
+    if (!modules) return { provide: { serveWebMcpTools } };
+    const [{ registerWebMcpTools }, { webMcpLabels, webMcpTools }] = modules;
 
     const { currentRoute } = useRouter();
     const error = useError();
