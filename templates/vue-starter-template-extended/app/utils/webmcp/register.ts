@@ -77,6 +77,18 @@ export function registerWebMcpTools(
     });
   let queue: Promise<unknown> = Promise.resolve();
 
+  // The tools are listed by route, the handlers come from a component.
+  let warned = false;
+  const notReady = () => {
+    if (!warned) {
+      warned = true;
+      console.warn(
+        "[WebMCP] No tool handlers. Is <WebMcpTools /> on this page?",
+      );
+    }
+    return NOT_READY;
+  };
+
   watch(
     active,
     (isActive, _wasActive, onCleanup) => {
@@ -103,7 +115,7 @@ export function registerWebMcpTools(
               const reason = () => {
                 if (page.signal.aborted) return LEFT_PAGE;
                 if (caller?.aborted) return CANCELLED;
-                return handlers ? WAITING : NOT_READY;
+                return handlers ? WAITING : notReady();
               };
               let running = false;
 
@@ -112,7 +124,7 @@ export function registerWebMcpTools(
                   return { error: reason() };
                 }
                 const handler = handlers?.[tool.name];
-                if (!handler) return { error: NOT_READY };
+                if (!handler) return { error: notReady() };
                 running = true;
                 // The browser drops the reason of a rejected tool, so errors go back as data.
                 try {
@@ -154,6 +166,8 @@ export function registerWebMcpTools(
 
   return serve;
 }
+
+export type ServeWebMcpTools = ReturnType<typeof registerWebMcpTools>;
 
 /** Resolves with STOPPED when the signal fires before the promise settles. */
 function unless<T>(signal: AbortSignal, promise: Promise<T>) {

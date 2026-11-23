@@ -7,16 +7,19 @@ import {
 
 import type { Schemas } from "#shopware";
 import {
+  LISTING_INCLUDES,
   cartAnswer,
+  cartWarnings,
   listingAnswer,
   pathWithoutLocale,
-  productSummary,
+  productAnswer,
   readCount,
   readPrice,
   readProductId,
   readText,
   shorten,
 } from "~/utils/webmcp/answers";
+import { countNavigations, whenSet } from "~/utils/webmcp/guards";
 import type { WebMcpToolHandler } from "~/utils/webmcp/register";
 import { webMcpLabels } from "~/utils/webmcp/tools";
 import type { WebMcpToolName } from "~/utils/webmcp/tools";
@@ -30,13 +33,13 @@ const {
   cart,
   cartItems,
   changeProductQuantity,
+  consumeCartErrors,
   isEmpty,
   refreshCart,
   removeItemById,
   subtotal,
   totalPrice,
 } = useCart();
-const { getErrorsCodes } = useCartNotification();
 const { currency } = useSessionContext();
 const { pushSuccess, pushWarning } = useNotifications();
 const { t, te, locale } = useI18n();
@@ -75,16 +78,7 @@ const cartLine = (id: string) =>
 
 // app.vue reads the cart after it mounts and does not wait for the answer.
 // A cart change made before that answer lands would be undone on screen.
-const firstCartRead = new Promise<void>((resolve) => {
-  if (cart.value) return resolve();
-  const timer = setTimeout(done, 10_000);
-  const unwatch = watch(cart, (value) => value && done());
-  function done() {
-    clearTimeout(timer);
-    unwatch();
-    resolve();
-  }
-});
+const firstCartRead = whenSet(cart, 10_000);
 
 async function loadCart(stop: AbortSignal) {
   await firstCartRead;
@@ -92,24 +86,21 @@ async function loadCart(stop: AbortSignal) {
   stop.throwIfAborted();
 }
 
-// Counts navigations, so a call never moves a shopper who opened another page.
-let navigations = 0;
-onBeforeUnmount(
-  router.beforeEach(() => {
-    navigations++;
-  }),
-);
-function sinceNow() {
-  const start = navigations;
-  return () => navigations !== start;
-}
+// So a call never moves a shopper who opened another page meanwhile.
+const navigations = countNavigations(router);
+onBeforeUnmount(navigations.stop);
+const sinceNow = navigations.sinceNow;
 
-// Cart errors pile up in shared state, so drop old ones before each write.
+// The warnings come from the write's own answer. The shared error list is
+// emptied after it, so the shopper's next click does not show them again.
 // A stopped call shows nothing more to the shopper.
-async function changeCart(write: () => Promise<unknown>, stop: AbortSignal) {
-  getErrorsCodes();
-  await write();
-  const warnings = getErrorsCodes().map((error) => {
+async function changeCart(
+  write: () => Promise<Schemas["Cart"]>,
+  stop: AbortSignal,
+) {
+  const result = await write();
+  consumeCartErrors();
+  const warnings = cartWarnings(result).map((error) => {
     const key = `errors.${error.messageKey}`;
     return te(key) ? t(key, { ...error }) : error.message;
   });
@@ -169,7 +160,7 @@ async function showListing(
 function plainText(html: string) {
   const markup = html.replace(/</g, " <");
   const { body } = new DOMParser().parseFromString(markup, "text/html");
-  return (body.textContent ?? "").replace(/\s+/g, " ").trim().slice(0, 600);
+  return (body.textContent ?? "").replace(/\s+/g, " ").trim();
 }
 
 // The router follows the URL at once. useRoute() waits for the next page.
@@ -188,8 +179,7 @@ const handlers = {
     const maxPrice = readPrice(input.maxPrice, "maxPrice");
     const filters = { "min-price": minPrice, "max-price": maxPrice };
     const { data } = await apiClient.invoke("searchPage post /search", {
-      headers: { "sw-include-seo-urls": true },
-      body: { search, limit: 10, ...filters },
+      body: { search, limit: 10, ...filters, includes: LISTING_INCLUDES },
       fetchOptions: { signal: stop },
     });
     return showListing("/search", { search, ...filters }, data, stop, movedOn);
@@ -217,9 +207,8 @@ const handlers = {
     const { data } = await apiClient.invoke(
       "readProductListing post /product-listing/{categoryId}",
       {
-        headers: { "sw-include-seo-urls": true },
         pathParams: { categoryId: category.id },
-        body: { limit: 10, ...filters },
+        body: { limit: 10, ...filters, includes: LISTING_INCLUDES },
         fetchOptions: { signal: stop },
       },
     );
@@ -234,13 +223,11 @@ const handlers = {
     const { product } = await readProduct(id, {
       associations: { options: {} },
     });
-    return {
-      ...productSummary(product),
+    return productAnswer(product, {
       url: localePath(getProductRoute(product).path),
       currency: currency.value?.isoCode,
-      stock: product.availableStock,
       description: plainText(getTranslatedProperty(product, "description")),
-    };
+    });
   },
 
   async add_to_cart(input, stop) {
@@ -333,9 +320,10 @@ function announced(name: WebMcpToolName): WebMcpToolHandler {
 let stopServing = () => {};
 onMounted(() => {
   const names = Object.keys(handlers) as WebMcpToolName[];
-  stopServing = nuxtApp.$serveWebMcpTools(
-    Object.fromEntries(names.map((name) => [name, announced(name)])),
-  );
+  stopServing =
+    nuxtApp.$serveWebMcpTools?.(
+      Object.fromEntries(names.map((name) => [name, announced(name)])),
+    ) ?? stopServing;
 });
 onBeforeUnmount(() => {
   stopServing();

@@ -3,9 +3,12 @@ import { describe, expect, it } from "vitest";
 import type { Schemas } from "#shopware";
 
 import {
+  LISTING_INCLUDES,
   cartAnswer,
+  cartWarnings,
   listingAnswer,
   pathWithoutLocale,
+  productAnswer,
   productSummary,
   readCount,
   readPrice,
@@ -64,6 +67,84 @@ describe("productSummary", () => {
       }),
     );
     expect(summary).toMatchObject({ options: ["Red", "XL"], available: false });
+  });
+});
+
+describe("LISTING_INCLUDES", () => {
+  it("asks the Store API for every product field productSummary reads", () => {
+    const read = new Set<string>();
+    const tracked = new Proxy(
+      product({
+        calculatedPrices: [{ unitPrice: 10, quantity: 1 }],
+        calculatedCheapestPrice: { unitPrice: 9 },
+        options: [{ translated: { name: "Red" } }],
+      }) as object,
+      {
+        get(target, key, receiver) {
+          if (typeof key === "string") read.add(key);
+          return Reflect.get(target, key, receiver);
+        },
+      },
+    ) as Schemas["Product"];
+    productSummary(tracked);
+    expect([...read].sort()).toEqual(
+      [...read].filter((key) => LISTING_INCLUDES.product.includes(key)).sort(),
+    );
+    expect(read.size).toBeGreaterThan(5);
+  });
+});
+
+describe("productAnswer", () => {
+  it("keeps a long product under 1500 characters", () => {
+    const answer = productAnswer(
+      product({
+        translated: { name: "N".repeat(500) },
+        options: Array.from({ length: 60 }, (_, index) => ({
+          name: `Option ${index}`,
+        })),
+      }),
+      {
+        url: "/a-very-long-path",
+        currency: "EUR",
+        description: 'A "quoted" line. '.repeat(400),
+      },
+    );
+    expect(JSON.stringify(answer).length).toBeLessThanOrEqual(1500);
+    expect(answer.name).toHaveLength(150);
+    expect(answer.options?.length).toBeLessThan(60);
+    expect(answer.description.length).toBeGreaterThan(100);
+    expect(answer).toMatchObject({ url: "/a-very-long-path", currency: "EUR" });
+  });
+
+  it("keeps a short description whole", () => {
+    const answer = productAnswer(product({ availableStock: 7 }), {
+      url: "/wooden-iplug",
+      description: "Hand made.",
+    });
+    expect(answer).toMatchObject({ stock: 7, description: "Hand made." });
+  });
+});
+
+describe("cartWarnings", () => {
+  it("reads the problems from the cart the write returned", () => {
+    const cart = {
+      errors: {
+        "product-stock-reached": {
+          messageKey: "product-stock-reached",
+          message: "Only 100 left",
+        },
+        "promotion-discount-added": {
+          messageKey: "promotion-discount-added",
+          message: "Discount added",
+        },
+      },
+    } as unknown as Schemas["Cart"];
+    expect(cartWarnings(cart).map(({ message }) => message)).toEqual([
+      "Only 100 left",
+    ]);
+    expect(cartWarnings({ errors: [] } as unknown as Schemas["Cart"])).toEqual(
+      [],
+    );
   });
 });
 

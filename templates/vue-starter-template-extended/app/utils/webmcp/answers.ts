@@ -47,6 +47,24 @@ export function readProductId(value: unknown) {
   );
 }
 
+/** Only the fields `productSummary` reads. A list of 10 is about 5 KB instead of 140 KB. */
+export const LISTING_INCLUDES = {
+  product: [
+    "id",
+    "name",
+    "translated",
+    "available",
+    "calculatedPrice",
+    "calculatedPrices",
+    "calculatedCheapestPrice",
+    "options",
+  ],
+  calculated_price: ["unitPrice", "quantity"],
+  calculated_cheapest_price: ["unitPrice"],
+  property_group_option: ["name", "translated"],
+  product_listing: ["elements", "total", "sorting"],
+};
+
 export function productSummary(product: Schemas["Product"]) {
   const options = (product.options ?? []).map((option) =>
     getTranslatedProperty(option, "name"),
@@ -66,6 +84,42 @@ export function productSummary(product: Schemas["Product"]) {
       : {}),
     ...(product.available ? {} : { available: false }),
   };
+}
+
+/** The get_product answer, cut so that it stays under 1,500 characters. */
+export function productAnswer(
+  product: Schemas["Product"],
+  extra: { url: string; currency?: string; description: string },
+) {
+  const { name, options, ...summary } = productSummary(product);
+  const answer = {
+    ...summary,
+    name: name.slice(0, 150),
+    ...(options ? { options: shorten(options, 300) } : {}),
+    url: extra.url.slice(0, 200),
+    currency: extra.currency,
+    stock: product.availableStock,
+    description: "",
+  };
+  const room = 1500 - JSON.stringify(answer).length;
+  let description = extra.description.slice(0, Math.max(0, room));
+  // Quotes and other escaped characters take more room in JSON.
+  while (JSON.stringify({ ...answer, description }).length > 1500) {
+    description = description.slice(0, -20);
+  }
+  return { ...answer, description };
+}
+
+// Same as useCartNotification: this one is good news, not a warning.
+const NOT_A_WARNING = ["promotion-discount-added"];
+
+/** The problems a cart write reports in its own answer. */
+export function cartWarnings(cart: Schemas["Cart"]) {
+  const errors = cart.errors;
+  if (!errors || Array.isArray(errors)) return [];
+  return Object.values(errors as Record<string, Schemas["CartError"]>).filter(
+    (error) => !NOT_A_WARNING.includes(error.messageKey),
+  );
 }
 
 type LinePayload = { options?: { option: string }[] };

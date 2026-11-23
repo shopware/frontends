@@ -1,12 +1,21 @@
-import { registerWebMcpTools } from "~/utils/webmcp/register";
-import { webMcpLabels, webMcpTools } from "~/utils/webmcp/tools";
+import type { ServeWebMcpTools } from "~/utils/webmcp/register";
 
 export default defineNuxtPlugin({
   name: "webmcp-tools",
-  // Runs right after the router, before the plugins that wait for the network.
+  // Runs right after the router, next to the plugins that wait for the network.
   enforce: "pre",
   dependsOn: ["nuxt:router"],
-  setup() {
+  parallel: true,
+  async setup() {
+    let serveWebMcpTools: ServeWebMcpTools | undefined;
+    // Most browsers have no WebMCP. They load none of the tool code.
+    if (!("modelContext" in document)) return { provide: { serveWebMcpTools } };
+    const [{ registerWebMcpTools }, { webMcpLabels, webMcpTools }] =
+      await Promise.all([
+        import("~/utils/webmcp/register"),
+        import("~/utils/webmcp/tools"),
+      ]);
+
     const { currentRoute } = useRouter();
     const error = useError();
 
@@ -25,8 +34,7 @@ export default defineNuxtPlugin({
       title: labels[tool.name],
     }));
 
-    return {
-      provide: { serveWebMcpTools: registerWebMcpTools(tools, active) },
-    };
+    serveWebMcpTools = registerWebMcpTools(tools, active);
+    return { provide: { serveWebMcpTools } };
   },
 });

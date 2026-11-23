@@ -120,6 +120,18 @@ describe("registerWebMcpTools", () => {
     expect(registered.size).toBe(2);
   });
 
+  it("warns once when calls find no handlers on the page", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    start({ timeout: 30 });
+
+    expect(await call("read")).toEqual({
+      error: expect.stringContaining("still loading"),
+    });
+    await call("write");
+    expect(warn).toHaveBeenCalledOnce();
+    expect(warn.mock.calls[0]?.[0]).toContain("<WebMcpTools />");
+  });
+
   it("lets a call wait for the handlers", async () => {
     const serve = start();
     const answer = call("read");
