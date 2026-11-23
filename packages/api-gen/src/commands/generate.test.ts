@@ -6,7 +6,11 @@ import openapiTS, {
 import ts from "typescript";
 import { describe, expect, it } from "vitest";
 
-import { normalizeCustomFieldsTypes, runTransformations } from "./generate";
+import {
+  normalizeCustomFieldsTypes,
+  runTransformations,
+  transformSchema,
+} from "./generate";
 
 function printTypeNode(typeNode: ts.TypeNode) {
   const printer = ts.createPrinter();
@@ -352,6 +356,41 @@ describe("generate transformations", () => {
 
     expect(astToString(ast)).toContain(
       'typeName?: "invoice" | "delivery_note" | (string & {});',
+    );
+  });
+
+  it("keeps nullable string fields in translated", async () => {
+    const ast = await openapiTS(
+      {
+        openapi: "3.1.0",
+        info: {
+          title: "Test schema",
+          version: "1.0.0",
+        },
+        paths: {},
+        components: {
+          schemas: {
+            Media: {
+              type: "object",
+              properties: {
+                alt: { type: ["string", "null"] },
+                fileSize: { type: ["integer", "null"] },
+                translated: { type: "object" },
+                url: { type: "string" },
+              },
+            },
+          },
+        },
+      } as unknown as OpenAPI3,
+      {
+        version: 3,
+        exportType: true,
+        transform: transformSchema,
+      },
+    );
+
+    expect(astToString(ast).replace(/\s+/g, " ")).toContain(
+      "translated: { alt: null | string; url: string; };",
     );
   });
 
