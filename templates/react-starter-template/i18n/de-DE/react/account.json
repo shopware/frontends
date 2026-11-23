@@ -1,0 +1,20 @@
+{
+  "account": {
+    "address": {
+      "deleteSuccessMessage": "Adresse wurde erfolgreich gelöscht.",
+      "defaultBillingSuccessMessage": "Standardrechnungsadresse wurde geändert.",
+      "defaultShippingSuccessMessage": "Standardversandadresse wurde geändert."
+    },
+    "registration": {
+      "minLengthHint": "Mindestens {min} Zeichen | Mindestens {min} Zeichen"
+    },
+    "changeEmail": {
+      "form": {
+        "emailFieldName": "E-Mail"
+      }
+    },
+    "loginModal": {
+      "close": "Schließen"
+    }
+  }
+}

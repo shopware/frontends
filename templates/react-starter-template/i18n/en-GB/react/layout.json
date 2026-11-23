@@ -1,0 +1,30 @@
+{
+  "layout": {
+    "logo": "Shopware Frontends Demo Store",
+    "header": {
+      "search": "Search",
+      "closeSearch": "Close",
+      "signedInAs": "Signed in as {name}",
+      "cartWithCount": "Cart, {count} item | Cart, {count} items",
+      "wishlistWithCount": "Wishlist, {count} item | Wishlist, {count} items"
+    },
+    "sideMenu": {
+      "open": "Open menu",
+      "showSubcategories": "Show subcategories",
+      "hideSubcategories": "Hide subcategories"
+    },
+    "languageSwitcher": {
+      "pending": "Opening the page in {language}…"
+    },
+    "currencySwitcher": {
+      "pending": "Switching the currency to {currency}…",
+      "changed": "Currency changed to {currency}."
+    },
+    "footer": {
+      "builtWith": "Built with Shopware Frontends and Next.js"
+    },
+    "notFound": {
+      "backToHomepage": "Back to homepage"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "loginForm": {
+    "header": "Zaloguj się do swojego konta",
+    "subHeader": "Zaloguj się do swojego konta, aby kontynuować",
+    "loginLabel": "Adres e-mail",
+    "passwordLabel": "Hasło",
+    "submitButtonLabel": "Zaloguj się",
+    "signUpButtonLabel": "Zarejestruj się"
+  }
+}

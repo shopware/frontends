@@ -8,6 +8,7 @@ import { SessionActionsProvider } from "@/features/session/components/SessionAct
 import type { SessionActions } from "@/features/session/components/SessionActionsContext";
 import { SessionProvider } from "@/features/session/components/SessionProvider";
 import type { StorefrontSession } from "@/features/session/types";
+import { withI18n } from "@/test/i18n";
 import {
   interact,
   mount,
@@ -70,10 +71,14 @@ afterEach(async () => {
   mounted = undefined;
 });
 
-async function setup(initial: StorefrontSession, children: ReactNode = null) {
+async function setup(
+  initial: StorefrontSession,
+  children: ReactNode = null,
+  fallback?: string,
+) {
   mounted = await mount(
     <ControlledSession initial={initial}>
-      <LoggedInRedirect />
+      <LoggedInRedirect fallback={fallback} />
       {children}
     </ControlledSession>,
   );
@@ -117,6 +122,42 @@ describe("LoggedInRedirect", () => {
     await setup(customer);
     expect(replace).toHaveBeenCalledTimes(1);
     expect(replace).toHaveBeenCalledWith("/");
+  });
+
+  it("sends a logged-in customer to the given fallback without a usable redirect", async () => {
+    window.history.replaceState(null, "", "/Merchant-registration/");
+    await setup(customer, null, "/account");
+    expect(replace).toHaveBeenCalledExactlyOnceWith("/account");
+
+    await mounted?.unmount();
+    mounted = undefined;
+    replace.mockReset();
+    window.history.replaceState(
+      null,
+      "",
+      "/Merchant-registration/?redirect=%2F%2Fevil.example",
+    );
+
+    await setup(customer, null, "/account");
+    expect(replace).toHaveBeenCalledExactlyOnceWith("/account");
+  });
+
+  it("still follows a usable redirect when a fallback is given", async () => {
+    window.history.replaceState(
+      null,
+      "",
+      "/Merchant-registration/?redirect=%2Fcheckout",
+    );
+
+    await setup(customer, null, "/account");
+
+    expect(replace).toHaveBeenCalledExactlyOnceWith("/checkout");
+  });
+
+  it("leaves a guest on a page with a fallback", async () => {
+    await setup(guest, null, "/account");
+
+    expect(replace).not.toHaveBeenCalled();
   });
 
   it("waits for the session to load before deciding", async () => {
@@ -226,5 +267,51 @@ describe("LoggedInRedirect", () => {
     expect(push).toHaveBeenCalledTimes(1);
     expect(push).toHaveBeenCalledWith("/Furniture/");
     expect(replace).not.toHaveBeenCalled();
+  });
+});
+
+describe("LoggedInRedirect in Polish", () => {
+  it("sends a logged-in customer to the Polish home page or keeps a prefixed redirect", async () => {
+    window.history.replaceState(null, "", "/pl-PL/account/login");
+    mounted = await mount(
+      withI18n(
+        <ControlledSession initial={customer}>
+          <LoggedInRedirect />
+        </ControlledSession>,
+        "pl-PL",
+      ),
+    );
+    expect(replace).toHaveBeenCalledExactlyOnceWith("/pl-PL");
+
+    await mounted.unmount();
+    replace.mockReset();
+    window.history.replaceState(
+      null,
+      "",
+      "/pl-PL/account/login?redirect=%2Fpl-PL%2Faccount%2Faddress",
+    );
+    mounted = await mount(
+      withI18n(
+        <ControlledSession initial={customer}>
+          <LoggedInRedirect />
+        </ControlledSession>,
+        "pl-PL",
+      ),
+    );
+    expect(replace).toHaveBeenCalledExactlyOnceWith("/pl-PL/account/address");
+  });
+
+  it("prefixes the fallback with the Polish locale", async () => {
+    window.history.replaceState(null, "", "/pl-PL/Merchant-registration/");
+    mounted = await mount(
+      withI18n(
+        <ControlledSession initial={customer}>
+          <LoggedInRedirect fallback="/account" />
+        </ControlledSession>,
+        "pl-PL",
+      ),
+    );
+
+    expect(replace).toHaveBeenCalledExactlyOnceWith("/pl-PL/account");
   });
 });

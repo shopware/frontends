@@ -1,26 +1,67 @@
+import { getTranslatedProperty } from "@shopware/helpers";
+
 import { CmsPage } from "@/cms";
+import { Breadcrumbs } from "@/features/navigation/components/Breadcrumbs";
+import type { Locale } from "@/i18n/config";
+import { getTranslator } from "@/i18n/server";
+import { readCategoryNavigation } from "@/platform/cms/categoryNavigation";
 import { createStorefrontCmsContext } from "@/platform/cms/context";
+import { getSiteUrl } from "@/platform/seo/siteUrl";
 import { readLandingPage } from "@/platform/shopware/reads/landingPage";
+import { resolveContentLanguage } from "@/platform/shopware/reads/languages";
 
 export type LandingPageProps = {
   landingPageId: string;
+  locale: Locale;
+  languageId: string | null;
 };
 
-export async function LandingPage({ landingPageId }: LandingPageProps) {
-  const landingPage = await readLandingPage(landingPageId);
-  const ctx = await createStorefrontCmsContext({
-    routeName: "frontend.landing.page",
-    foreignKey: landingPageId,
-    landingPage,
-  });
+export async function LandingPage({
+  landingPageId,
+  locale,
+  languageId,
+}: LandingPageProps) {
+  const landingPage = await readLandingPage(landingPageId, languageId);
+  const [ctx, { contentLang }] = await Promise.all([
+    createStorefrontCmsContext({
+      locale,
+      languageId,
+      routeName: "frontend.landing.page",
+      foreignKey: landingPageId,
+      landingPage,
+      navigation: readCategoryNavigation(
+        landingPage.cmsPage,
+        "main-navigation",
+        languageId,
+      ),
+    }),
+    resolveContentLanguage(locale),
+  ]);
+  const name = getTranslatedProperty(landingPage, "name");
+  const trail = (
+    <Breadcrumbs
+      items={name ? [{ key: landingPage.id, name }] : []}
+      locale={locale}
+      contentLang={contentLang}
+      siteUrl={getSiteUrl()}
+    />
+  );
 
   if (!landingPage.cmsPage) {
     return (
-      <p className="container mx-auto bg-white px-4 py-8 text-surface-on-surface-variant">
-        This landing page has no layout assigned.
-      </p>
+      <>
+        {trail}
+        <p className="container mx-auto bg-white px-4 py-8 text-surface-on-surface-variant">
+          {getTranslator(locale)("cms.noLayout.landingPage")}
+        </p>
+      </>
     );
   }
 
-  return <CmsPage content={landingPage.cmsPage} ctx={ctx} />;
+  return (
+    <>
+      {trail}
+      <CmsPage content={landingPage.cmsPage} ctx={ctx} />
+    </>
+  );
 }

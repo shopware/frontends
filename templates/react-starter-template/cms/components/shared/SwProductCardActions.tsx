@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useRef, useState, useSyncExternalStore } from "react";
 
 import { useCmsActions } from "../../actions/CmsActionsContext";
 import type { CmsActions } from "../../actions/CmsActionsContext";
@@ -47,6 +47,7 @@ export function SwProductCardWishlistButton({
   const actions = useCmsActions();
   const mounted = useMounted();
   const [isLoading, setIsLoading] = useState(false);
+  const loading = useRef(false);
   const [toggled, setToggled] = useState<WishlistToggle | null>(null);
 
   if (!mounted) return null;
@@ -66,9 +67,12 @@ export function SwProductCardWishlistButton({
   }
 
   async function toggleWishlist() {
+    if (loading.current) return;
+    loading.current = true;
     setIsLoading(true);
     try {
       const result = await actions.toggleWishlist(productId);
+      if (result.cancelled) return;
       if (!result.ok) {
         notifyFailure(result.message);
         return;
@@ -86,6 +90,7 @@ export function SwProductCardWishlistButton({
     } catch (error) {
       notifyFailure(error instanceof Error ? error.message : undefined);
     } finally {
+      loading.current = false;
       setIsLoading(false);
     }
   }
@@ -98,8 +103,9 @@ export function SwProductCardWishlistButton({
           ? translations.removeFromWishlist
           : translations.addToWishlist
       }
-      disabled={isLoading}
-      className="w-10 h-10 right-4 top-4 absolute bg-brand-secondary rounded-full flex items-center justify-center"
+      aria-disabled={isLoading || undefined}
+      aria-busy={isLoading || undefined}
+      className="w-10 h-10 right-4 top-4 absolute bg-brand-secondary rounded-full flex items-center justify-center aria-disabled:cursor-progress aria-disabled:opacity-60"
       data-testid="product-box-toggle-wishlist-button"
       onClick={() => {
         void toggleWishlist();

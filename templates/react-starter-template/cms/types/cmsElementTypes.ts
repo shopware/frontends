@@ -296,9 +296,12 @@ export type CmsElementProductDescriptionReviews = Omit<
     productId: null | string;
     ratingSuccess: boolean;
     product?: Schemas["Product"];
-    reviews: {
+    reviews?: {
       elements: Schemas["ProductReview"][];
-    };
+      total?: number;
+      page?: number;
+      limit?: number | null;
+    } | null;
     apiAlias: "cms_product_description_reviews";
   };
 };

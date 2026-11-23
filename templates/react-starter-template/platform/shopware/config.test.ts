@@ -12,6 +12,7 @@ function stubShopwareEnv(env: Record<string, string>) {
     "SHOPWARE_PUBLIC_ENDPOINT",
     "SHOPWARE_ACCESS_TOKEN",
     "SHOPWARE_DEV_STOREFRONT_URL",
+    "SHOPWARE_MEDIA_ORIGIN",
   ]) {
     vi.stubEnv(name, env[name] ?? "");
   }
@@ -28,7 +29,7 @@ async function freshConfigModule() {
 }
 
 describe("getShopwareConfig", () => {
-  it("falls back to the demo backend and its dev storefront URL", () => {
+  it("falls back to the demo backend, its dev storefront URL and its media CDN", () => {
     stubShopwareEnv({});
 
     expect(getShopwareConfig()).toEqual({
@@ -36,6 +37,7 @@ describe("getShopwareConfig", () => {
       publicEndpoint: DEMO_ENDPOINT,
       accessToken: "SWSCNWDGMUWZM0TLVUU0YKLQVW",
       devStorefrontUrl: "https://demo-frontends.shopware.store/figma",
+      mediaOrigin: "https://cdn.shopware.store",
     });
   });
 
@@ -50,7 +52,21 @@ describe("getShopwareConfig", () => {
       publicEndpoint: "https://shop.example.com/store-api/",
       accessToken: "SWSCOWN",
       devStorefrontUrl: null,
+      mediaOrigin: null,
     });
+  });
+
+  it("takes the media origin from SHOPWARE_MEDIA_ORIGIN, also for the demo backend", () => {
+    stubShopwareEnv({ SHOPWARE_MEDIA_ORIGIN: "https://media.example.com" });
+
+    expect(getShopwareConfig().mediaOrigin).toBe("https://media.example.com");
+
+    stubShopwareEnv({
+      SHOPWARE_ENDPOINT: "https://shop.example.com/store-api/",
+      SHOPWARE_MEDIA_ORIGIN: "https://cdn.example.com",
+    });
+
+    expect(getShopwareConfig().mediaOrigin).toBe("https://cdn.example.com");
   });
 
   it("keeps the public endpoint and the dev storefront URL apart from the server endpoint", () => {

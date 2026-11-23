@@ -46,7 +46,7 @@ beforeEach(() => {
 
 describe("readCountries", () => {
   it("reads every page through the cacheable GET route", async () => {
-    const countries = await readCountries();
+    const countries = await readCountries(null);
 
     expect(api.invoke).toHaveBeenCalledTimes(2);
     for (const [index, page] of [1, 2].entries()) {

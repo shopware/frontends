@@ -1,0 +1,52 @@
+{
+  "checkout": {
+    "title": "Kasse",
+    "summary": "Zusammenfassung",
+    "subtotal": "Zwischensumme",
+    "shippingCosts": "Versand",
+    "total": "Gesamt",
+    "placeOrderButton": "Bestellen",
+    "placingOrder": "Bestellung wird aufgegeben…",
+    "customerAddress": {
+      "firstNamePlaceholder": "Vorname eingeben",
+      "firstNameLabel": "Vorname",
+      "lastNamePlaceholder": "Nachname eingeben",
+      "lastNameLabel": "Nachname",
+      "streetPlaceholder": "Straße eingeben",
+      "streetLabel": "Straße",
+      "zipcodePlaceholder": "Postleitzahl eingeben",
+      "zipcodeLabel": "Postleitzahl",
+      "cityPlaceholder": "Stadt eingeben",
+      "cityLabel": "Stadt",
+      "countryPlaceholder": "Land auswählen",
+      "countryLabel": "Land"
+    },
+    "customerBaseInfo": {
+      "emailPlaceholder": "E-Mail eingeben",
+      "emailLabel": "E-Mail",
+      "passwordPlaceholder": "Passwort eingeben",
+      "passwordLabel": "Passwort",
+      "createAccountToggleLabel": "Kundenkonto erstellen",
+      "continueAsGuestToggleLabel": "Als Gast fortfahren"
+    },
+    "success": {
+      "title": "Vielen Dank für Ihre Bestellung",
+      "header": "Wir haben Ihre Bestellung #{0} erhalten und werden sie so schnell wie möglich verarbeiten.",
+      "items": "Bestellte Artikel",
+      "deliveryAndPayment": "Lieferung und Zahlung",
+      "continueShopping": "Weiter einkaufen",
+      "viewInAccount": "In meinem Konto ansehen",
+      "goToPayment": "Zur Zahlung gehen",
+      "loadError": "Wir konnten Ihre Bestellung nicht laden. Ihre Sitzung ist möglicherweise abgelaufen.",
+      "paymentProcessLabel": "Beenden Sie den Zahlungsvorgang.",
+      "paymentProcessInfo": "Sie werden in 5 Sekunden zur Zahlungsmaschine weitergeleitet."
+    },
+    "shippingAddressLabel": "Versandadresse",
+    "paymentMethodLabel": "Zahlungsmethode",
+    "billingAddressLabel": "Rechnungsadresse",
+    "shippingMethodLabel": "Versandmethode",
+    "takesUpTo": "Dauert bis zu",
+    "shippingPriceLabel": "Versand",
+    "totalLabel": "Gesamt"
+  }
+}

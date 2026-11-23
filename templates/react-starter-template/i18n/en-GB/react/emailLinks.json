@@ -1,0 +1,18 @@
+{
+  "account": {
+    "registrationConfirm": {
+      "title": "Account confirmation",
+      "guestConfirmed": "Thank you for confirming your email address. You can now complete your order.",
+      "toLogin": "Go to login"
+    }
+  },
+  "newsletter": {
+    "confirm": {
+      "alreadyConfirmed": "Your newsletter subscription has already been confirmed.",
+      "invalidLink": "This confirmation link is invalid. Please subscribe again to receive a new one."
+    }
+  },
+  "errors": {
+    "CHECKOUT__CUSTOMER_OPTIN_NOT_COMPLETED": "Your account has not been activated yet. Please click the link in the confirmation email we sent you."
+  }
+}

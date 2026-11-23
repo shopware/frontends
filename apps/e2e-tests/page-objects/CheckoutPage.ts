@@ -1,6 +1,7 @@
 import type { Locator, Page } from "@playwright/test";
 
 import {
+  checkIfPresent,
   selectDefaultCountry,
   selectFirstOptionIfPresent,
 } from "../utils/form";
@@ -19,6 +20,9 @@ export class CheckoutPage {
   readonly city: Locator;
   readonly country: Locator;
   readonly countryState: Locator;
+  readonly termCheckbox: Locator;
+  readonly revocationCheckbox: Locator;
+  readonly dataProtectionCheckbox: Locator;
   readonly createAccountToggle: Locator;
   readonly passwordInput: Locator;
 
@@ -34,6 +38,13 @@ export class CheckoutPage {
     this.city = page.getByTestId("checkout-pi-city-input");
     this.country = page.getByTestId("country-select");
     this.countryState = page.getByTestId("checkout-pi-state-input");
+    this.termCheckbox = page.getByTestId("checkout-t&c-checkbox-tos");
+    this.revocationCheckbox = page.getByTestId(
+      "checkout-t&c-checkbox-revocation",
+    );
+    this.dataProtectionCheckbox = page.getByTestId(
+      "checkout-t&c-checkbox-data-protection",
+    );
     this.createAccountToggle = page.getByTestId(
       "checkout-create-account-toggle",
     );
@@ -47,6 +58,14 @@ export class CheckoutPage {
       .waitFor({ state: "visible" });
     await this.goToCheckoutButton.click();
     await this.page.waitForURL("**/checkout");
+  }
+
+  /** Not every template asks for terms acceptance. */
+  async markTerms() {
+    await this.placeOrderButton.waitFor({ state: "visible" });
+    await checkIfPresent(this.termCheckbox);
+    await checkIfPresent(this.revocationCheckbox);
+    await checkIfPresent(this.dataProtectionCheckbox);
   }
 
   async placeOrder() {

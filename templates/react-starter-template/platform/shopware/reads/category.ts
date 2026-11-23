@@ -6,6 +6,7 @@ import type { Schemas, operations } from "#shopware";
 
 import { createShopwareClient } from "../client";
 import { notFoundOn404 } from "../errors";
+import { languageCacheTags } from "./cacheTags";
 import { cmsAssociations } from "./cmsAssociations";
 
 type ReadCategoryGetQuery = NonNullable<
@@ -14,12 +15,13 @@ type ReadCategoryGetQuery = NonNullable<
 
 export async function readCategory(
   navigationId: string,
+  languageId: string | null,
 ): Promise<Schemas["Category"]> {
   "use cache";
   cacheLife("catalog");
-  cacheTag(`sw:category:${navigationId}`);
+  cacheTag(...languageCacheTags(`sw:category:${navigationId}`, languageId));
 
-  const response = await createShopwareClient()
+  const response = await createShopwareClient({ languageId })
     .invoke("readCategoryGet get /category/{navigationId}", {
       headers: { "sw-include-seo-urls": true },
       pathParams: { navigationId },

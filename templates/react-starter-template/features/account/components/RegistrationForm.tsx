@@ -5,12 +5,18 @@ import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 
 import { BaseButton } from "@/cms/client";
+import type { BirthdayPart } from "@/components/form/birthday";
+import { BirthdayField } from "@/components/form/BirthdayField";
+import { CheckboxField } from "@/components/form/CheckboxField";
 import { CountrySelect } from "@/components/form/CountrySelect";
 import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
+import type { SelectOption } from "@/components/form/SelectField";
 import { useNotify } from "@/components/NotifyContext";
 import { resolveRedirectFromSearch } from "@/features/account/redirect";
 import {
+  REGISTRATION_MAX_LENGTHS,
+  REGISTRATION_MIN_LENGTHS,
   emptyRegistrationValues,
   toRegistrationInput,
   validateRegistration,
@@ -18,64 +24,47 @@ import {
 import type {
   AccountType,
   RegistrationField,
+  RegistrationSettings,
   RegistrationValues,
 } from "@/features/account/registrationSchema";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
+import { useContentLang } from "@/i18n/ContentLanguageProvider";
+import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
-
-const t = {
-  account: {
-    signUpHeader: "Create an account",
-    signUpSubHeader: "Register to get started",
-    yourAddress: "Your address",
-    messages: {
-      signUpSuccess:
-        "Thank you for signing up! You will receive a confirmation email shortly. Click on the link in it to complete the sign-up.",
-    },
-  },
-  form: {
-    accountType: {
-      title: "Account type",
-      private: "Private",
-      business: "Company",
-    },
-    firstName: "First name",
-    lastName: "Last name",
-    email: "Email address",
-    password: "Password",
-    vatId: "VAT ID",
-    company: "Company",
-    streetAddress: "Street address",
-    postalCode: "ZIP / Postal code",
-    city: "City",
-    country: "Country",
-    chooseCountry: "Choose country...",
-    state: "State",
-    chooseState: "Choose state",
-    submit: "Submit",
-    requiredFieldsNote: "Fields marked with asterisks (*) are required.",
-    minLengthHint: "At least {min} characters",
-  },
-  listing: {
-    retry: "Try again",
-  },
-};
-
-function minLengthHint(min: number): string {
-  return t.form.minLengthHint.replace("{min}", String(min));
-}
-
-const ACCOUNT_TYPE_OPTIONS = [
-  { label: t.form.accountType.private, value: "private" },
-  { label: t.form.accountType.business, value: "business" },
-];
+import { TEMPLATE_SHOP_SETTINGS } from "@/site/shopSettings";
 
 type Touched = Partial<Record<RegistrationField, boolean>>;
+
+type TextField = Exclude<
+  RegistrationField,
+  "accountType" | "acceptedDataProtection"
+>;
+
+const BIRTHDAY_FIELDS = {
+  day: "birthdayDay",
+  month: "birthdayMonth",
+  year: "birthdayYear",
+} as const satisfies Record<BirthdayPart, TextField>;
+
+const FIRST_INVALID_FIELD = '[aria-invalid="true"]:not(:disabled)';
 
 export type RegistrationFormProps = {
   countries: CountryOption[];
   countriesUnavailable?: boolean;
+  settings?: RegistrationSettings;
+  salutations?: SelectOption[];
+  salutationsUnavailable?: boolean;
+  birthYearMax?: number;
+  companyOnly?: boolean;
+  requestedGroupId?: string;
 };
+
+function initialValues(companyOnly: boolean): RegistrationValues {
+  return {
+    ...emptyRegistrationValues,
+    accountType: companyOnly ? "business" : "private",
+  };
+}
 
 function toAccountType(value: string): AccountType {
   return value === "business" ? "business" : "private";
@@ -84,12 +73,23 @@ function toAccountType(value: string): AccountType {
 export function RegistrationForm({
   countries,
   countriesUnavailable = false,
+  settings = TEMPLATE_SHOP_SETTINGS.loginRegistration,
+  salutations = [],
+  salutationsUnavailable = false,
+  birthYearMax: birthYearMaxProp,
+  companyOnly = false,
+  requestedGroupId,
 }: RegistrationFormProps) {
+  const [currentYear] = useState(() => new Date().getFullYear());
+  const birthYearMax = birthYearMaxProp ?? currentYear;
   const router = useRouter();
   const { register } = useSessionActions();
   const notify = useNotify();
-  const [values, setValues] = useState<RegistrationValues>(
-    emptyRegistrationValues,
+  const t = useTranslations();
+  const contentLang = useContentLang();
+  const localePath = useLocalePath();
+  const [values, setValues] = useState<RegistrationValues>(() =>
+    initialValues(companyOnly),
   );
   const [touched, setTouched] = useState<Touched>({});
   const [submitted, setSubmitted] = useState(false);
@@ -105,12 +105,31 @@ export function RegistrationForm({
   const busy = pending || navigating;
   const doubleOptInPending = doubleOptInCount > 0;
 
-  const business = values.accountType === "business";
+  const showAccountTypeSelect =
+    !companyOnly && settings.showAccountTypeSelection;
+  const accountType: AccountType = companyOnly
+    ? "business"
+    : showAccountTypeSelect
+      ? values.accountType
+      : "private";
+  const formValues: RegistrationValues =
+    accountType === values.accountType ? values : { ...values, accountType };
+  const business = accountType === "business";
   const selectedCountry =
     countries.find((country) => country.id === values.countryId) ?? null;
   const states = selectedCountry?.states ?? [];
   const countryHasStates = states.length > 0;
-  const errors = validateRegistration(values, { countryHasStates });
+  const schemaOptions = { countryHasStates, settings, birthYearMax };
+  const errors = validateRegistration(formValues, schemaOptions, t);
+  const minLengthHint = (min: number) =>
+    t("account.registration.minLengthHint", { min }, min);
+  const accountTypeOptions = [
+    { label: t("form.accountType.private"), value: "private" },
+    { label: t("form.accountType.business"), value: "business" },
+  ];
+  const showAdditionalAddressLine =
+    settings.showAdditionalAddressField1 ||
+    settings.showAdditionalAddressField2;
 
   const errorFor = (field: RegistrationField) =>
     submitted || touched[field] ? errors[field] : undefined;
@@ -124,7 +143,7 @@ export function RegistrationForm({
     setTouched((current) => ({ ...current, [field]: true }));
 
   const inputHandler =
-    (field: RegistrationField) =>
+    (field: TextField) =>
     (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
       setField(field, event.target.value);
 
@@ -143,12 +162,10 @@ export function RegistrationForm({
 
   useEffect(() => {
     if (focusRequest === 0) return;
-    formRef.current
-      ?.querySelector<HTMLElement>('[aria-invalid="true"]')
-      ?.focus();
+    formRef.current?.querySelector<HTMLElement>(FIRST_INVALID_FIELD)?.focus();
   }, [focusRequest]);
 
-  function retryCountries() {
+  function retryReferences() {
     if (refreshing) return;
     startRefresh(() => {
       router.refresh();
@@ -160,7 +177,7 @@ export function RegistrationForm({
     if (busy) return;
     setSubmitted(true);
     if (
-      Object.keys(validateRegistration(values, { countryHasStates })).length
+      Object.keys(validateRegistration(formValues, schemaOptions, t)).length
     ) {
       setFocusRequest((count) => count + 1);
       return;
@@ -169,14 +186,16 @@ export function RegistrationForm({
     setPending(true);
     setFormErrors([]);
     try {
-      const result = await register(toRegistrationInput(values));
+      const result = await register(
+        toRegistrationInput(formValues, { settings, requestedGroupId }),
+      );
       if (!result.ok) {
         setFormErrors(
           result.messages ?? (result.message ? [result.message] : []),
         );
         return;
       }
-      setValues(emptyRegistrationValues);
+      setValues(initialValues(companyOnly));
       setTouched({});
       setSubmitted(false);
       if (result.doubleOptIn) {
@@ -185,7 +204,7 @@ export function RegistrationForm({
       }
       const target = resolveRedirectFromSearch(window.location.search);
       startNavigation(() => {
-        router.push(target);
+        router.push(localePath(target));
       });
     } catch (cause) {
       notify({
@@ -202,19 +221,19 @@ export function RegistrationForm({
       <output ref={successBoxRef} aria-live="polite" className="block">
         {doubleOptInPending ? (
           <span className="mb-4 block border-t border-b border-states-success bg-states-success-container px-4 py-3 text-states-on-success-container">
-            {t.account.messages.signUpSuccess}
+            {t("account.messages.signUpSuccess")}
           </span>
         ) : null}
       </output>
       <div className="mb-6">
         <h2 id="sign-up-heading" className="text-2xl font-bold">
-          {t.account.signUpHeader}
+          {t("account.signUpHeader")}
         </h2>
         <p className="text-sm text-surface-on-surface-variant">
-          {t.account.signUpSubHeader}
+          {t("account.signUpSubHeader")}
         </p>
         <p className="mt-2 text-sm text-surface-on-surface-variant">
-          {t.form.requiredFieldsNote}
+          {t("form.requiredFieldsNote")}
         </p>
       </div>
       <form
@@ -228,25 +247,79 @@ export function RegistrationForm({
         }}
       >
         <div className="mb-10 grid grid-cols-12 gap-5">
-          <SelectField
-            className="col-span-12"
-            id="accountType"
-            data-testid="registration-account-type-select"
-            label={t.form.accountType.title}
-            options={ACCOUNT_TYPE_OPTIONS}
-            value={values.accountType}
-            onChange={(event) =>
-              setField("accountType", toAccountType(event.target.value))
-            }
-            onBlur={touch("accountType")}
-            error={errorFor("accountType")}
-          />
+          {showAccountTypeSelect ? (
+            <SelectField
+              className="col-span-12"
+              id="accountType"
+              data-testid="registration-account-type-select"
+              label={t("form.accountType.title")}
+              options={accountTypeOptions}
+              value={values.accountType}
+              onChange={(event) =>
+                setField("accountType", toAccountType(event.target.value))
+              }
+              onBlur={touch("accountType")}
+              error={errorFor("accountType")}
+            />
+          ) : null}
+          {settings.showSalutation || settings.showTitleField ? (
+            <div className="col-span-12 grid grid-cols-12 gap-5">
+              {settings.showSalutation ? (
+                <div className="col-span-12 md:col-span-4">
+                  <SelectField
+                    id="salutation"
+                    data-testid="registration-salutation-select"
+                    label={t("form.salutation")}
+                    placeholder={t("form.chooseSalutation")}
+                    autoComplete="honorific-prefix"
+                    optionsLang={contentLang}
+                    options={salutations}
+                    disabled={salutationsUnavailable}
+                    value={values.salutationId}
+                    onChange={inputHandler("salutationId")}
+                    onBlur={touch("salutationId")}
+                    error={
+                      salutationsUnavailable
+                        ? t("errors.message-default")
+                        : errorFor("salutationId")
+                    }
+                  />
+                  {salutationsUnavailable ? (
+                    <BaseButton
+                      variant="secondary"
+                      size="small"
+                      className="mt-2"
+                      aria-busy={refreshing}
+                      aria-describedby="salutation-error"
+                      onClick={retryReferences}
+                    >
+                      {t("listing.retry")}
+                    </BaseButton>
+                  ) : null}
+                </div>
+              ) : null}
+              {settings.showTitleField ? (
+                <InputField
+                  className="col-span-12 md:col-span-4"
+                  id="title"
+                  data-testid="registration-title-input"
+                  label={t("form.title")}
+                  autoComplete="honorific-prefix"
+                  maxLength={REGISTRATION_MAX_LENGTHS.title}
+                  value={values.title}
+                  onChange={inputHandler("title")}
+                  onBlur={touch("title")}
+                  error={errorFor("title")}
+                />
+              ) : null}
+            </div>
+          ) : null}
           <InputField
             className="col-span-12 md:col-span-4"
             id="firstName"
             data-testid="registration-first-name-input"
-            label={t.form.firstName}
-            hint={minLengthHint(3)}
+            label={t("form.firstName")}
+            hint={minLengthHint(REGISTRATION_MIN_LENGTHS.firstName)}
             required
             autoComplete="given-name"
             value={values.firstName}
@@ -258,8 +331,8 @@ export function RegistrationForm({
             className="col-span-12 md:col-span-4"
             id="lastName"
             data-testid="registration-last-name-input"
-            label={t.form.lastName}
-            hint={minLengthHint(3)}
+            label={t("form.lastName")}
+            hint={minLengthHint(REGISTRATION_MIN_LENGTHS.lastName)}
             required
             autoComplete="family-name"
             value={values.lastName}
@@ -267,12 +340,32 @@ export function RegistrationForm({
             onBlur={touch("lastName")}
             error={errorFor("lastName")}
           />
+          {settings.showBirthdayField ? (
+            <BirthdayField
+              className="col-span-12 md:col-span-8"
+              testIdPrefix="registration-birthday"
+              required={settings.birthdayFieldRequired}
+              birthYearMax={birthYearMax}
+              value={{
+                day: values.birthdayDay,
+                month: values.birthdayMonth,
+                year: values.birthdayYear,
+              }}
+              errors={{
+                day: errorFor("birthdayDay"),
+                month: errorFor("birthdayMonth"),
+                year: errorFor("birthdayYear"),
+              }}
+              onChange={(part, value) => setField(BIRTHDAY_FIELDS[part], value)}
+              onBlur={(part) => touch(BIRTHDAY_FIELDS[part])()}
+            />
+          ) : null}
           <InputField
             className="col-span-12 md:col-span-6"
             id="emailAddress"
             data-testid="registration-email-input"
             type="email"
-            label={t.form.email}
+            label={t("form.email")}
             required
             autoComplete="email"
             value={values.email}
@@ -280,13 +373,32 @@ export function RegistrationForm({
             onBlur={touch("email")}
             error={errorFor("email")}
           />
+          {settings.requireEmailConfirmation ? (
+            <InputField
+              className="col-span-12 md:col-span-6"
+              id="emailConfirmation"
+              data-testid="registration-email-confirmation-input"
+              type="email"
+              label={t("form.confirmEmail")}
+              required
+              autoComplete="email"
+              value={values.emailConfirmation}
+              onChange={inputHandler("emailConfirmation")}
+              onBlur={touch("emailConfirmation")}
+              error={errorFor("emailConfirmation")}
+            />
+          ) : null}
           <InputField
             className="col-span-12 md:col-span-4"
             id="password"
             data-testid="registration-password-input"
             type="password"
-            label={t.form.password}
-            hint={minLengthHint(8)}
+            label={t("form.password")}
+            hint={
+              settings.passwordMinLength > 0
+                ? minLengthHint(settings.passwordMinLength)
+                : undefined
+            }
             required
             autoComplete="new-password"
             value={values.password}
@@ -294,12 +406,27 @@ export function RegistrationForm({
             onBlur={touch("password")}
             error={errorFor("password")}
           />
+          {settings.requirePasswordConfirmation ? (
+            <InputField
+              className="col-span-12 md:col-span-4"
+              id="passwordConfirmation"
+              data-testid="registration-password-confirmation-input"
+              type="password"
+              label={t("account.registration.passwordConfirmation")}
+              required
+              autoComplete="new-password"
+              value={values.passwordConfirmation}
+              onChange={inputHandler("passwordConfirmation")}
+              onBlur={touch("passwordConfirmation")}
+              error={errorFor("passwordConfirmation")}
+            />
+          ) : null}
           {business ? (
             <InputField
               className="col-span-12 md:col-span-4"
               id="vatId"
               data-testid="registration-vatid-input"
-              label={t.form.vatId}
+              label={t("form.vatId")}
               value={values.vatId}
               onChange={inputHandler("vatId")}
               onBlur={touch("vatId")}
@@ -312,7 +439,7 @@ export function RegistrationForm({
           id="address-heading"
           className="mb-5 block border-b border-outline-outline-variant pb-2 font-bold"
         >
-          {t.account.yourAddress}
+          {t("account.yourAddress")}
         </h3>
         <fieldset
           className="mb-5 grid min-w-0 grid-cols-12 gap-5"
@@ -323,7 +450,7 @@ export function RegistrationForm({
               className="col-span-12 md:col-span-4"
               id="company"
               data-testid="registration-company-input"
-              label={t.form.company}
+              label={t("form.company")}
               required
               autoComplete="organization"
               value={values.company}
@@ -336,20 +463,50 @@ export function RegistrationForm({
             className="col-span-12 md:col-span-4"
             id="street"
             data-testid="registration-street-input"
-            label={t.form.streetAddress}
-            hint={minLengthHint(3)}
+            label={t("form.streetAddress")}
+            hint={minLengthHint(REGISTRATION_MIN_LENGTHS.street)}
             required
-            autoComplete="street-address"
+            autoComplete={
+              showAdditionalAddressLine ? "address-line1" : "street-address"
+            }
             value={values.street}
             onChange={inputHandler("street")}
             onBlur={touch("street")}
             error={errorFor("street")}
           />
+          {settings.showAdditionalAddressField1 ? (
+            <InputField
+              className="col-span-12 md:col-span-4"
+              id="additionalAddressLine1"
+              data-testid="registration-additional-address-line1-input"
+              label={t("form.additionalAddressLine1")}
+              required={settings.additionalAddressField1Required}
+              autoComplete="address-line2"
+              value={values.additionalAddressLine1}
+              onChange={inputHandler("additionalAddressLine1")}
+              onBlur={touch("additionalAddressLine1")}
+              error={errorFor("additionalAddressLine1")}
+            />
+          ) : null}
+          {settings.showAdditionalAddressField2 ? (
+            <InputField
+              className="col-span-12 md:col-span-4"
+              id="additionalAddressLine2"
+              data-testid="registration-additional-address-line2-input"
+              label={t("form.additionalAddressLine2")}
+              required={settings.additionalAddressField2Required}
+              autoComplete="address-line3"
+              value={values.additionalAddressLine2}
+              onChange={inputHandler("additionalAddressLine2")}
+              onBlur={touch("additionalAddressLine2")}
+              error={errorFor("additionalAddressLine2")}
+            />
+          ) : null}
           <InputField
             className="col-span-12 md:col-span-4"
             id="zipcode"
             data-testid="registration-zipcode-input"
-            label={t.form.postalCode}
+            label={t("form.postalCode")}
             required
             autoComplete="postal-code"
             value={values.zipcode}
@@ -361,7 +518,7 @@ export function RegistrationForm({
             className="col-span-12 md:col-span-4"
             id="city"
             data-testid="registration-city-input"
-            label={t.form.city}
+            label={t("form.city")}
             required
             autoComplete="address-level2"
             value={values.city}
@@ -374,8 +531,8 @@ export function RegistrationForm({
               <CountrySelect
                 className="w-full"
                 id="country"
-                label={t.form.country}
-                placeholder={t.form.chooseCountry}
+                label={t("form.country")}
+                placeholder={t("form.chooseCountry")}
                 countries={countries}
                 value={values.countryId}
                 onChange={handleCountryChange}
@@ -390,9 +547,9 @@ export function RegistrationForm({
                   size="small"
                   className="mt-2"
                   aria-busy={refreshing}
-                  onClick={retryCountries}
+                  onClick={retryReferences}
                 >
-                  {t.listing.retry}
+                  {t("listing.retry")}
                 </BaseButton>
               ) : null}
             </div>
@@ -401,10 +558,11 @@ export function RegistrationForm({
                 className="w-full"
                 id="state"
                 data-testid="checkout-pi-state-input"
-                label={t.form.state}
-                placeholder={t.form.chooseState}
+                label={t("form.state")}
+                placeholder={t("form.chooseState")}
                 required
                 autoComplete="address-level1"
+                optionsLang={contentLang}
                 options={states.map((state) => ({
                   label: state.name,
                   value: state.id,
@@ -416,7 +574,36 @@ export function RegistrationForm({
               />
             ) : null}
           </div>
+          {settings.showPhoneNumberField ? (
+            <InputField
+              className="col-span-12 md:col-span-4"
+              id="phoneNumber"
+              data-testid="registration-phone-input"
+              type="tel"
+              label={t("form.phone")}
+              required={settings.phoneNumberFieldRequired}
+              autoComplete="tel"
+              maxLength={REGISTRATION_MAX_LENGTHS.phoneNumber}
+              value={values.phoneNumber}
+              onChange={inputHandler("phoneNumber")}
+              onBlur={touch("phoneNumber")}
+              error={errorFor("phoneNumber")}
+            />
+          ) : null}
         </fieldset>
+        {settings.requireDataProtectionCheckbox ? (
+          <CheckboxField
+            className="mb-5"
+            id="acceptedDataProtection"
+            data-testid="registration-data-protection-checkbox"
+            label={t("form.privacyLabel")}
+            required
+            checked={values.acceptedDataProtection}
+            onChange={(checked) => setField("acceptedDataProtection", checked)}
+            onBlur={touch("acceptedDataProtection")}
+            error={errorFor("acceptedDataProtection")}
+          />
+        ) : null}
         {formErrors.length > 0 ? (
           <div
             role="alert"
@@ -436,7 +623,7 @@ export function RegistrationForm({
             aria-disabled={busy || undefined}
             className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
           >
-            {t.form.submit}
+            {t("form.submit")}
           </BaseButton>
         </div>
       </form>

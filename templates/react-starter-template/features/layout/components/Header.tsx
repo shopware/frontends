@@ -2,6 +2,8 @@ import { connection } from "next/server";
 import { Suspense, cache } from "react";
 
 import { HeaderBar } from "@/features/layout/components/HeaderBar";
+import { MetaNavigation } from "@/features/layout/components/MetaNavigation";
+import { StickyHeader } from "@/features/layout/components/StickyHeader";
 import { HEADER_ACTION_CLASS } from "@/features/layout/headerAction";
 import {
   MobileMenu,
@@ -12,52 +14,60 @@ import {
   TopNavigationPlaceholder,
 } from "@/features/navigation/components/TopNavigation";
 import { buildNavigationTree } from "@/features/navigation/navigationTree";
+import type { Locale } from "@/i18n/config";
+import { resolveContentLanguage } from "@/platform/shopware/reads/languages";
 import { readNavigation } from "@/platform/shopware/reads/navigation";
 
-const loadMainNavigation = cache(async () => {
+const loadMainNavigation = cache(async (locale: Locale) => {
   await connection();
 
-  const categories = await readNavigation("main-navigation", 2).catch(
-    (error: unknown) => {
-      console.error("[Header] reading the main navigation failed", error);
-      return [];
-    },
-  );
+  const { languageId, contentLang } = await resolveContentLanguage(locale);
+  const categories = await readNavigation(
+    "main-navigation",
+    2,
+    languageId,
+  ).catch((error: unknown) => {
+    console.error("[Header] reading the main navigation failed", error);
+    return [];
+  });
 
-  return buildNavigationTree(categories);
+  return buildNavigationTree(categories, locale, contentLang);
 });
 
-export function Header() {
+export type HeaderProps = { locale: Locale };
+
+export function Header({ locale }: HeaderProps) {
   return (
-    <header className="bg-surface-surface">
-      <div className="border-b border-outline-outline-variant">
+    <StickyHeader className="bg-surface-surface lg:sticky lg:top-0 lg:z-30">
+      <MetaNavigation />
+      <div className="border-b border-shell-line">
         <HeaderBar
           menu={
             <Suspense
               fallback={<MobileMenuPending className={HEADER_ACTION_CLASS} />}
             >
-              <HeaderMobileMenu />
+              <HeaderMobileMenu locale={locale} />
             </Suspense>
           }
         />
       </div>
       <div className="max-lg:hidden">
         <Suspense fallback={<TopNavigationPlaceholder />}>
-          <HeaderTopNavigation />
+          <HeaderTopNavigation locale={locale} />
         </Suspense>
       </div>
-    </header>
+    </StickyHeader>
   );
 }
 
-async function HeaderMobileMenu() {
-  const tree = await loadMainNavigation();
+async function HeaderMobileMenu({ locale }: HeaderProps) {
+  const tree = await loadMainNavigation(locale);
 
   return <MobileMenu tree={tree} className={HEADER_ACTION_CLASS} />;
 }
 
-async function HeaderTopNavigation() {
-  const tree = await loadMainNavigation();
+async function HeaderTopNavigation({ locale }: HeaderProps) {
+  const tree = await loadMainNavigation(locale);
 
   return <TopNavigation tree={tree} />;
 }

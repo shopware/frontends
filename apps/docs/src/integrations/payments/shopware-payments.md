@@ -2,33 +2,33 @@
 head:
   - - meta
     - name: og:title
-      content: "ShopwarePayments Integration"
+      content: "Shopware Payments Integration"
   - - meta
     - name: og:description
-      content: "Integrate PayPal, Pay Later, Apple Pay, Google Pay, and card fields with the ShopwarePayments browser library."
+      content: "Integrate PayPal, Pay Later, Apple Pay, Google Pay, and card fields with the Shopware Payments browser library."
   - - meta
     - name: og:image
       content: "https://frontends-og-image.vercel.app/ShopwarePayments.png"
 ---
 
-# ShopwarePayments
+# Shopware Payments
 
 :::tip Advanced Guide - prior knowledge required
 In order to follow this guide properly, we recommend that you get familiar with the payment flow and payment API concepts first.
 
 - [Payment Flow in Shopware 6](https://developer.shopware.com/docs/concepts/commerce/checkout-concept/payments)
 - [Payment API](https://shopware.stoplight.io/docs/store-api/8218801e50fe5-handling-the-payment)
-  :::
+:::
 
-This guide shows how to integrate ShopwarePayments in a headless storefront with the `shopware-payments.js` library. The library renders PayPal, Pay Later, Apple Pay, Google Pay, and card fields, and it creates the provider order (the PayPal order). The storefront keeps the cart, the customer, shipping, and the Shopware order.
+This guide shows how to integrate Shopware Payments in a headless storefront with the `shopware-payments.js` library. The library renders PayPal, Pay Later, Apple Pay, Google Pay, and card fields, and it creates the provider order (the PayPal order). The storefront keeps the cart, the customer, shipping, and the Shopware order.
 
-Read [How the ShopwarePayments client works](#how-the-shopwarepayments-client-works) before the [examples](#examples). The examples call the same methods with Shopware Frontends composables such as `useCart()` and `useCheckout()`.
+Read [How the Shopware Payments client works](#how-the-shopwarepayments-client-works) before the [examples](#examples). The examples call the same methods with Shopware Frontends composables such as `useCart()` and `useCheckout()`.
 
-The [PayPal integration](./paypal.html) covers the separate SwagPayPal extension. ShopwarePayments uses the browser library on this page.
+The [PayPal integration](./paypal.html) covers the separate SwagPayPal extension. Shopware Payments uses the browser library on this page.
 
 ## Prerequisites
 
-Install ShopwarePayments and enable the payment methods for the sales channel. The page needs the shopper's current Store API session: the sales channel id, the Store API access key, the context token, and the active currency.
+Install Shopware Payments and enable the payment methods for the sales channel. The page needs the shopper's current Store API session: the sales channel id, the Store API access key, the context token, and the active currency.
 
 ## Load the library
 
@@ -58,18 +58,18 @@ Pin the major with `/headless/v1/`. That alias is updated with each compatible r
 ## Initialize
 
 :::tip Client only
-The ShopwarePayments library and all its methods should only be invoked on client side rendered pages. The init snippet reads `window` at module level, so import it from client-only code. In `vue-starter-template`, the product page and the footer are server-rendered, and those pages host the `product-details` and `footer` message locations.
+The Shopware Payments library and all its methods should only be invoked on client side rendered pages. The init snippet reads `window` at module level, so import it from client-only code. In `vue-starter-template`, the product page and the footer are server-rendered, and those pages host the `product-details` and `footer` message locations.
 :::
 
 Call `window.ShopwarePayments.init()` after the script loads. Pass the shopper's current Store API session. The client keeps the context token, currency, and sales channel from that call. Call `init()` again, and render into new elements, when the token, currency, or sales channel changes.
 
-| Option                  | Value                                                                                                                                          |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| Option                  | Value                                                                                                                                           |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | `storefrontUrl`         | Absolute Shopware base URL, including a language prefix or subdirectory. A trailing `/store-api` is removed, so a Store API endpoint works too. |
-| `salesChannelId`        | 32-character hexadecimal id of the same sales channel as the access key                                                                        |
-| `storeApi.accessKey`    | Sales channel Store API access key                                                                                                             |
-| `storeApi.contextToken` | Shopper's current `sw-context-token`                                                                                                           |
-| `currencyCode`          | Active currency ISO code, such as `EUR`                                                                                                        |
+| `salesChannelId`        | 32-character hexadecimal id of the same sales channel as the access key                                                                         |
+| `storeApi.accessKey`    | Sales channel Store API access key                                                                                                              |
+| `storeApi.contextToken` | Shopper's current `sw-context-token`                                                                                                            |
+| `currencyCode`          | Active currency ISO code, such as `EUR`                                                                                                         |
 
 The examples import types from `./snippet-context`, which is a docs-only declaration to copy ([snippet-context.ts](https://github.com/shopware/frontends/blob/main/examples/docs-code-examples/src/generated/integrations/payments/shopware-payments/snippet-context.ts)). Official `.d.ts` types and an API reference are coming but not published yet.
 
@@ -107,7 +107,7 @@ A resolved `init()` promise means the client can render payment UI. It has not p
 
 An Apple Pay or Google Pay `<script>` tag that is already on the page is reused. Safari still needs the Apple Pay script, because that script defines `<apple-pay-button>`. The library inserts the PayPal script itself when a surface is set up. A [preload](#preload-the-paypal-sdk) can start that download earlier.
 
-## How the ShopwarePayments client works
+## How the Shopware Payments client works {#how-the-shopwarepayments-client-works}
 
 `init()` returns a client. Calling a render method paints the payment control and, on approval, creates a provider order. The Shopware order stays in the page's hands.
 
@@ -115,7 +115,7 @@ An Apple Pay or Google Pay `<script>` tag that is already on the page is reused.
 
 The wallet button and the Shopware checkout are separate.
 
-The library renders the control into an element the page already owns, and it binds the handlers you pass in the same call. Button color and shape come from the ShopwarePayments storefront configuration. The same saved shape is applied to Apple Pay and Google Pay. The page does not pass those styles.
+The library renders the control into an element the page already owns, and it binds the handlers you pass in the same call. Button color and shape come from the Shopware Payments storefront configuration. The same saved shape is applied to Apple Pay and Google Pay. The page does not pass those styles.
 
 The page owns the Shopware work. `buttons()`, `applePay()`, `googlePay()`, and `cardFields()` leave the session's payment method unchanged. The context holds one method, so `onApprove` calls `setPaymentMethod()` with that surface's Store API payment method id immediately before `createOrder()`. When the Shopware order already exists, its transaction has to use the same method.
 
@@ -125,14 +125,14 @@ Card fields have no wallet click. The page's own pay button calls `submit()`. `o
 
 ### Methods
 
-| Method            | What to pass                                                                                         | What it returns                                      |
-| ----------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| `buttons()`       | `funding: "paypal"` or `"paylater"`, a host element, `checkout`, `onApprove`, `onError`              | A promise that resolves when the button is ready     |
-| `applePay()`      | An `<apple-pay-button>`, `checkout`, `onApprove`, `onError`                                          | A promise that resolves when the button is ready     |
-| `googlePay()`     | A `<google-pay-button>`, `checkout`, `onApprove`, `onError`                                          | A promise that resolves when the button is ready     |
-| `cardFields()`    | Hosts for number, expiry, and CVV, plus `checkout`, `onApprove`, `onError`                           | `{ submit() }`                                       |
-| `messages()`      | A `<paypal-message>`, a location, and a decimal string `amount`                                      | `{ update({ amount }) }`, or `null` when disabled    |
-| `handlePayment()` | Shopware `orderId`, `providerOrderId`, and optional `contextToken`, `finishUrl`, `errorUrl`          | `{ redirectUrl }`                                    |
+| Method            | What to pass                                                                                | What it returns                                   |
+| ----------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| `buttons()`       | `funding: "paypal"` or `"paylater"`, a host element, `checkout`, `onApprove`, `onError`     | A promise that resolves when the button is ready  |
+| `applePay()`      | An `<apple-pay-button>`, `checkout`, `onApprove`, `onError`                                 | A promise that resolves when the button is ready  |
+| `googlePay()`     | A `<google-pay-button>`, `checkout`, `onApprove`, `onError`                                 | A promise that resolves when the button is ready  |
+| `cardFields()`    | Hosts for number, expiry, and CVV, plus `checkout`, `onApprove`, `onError`                  | `{ submit() }`                                    |
+| `messages()`      | A `<paypal-message>`, a location, and a decimal string `amount`                             | `{ update({ amount }) }`, or `null` when disabled |
+| `handlePayment()` | Shopware `orderId`, `providerOrderId`, and optional `contextToken`, `finishUrl`, `errorUrl` | `{ redirectUrl }`                                 |
 
 `funding` on `buttons()` stays `paypal` or `paylater`. Apple Pay and Google Pay have their own methods. Each host element can be hydrated once. After a failed setup the element can be tried again. After a successful setup, replacing the UI means using new elements.
 
@@ -140,14 +140,14 @@ Bancontact, EPS, BLIK, iDEAL, Przelewy24, and Klarna are Shopware redirect payme
 
 ### Callbacks
 
-| Callback              | When it runs                                                                                                                                                                      |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `onClick`             | Wallet buttons, before the provider session starts. A synchronous `false` or a throw leaves the session closed.                                                                   |
-| `onBeforeSubmit`      | Card fields, from `submit()`, before the provider order is created. Returning `false`, throwing, or leaving the fields incomplete stops submission and does not call `onError`. |
-| `onValidationChange`  | Card fields, when number, expiry, or CVV validity changes. Each field reports `isValid`, `isEmpty`, and `isPotentiallyValid`. `isComplete` covers all three.                      |
-| `onApprove`           | After the shopper approves the provider order. The result carries `providerOrderId` (the PayPal order id), `paymentResult`, and `contextToken` when the Store API session changed. The Shopware order is still unplaced for a cart checkout. |
-| `onCancel`            | The shopper closes the session without approving.                                                                                                                                 |
-| `onError`             | A failure inside a session that already started. Failures while `init()` or a render method is still setting up reject that promise instead. See [Errors](#errors).              |
+| Callback             | When it runs                                                                                                                                                                                                                                 |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `onClick`            | Wallet buttons, before the provider session starts. A synchronous `false` or a throw leaves the session closed.                                                                                                                              |
+| `onBeforeSubmit`     | Card fields, from `submit()`, before the provider order is created. Returning `false`, throwing, or leaving the fields incomplete stops submission and does not call `onError`.                                                              |
+| `onValidationChange` | Card fields, when number, expiry, or CVV validity changes. Each field reports `isValid`, `isEmpty`, and `isPotentiallyValid`. `isComplete` covers all three.                                                                                 |
+| `onApprove`          | After the shopper approves the provider order. The result carries `providerOrderId` (the PayPal order id), `paymentResult`, and `contextToken` when the Store API session changed. The Shopware order is still unplaced for a cart checkout. |
+| `onCancel`           | The shopper closes the session without approving.                                                                                                                                                                                            |
+| `onError`            | A failure inside a session that already started. Failures while `init()` or a render method is still setting up reject that promise instead. See [Errors](#errors).                                                                          |
 
 `messages()` has no payment callbacks. The call only renders the promotional amount, and `update({ amount })` refreshes it. Locations are `product-details`, `cart`, `mini-cart`, `login`, and `footer`.
 
@@ -443,7 +443,7 @@ In `vue-starter-template`, the success page calls Store API `handle-payment` on 
 
 ### Pay an existing order
 
-`placedOrderCheckout` wraps a Shopware order the page already has, such as a payment started again from the customer account. The default order tree in `useOrderDetails()` loads line items, transactions, and deliveries, but not `currency` or any address country. `loadPlacedOrder` names `currency`, `orderCustomer`, `billingAddress.country`, and `deliveries.shippingOrderAddress.country`. `addresses.country` fills the address list the detail page reads, so it does not satisfy the billing check. That repeated payment is usually a failed or cancelled transaction. Store API `handle-payment` only pays a transaction that is still `open`. Any other state returns no `redirectUrl` and never calls ShopwarePayments, so the shopper lands on `finishUrl` and the approval is not captured. `onApprovePlacedOrder` calls `orderSetPayment post /order/payment` with the ShopwarePayments method id before `handlePayment()`. Core reopens the last transaction when the method and amount still match, and otherwise adds a new open transaction. The method has to allow payment after the order. The same handler fits the other payment surfaces.
+`placedOrderCheckout` wraps a Shopware order the page already has, such as a payment started again from the customer account. The default order tree in `useOrderDetails()` loads line items, transactions, and deliveries, but not `currency` or any address country. `loadPlacedOrder` names `currency`, `orderCustomer`, `billingAddress.country`, and `deliveries.shippingOrderAddress.country`. `addresses.country` fills the address list the detail page reads, so it does not satisfy the billing check. That repeated payment is usually a failed or cancelled transaction. Store API `handle-payment` only pays a transaction that is still `open`. Any other state returns no `redirectUrl` and never calls Shopware Payments, so the shopper lands on `finishUrl` and the approval is not captured. `onApprovePlacedOrder` calls `orderSetPayment post /order/payment` with the Shopware Payments method id before `handlePayment()`. Core reopens the last transaction when the method and amount still match, and otherwise adds a new open transaction. The method has to allow payment after the order. The same handler fits the other payment surfaces.
 
 <!-- automd:file src="examples/docs-code-examples/src/generated/integrations/payments/shopware-payments/placed-order-approval.ts" code lang="ts" no-name -->
 
@@ -748,5 +748,5 @@ document.getElementById("card-pay")?.addEventListener("click", () => {
 ## Not supported yet
 
 ::: warning
-**Pay upon Invoice (PUI)**, the **express button**, and **vaulting** are **not supported yet**. Support for them is coming soon. **PUI** and **vaulting** are planned for the next major version of ShopwarePayments, so they stay unsupported on the current major.
+**Pay upon Invoice (PUI)**, the **express button**, and **vaulting** are **not supported yet**. Support for them is coming soon. **PUI** and **vaulting** are planned for the next major version of Shopware Payments, so they stay unsupported on the current major.
 :::

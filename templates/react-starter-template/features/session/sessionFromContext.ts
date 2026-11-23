@@ -8,8 +8,6 @@ type SessionCustomer = Pick<
   "id" | "active" | "guest" | "firstName" | "lastName"
 >;
 
-export type SessionContext = { customer?: SessionCustomer | null };
-
 export const unavailableSession: StorefrontSession = {
   ...anonymousSession,
   status: "error",
@@ -21,18 +19,21 @@ export function isLoggedInCustomer(
   return !!customer?.id && !!customer.active && !customer.guest;
 }
 
-export function toStorefrontSession({
-  customer,
-}: SessionContext): StorefrontSession {
-  if (!isLoggedInCustomer(customer)) {
-    return { ...anonymousSession, status: "ready" };
-  }
-  return {
+export function toStorefrontSession(
+  context: Schemas["SalesChannelContext"],
+): StorefrontSession {
+  const { customer } = context;
+  const session: StorefrontSession = {
+    ...anonymousSession,
     status: "ready",
+    isGuestSession: !!customer?.guest,
+    context,
+  };
+  if (!isLoggedInCustomer(customer)) return session;
+  return {
+    ...session,
     isLoggedIn: true,
     customerName:
       [customer.firstName, customer.lastName].filter(Boolean).join(" ") || null,
-    cartCount: 0,
-    wishlistCount: 0,
   };
 }
