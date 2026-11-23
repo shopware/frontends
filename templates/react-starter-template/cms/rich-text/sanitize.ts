@@ -1,4 +1,4 @@
-import { decodeHTMLAttribute, escapeAttribute } from "entities";
+import { decodeHTMLAttribute, escapeUTF8 } from "entities";
 import { FilterXSS, getDefaultWhiteList } from "xss";
 
 const EXTRA_ATTRIBUTES = [
@@ -67,13 +67,14 @@ const filter = new FilterXSS({
     // `java&Tab;script:` would pass the check and the browser would decode
     // it into a working `javascript:` URL.
     const decoded = decodeHTMLAttribute(value);
-    return isSafeUrl(decoded, name)
-      ? `${name}="${escapeAttribute(decoded)}"`
-      : "";
+    // escapeUTF8, not escapeAttribute: `<` and `>` must be escaped too, or a
+    // value holding `</iframe>` closes the raw-text iframe early. Every other
+    // attribute and all text go through xss's escapeHtml, which escapes them.
+    return isSafeUrl(decoded, name) ? `${name}="${escapeUTF8(decoded)}"` : "";
   },
   onIgnoreTagAttr(_tag, name, value) {
     if (name.startsWith("data-")) {
-      return `${name}="${escapeAttribute(decodeHTMLAttribute(value))}"`;
+      return `${name}="${escapeUTF8(decodeHTMLAttribute(value))}"`;
     }
     return undefined;
   },

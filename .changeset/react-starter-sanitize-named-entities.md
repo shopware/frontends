@@ -8,4 +8,5 @@ Behaviour changes:
 
 - `src` values go through the same check and allow only relative paths, `http(s):` and raster `data:image/(png|gif|jpeg|webp|avif)` URLs. Relative image paths are now kept; `data:image/svg+xml` and `ftp:` sources are dropped.
 - `href` and `src` are removed from tags whose whitelist does not allow them (before, `<div href="…">` kept its `href`).
+- `href`, `src` and `data-*` values are written with `<` and `>` escaped, so a value holding `</iframe>` can no longer close an allowed iframe early.
 - `sms:` links are kept and render as a plain `<a>`, not `next/link`.

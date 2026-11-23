@@ -91,6 +91,44 @@ describe("sanitizeHtml", () => {
     expect(result).toBe('<a href="&quot; onmouseover=alert(1) x=&quot;">x</a>');
   });
 
+  it("does not let an attribute value close a raw-text iframe early", () => {
+    const result = sanitizeHtml(
+      '<iframe><a href="</iframe><img src=x onerror=alert(1)>">x</a></iframe>',
+    );
+    type Node = {
+      name?: string;
+      attribs?: Record<string, string>;
+      children?: Node[];
+    };
+    const names: string[] = [];
+    const attributes: string[] = [];
+    const walk = (nodes: Node[]) => {
+      for (const node of nodes) {
+        if (node.name) names.push(node.name);
+        attributes.push(...Object.keys(node.attribs ?? {}));
+        walk(node.children ?? []);
+      }
+    };
+    walk(htmlToDOM(result) as Node[]);
+    expect(names).toEqual(["iframe"]);
+    expect(names).not.toContain("img");
+    expect(attributes).not.toContain("onerror");
+    expect(result).not.toMatch(/<img|<\/iframe>[^]*<\/iframe>/);
+  });
+
+  it.each([
+    '<iframe title="</iframe><img src=x onerror=alert(1)>"></iframe>',
+    '<iframe class="</iframe><img src=x onerror=alert(1)>"></iframe>',
+    '<iframe data-x="</iframe><img src=x onerror=alert(1)>"></iframe>',
+    '<iframe><b data-x="</iframe><img src=x onerror=alert(1)>">x</b></iframe>',
+    "<iframe>a &lt;/iframe&gt;&lt;img src=x onerror=alert(1)&gt; b</iframe>",
+  ])("keeps every iframe output inside the iframe: %s", (html) => {
+    const result = sanitizeHtml(html);
+    expect(result).not.toMatch(/<img/);
+    expect(result.match(/<\/iframe>/g)).toHaveLength(1);
+    expect(result.endsWith("</iframe>")).toBe(true);
+  });
+
   it.each(['<div href="/x">t</div>', '<p src="/x.jpg">t</p>'])(
     "strips href and src from tags that do not allow them: %s",
     (html) => {
