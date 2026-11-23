@@ -12,33 +12,29 @@ import {
   validateLogin,
 } from "@/features/account/loginSchema";
 import type { LoginValues } from "@/features/account/loginSchema";
+import { ForgotPasswordLink } from "@/features/account/recovery/components/RecoveryLinks";
 import { resolveRedirectFromSearch } from "@/features/account/redirect";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
-
-const t = {
-  loginForm: {
-    header: "Sign in to your account",
-    subHeader: "Sign in to your account to continue",
-    loginLabel: "Email address",
-    passwordLabel: "Password",
-    submitButtonLabel: "Sign in",
-  },
-  form: {
-    requiredFieldsNote: "Fields marked with asterisks (*) are required.",
-  },
-  account: {
-    messages: {
-      loggedInSuccess: "You have been logged in successfully.",
-    },
-  },
-};
+import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 
 type Touched = Partial<Record<keyof LoginValues, boolean>>;
 
-export function LoginForm() {
+export type LoginFormProps = {
+  idPrefix?: string;
+  hideHeading?: boolean;
+  onLoggedIn?: () => void;
+};
+
+export function LoginForm({
+  idPrefix = "login",
+  hideHeading = false,
+  onLoggedIn,
+}: LoginFormProps) {
   const router = useRouter();
   const { login } = useSessionActions();
   const notify = useNotify();
+  const t = useTranslations();
+  const localePath = useLocalePath();
   const [values, setValues] = useState<LoginValues>(emptyLoginValues);
   const [touched, setTouched] = useState<Touched>({});
   const [submitted, setSubmitted] = useState(false);
@@ -49,7 +45,7 @@ export function LoginForm() {
   const formRef = useRef<HTMLFormElement>(null);
 
   const busy = pending || navigating;
-  const errors = validateLogin(values);
+  const errors = validateLogin(values, t);
   const errorFor = (field: keyof LoginValues) =>
     submitted || touched[field] ? errors[field] : undefined;
 
@@ -70,7 +66,7 @@ export function LoginForm() {
     event.preventDefault();
     if (busy) return;
     setSubmitted(true);
-    if (Object.keys(validateLogin(values)).length) {
+    if (Object.keys(validateLogin(values, t)).length) {
       setFocusRequest((count) => count + 1);
       return;
     }
@@ -88,10 +84,17 @@ export function LoginForm() {
       setValues(emptyLoginValues);
       setTouched({});
       setSubmitted(false);
-      notify({ type: "success", message: t.account.messages.loggedInSuccess });
+      notify({
+        type: "success",
+        message: t("account.messages.loggedInSuccess"),
+      });
+      if (onLoggedIn) {
+        onLoggedIn();
+        return;
+      }
       const target = resolveRedirectFromSearch(window.location.search);
       startNavigation(() => {
-        router.push(target);
+        router.push(localePath(target));
       });
     } catch (cause) {
       notify({
@@ -106,12 +109,14 @@ export function LoginForm() {
   return (
     <div className="flex w-full flex-col gap-3">
       <div className="mb-4">
-        <h1 className="text-2xl font-bold">{t.loginForm.header}</h1>
+        {hideHeading ? null : (
+          <h1 className="text-2xl font-bold">{t("loginForm.header")}</h1>
+        )}
         <p className="text-sm text-surface-on-surface-variant">
-          {t.loginForm.subHeader}
+          {t("loginForm.subHeader")}
         </p>
         <p className="mt-2 text-sm text-surface-on-surface-variant">
-          {t.form.requiredFieldsNote}
+          {t("form.requiredFieldsNote")}
         </p>
       </div>
       <form
@@ -124,10 +129,10 @@ export function LoginForm() {
         }}
       >
         <InputField
-          id="login-username"
+          id={`${idPrefix}-username`}
           data-testid="login-email-input"
           type="email"
-          label={t.loginForm.loginLabel}
+          label={t("loginForm.loginLabel")}
           required
           autoComplete="username"
           value={values.username}
@@ -136,10 +141,10 @@ export function LoginForm() {
           error={errorFor("username")}
         />
         <InputField
-          id="login-password"
+          id={`${idPrefix}-password`}
           data-testid="login-password-input"
           type="password"
-          label={t.loginForm.passwordLabel}
+          label={t("loginForm.passwordLabel")}
           required
           autoComplete="current-password"
           value={values.password}
@@ -147,6 +152,7 @@ export function LoginForm() {
           onBlur={touch("password")}
           error={errorFor("password")}
         />
+        <ForgotPasswordLink />
         {formErrors.length > 0 ? (
           <div
             role="alert"
@@ -165,7 +171,7 @@ export function LoginForm() {
           aria-disabled={busy || undefined}
           className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
         >
-          {t.loginForm.submitButtonLabel}
+          {t("loginForm.submitButtonLabel")}
         </BaseButton>
       </form>
     </div>

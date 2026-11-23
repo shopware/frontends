@@ -34,6 +34,7 @@
     "message-403": "Twoja sesja wygasła. Wróć do ostatniej strony i spróbuj ponownie.",
     "rateLimitExceeded": "Zbyt wiele żądań. Odczekaj {seconds} sekund przed ponowną próbą.",
     "CHECKOUT__CART_INVALID_LINE_ITEM_QUANTITY": "Liczba musi być dodatnią liczbą całkowitą. Given: {quantity}",
+    "VIOLATION::CUSTOMER_EMAIL_NOT_UNIQUE": "Adres e-mail {email} jest już używany",
     "VIOLATION::IS_BLANK_ERROR": "{field} nie powinno być puste.",
     "VIOLATION::TOO_LOW_ERROR": "{field} nie powinno być puste.",
     "VIOLATION::STRICT_CHECK_FAILED_ERROR": "{field} jest nieprawidłowe.",

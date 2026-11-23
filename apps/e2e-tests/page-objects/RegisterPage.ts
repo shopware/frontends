@@ -3,6 +3,8 @@ import type { Locator, Page } from "@playwright/test";
 
 import { uniqueEmail } from "../utils/data-helpers";
 import {
+  checkIfPresent,
+  fillIfPresent,
   selectDefaultCountry,
   selectFirstOptionIfPresent,
 } from "../utils/form";
@@ -16,7 +18,13 @@ export class RegisterForm {
   readonly firstName: Locator;
   readonly lastName: Locator;
   readonly emailAdrdress: Locator;
+  readonly emailConfirmation: Locator;
   readonly password: Locator;
+  readonly passwordConfirmation: Locator;
+  readonly birthdayDay: Locator;
+  readonly birthdayMonth: Locator;
+  readonly birthdayYear: Locator;
+  readonly dataProtection: Locator;
   readonly vatId: Locator;
   readonly companyName: Locator;
   readonly street: Locator;
@@ -33,7 +41,19 @@ export class RegisterForm {
     this.firstName = page.getByTestId("registration-first-name-input");
     this.lastName = page.getByTestId("registration-last-name-input");
     this.emailAdrdress = page.getByTestId("registration-email-input");
+    this.emailConfirmation = page.getByTestId(
+      "registration-email-confirmation-input",
+    );
     this.password = page.getByTestId("registration-password-input");
+    this.passwordConfirmation = page.getByTestId(
+      "registration-password-confirmation-input",
+    );
+    this.birthdayDay = page.getByTestId("registration-birthday-day-select");
+    this.birthdayMonth = page.getByTestId("registration-birthday-month-select");
+    this.birthdayYear = page.getByTestId("registration-birthday-year-select");
+    this.dataProtection = page.getByTestId(
+      "registration-data-protection-checkbox",
+    );
     this.vatId = page.getByTestId("registration-vatid-input");
     this.companyName = page.getByTestId("registration-company-input");
     this.street = page.getByTestId("registration-street-input");
@@ -56,6 +76,16 @@ export class RegisterForm {
     await this.lastName.fill(lastName);
     await this.emailAdrdress.fill(email);
     await this.password.fill(password);
+    await this.fillShopConfiguredFields(email, password);
+  }
+
+  async fillShopConfiguredFields(email: string, password: string) {
+    await fillIfPresent(this.emailConfirmation, email);
+    await fillIfPresent(this.passwordConfirmation, password);
+    await selectFirstOptionIfPresent(this.birthdayDay);
+    await selectFirstOptionIfPresent(this.birthdayMonth);
+    await selectFirstOptionIfPresent(this.birthdayYear);
+    await checkIfPresent(this.dataProtection);
   }
 
   async fillAddressData(street: string, zipcode: string, city: string) {
@@ -95,10 +125,13 @@ export class RegisterForm {
   }
 
   async createUser() {
+    const email = uniqueEmail();
+    const password = faker.internet.password();
     await this.firstName.fill(`e2e ${faker.person.firstName()}`);
     await this.lastName.fill(`e2e ${faker.person.lastName()}`);
-    await this.emailAdrdress.fill(uniqueEmail());
-    await this.password.fill(faker.internet.password());
+    await this.emailAdrdress.fill(email);
+    await this.password.fill(password);
+    await this.fillShopConfiguredFields(email, password);
     await this.street.fill(faker.location.street());
     await this.zipcode.fill(faker.location.zipCode());
     await this.city.fill(faker.location.city());

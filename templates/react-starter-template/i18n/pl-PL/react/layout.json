@@ -1,0 +1,30 @@
+{
+  "layout": {
+    "logo": "Shopware Frontends Demo Store",
+    "header": {
+      "search": "Szukaj",
+      "closeSearch": "Zamknij",
+      "signedInAs": "Zalogowano jako {name}",
+      "cartWithCount": "Koszyk, {count} produkt | Koszyk, {count} produkty | Koszyk, {count} produktów",
+      "wishlistWithCount": "Lista życzeń, {count} produkt | Lista życzeń, {count} produkty | Lista życzeń, {count} produktów"
+    },
+    "sideMenu": {
+      "open": "Otwórz menu",
+      "showSubcategories": "Pokaż podkategorie",
+      "hideSubcategories": "Ukryj podkategorie"
+    },
+    "languageSwitcher": {
+      "pending": "Otwieranie strony w wersji: {language}…"
+    },
+    "currencySwitcher": {
+      "pending": "Zmiana waluty na {currency}…",
+      "changed": "Zmieniono walutę na {currency}."
+    },
+    "footer": {
+      "builtWith": "Zbudowane z Shopware Frontends i Next.js"
+    },
+    "notFound": {
+      "backToHomepage": "Wróć do strony głównej"
+    }
+  }
+}

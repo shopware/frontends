@@ -1,0 +1,332 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+
+import { BaseButton } from "@/cms/client";
+import { CountrySelect } from "@/components/form/CountrySelect";
+import { InputField } from "@/components/form/InputField";
+import { SelectField } from "@/components/form/SelectField";
+import type { SelectOption } from "@/components/form/SelectField";
+import { LocaleLink } from "@/components/LocaleLink";
+import { REGISTRATION_MAX_LENGTHS } from "@/features/account/registrationSchema";
+import { useContentLang } from "@/i18n/ContentLanguageProvider";
+import { useTranslations } from "@/i18n/I18nProvider";
+import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
+
+import { emptyAddressValues, validateAddress } from "../addressSchema";
+import type {
+  AddressField,
+  AddressFieldSettings,
+  AddressValues,
+} from "../addressSchema";
+import { SECONDARY_BUTTON_CLASS } from "./addressButtonClasses";
+
+export const ADDRESS_LIST_PATH = "/account/address";
+
+type Touched = Partial<Record<AddressField, boolean>>;
+
+export type AddressFormProps = {
+  countries: CountryOption[];
+  salutations: SelectOption[];
+  settings: AddressFieldSettings;
+  countriesUnavailable?: boolean;
+  salutationsUnavailable?: boolean;
+  initialValues?: AddressValues;
+  busy?: boolean;
+  onSubmit: (values: AddressValues) => Promise<void>;
+};
+
+export function AddressForm({
+  countries,
+  salutations,
+  settings,
+  countriesUnavailable = false,
+  salutationsUnavailable = false,
+  initialValues = emptyAddressValues,
+  busy = false,
+  onSubmit,
+}: AddressFormProps) {
+  const router = useRouter();
+  const t = useTranslations();
+  const contentLang = useContentLang();
+  const [values, setValues] = useState<AddressValues>(initialValues);
+  const [touched, setTouched] = useState<Touched>({});
+  const [submitted, setSubmitted] = useState(false);
+  const [pending, setPending] = useState(false);
+  const [refreshing, startRefresh] = useTransition();
+  const [focusRequest, setFocusRequest] = useState(0);
+  const formRef = useRef<HTMLFormElement>(null);
+  const pendingRef = useRef(false);
+
+  const states =
+    countries.find((country) => country.id === values.countryId)?.states ?? [];
+  const countryHasStates = states.length > 0;
+  const errors = validateAddress(values, { countryHasStates, settings }, t);
+  const referencesUnavailable = countriesUnavailable || salutationsUnavailable;
+  const inactive = pending || busy;
+
+  const errorFor = (field: AddressField) =>
+    submitted || touched[field] ? errors[field] : undefined;
+
+  const touch = (field: AddressField) => () =>
+    setTouched((current) => ({ ...current, [field]: true }));
+
+  const inputHandler =
+    (field: AddressField) =>
+    (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+      const { value } = event.target;
+      setValues((current) => ({ ...current, [field]: value }));
+    };
+
+  const handleCountryChange = useCallback((countryId: string) => {
+    setValues((current) =>
+      current.countryId === countryId
+        ? current
+        : { ...current, countryId, countryStateId: "" },
+    );
+  }, []);
+
+  useEffect(() => {
+    if (focusRequest === 0) return;
+    formRef.current
+      ?.querySelector<HTMLElement>('[aria-invalid="true"]')
+      ?.focus();
+  }, [focusRequest]);
+
+  function retryReferences() {
+    if (refreshing) return;
+    startRefresh(() => {
+      router.refresh();
+    });
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (pendingRef.current || busy) return;
+    setSubmitted(true);
+    if (
+      Object.keys(validateAddress(values, { countryHasStates, settings }, t))
+        .length
+    ) {
+      setFocusRequest((count) => count + 1);
+      return;
+    }
+
+    pendingRef.current = true;
+    setPending(true);
+    try {
+      await onSubmit(values);
+    } finally {
+      pendingRef.current = false;
+      setPending(false);
+    }
+  }
+
+  return (
+    <form
+      ref={formRef}
+      className="flex flex-col gap-4"
+      noValidate
+      onSubmit={(event) => {
+        void handleSubmit(event);
+      }}
+    >
+      <SelectField
+        id="salutation"
+        label={t("form.salutation")}
+        placeholder={t("form.chooseSalutation")}
+        required
+        autoComplete="honorific-prefix"
+        optionsLang={contentLang}
+        options={salutations}
+        value={values.salutationId}
+        onChange={inputHandler("salutationId")}
+        onBlur={touch("salutationId")}
+        error={
+          salutationsUnavailable
+            ? t("messages.error")
+            : errorFor("salutationId")
+        }
+      />
+
+      <div className="flex flex-col gap-4 sm:flex-row">
+        <InputField
+          className="sm:basis-1/2"
+          id="first-name"
+          label={t("form.firstName")}
+          placeholder={t("form.firstNamePlaceholder")}
+          required
+          autoComplete="given-name"
+          value={values.firstName}
+          onChange={inputHandler("firstName")}
+          onBlur={touch("firstName")}
+          error={errorFor("firstName")}
+        />
+        <InputField
+          className="sm:basis-1/2"
+          id="last-name"
+          label={t("form.lastName")}
+          placeholder={t("form.lastNamePlaceholder")}
+          required
+          autoComplete="family-name"
+          value={values.lastName}
+          onChange={inputHandler("lastName")}
+          onBlur={touch("lastName")}
+          error={errorFor("lastName")}
+        />
+      </div>
+
+      <InputField
+        id="street"
+        label={t("form.streetAddress")}
+        placeholder={t("form.streetPlaceholder")}
+        required
+        autoComplete={
+          settings.showAdditionalAddressField1 ||
+          settings.showAdditionalAddressField2
+            ? "address-line1"
+            : "street-address"
+        }
+        value={values.street}
+        onChange={inputHandler("street")}
+        onBlur={touch("street")}
+        error={errorFor("street")}
+      />
+
+      {settings.showAdditionalAddressField1 ? (
+        <InputField
+          id="additionalAddressLine1"
+          label={t("form.additionalAddressLine1")}
+          required={settings.additionalAddressField1Required}
+          autoComplete="address-line2"
+          value={values.additionalAddressLine1}
+          onChange={inputHandler("additionalAddressLine1")}
+          onBlur={touch("additionalAddressLine1")}
+          error={errorFor("additionalAddressLine1")}
+        />
+      ) : null}
+      {settings.showAdditionalAddressField2 ? (
+        <InputField
+          id="additionalAddressLine2"
+          label={t("form.additionalAddressLine2")}
+          required={settings.additionalAddressField2Required}
+          autoComplete="address-line3"
+          value={values.additionalAddressLine2}
+          onChange={inputHandler("additionalAddressLine2")}
+          onBlur={touch("additionalAddressLine2")}
+          error={errorFor("additionalAddressLine2")}
+        />
+      ) : null}
+
+      <div className="flex flex-col gap-4 sm:flex-row">
+        <InputField
+          className="sm:basis-1/2"
+          id="zipcode"
+          label={t("form.postalCode")}
+          placeholder={t("form.postalCodePlaceholder")}
+          required
+          autoComplete="postal-code"
+          value={values.zipcode}
+          onChange={inputHandler("zipcode")}
+          onBlur={touch("zipcode")}
+          error={errorFor("zipcode")}
+        />
+        <InputField
+          className="sm:basis-1/2"
+          id="city"
+          label={t("form.city")}
+          placeholder={t("form.cityPlaceholder")}
+          required
+          autoComplete="address-level2"
+          value={values.city}
+          onChange={inputHandler("city")}
+          onBlur={touch("city")}
+          error={errorFor("city")}
+        />
+      </div>
+
+      <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
+        <CountrySelect
+          className="w-full"
+          id="country"
+          label={t("form.country")}
+          placeholder={t("form.chooseCountry")}
+          countries={countries}
+          value={values.countryId}
+          onChange={handleCountryChange}
+          onBlur={touch("countryId")}
+          error={errorFor("countryId")}
+          loadError={countriesUnavailable}
+          required
+        />
+        {countryHasStates ? (
+          <SelectField
+            className="w-full"
+            id="state"
+            data-testid="checkout-pi-state-input"
+            label={t("form.state")}
+            placeholder={t("form.chooseState")}
+            required
+            autoComplete="address-level1"
+            optionsLang={contentLang}
+            options={states.map((state) => ({
+              label: state.name,
+              value: state.id,
+            }))}
+            value={values.countryStateId}
+            onChange={inputHandler("countryStateId")}
+            onBlur={touch("countryStateId")}
+            error={errorFor("countryStateId")}
+          />
+        ) : null}
+      </div>
+
+      {settings.showPhoneNumberField ? (
+        <InputField
+          id="phoneNumber"
+          type="tel"
+          label={t("form.phone")}
+          required={settings.phoneNumberFieldRequired}
+          autoComplete="tel"
+          maxLength={REGISTRATION_MAX_LENGTHS.phoneNumber}
+          value={values.phoneNumber}
+          onChange={inputHandler("phoneNumber")}
+          onBlur={touch("phoneNumber")}
+          error={errorFor("phoneNumber")}
+        />
+      ) : null}
+
+      {referencesUnavailable ? (
+        <BaseButton
+          variant="secondary"
+          size="small"
+          className="w-fit"
+          aria-busy={refreshing}
+          onClick={retryReferences}
+        >
+          {t("listing.retry")}
+        </BaseButton>
+      ) : null}
+
+      <p className="text-sm text-surface-on-surface-variant">
+        {t("form.requiredFieldsNote")}
+      </p>
+
+      <div className="mt-6 flex gap-4">
+        <BaseButton
+          type="submit"
+          aria-busy={inactive}
+          aria-disabled={inactive || undefined}
+          className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
+        >
+          {t("account.address.saveButton")}
+        </BaseButton>
+        <LocaleLink href={ADDRESS_LIST_PATH} className={SECONDARY_BUTTON_CLASS}>
+          {t("form.cancel")}
+        </LocaleLink>
+      </div>
+    </form>
+  );
+}

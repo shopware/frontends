@@ -1,0 +1,14 @@
+{
+  "forms": {
+    "errors": {
+      "urlNotAllowed": "This field must not contain a link.",
+      "invalidChoice": "Please choose one of the options."
+    }
+  },
+  "form": {
+    "messages": {
+      "newsletterConfirmationSent": "Thank you! Please confirm your subscription with the link in the email we have just sent you.",
+      "newsletterUnsubscribed": "You have unsubscribed from the newsletter."
+    }
+  }
+}

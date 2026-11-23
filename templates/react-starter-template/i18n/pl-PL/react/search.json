@@ -1,0 +1,11 @@
+{
+  "search": {
+    "metaTitle": "Wyniki wyszukiwania dla „{term}”",
+    "emptyTerm": "Wpisz wyszukiwaną frazę, aby znaleźć produkty.",
+    "suggest": {
+      "label": "Podpowiedzi wyszukiwania",
+      "status": "Znaleziono {count} produkt | Znaleziono {count} produkty | Znaleziono {count} produktów",
+      "unavailable": "Podpowiedzi są teraz niedostępne."
+    }
+  }
+}

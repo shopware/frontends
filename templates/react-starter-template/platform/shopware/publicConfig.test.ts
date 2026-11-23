@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { parsePublicShopwareConfig } from "./publicConfig";
+import {
+  isBrowserForbiddenHeader,
+  isReservedApiHeader,
+  isValidHeaderName,
+  isValidHeaderValue,
+  parsePublicShopwareConfig,
+} from "./publicConfig";
 
 const config = {
   publicEndpoint: "https://shop.example.com/store-api/",
@@ -25,6 +31,15 @@ describe("parsePublicShopwareConfig", () => {
     ).toEqual(config);
   });
 
+  it("keeps the public headers", () => {
+    const headers = { "x-edge-region": "eu", authorization: "Basic cHVibGlj" };
+
+    expect(parsePublicShopwareConfig({ ...config, headers })).toEqual({
+      ...config,
+      headers,
+    });
+  });
+
   it.each([
     ["no object", null],
     ["a string", "config"],
@@ -32,7 +47,94 @@ describe("parsePublicShopwareConfig", () => {
     ["an empty access token", { ...config, accessToken: "" }],
     ["a numeric dev storefront URL", { ...config, devStorefrontUrl: 1 }],
     ["no dev storefront URL key", { publicEndpoint: "e", accessToken: "t" }],
+    ["a non-string header value", { ...config, headers: { "x-edge": 1 } }],
+    ["headers that are no object", { ...config, headers: ["x-edge"] }],
   ])("throws on %s", (_, value) => {
     expect(() => parsePublicShopwareConfig(value)).toThrow();
   });
+});
+
+describe("isReservedApiHeader", () => {
+  it.each([
+    "sw-access-key",
+    "SW-Context-Token",
+    "sw-language-id",
+    "sw-currency-id",
+    "sw_access_key",
+    "SW_Context_Token",
+    "Content_Type",
+    "Accept",
+    "content-type",
+    "content-length",
+    "host",
+    "connection",
+    "keep-alive",
+    "transfer-encoding",
+    "upgrade",
+    "expect",
+    "te",
+    "trailer",
+  ])("reserves %s", (name) => {
+    expect(isReservedApiHeader(name)).toBe(true);
+  });
+
+  it.each([
+    "authorization",
+    "x-sw-edge",
+    "x_sw_edge",
+    "x-waf-bypass",
+    "cookie",
+  ])("allows %s", (name) => {
+    expect(isReservedApiHeader(name)).toBe(false);
+  });
+});
+
+describe("isBrowserForbiddenHeader", () => {
+  it.each([
+    "cookie",
+    "Origin",
+    "referer",
+    "proxy-authorization",
+    "Sec-Fetch-Mode",
+    "accept-encoding",
+    "via",
+  ])("forbids %s", (name) => {
+    expect(isBrowserForbiddenHeader(name)).toBe(true);
+  });
+
+  it.each(["authorization", "x-edge-region", "x-secure"])(
+    "allows %s",
+    (name) => {
+      expect(isBrowserForbiddenHeader(name)).toBe(false);
+    },
+  );
+});
+
+describe("isValidHeaderName", () => {
+  it.each(["x-edge-region", "X-Edge-Region", "authorization", "x_custom.1"])(
+    "accepts %j",
+    (name) => {
+      expect(isValidHeaderName(name)).toBe(true);
+    },
+  );
+
+  it.each(["", "bad name", "x:colon", "x-\u00fcml", "x-edge\n"])(
+    "rejects %j",
+    (name) => {
+      expect(isValidHeaderName(name)).toBe(false);
+    },
+  );
+});
+
+describe("isValidHeaderValue", () => {
+  it.each(["Basic c2VjcmV0", "caf\u00e9", "a\tb"])("accepts %j", (value) => {
+    expect(isValidHeaderValue(value)).toBe(true);
+  });
+
+  it.each(["", "  ", "a\r\nb", "a\u0000", "a\u0007", "\u20ac"])(
+    "rejects %j",
+    (value) => {
+      expect(isValidHeaderValue(value)).toBe(false);
+    },
+  );
 });

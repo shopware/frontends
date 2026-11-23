@@ -6,16 +6,18 @@ import type { Schemas } from "#shopware";
 
 import { createShopwareClient } from "../client";
 import { notFoundOn404 } from "../errors";
+import { languageCacheTags } from "./cacheTags";
 import { cmsAssociations } from "./cmsAssociations";
 
 export async function readProductDetail(
   productId: string,
+  languageId: string | null,
 ): Promise<Schemas["ProductDetailResponse"]> {
   "use cache";
   cacheLife("catalog");
-  cacheTag(`sw:product:${productId}`);
+  cacheTag(...languageCacheTags(`sw:product:${productId}`, languageId));
 
-  const response = await createShopwareClient()
+  const response = await createShopwareClient({ languageId })
     .invoke("readProductDetailGet get /product/{productId}", {
       headers: { "sw-include-seo-urls": true },
       pathParams: { productId },
@@ -23,6 +25,7 @@ export async function readProductDetail(
         _criteria: encodeForQuery({
           associations: {
             ...cmsAssociations,
+            manufacturer: {},
             openGraphMedia: { associations: { thumbnails: {} } },
             seoUrls: {},
           },

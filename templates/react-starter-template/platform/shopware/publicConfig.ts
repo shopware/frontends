@@ -1,15 +1,73 @@
 import { z } from "zod";
 
+export type ApiHeaders = Readonly<Record<string, string>>;
+
 export type PublicShopwareConfig = {
   publicEndpoint: string;
   accessToken: string;
   devStorefrontUrl: string | null;
+  headers?: ApiHeaders;
 };
+
+const HEADER_NAME = /^[!#$%&'*+\-.^_`|~0-9a-z]+$/i;
+const HEADER_VALUE = /^[\t\x20-\x7e\x80-\xff]+$/;
+
+const RESERVED_API_HEADERS = new Set([
+  "accept",
+  "content-type",
+  "content-length",
+  "host",
+  "connection",
+  "keep-alive",
+  "transfer-encoding",
+  "upgrade",
+  "expect",
+  "te",
+  "trailer",
+]);
+
+const BROWSER_FORBIDDEN_HEADERS = new Set([
+  "accept-charset",
+  "accept-encoding",
+  "access-control-request-headers",
+  "access-control-request-method",
+  "cookie",
+  "cookie2",
+  "date",
+  "dnt",
+  "origin",
+  "referer",
+  "set-cookie",
+  "via",
+]);
+
+export function isValidHeaderName(name: string): boolean {
+  return HEADER_NAME.test(name);
+}
+
+export function isValidHeaderValue(value: string): boolean {
+  return HEADER_VALUE.test(value) && value.trim() !== "";
+}
+
+export function isReservedApiHeader(name: string): boolean {
+  const canonical = name.toLowerCase().replaceAll("_", "-");
+  return canonical.startsWith("sw-") || RESERVED_API_HEADERS.has(canonical);
+}
+
+export function isBrowserForbiddenHeader(name: string): boolean {
+  const lowerCased = name.toLowerCase();
+  return (
+    lowerCased.startsWith("proxy-") ||
+    lowerCased.startsWith("sec-") ||
+    BROWSER_FORBIDDEN_HEADERS.has(lowerCased)
+  );
+}
 
 const publicShopwareConfigSchema = z.object({
   publicEndpoint: z.string().min(1),
   accessToken: z.string().min(1),
   devStorefrontUrl: z.string().min(1).nullable(),
+  headers: z.record(z.string(), z.string()).optional(),
 });
 
 export function parsePublicShopwareConfig(

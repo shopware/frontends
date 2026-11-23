@@ -1,0 +1,18 @@
+{
+  "account": {
+    "registrationConfirm": {
+      "title": "Potwierdzenie konta",
+      "guestConfirmed": "Dziękujemy za potwierdzenie adresu e-mail. Możesz teraz dokończyć zamówienie.",
+      "toLogin": "Przejdź do logowania"
+    }
+  },
+  "newsletter": {
+    "confirm": {
+      "alreadyConfirmed": "Twoja subskrypcja newslettera została już potwierdzona.",
+      "invalidLink": "Ten link potwierdzający jest nieprawidłowy. Zapisz się ponownie, aby otrzymać nowy link."
+    }
+  },
+  "errors": {
+    "CHECKOUT__CUSTOMER_OPTIN_NOT_COMPLETED": "Twoje konto nie zostało jeszcze aktywowane. Kliknij link w wiadomości potwierdzającej, którą do Ciebie wysłaliśmy."
+  }
+}

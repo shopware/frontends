@@ -1,7 +1,17 @@
 @import "tailwindcss";
 @import "@shopware/design-tokens/tailwind.css";
 @import "../cms/assets/styles.css";
+@import "../site/theme.css";
 
 @theme inline {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html:has(header[data-sticky-header]) {
+    @variant lg {
+      --sticky-header-height: 11.3125rem;
+      scroll-padding-top: calc(var(--sticky-header-height) + 0.75rem);
+    }
+  }
 }

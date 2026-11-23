@@ -1,0 +1,20 @@
+{
+  "account": {
+    "address": {
+      "deleteSuccessMessage": "Adres został pomyślnie usunięty.",
+      "defaultBillingSuccessMessage": "Domyślny adres do faktur został zmieniony.",
+      "defaultShippingSuccessMessage": "Domyślny adres do wysyłki został zmieniony."
+    },
+    "registration": {
+      "minLengthHint": "Co najmniej {min} znak | Co najmniej {min} znaki | Co najmniej {min} znaków"
+    },
+    "changeEmail": {
+      "form": {
+        "emailFieldName": "e-mail"
+      }
+    },
+    "loginModal": {
+      "close": "Zamknij"
+    }
+  }
+}

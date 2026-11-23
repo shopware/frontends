@@ -1,26 +1,58 @@
+import { encodeForQuery } from "@shopware/api-client/helpers";
+import { useState } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { ApiClient } from "#shopware";
+import type { ApiClient, Schemas } from "#shopware";
 import { useCmsActions } from "@/cms/client";
-import type { CmsActionResult } from "@/cms/client";
+import type {
+  CmsActionResult,
+  CmsCustomerState,
+  CmsFindVariantResult,
+  CmsNotification,
+} from "@/cms/client";
+import { Modal } from "@/components/Modal";
+import { cart, cartError, lineItem } from "@/features/cart/cart.fixture";
+import { useCart } from "@/features/cart/useCart";
+import { productReviewsCriteria } from "@/features/reviews/productReviewsApi";
 import { useSessionActions } from "@/features/session/components/SessionActionsContext";
 import { useSession } from "@/features/session/components/SessionProvider";
-import { errorMessages } from "@/features/session/errorMessages";
 import { READ_TIMEOUT_MS } from "@/features/session/readTimeout";
 import {
+  ENGLISH_DOMAIN,
   apiClientError,
+  customer,
   salesChannelContext,
 } from "@/features/session/session.fixture";
 import type { SessionActionResult } from "@/features/session/types";
+import {
+  FIND_VARIANT,
+  READ_SEO_URL,
+  VARIANT_NOT_FOUND,
+  findVariantQuery,
+  variantSeoUrlCriteria,
+} from "@/features/variants/variantApi";
+import type { Locale } from "@/i18n/config";
 import type { PublicShopwareConfig } from "@/platform/shopware/publicConfig";
-import { interact, mount, query, queryAll } from "@/test/mount";
+import { testTranslator, withI18n } from "@/test/i18n";
+import {
+  interact,
+  mount,
+  query,
+  queryAll,
+  setInputValue,
+  submitForm,
+} from "@/test/mount";
 import type { Mounted } from "@/test/mount";
 
-import { NOT_WIRED_MESSAGES } from "../notWired";
-import { StorefrontProviders } from "./StorefrontProviders";
+import { StorefrontProviders, TOAST_TIMEOUT_MS } from "./StorefrontProviders";
 
 const browser = vi.hoisted(() => ({
   invoke: vi.fn<(operation: string, params?: unknown) => Promise<unknown>>(),
+}));
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ push: vi.fn() }),
+  usePathname: () => "/",
 }));
 
 vi.mock("@/features/session/browserClient", () => ({
@@ -34,27 +66,140 @@ vi.mock("@/features/session/browserClient", () => ({
     ({ invoke: browser.invoke }) as unknown as ApiClient,
 }));
 
-const TOAST = '[data-testid="notification-element-message"]';
+const READ_CONTEXT = "readContext get /context";
+const READ_CART = "readCart get /checkout/cart";
+const READ_LANGUAGES = "readLanguagesGet get /language";
+const ADD_LINE_ITEM = "addLineItem post /checkout/cart/line-item";
+const LOGIN = "loginCustomer post /account/login";
+const READ_WISHLIST = "readCustomerWishlist post /customer/wishlist";
+const ADD_WISHLIST =
+  "addProductOnWishlist post /customer/wishlist/add/{productId}";
+const DELETE_WISHLIST =
+  "deleteProductOnWishlist delete /customer/wishlist/delete/{productId}";
+const LOGOUT = "logoutCustomer post /account/logout";
+const READ_REVIEWS = "readProductReviewsGet get /product/{productId}/reviews";
+const SAVE_REVIEW = "saveProductReview post /product/{productId}/review";
+const MESSAGE = '[data-testid="notification-element-message"]';
+
+const backend: {
+  cart: Schemas["Cart"];
+  afterAdd: Schemas["Cart"];
+  signedIn: boolean;
+  customerId: string;
+  acceptLogin: boolean;
+  wishlist: string[];
+  reviews: Schemas["ProductReview"][];
+} = {
+  cart: cart(),
+  afterAdd: cart(),
+  signedIn: false,
+  customerId: "customer-1",
+  acceptLogin: false,
+  wishlist: [],
+  reviews: [],
+};
+
+function wishlistProductId(params: unknown): string {
+  return (params as { pathParams: { productId: string } }).pathParams.productId;
+}
 
 let mounted: Mounted | undefined;
 
 beforeEach(() => {
+  backend.cart = cart();
+  backend.afterAdd = cart({ lineItems: [lineItem({ quantity: 2 })] });
+  backend.signedIn = false;
+  backend.customerId = "customer-1";
+  backend.acceptLogin = false;
+  backend.wishlist = [];
+  backend.reviews = [];
   browser.invoke.mockReset();
-  browser.invoke.mockImplementation(async (operation) => {
-    if (operation === "readContext get /context") {
-      return { data: salesChannelContext(null), status: 200 };
+  browser.invoke.mockImplementation(async (operation, params) => {
+    switch (operation) {
+      case READ_CONTEXT:
+        return {
+          data: salesChannelContext(
+            backend.signedIn ? customer({ id: backend.customerId }) : null,
+          ),
+          status: 200,
+        };
+      case READ_LANGUAGES:
+        return {
+          data: {
+            elements: [
+              { id: "language-en", translationCode: { code: "en-GB" } },
+            ],
+          },
+          status: 200,
+        };
+      case READ_CART:
+        return { data: backend.cart, status: 200 };
+      case ADD_LINE_ITEM:
+        backend.cart = backend.afterAdd;
+        return { data: backend.cart, status: 200 };
+      case READ_WISHLIST:
+        return {
+          data: {
+            products: {
+              elements: backend.wishlist.map((id) => ({ id })),
+              total: backend.wishlist.length,
+            },
+          },
+          status: 200,
+        };
+      case ADD_WISHLIST:
+        backend.wishlist = [wishlistProductId(params), ...backend.wishlist];
+        return { data: { success: true }, status: 200 };
+      case DELETE_WISHLIST:
+        backend.wishlist = backend.wishlist.filter(
+          (id) => id !== wishlistProductId(params),
+        );
+        return { data: { success: true }, status: 200 };
+      case LOGOUT:
+        backend.signedIn = false;
+        return { data: { contextToken: "guest-token" }, status: 200 };
+      case READ_REVIEWS:
+        return {
+          data: {
+            elements: backend.reviews,
+            total: backend.reviews.length,
+            page: 1,
+            limit: 10,
+          },
+          status: 200,
+        };
+      case SAVE_REVIEW:
+        return { data: undefined, status: 204 };
+      case LOGIN:
+        if (backend.acceptLogin) {
+          backend.signedIn = true;
+          return { data: { contextToken: "customer-token" }, status: 200 };
+        }
+        throw apiClientError(
+          [{ code: "0", detail: "No matching customer for the email found." }],
+          401,
+        );
+      default:
+        throw apiClientError(
+          [{ code: "0", detail: "No matching customer for the email found." }],
+          401,
+        );
     }
-    throw apiClientError(
-      [{ code: "0", detail: "No matching customer for the email found." }],
-      401,
-    );
   });
 });
 
 afterEach(async () => {
   await mounted?.unmount();
   mounted = undefined;
+  vi.useRealTimers();
+  vi.restoreAllMocks();
 });
+
+function toastOf(message: Element): HTMLElement {
+  const toast = message.parentElement?.parentElement;
+  if (!toast) throw new Error("The message has no toast container");
+  return toast;
+}
 
 function SessionConsumer({
   onResult,
@@ -102,10 +247,10 @@ describe("StorefrontProviders session", () => {
     expect(
       query(container, '[data-testid="session-logged-in"]').textContent,
     ).toBe("false");
-    expect(browser.invoke).toHaveBeenCalledWith("readContext get /context", {
+    expect(browser.invoke).toHaveBeenCalledWith(READ_CONTEXT, {
       fetchOptions: { timeout: READ_TIMEOUT_MS },
     });
-    expect(queryAll(container, TOAST)).toHaveLength(0);
+    expect(queryAll(container, MESSAGE)).toHaveLength(0);
   });
 
   it("leaves a failed login to the form and shows no toast", async () => {
@@ -122,13 +267,20 @@ describe("StorefrontProviders session", () => {
     );
     await vi.waitFor(() => expect(results).toHaveLength(1));
 
-    const message = errorMessages.errors.login_no_matching_customer_internal;
+    const message = testTranslator()(
+      "errors.login_no_matching_customer_internal",
+    );
     expect(results[0]).toEqual({ ok: false, message, messages: [message] });
-    expect(queryAll(container, TOAST)).toHaveLength(0);
+    expect(queryAll(container, MESSAGE)).toHaveLength(0);
   });
 });
 
-function AddToCartConsumer({
+function CartCount() {
+  const { status, count } = useCart();
+  return <output data-testid="cart-count">{`${status}:${count}`}</output>;
+}
+
+function AddToCartIsland({
   onResult,
 }: {
   onResult: (result: CmsActionResult) => void;
@@ -137,12 +289,22 @@ function AddToCartConsumer({
   return (
     <button
       type="button"
-      data-testid="call-add-to-cart"
+      data-testid="add-to-cart-button"
       onClick={() => {
         void actions
-          .addToCart({ productId: "product-1", quantity: 1 })
+          .addToCart({ productId: "product-1", quantity: 2 })
           .then((result) => {
-            if (!result.ok && result.message) {
+            const errors = result.errors ?? [];
+            for (const { messageKey } of errors) {
+              actions.notify({ type: "error", message: messageKey });
+            }
+            if (errors.length === 0 && result.ok) {
+              actions.notify({
+                type: "success",
+                message: "Aerodynamic Bag has been added to cart.",
+                action: { label: "View cart", href: "/checkout/cart" },
+              });
+            } else if (errors.length === 0 && result.message) {
               actions.notify({ type: "error", message: result.message });
             }
             onResult(result);
@@ -154,30 +316,1235 @@ function AddToCartConsumer({
   );
 }
 
-describe("StorefrontProviders CMS stubs", () => {
-  it("returns the not-wired message for the island to show once", async () => {
-    const results: CmsActionResult[] = [];
-    mounted = await mount(
-      <StorefrontProviders>
-        <AddToCartConsumer onResult={(result) => results.push(result)} />
-      </StorefrontProviders>,
-    );
-    const { container } = mounted;
-
+async function mountShop() {
+  const results: CmsActionResult[] = [];
+  mounted = await mount(
+    <StorefrontProviders>
+      <CartCount />
+      <AddToCartIsland onResult={(result) => results.push(result)} />
+    </StorefrontProviders>,
+  );
+  const { container } = mounted;
+  const cartStatus = () =>
+    query(container, '[data-testid="cart-count"]').textContent;
+  const addToCart = async () => {
+    const before = results.length;
     await interact(() =>
       query<HTMLButtonElement>(
         container,
-        '[data-testid="call-add-to-cart"]',
+        '[data-testid="add-to-cart-button"]',
       ).click(),
+    );
+    await vi.waitFor(() => expect(results).toHaveLength(before + 1));
+    return results[before] as CmsActionResult;
+  };
+  return { container, cartStatus, addToCart };
+}
+
+describe("StorefrontProviders cart", () => {
+  it("reads the cart after the session and adds to it through the CMS port", async () => {
+    const { cartStatus, addToCart } = await mountShop();
+    await vi.waitFor(() => expect(cartStatus()).toBe("ready:0"));
+
+    await expect(addToCart()).resolves.toEqual({ ok: true, errors: [] });
+
+    expect(browser.invoke.mock.calls.map(([operation]) => operation)).toEqual([
+      READ_CONTEXT,
+      READ_LANGUAGES,
+      READ_CART,
+      ADD_LINE_ITEM,
+    ]);
+    expect(browser.invoke).toHaveBeenCalledWith(ADD_LINE_ITEM, {
+      body: {
+        items: [
+          {
+            id: "product-1",
+            referencedId: "product-1",
+            quantity: 2,
+            type: "product",
+          },
+        ],
+      },
+    });
+    await vi.waitFor(() => expect(cartStatus()).toBe("ready:2"));
+  });
+
+  it("renders the island's success toast with the action link outside the message", async () => {
+    const { container, addToCart } = await mountShop();
+
+    await addToCart();
+
+    const messages = queryAll<HTMLElement>(container, MESSAGE);
+    expect(messages).toHaveLength(1);
+    const message = messages.at(-1) as HTMLElement;
+    expect(message.textContent).toBe("Aerodynamic Bag has been added to cart.");
+    expect(message.textContent).toMatch(/has been added to cart.$/);
+    expect(message.querySelector("a")).toBeNull();
+    const link = query<HTMLAnchorElement>(
+      container,
+      '[data-testid="notification-element-action"]',
+    );
+    expect(link.tagName).toBe("A");
+    expect(link.getAttribute("href")).toBe("/checkout/cart");
+    expect(link.textContent).toBe("View cart");
+    expect(message.contains(link)).toBe(false);
+    expect(link.previousElementSibling).toBe(message);
+    const toast = toastOf(message);
+    expect(toast.contains(link)).toBe(true);
+    expect(toast.dataset.testid).toBe("notification-element-success");
+    expect(toast.className).toContain("pointer-events-auto");
+  });
+
+  it("leaves the notification of cart errors to the island", async () => {
+    const stock = cartError("product-stock-reached", "product-1");
+    backend.afterAdd = cart({
+      lineItems: [lineItem({ quantityInformation: { maxPurchase: 1 } })],
+      errors: { [stock.key]: stock },
+    });
+    const { container, addToCart } = await mountShop();
+
+    await expect(addToCart()).resolves.toEqual({
+      ok: true,
+      errors: [
+        {
+          messageKey: "product-stock-reached",
+          params: { name: "Aerodynamic Bag", quantity: 1 },
+          key: stock.key,
+          level: stock.level,
+        },
+      ],
+    });
+
+    const messages = queryAll(container, MESSAGE);
+    expect(messages.map((message) => message.textContent)).toEqual([
+      "product-stock-reached",
+    ]);
+  });
+
+  it("resolves a failed add with the API message and shows only the island's toast", async () => {
+    browser.invoke.mockImplementation(async (operation) => {
+      if (operation === READ_CONTEXT) {
+        return { data: salesChannelContext(null), status: 200 };
+      }
+      if (operation === READ_CART) return { data: cart(), status: 200 };
+      throw apiClientError([{ code: "product-not-found" }], 404);
+    });
+    const { container, addToCart } = await mountShop();
+
+    const message = testTranslator()("errors.product-not-found");
+    await expect(addToCart()).resolves.toEqual({ ok: false, message });
+
+    const messages = queryAll(container, MESSAGE);
+    expect(messages.map((element) => element.textContent)).toEqual([message]);
+  });
+});
+
+function Notifier({ notification }: { notification: CmsNotification }) {
+  const { notify } = useCmsActions();
+  return (
+    <button
+      type="button"
+      data-testid="notify"
+      onClick={() => notify(notification)}
+    >
+      notify
+    </button>
+  );
+}
+
+async function showToast(notification: CmsNotification, locale?: Locale) {
+  mounted = await mount(
+    withI18n(
+      <StorefrontProviders>
+        <Notifier notification={notification} />
+      </StorefrontProviders>,
+      locale,
+    ),
+  );
+  const { container } = mounted;
+  await interact(() =>
+    query<HTMLButtonElement>(container, '[data-testid="notify"]').click(),
+  );
+  return container;
+}
+
+function ModalNotifier() {
+  const { notify } = useCmsActions();
+  const [open, setOpen] = useState(true);
+  return (
+    <Modal
+      open={open}
+      title="Change payment method"
+      closeLabel="Close"
+      onClose={() => setOpen(false)}
+      data-testid="modal"
+    >
+      <button
+        type="button"
+        data-testid="notify-in-modal"
+        onClick={() => notify({ type: "error", message: "Payment failed" })}
+      >
+        notify
+      </button>
+    </Modal>
+  );
+}
+
+async function advance(ms: number) {
+  await interact(() => {
+    vi.advanceTimersByTime(ms);
+  });
+}
+
+describe("StorefrontProviders toasts", () => {
+  it("dismisses a toast after the default timeout", async () => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+    const container = await showToast({ type: "info", message: "Saved" });
+    expect(queryAll(container, MESSAGE)).toHaveLength(1);
+
+    await advance(TOAST_TIMEOUT_MS - 1);
+    expect(queryAll(container, MESSAGE)).toHaveLength(1);
+
+    await advance(1);
+    expect(queryAll(container, MESSAGE)).toHaveLength(0);
+  });
+
+  it("respects the timeout of the notification", async () => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+    const container = await showToast({
+      type: "warning",
+      message: "Hurry",
+      timeout: 12_000,
+    });
+
+    await advance(TOAST_TIMEOUT_MS);
+    expect(queryAll(container, MESSAGE)).toHaveLength(1);
+
+    await advance(12_000 - TOAST_TIMEOUT_MS);
+    expect(queryAll(container, MESSAGE)).toHaveLength(0);
+  });
+
+  it.each([
+    ["a zero", 0],
+    ["an infinite", Number.POSITIVE_INFINITY],
+    ["a negative", -1],
+  ])("keeps a toast with %s timeout until it is closed", async (_, timeout) => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+    const container = await showToast({
+      type: "error",
+      message: "Payment failed",
+      timeout,
+    });
+
+    await advance(60_000);
+    expect(queryAll(container, MESSAGE)).toHaveLength(1);
+
+    const close = query<HTMLButtonElement>(
+      container,
+      '[data-testid="notification-element-button"]',
+    );
+    expect(close.getAttribute("aria-label")).toBe("Close notification");
+    await interact(() => close.click());
+
+    expect(queryAll(container, MESSAGE)).toHaveLength(0);
+  });
+
+  it("shows a toast inside an open modal dialog and back on the page once it closes", async () => {
+    mounted = await mount(
+      withI18n(
+        <StorefrontProviders>
+          <ModalNotifier />
+        </StorefrontProviders>,
+      ),
+    );
+    const dialog = query<HTMLDialogElement>(
+      document.body,
+      '[data-testid="modal"]',
+    );
+
+    await interact(() =>
+      query<HTMLButtonElement>(
+        dialog,
+        '[data-testid="notify-in-modal"]',
+      ).click(),
+    );
+
+    expect(query(dialog, MESSAGE).textContent).toBe("Payment failed");
+    expect(dialog.querySelector('[aria-live="polite"]')).not.toBeNull();
+
+    await interact(() =>
+      query<HTMLButtonElement>(dialog, 'button[aria-label="Close"]').click(),
+    );
+
+    expect(document.querySelector('[data-testid="modal"]')).toBeNull();
+    expect(query(mounted.container, MESSAGE).textContent).toBe(
+      "Payment failed",
+    );
+  });
+
+  it("closes the toast when its action link is followed", async () => {
+    const container = await showToast({
+      type: "success",
+      message: "Added",
+      action: { label: "View cart", href: "/checkout/cart" },
+    });
+    const link = query<HTMLAnchorElement>(
+      container,
+      '[data-testid="notification-element-action"]',
+    );
+
+    await interact(() => {
+      link.addEventListener("click", (event) => event.preventDefault(), {
+        once: true,
+      });
+      link.click();
+    });
+
+    expect(queryAll(container, MESSAGE)).toHaveLength(0);
+  });
+
+  it("labels the close button in Polish and prefixes the action link under the pl-PL provider", async () => {
+    const container = await showToast(
+      {
+        type: "success",
+        message: "Dodano",
+        action: { label: "Zobacz koszyk", href: "/checkout/cart" },
+      },
+      "pl-PL",
+    );
+
+    expect(
+      query<HTMLAnchorElement>(
+        container,
+        '[data-testid="notification-element-action"]',
+      ).getAttribute("href"),
+    ).toBe("/pl-PL/checkout/cart");
+    expect(
+      query<HTMLButtonElement>(
+        container,
+        '[data-testid="notification-element-button"]',
+      ).getAttribute("aria-label"),
+    ).toBe("Zamknij powiadomienie");
+  });
+});
+
+type WishlistResult = CmsActionResult & {
+  inWishlist?: boolean;
+  cancelled?: boolean;
+};
+
+function WishlistIsland({
+  onResult,
+}: {
+  onResult: (result: WishlistResult) => void;
+}) {
+  const actions = useCmsActions();
+  return (
+    <>
+      <output data-testid="in-wishlist">
+        {String(actions.isInWishlist("product-1"))}
+      </output>
+      <button
+        type="button"
+        data-testid="toggle-wishlist"
+        onClick={() => {
+          void actions.toggleWishlist("product-1").then(onResult);
+        }}
+      >
+        toggle
+      </button>
+    </>
+  );
+}
+
+async function mountWishlistShop() {
+  const results: WishlistResult[] = [];
+  mounted = await mount(
+    <StorefrontProviders>
+      <WishlistIsland onResult={(result) => results.push(result)} />
+    </StorefrontProviders>,
+  );
+  const { container } = mounted;
+  const inWishlist = () =>
+    query(container, '[data-testid="in-wishlist"]').textContent;
+  const toggle = () =>
+    interact(() =>
+      query<HTMLButtonElement>(
+        container,
+        '[data-testid="toggle-wishlist"]',
+      ).click(),
+    );
+  return { results, inWishlist, toggle };
+}
+
+function invoked(operation: string): unknown[] {
+  return browser.invoke.mock.calls
+    .filter(([name]) => name === operation)
+    .map(([, params]) => params);
+}
+
+function loginDialog(): HTMLDialogElement {
+  const dialog = document.body.querySelector<HTMLDialogElement>("dialog");
+  if (!dialog) throw new Error("The login modal is not open");
+  return dialog;
+}
+
+describe("StorefrontProviders wishlist", () => {
+  it("adds and removes a product of a signed-in customer through the CMS port", async () => {
+    backend.signedIn = true;
+    const { results, inWishlist, toggle } = await mountWishlistShop();
+    await vi.waitFor(() => expect(invoked(READ_WISHLIST)).toHaveLength(1));
+
+    await toggle();
+    await vi.waitFor(() => expect(results).toHaveLength(1));
+
+    expect(results[0]).toEqual({ ok: true, inWishlist: true });
+    expect(invoked(ADD_WISHLIST)).toEqual([
+      { pathParams: { productId: "product-1" } },
+    ]);
+    expect(inWishlist()).toBe("true");
+
+    await toggle();
+    await vi.waitFor(() => expect(results).toHaveLength(2));
+
+    expect(results[1]).toEqual({ ok: true, inWishlist: false });
+    expect(invoked(DELETE_WISHLIST)).toHaveLength(1);
+    expect(inWishlist()).toBe("false");
+    expect(document.body.querySelector("dialog")).toBeNull();
+  });
+
+  it("waits for a loading session before it decides that a customer is logged in", async () => {
+    backend.signedIn = true;
+    const answer = browser.invoke.getMockImplementation();
+    let openContext: () => void = () => {};
+    const contextGate = new Promise<void>((resolve) => {
+      openContext = resolve;
+    });
+    browser.invoke.mockImplementation(async (operation, params) => {
+      if (operation === READ_CONTEXT) await contextGate;
+      return answer?.(operation, params);
+    });
+    const { results, toggle } = await mountWishlistShop();
+
+    await toggle();
+    await interact(() => openContext());
+    await vi.waitFor(() => expect(results).toHaveLength(1));
+
+    expect(results[0]).toEqual({ ok: true, inWishlist: true });
+    expect(invoked(ADD_WISHLIST)).toHaveLength(1);
+    expect(document.body.querySelector("dialog")).toBeNull();
+  });
+
+  it("re-reads the session and asks for a login when the backend says the customer is gone", async () => {
+    backend.signedIn = true;
+    const answer = browser.invoke.getMockImplementation();
+    browser.invoke.mockImplementation(async (operation, params) => {
+      if (operation === ADD_WISHLIST) {
+        backend.signedIn = false;
+        throw apiClientError(
+          [
+            {
+              code: "FRAMEWORK__ROUTING_CUSTOMER_NOT_LOGGED_IN",
+              status: "403",
+              detail: "Customer is not logged in.",
+            },
+          ],
+          403,
+        );
+      }
+      return answer?.(operation, params);
+    });
+    const { results, toggle } = await mountWishlistShop();
+    await vi.waitFor(() => expect(invoked(READ_WISHLIST)).toHaveLength(1));
+
+    await toggle();
+    await vi.waitFor(() => expect(loginDialog()).toBeTruthy());
+
+    expect(invoked(READ_CONTEXT).length).toBeGreaterThanOrEqual(2);
+    const close = queryAll<HTMLButtonElement>(loginDialog(), "button").find(
+      (button) => button.textContent === "Close",
+    );
+    await interact(() => close?.click());
+    await vi.waitFor(() => expect(results).toHaveLength(1));
+    expect(results[0]).toEqual({ ok: false, cancelled: true });
+  });
+
+  it("reads the wishlist again when the tab becomes visible after a failed read", async () => {
+    backend.signedIn = true;
+    backend.wishlist = ["product-1"];
+    const answer = browser.invoke.getMockImplementation();
+    let failRead = true;
+    browser.invoke.mockImplementation(async (operation, params) => {
+      if (operation === READ_WISHLIST && failRead) {
+        failRead = false;
+        throw new Error("offline");
+      }
+      return answer?.(operation, params);
+    });
+    const { inWishlist } = await mountWishlistShop();
+    await vi.waitFor(() => expect(invoked(READ_WISHLIST)).toHaveLength(1));
+    expect(inWishlist()).toBe("false");
+
+    await interact(() => {
+      document.dispatchEvent(new Event("visibilitychange"));
+    });
+
+    await vi.waitFor(() => expect(inWishlist()).toBe("true"));
+    expect(invoked(READ_WISHLIST)).toHaveLength(2);
+  });
+
+  it("asks a guest to log in and reports a cancelled toggle when the modal is closed", async () => {
+    const { results, toggle } = await mountWishlistShop();
+
+    await toggle();
+    await vi.waitFor(() => expect(loginDialog()).toBeTruthy());
+    const close = queryAll<HTMLButtonElement>(loginDialog(), "button").find(
+      (button) => button.textContent === "Close",
+    );
+    await interact(() => close?.click());
+    await vi.waitFor(() => expect(results).toHaveLength(1));
+
+    expect(results[0]).toEqual({ ok: false, cancelled: true });
+    expect(invoked(ADD_WISHLIST)).toEqual([]);
+    expect(invoked(READ_WISHLIST)).toEqual([]);
+  });
+
+  it("adds the product once a guest logged in through the modal", async () => {
+    backend.acceptLogin = true;
+    backend.wishlist = ["product-9"];
+    const { results, inWishlist, toggle } = await mountWishlistShop();
+
+    await toggle();
+    await vi.waitFor(() => expect(loginDialog()).toBeTruthy());
+    await interact(() => {
+      setInputValue(
+        query<HTMLInputElement>(
+          loginDialog(),
+          '[data-testid="login-email-input"]',
+        ),
+        "jane@example.com",
+      );
+      setInputValue(
+        query<HTMLInputElement>(
+          loginDialog(),
+          '[data-testid="login-password-input"]',
+        ),
+        "secret-password",
+      );
+    });
+    await interact(() =>
+      submitForm(
+        query<HTMLFormElement>(loginDialog(), '[data-testid="login-form"]'),
+      ),
     );
     await vi.waitFor(() => expect(results).toHaveLength(1));
 
-    expect(results[0]).toEqual({
-      ok: false,
-      message: NOT_WIRED_MESSAGES.cart,
+    expect(results[0]).toEqual({ ok: true, inWishlist: true });
+    const order = browser.invoke.mock.calls
+      .map(([name]) => name)
+      .filter((name) => name === READ_WISHLIST || name === ADD_WISHLIST);
+    expect(order).toEqual([READ_WISHLIST, ADD_WISHLIST]);
+    expect(backend.wishlist).toEqual(["product-1", "product-9"]);
+    await vi.waitFor(() => expect(inWishlist()).toBe("true"));
+    expect(document.body.querySelector("dialog")).toBeNull();
+  });
+});
+
+const REVIEW_INPUT = {
+  productId: "variant-1",
+  title: "Great chair",
+  content: "Comfortable, sturdy and easy to assemble in ten minutes.",
+  points: 5,
+};
+
+function productReview(
+  overrides: Partial<Schemas["ProductReview"]> = {},
+): Schemas["ProductReview"] {
+  return {
+    id: "review-1",
+    productId: "variant-1",
+    salesChannelId: "sales-channel-1",
+    languageId: "language-en",
+    title: "Solid chair",
+    content: "Sturdy and comfortable for long working days at the desk.",
+    points: 4,
+    status: true,
+    ...overrides,
+  };
+}
+
+function describeCustomer(state: CmsCustomerState | null): string {
+  if (!state) return "none";
+  return state.status === "customer"
+    ? `customer:${state.customerId}`
+    : state.status;
+}
+
+function ReviewsIsland({
+  onResult,
+}: {
+  onResult: (result: CmsActionResult) => void;
+}) {
+  const actions = useCmsActions();
+  const { logout } = useSessionActions();
+  return (
+    <>
+      <output data-testid="customer-state">
+        {describeCustomer(actions.getCustomerState())}
+      </output>
+      <button
+        type="button"
+        data-testid="load-reviews"
+        onClick={() => {
+          void actions
+            .loadProductReviews({ productId: "parent-1" })
+            .then(onResult);
+        }}
+      >
+        load
+      </button>
+      <button
+        type="button"
+        data-testid="submit-review"
+        onClick={() => {
+          void actions.submitProductReview(REVIEW_INPUT).then(onResult);
+        }}
+      >
+        submit
+      </button>
+      <button
+        type="button"
+        data-testid="logout"
+        onClick={() => {
+          void logout();
+        }}
+      >
+        logout
+      </button>
+    </>
+  );
+}
+
+async function mountReviewsShop() {
+  const results: CmsActionResult[] = [];
+  mounted = await mount(
+    <StorefrontProviders>
+      <ReviewsIsland onResult={(result) => results.push(result)} />
+    </StorefrontProviders>,
+  );
+  const { container } = mounted;
+  const click = (testId: string) =>
+    interact(() =>
+      query<HTMLButtonElement>(container, `[data-testid="${testId}"]`).click(),
+    );
+  const call = async (testId: string) => {
+    const before = results.length;
+    await click(testId);
+    await vi.waitFor(() => expect(results).toHaveLength(before + 1));
+    return results[before];
+  };
+  return {
+    container,
+    results,
+    click,
+    load: () => call("load-reviews"),
+    submit: () => call("submit-review"),
+    customerState: () =>
+      query(container, '[data-testid="customer-state"]').textContent,
+    toasts: () => queryAll(container, MESSAGE),
+  };
+}
+
+function gateContextReads() {
+  const answer = browser.invoke.getMockImplementation();
+  let open: () => void = () => {};
+  const gate = new Promise<void>((resolve) => {
+    open = resolve;
+  });
+  browser.invoke.mockImplementation(async (operation, params) => {
+    if (operation === READ_CONTEXT) await gate;
+    return answer?.(operation, params);
+  });
+  return () => interact(() => open());
+}
+
+function failSave(
+  error: unknown,
+  before: () => void = () => {},
+  times = Number.POSITIVE_INFINITY,
+) {
+  const answer = browser.invoke.getMockImplementation();
+  let failures = 0;
+  browser.invoke.mockImplementation(async (operation, params) => {
+    if (operation === SAVE_REVIEW && failures < times) {
+      failures += 1;
+      before();
+      throw error;
+    }
+    return answer?.(operation, params);
+  });
+}
+
+const CUSTOMER_GONE = () =>
+  apiClientError(
+    [
+      {
+        code: "FRAMEWORK__ROUTING_CUSTOMER_NOT_LOGGED_IN",
+        status: "403",
+        detail: "Customer is not logged in.",
+      },
+    ],
+    403,
+  );
+
+async function logInThroughDialog() {
+  await interact(() => {
+    setInputValue(
+      query<HTMLInputElement>(
+        loginDialog(),
+        '[data-testid="login-email-input"]',
+      ),
+      "jane@example.com",
+    );
+    setInputValue(
+      query<HTMLInputElement>(
+        loginDialog(),
+        '[data-testid="login-password-input"]',
+      ),
+      "secret-password",
+    );
+  });
+  await interact(() =>
+    submitForm(
+      query<HTMLFormElement>(loginDialog(), '[data-testid="login-form"]'),
+    ),
+  );
+}
+
+async function submitAfterTheSessionExpired() {
+  backend.signedIn = true;
+  backend.acceptLogin = true;
+  failSave(
+    CUSTOMER_GONE(),
+    () => {
+      backend.signedIn = false;
+    },
+    1,
+  );
+  const shop = await mountReviewsShop();
+  await vi.waitFor(() =>
+    expect(shop.customerState()).toBe("customer:customer-1"),
+  );
+  await shop.click("submit-review");
+  await vi.waitFor(() => expect(loginDialog()).toBeTruthy());
+  return shop;
+}
+
+describe("StorefrontProviders reviews", () => {
+  it("reads the reviews over GET once the session is ready, without a toast", async () => {
+    backend.signedIn = true;
+    backend.reviews = [
+      productReview(),
+      productReview({ id: "review-2", status: false }),
+    ];
+    const openContext = gateContextReads();
+    const shop = await mountReviewsShop();
+
+    await shop.click("load-reviews");
+    expect(invoked(READ_REVIEWS)).toEqual([]);
+    await openContext();
+    await vi.waitFor(() => expect(shop.results).toHaveLength(1));
+
+    expect(shop.results[0]).toEqual({
+      ok: true,
+      reviews: backend.reviews,
+      total: 2,
+      page: 1,
+      limit: 10,
     });
-    const toasts = queryAll<HTMLParagraphElement>(container, TOAST);
-    expect(toasts).toHaveLength(1);
-    expect(toasts[0]?.textContent).toBe(NOT_WIRED_MESSAGES.cart);
+    expect(invoked(READ_REVIEWS)).toEqual([
+      {
+        pathParams: { productId: "parent-1" },
+        query: { _criteria: encodeForQuery(productReviewsCriteria()) },
+        fetchOptions: { timeout: READ_TIMEOUT_MS },
+      },
+    ]);
+    const operations = browser.invoke.mock.calls.map(([name]) => name);
+    expect(operations.indexOf(READ_CONTEXT)).toBeLessThan(
+      operations.indexOf(READ_REVIEWS),
+    );
+    expect(shop.toasts()).toHaveLength(0);
+  });
+
+  it("resolves a failed read as not ok, logs it and shows no toast", async () => {
+    backend.signedIn = true;
+    const failure = apiClientError(
+      [{ code: "PRODUCT__REVIEW_NOT_ACTIVE", status: "403" }],
+      403,
+    );
+    const answer = browser.invoke.getMockImplementation();
+    browser.invoke.mockImplementation(async (operation, params) => {
+      if (operation === READ_REVIEWS) throw failure;
+      return answer?.(operation, params);
+    });
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const shop = await mountReviewsShop();
+
+    await expect(shop.load()).resolves.toEqual({ ok: false });
+
+    expect(consoleError).toHaveBeenCalledWith(
+      "[Reviews] reading the product reviews failed",
+      failure,
+    );
+    expect(shop.toasts()).toHaveLength(0);
+  });
+
+  it("reports the customer state from loading to the customer and to a guest after a logout", async () => {
+    backend.signedIn = true;
+    const openContext = gateContextReads();
+    const shop = await mountReviewsShop();
+
+    expect(shop.customerState()).toBe("loading");
+
+    await openContext();
+    await vi.waitFor(() =>
+      expect(shop.customerState()).toBe("customer:customer-1"),
+    );
+
+    await shop.click("logout");
+
+    await vi.waitFor(() => expect(shop.customerState()).toBe("guest"));
+  });
+
+  it("saves a review under the given product id without a toast", async () => {
+    backend.signedIn = true;
+    const shop = await mountReviewsShop();
+
+    await expect(shop.submit()).resolves.toEqual({ ok: true });
+
+    expect(invoked(SAVE_REVIEW)).toEqual([
+      {
+        pathParams: { productId: "variant-1" },
+        body: {
+          title: REVIEW_INPUT.title,
+          content: REVIEW_INPUT.content,
+          points: 5,
+        },
+      },
+    ]);
+    expect(shop.toasts()).toHaveLength(0);
+  });
+
+  it("resolves a second review of the same customer as a violation without a toast", async () => {
+    backend.signedIn = true;
+    failSave(
+      apiClientError(
+        [
+          {
+            code: "VIOLATION::ENTITY_EXISTS",
+            status: "400",
+            detail: "The review already exists.",
+          },
+        ],
+        400,
+      ),
+    );
+    const shop = await mountReviewsShop();
+    await vi.waitFor(() =>
+      expect(shop.customerState()).toBe("customer:customer-1"),
+    );
+
+    await expect(shop.submit()).resolves.toEqual({
+      ok: false,
+      violations: [
+        {
+          code: "VIOLATION::ENTITY_EXISTS",
+          detail: "The review already exists.",
+        },
+      ],
+    });
+
+    expect(shop.toasts()).toHaveLength(0);
+    expect(invoked(READ_CONTEXT)).toHaveLength(1);
+  });
+
+  it("asks for a login and saves the review again once the same customer is back", async () => {
+    const shop = await submitAfterTheSessionExpired();
+    expect(shop.results).toEqual([]);
+
+    await logInThroughDialog();
+    await vi.waitFor(() => expect(shop.results).toHaveLength(1));
+
+    expect(shop.results[0]).toEqual({ ok: true });
+    expect(invoked(SAVE_REVIEW)).toHaveLength(2);
+    expect(shop.customerState()).toBe("customer:customer-1");
+    expect(shop.toasts().map((toast) => toast.textContent)).toEqual([
+      testTranslator()("account.messages.loggedInSuccess"),
+    ]);
+  });
+
+  it("re-reads the session and reports the violation when the login is cancelled", async () => {
+    const shop = await submitAfterTheSessionExpired();
+
+    const close = queryAll<HTMLButtonElement>(loginDialog(), "button").find(
+      (button) => button.textContent === "Close",
+    );
+    await interact(() => close?.click());
+    await vi.waitFor(() => expect(shop.results).toHaveLength(1));
+
+    expect(shop.results[0]).toEqual({
+      ok: false,
+      violations: [
+        {
+          code: "FRAMEWORK__ROUTING_CUSTOMER_NOT_LOGGED_IN",
+          detail: "Customer is not logged in.",
+        },
+      ],
+    });
+    expect(invoked(SAVE_REVIEW)).toHaveLength(1);
+    expect(invoked(READ_CONTEXT)).toHaveLength(2);
+    expect(shop.customerState()).toBe("guest");
+    expect(shop.toasts()).toHaveLength(0);
+  });
+
+  it("does not save the review under another customer who logs in instead", async () => {
+    const shop = await submitAfterTheSessionExpired();
+    backend.customerId = "customer-2";
+
+    await logInThroughDialog();
+    await vi.waitFor(() => expect(shop.results).toHaveLength(1));
+
+    expect(shop.results[0]).toEqual({ ok: false });
+    expect(invoked(SAVE_REVIEW)).toHaveLength(1);
+    expect(shop.customerState()).toBe("customer:customer-2");
+    expect(shop.toasts().map((toast) => toast.textContent)).toEqual([
+      testTranslator()("account.messages.loggedInSuccess"),
+    ]);
+  });
+
+  it("resolves a failure without API errors with the default message and no toast", async () => {
+    backend.signedIn = true;
+    const failure = new Error("offline");
+    failSave(failure);
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const shop = await mountReviewsShop();
+
+    await expect(shop.submit()).resolves.toEqual({
+      ok: false,
+      message: testTranslator()("errors.message-default"),
+    });
+
+    expect(consoleError).toHaveBeenCalledWith(
+      "[Reviews] saving the product review failed",
+      failure,
+    );
+    expect(shop.toasts()).toHaveLength(0);
+  });
+});
+
+const VARIANT_OPTIONS = {
+  "group-color": "option-blue",
+  "group-size": "option-large",
+};
+
+function VariantIsland({
+  onResult,
+}: {
+  onResult: (result: CmsFindVariantResult) => void;
+}) {
+  const actions = useCmsActions();
+  return (
+    <button
+      type="button"
+      data-testid="find-variant"
+      onClick={() => {
+        void actions
+          .findVariant({
+            productId: "variant-red-large",
+            parentId: "parent-1",
+            options: VARIANT_OPTIONS,
+            switchedGroup: "group-color",
+          })
+          .then(onResult);
+      }}
+    >
+      find
+    </button>
+  );
+}
+
+describe("StorefrontProviders variants", () => {
+  function answerVariants(find: () => unknown) {
+    const answer = browser.invoke.getMockImplementation();
+    browser.invoke.mockImplementation(async (operation, params) => {
+      if (operation === FIND_VARIANT) return { data: find(), status: 200 };
+      if (operation === READ_SEO_URL) {
+        return {
+          data: { elements: [{ seoPathInfo: "Shirt/SW10001.2" }] },
+          status: 200,
+        };
+      }
+      return answer?.(operation, params);
+    });
+  }
+
+  async function findVariantInShop() {
+    const results: CmsFindVariantResult[] = [];
+    mounted = await mount(
+      <StorefrontProviders>
+        <VariantIsland onResult={(result) => results.push(result)} />
+      </StorefrontProviders>,
+    );
+    const { container } = mounted;
+    await interact(() =>
+      query<HTMLButtonElement>(
+        container,
+        '[data-testid="find-variant"]',
+      ).click(),
+    );
+    await vi.waitFor(() => expect(results).toHaveLength(1));
+    return { results, toasts: () => queryAll(container, MESSAGE) };
+  }
+
+  it("finds the variant and its SEO path through the session client without a toast", async () => {
+    answerVariants(() => ({
+      variantId: "variant-blue-large",
+      options: VARIANT_OPTIONS,
+    }));
+
+    const shop = await findVariantInShop();
+
+    expect(shop.results[0]).toEqual({
+      ok: true,
+      variant: { productId: "variant-blue-large", url: "/Shirt/SW10001.2" },
+    });
+    expect(invoked(FIND_VARIANT)).toEqual([
+      {
+        pathParams: { productId: "parent-1" },
+        query: findVariantQuery(VARIANT_OPTIONS, "group-color"),
+        fetchOptions: { timeout: READ_TIMEOUT_MS },
+      },
+    ]);
+    expect(invoked(READ_SEO_URL)).toEqual([
+      {
+        query: {
+          _criteria: encodeForQuery(
+            variantSeoUrlCriteria("variant-blue-large"),
+          ),
+        },
+        fetchOptions: { timeout: READ_TIMEOUT_MS },
+      },
+    ]);
+    expect(shop.toasts()).toHaveLength(0);
+  });
+
+  it("resolves an unavailable combination as not found without a toast", async () => {
+    answerVariants(() => {
+      throw apiClientError(
+        [{ code: VARIANT_NOT_FOUND, status: "404", detail: "Not found" }],
+        404,
+      );
+    });
+
+    const shop = await findVariantInShop();
+
+    expect(shop.results[0]).toEqual({ ok: false, notFound: true });
+    expect(invoked(READ_SEO_URL)).toEqual([]);
+    expect(shop.toasts()).toHaveLength(0);
+  });
+});
+
+const CONTACT_FORM = "sendContactMail post /contact-form";
+const SUBSCRIBE_NEWSLETTER = "subscribeToNewsletter post /newsletter/subscribe";
+const UNSUBSCRIBE_NEWSLETTER =
+  "unsubscribeToNewsletter post /newsletter/unsubscribe";
+
+function answerForms(answers: Record<string, () => unknown>) {
+  const answer = browser.invoke.getMockImplementation();
+  browser.invoke.mockImplementation(async (operation, params) => {
+    const form = answers[operation];
+    if (form) return { data: await form(), status: 200 };
+    return answer?.(operation, params);
+  });
+}
+
+function FormsIsland({
+  onResult,
+}: {
+  onResult: (result: CmsActionResult) => void;
+}) {
+  const actions = useCmsActions();
+  return (
+    <>
+      <button
+        type="button"
+        data-testid="send-contact"
+        onClick={() => {
+          void actions
+            .submitContactForm({
+              salutationId: "sal-1",
+              firstName: "Jane",
+              lastName: "Doe",
+              email: "jane@example.com",
+              phone: "0123456",
+              subject: "Delivery",
+              comment: "Where is my order, please?",
+              slotId: "slot-1",
+            })
+            .then(onResult);
+        }}
+      >
+        contact
+      </button>
+      <button
+        type="button"
+        data-testid="subscribe"
+        onClick={() => {
+          void actions
+            .subscribeNewsletter({ email: "jane@example.com" })
+            .then(onResult);
+        }}
+      >
+        subscribe
+      </button>
+      <button
+        type="button"
+        data-testid="unsubscribe"
+        onClick={() => {
+          void actions
+            .subscribeNewsletter({
+              email: "jane@example.com",
+              option: "unsubscribe",
+            })
+            .then(onResult);
+        }}
+      >
+        unsubscribe
+      </button>
+    </>
+  );
+}
+
+async function mountFormsShop() {
+  const results: CmsActionResult[] = [];
+  mounted = await mount(
+    <StorefrontProviders>
+      <FormsIsland onResult={(result) => results.push(result)} />
+    </StorefrontProviders>,
+  );
+  const { container } = mounted;
+  const call = async (testId: string) => {
+    const before = results.length;
+    await interact(() =>
+      query<HTMLButtonElement>(container, `[data-testid="${testId}"]`).click(),
+    );
+    await vi.waitFor(() => expect(results).toHaveLength(before + 1));
+    return results[before];
+  };
+  return { call, toasts: () => queryAll(container, MESSAGE) };
+}
+
+describe("StorefrontProviders forms", () => {
+  it("posts the contact form on the session client and shows no toast", async () => {
+    answerForms({
+      [CONTACT_FORM]: () => ({
+        individualSuccessMessage: "Thanks, we will call you.",
+        apiAlias: "contact_form_result",
+      }),
+    });
+    const shop = await mountFormsShop();
+
+    expect(await shop.call("send-contact")).toStrictEqual({
+      ok: true,
+      successMessage: "Thanks, we will call you.",
+    });
+    expect(browser.invoke).toHaveBeenCalledWith(CONTACT_FORM, {
+      body: {
+        email: "jane@example.com",
+        subject: "Delivery",
+        comment: "Where is my order, please?",
+        salutationId: "sal-1",
+        firstName: "Jane",
+        lastName: "Doe",
+        phone: "0123456",
+        slotId: "slot-1",
+      },
+    });
+    expect(shop.toasts()).toHaveLength(0);
+  });
+
+  it("subscribes with the domain of the session language as the storefront url", async () => {
+    answerForms({
+      [SUBSCRIBE_NEWSLETTER]: () => ({ status: "notSet", success: true }),
+    });
+    const shop = await mountFormsShop();
+
+    expect(await shop.call("subscribe")).toStrictEqual({
+      ok: true,
+      status: "notSet",
+    });
+    expect(browser.invoke).toHaveBeenCalledWith(SUBSCRIBE_NEWSLETTER, {
+      body: {
+        email: "jane@example.com",
+        option: "subscribe",
+        storefrontUrl: ENGLISH_DOMAIN,
+      },
+    });
+    expect(shop.toasts()).toHaveLength(0);
+  });
+
+  it("resolves a 400 violation as data and shows no toast", async () => {
+    answerForms({
+      [SUBSCRIBE_NEWSLETTER]: () => {
+        throw apiClientError([
+          {
+            code: "VIOLATION::INVALID_FORMAT_ERROR",
+            status: "400",
+            detail: "This value is not a valid email address.",
+            source: { pointer: "/email" },
+          },
+        ]);
+      },
+    });
+    const shop = await mountFormsShop();
+
+    expect(await shop.call("subscribe")).toStrictEqual({
+      ok: false,
+      message: "Value is not a valid email address",
+      violations: [
+        {
+          field: "email",
+          code: "VIOLATION::INVALID_FORMAT_ERROR",
+          message: "Value is not a valid email address",
+        },
+      ],
+    });
+    expect(shop.toasts()).toHaveLength(0);
+  });
+
+  it("answers an unsubscribe of an unknown address like a successful one", async () => {
+    answerForms({
+      [UNSUBSCRIBE_NEWSLETTER]: () => {
+        throw apiClientError([
+          {
+            code: "CONTENT__NEWSLETTER_RECIPIENT_NOT_FOUND",
+            status: "400",
+            detail:
+              'The NewsletterRecipient with the identifier "email" - jane@example.com was not found.',
+          },
+        ]);
+      },
+    });
+    const shop = await mountFormsShop();
+
+    expect(await shop.call("unsubscribe")).toStrictEqual({
+      ok: true,
+      status: "optOut",
+    });
+    expect(shop.toasts()).toHaveLength(0);
   });
 });

@@ -1,5 +1,13 @@
 import Cookies from "js-cookie";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 
 import type { PublicShopwareConfig } from "@/platform/shopware/publicConfig";
 
@@ -52,6 +60,10 @@ function contextChanged(): ContextChanged {
   return callback;
 }
 
+beforeAll(async () => {
+  await import("./browserClient");
+});
+
 beforeEach(() => {
   api.options.length = 0;
   api.hooks.clear();
@@ -74,8 +86,26 @@ describe("createBrowserClient", () => {
         baseURL: "https://shop.test/store-api/",
         accessToken: "SWSCTEST",
         contextToken: undefined,
+        defaultHeaders: undefined,
       },
     ]);
+  });
+
+  it("sends the public headers of the config with every call", async () => {
+    const { createBrowserClient } = await loadModule();
+    const headers = { "x-edge-region": "eu" };
+
+    createBrowserClient({ ...config, headers });
+
+    expect(api.options[0]?.defaultHeaders).toEqual({ "x-edge-region": "eu" });
+  });
+
+  it("sets no client-wide timeout", async () => {
+    const { createBrowserClient } = await loadModule();
+
+    createBrowserClient({ ...config, headers: { "x-edge-region": "eu" } });
+
+    expect(api.options[0]).not.toHaveProperty("fetchOptions");
   });
 
   it("continues the session of an existing sw-context-token cookie", async () => {
@@ -137,6 +167,20 @@ describe("createBrowserClient", () => {
 });
 
 describe("loadPublicConfig", () => {
+  it("passes the public headers from the config route to the client", async () => {
+    const { loadPublicConfig, createBrowserClient } = await loadModule();
+    const fetchImpl = vi.fn(async () =>
+      jsonResponse({
+        ...config,
+        headers: { "x-edge-region": "eu" },
+      }),
+    );
+
+    createBrowserClient(await loadPublicConfig(fetchImpl));
+
+    expect(api.options[0]?.defaultHeaders).toEqual({ "x-edge-region": "eu" });
+  });
+
   it("fetches the config route once per page load", async () => {
     const { loadPublicConfig } = await loadModule();
     const fetchImpl = vi.fn(async () => jsonResponse(config));

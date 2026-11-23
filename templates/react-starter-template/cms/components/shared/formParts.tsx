@@ -234,7 +234,7 @@ export function FormPrivacyCheckbox({
           checked={checked}
           onChange={(event) => onChange(event.target.checked)}
           className={cx(
-            "mt-1 focus:ring-brand-primary h-4 w-4 border text-brand-primary rounded",
+            "mt-1 focus:ring-2 focus:ring-brand-primary h-4 w-4 border text-brand-primary rounded",
             error ? "border-red-600" : "border-gray-300",
           )}
         />

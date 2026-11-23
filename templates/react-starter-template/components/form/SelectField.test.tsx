@@ -131,4 +131,21 @@ describe("SelectField", () => {
     expect(tag(html, /<select[^>]*>/)).not.toMatch(/\srequired(=""|\s|>)/);
     expect(html).toContain(">Account type</label>");
   });
+
+  it("declares the options language on the data options only", async () => {
+    const html = await renderToHtml(
+      <SelectField
+        id="salutation"
+        label="Salutation"
+        placeholder="Choose salutation"
+        optionsLang="en-US"
+        options={[{ label: "Mr.", value: "mr" }]}
+      />,
+    );
+
+    expect(optionTags(html)).toEqual([
+      '<option value="">Choose salutation</option>',
+      '<option value="mr" lang="en-US">Mr.</option>',
+    ]);
+  });
 });

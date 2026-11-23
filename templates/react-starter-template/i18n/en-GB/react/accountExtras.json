@@ -1,0 +1,29 @@
+{
+  "form": {
+    "title": "Title",
+    "additionalAddressLine1": "Additional address line 1",
+    "additionalAddressLine2": "Additional address line 2",
+    "birthday": "Date of birth",
+    "birthdayDay": "Day",
+    "birthdayMonth": "Month",
+    "birthdayYear": "Year"
+  },
+  "account": {
+    "registration": {
+      "passwordConfirmation": "Password confirmation",
+      "birthdayIncomplete": "Enter the full date of birth or leave all three fields empty.",
+      "birthdayInvalid": "Enter a valid date of birth.",
+      "dataProtectionRequired": "Please confirm that you have read the data protection information."
+    },
+    "orderDetails": {
+      "cancelOrder": "Cancel order",
+      "cancelOrderNotice": "Once cancelled, the order can no longer be paid or changed. Its discounts and promotions no longer apply, and a voucher code you used may not work again.",
+      "cancelOrderQuestion": "Do you really want to cancel this order?",
+      "customerComment": "Your comment"
+    },
+    "messages": {
+      "orderCancelled": "The order has been cancelled.",
+      "orderNotCancellable": "This order can no longer be cancelled."
+    }
+  }
+}

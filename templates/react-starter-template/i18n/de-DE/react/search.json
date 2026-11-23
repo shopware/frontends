@@ -1,0 +1,11 @@
+{
+  "search": {
+    "metaTitle": "Suchergebnisse für „{term}“",
+    "emptyTerm": "Geben Sie einen Suchbegriff ein, um Produkte zu finden.",
+    "suggest": {
+      "label": "Suchvorschläge",
+      "status": "{count} Produkt gefunden | {count} Produkte gefunden",
+      "unavailable": "Vorschläge sind gerade nicht verfügbar."
+    }
+  }
+}

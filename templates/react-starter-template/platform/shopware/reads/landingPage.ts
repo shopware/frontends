@@ -6,6 +6,7 @@ import type { Schemas, operations } from "#shopware";
 
 import { createShopwareClient } from "../client";
 import { notFoundOn404 } from "../errors";
+import { languageCacheTags } from "./cacheTags";
 import { cmsAssociations } from "./cmsAssociations";
 
 type ReadLandingPageGetQuery = NonNullable<
@@ -14,16 +15,19 @@ type ReadLandingPageGetQuery = NonNullable<
 
 export async function readLandingPage(
   landingPageId: string,
+  languageId: string | null,
 ): Promise<Schemas["LandingPage"]> {
   "use cache";
   cacheLife("catalog");
-  cacheTag(`sw:landing:${landingPageId}`);
+  cacheTag(...languageCacheTags(`sw:landing:${landingPageId}`, languageId));
 
-  const response = await createShopwareClient()
+  const response = await createShopwareClient({ languageId })
     .invoke("readLandingPageGet get /landing-page/{landingPageId}", {
       pathParams: { landingPageId },
       query: {
-        _criteria: encodeForQuery({ associations: cmsAssociations }),
+        _criteria: encodeForQuery({
+          associations: { ...cmsAssociations, seoUrls: {} },
+        }),
       } as ReadLandingPageGetQuery,
     })
     .catch(notFoundOn404);
