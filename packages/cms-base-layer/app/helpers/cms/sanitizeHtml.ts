@@ -1,19 +1,19 @@
 import { decodeHTMLAttribute, escapeAttribute } from "entities";
-import { FilterXSS, getDefaultWhiteList } from "xss";
+// Only `FilterXSS` and `filterXSS` are static exports of this CommonJS module.
+// Nitro keeps xss external, so any other named import (e.g.
+// `getDefaultWhiteList`) fails at SSR runtime with "Named export not found".
+import { FilterXSS } from "xss";
 
 import { isSafeUrl } from "../html-to-vue/getOptionsFromNode";
 
-const whiteList = getDefaultWhiteList();
-
+// No `whiteList` option: FilterXSS falls back to xss's default whitelist.
 const filter = new FilterXSS({
-  whiteList,
   // Remove tags outside the whitelist instead of escaping them, so shoppers
   // never see raw `<iframe>` markup; drop script and style bodies entirely.
   stripIgnoreTag: true,
   stripIgnoreTagBody: ["script", "style"],
-  onTagAttr(tag, name, value) {
-    if (name !== "href" && name !== "src") return undefined;
-    if (!whiteList[tag]?.includes(name)) return undefined;
+  onTagAttr(_tag, name, value, isWhiteAttr) {
+    if (!isWhiteAttr || (name !== "href" && name !== "src")) return undefined;
     // xss's own check clears every URL that is not absolute or root-relative
     // (`kontakt`, `?page=2`, `sms:`); use the same check as CmsElementText.
     // Decode with `entities`, not xss's friendlyAttrValue: that one leaves
