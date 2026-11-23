@@ -1451,6 +1451,9 @@ importers:
       defu:
         specifier: 6.1.7
         version: 6.1.7
+      entities:
+        specifier: 8.0.0
+        version: 8.0.0
       html-react-parser:
         specifier: 6.1.9
         version: 6.1.9(@types/react@19.3.0)(react@19.3.1)
