@@ -330,8 +330,8 @@ describe("reads stop with the call", () => {
     vi.stubGlobal(
       "DOMParser",
       class {
-        parseFromString(markup: string) {
-          return { body: { textContent: markup.replace(/<[^>]+>/g, "") } };
+        parseFromString() {
+          return { body: { textContent: " Hand  made. " } };
         }
       },
     );
