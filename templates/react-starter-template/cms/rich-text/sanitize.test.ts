@@ -1,3 +1,4 @@
+import { htmlToDOM } from "html-react-parser";
 import { describe, expect, it } from "vitest";
 
 import { isSafeUrl, sanitizeHtml } from "./sanitize";
@@ -71,6 +72,31 @@ describe("sanitizeHtml", () => {
   ])("keeps a safe image src: %s", (src) => {
     expect(sanitizeHtml(`<img src="${src}">`)).toBe(`<img src="${src}">`);
   });
+
+  it("decodes in attribute mode, so a legacy entity name is not decoded before `=`", () => {
+    expect(
+      sanitizeHtml('<a href="https://example.com/?a=1&copy=2">x</a>'),
+    ).toBe('<a href="https://example.com/?a=1&amp;copy=2">x</a>');
+  });
+
+  it("does not let a decoded quote break out of the attribute", () => {
+    const result = sanitizeHtml(
+      '<a href="&quot; onmouseover=alert(1) x=&quot;">x</a>',
+    );
+    const nodes = htmlToDOM(result);
+    expect(nodes).toHaveLength(1);
+    expect((nodes[0] as { attribs?: Record<string, string> }).attribs).toEqual({
+      href: '" onmouseover=alert(1) x="',
+    });
+    expect(result).toBe('<a href="&quot; onmouseover=alert(1) x=&quot;">x</a>');
+  });
+
+  it.each(['<div href="/x">t</div>', '<p src="/x.jpg">t</p>'])(
+    "strips href and src from tags that do not allow them: %s",
+    (html) => {
+      expect(sanitizeHtml(html)).not.toMatch(/(?:href|src)=/);
+    },
+  );
 
   it("keeps the extra attributes and data-* attributes", () => {
     expect(
