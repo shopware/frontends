@@ -77,10 +77,10 @@ Also, consider using `sizes` attribute which will indicate what image size is be
   sizes="50vw"
   srcset="
     frontends-header-xs.webp  600w,
-    rontends-header-md.webp  1200w,
-    rontends-header-xl.webp  2000w
+    frontends-header-md.webp 1200w,
+    frontends-header-xl.webp 2000w
   "
-  src="rontends-header-xs.webp"
+  src="frontends-header-xs.webp"
   alt="..."
 />
 <!-- src fallback is set to be mobile first -->

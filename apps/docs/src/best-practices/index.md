@@ -12,4 +12,5 @@ nav:
 <PageRef title="Error Handling" sub="How the API client reports a failed request, and how to tell a timeout apart." page="../packages/api-client.html#error-handling" />
 <PageRef title="Images" sub="Collection of good practices to manage images." page="images.html" />
 <PageRef title="Performance" sub="Collection of good practices to help you provide a reliable application." page="performance.html" />
+<PageRef title="Prerendering" sub="Whether the starter can be generated as a static site, and what to configure." page="prerendering.html" />
 <PageRef title="Testing" sub="Testing practices to help you provide a reliable application." page="testing.html" />
