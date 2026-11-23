@@ -33,7 +33,7 @@
     "axios": "1.20.0"
   },
   "devDependencies": {
-    "@nuxt/devtools": "4.1.0",
+    "@nuxt/devtools": "4.2.0",
     "@nuxt/module-builder": "1.0.4",
     "@nuxt/schema": "4.6.4",
     "@shopware/composables": "canary",
