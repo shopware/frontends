@@ -18,7 +18,7 @@ In order to follow this guide properly, we recommend that you get familiar with 
 
 - [Payment Flow in Shopware 6](https://developer.shopware.com/docs/concepts/commerce/checkout-concept/payments)
 - [Payment API](https://shopware.stoplight.io/docs/store-api/8218801e50fe5-handling-the-payment)
-:::
+  :::
 
 This guide shows how to integrate Shopware Payments in a headless storefront with the `shopware-payments.js` library. The library renders PayPal, Pay Later, Apple Pay, Google Pay, and card fields, and it creates the provider order (the PayPal order). The storefront keeps the cart, the customer, shipping, and the Shopware order.
 
@@ -63,13 +63,13 @@ The Shopware Payments library and all its methods should only be invoked on clie
 
 Call `window.ShopwarePayments.init()` after the script loads. Pass the shopper's current Store API session. The client keeps the context token, currency, and sales channel from that call. Call `init()` again, and render into new elements, when the token, currency, or sales channel changes.
 
-| Option                  | Value                                                                                                                                           |
-| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Option                  | Value                                                                                                                                          |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | `storefrontUrl`         | Absolute Shopware base URL, including a language prefix or subdirectory. A trailing `/store-api` is removed, so a Store API endpoint works too. |
-| `salesChannelId`        | 32-character hexadecimal id of the same sales channel as the access key                                                                         |
-| `storeApi.accessKey`    | Sales channel Store API access key                                                                                                              |
-| `storeApi.contextToken` | Shopper's current `sw-context-token`                                                                                                            |
-| `currencyCode`          | Active currency ISO code, such as `EUR`                                                                                                         |
+| `salesChannelId`        | 32-character hexadecimal id of the same sales channel as the access key                                                                        |
+| `storeApi.accessKey`    | Sales channel Store API access key                                                                                                             |
+| `storeApi.contextToken` | Shopper's current `sw-context-token`                                                                                                           |
+| `currencyCode`          | Active currency ISO code, such as `EUR`                                                                                                        |
 
 The examples import types from `./snippet-context`, which is a docs-only declaration to copy ([snippet-context.ts](https://github.com/shopware/frontends/blob/main/examples/docs-code-examples/src/generated/integrations/payments/shopware-payments/snippet-context.ts)). Official `.d.ts` types and an API reference are coming but not published yet.
 
@@ -125,14 +125,14 @@ Card fields have no wallet click. The page's own pay button calls `submit()`. `o
 
 ### Methods
 
-| Method            | What to pass                                                                                | What it returns                                   |
-| ----------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| `buttons()`       | `funding: "paypal"` or `"paylater"`, a host element, `checkout`, `onApprove`, `onError`     | A promise that resolves when the button is ready  |
-| `applePay()`      | An `<apple-pay-button>`, `checkout`, `onApprove`, `onError`                                 | A promise that resolves when the button is ready  |
-| `googlePay()`     | A `<google-pay-button>`, `checkout`, `onApprove`, `onError`                                 | A promise that resolves when the button is ready  |
-| `cardFields()`    | Hosts for number, expiry, and CVV, plus `checkout`, `onApprove`, `onError`                  | `{ submit() }`                                    |
-| `messages()`      | A `<paypal-message>`, a location, and a decimal string `amount`                             | `{ update({ amount }) }`, or `null` when disabled |
-| `handlePayment()` | Shopware `orderId`, `providerOrderId`, and optional `contextToken`, `finishUrl`, `errorUrl` | `{ redirectUrl }`                                 |
+| Method            | What to pass                                                                                         | What it returns                                      |
+| ----------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| `buttons()`       | `funding: "paypal"` or `"paylater"`, a host element, `checkout`, `onApprove`, `onError`              | A promise that resolves when the button is ready     |
+| `applePay()`      | An `<apple-pay-button>`, `checkout`, `onApprove`, `onError`                                          | A promise that resolves when the button is ready     |
+| `googlePay()`     | A `<google-pay-button>`, `checkout`, `onApprove`, `onError`                                          | A promise that resolves when the button is ready     |
+| `cardFields()`    | Hosts for number, expiry, and CVV, plus `checkout`, `onApprove`, `onError`                           | `{ submit() }`                                       |
+| `messages()`      | A `<paypal-message>`, a location, and a decimal string `amount`                                      | `{ update({ amount }) }`, or `null` when disabled    |
+| `handlePayment()` | Shopware `orderId`, `providerOrderId`, and optional `contextToken`, `finishUrl`, `errorUrl`          | `{ redirectUrl }`                                    |
 
 `funding` on `buttons()` stays `paypal` or `paylater`. Apple Pay and Google Pay have their own methods. Each host element can be hydrated once. After a failed setup the element can be tried again. After a successful setup, replacing the UI means using new elements.
 
@@ -140,14 +140,14 @@ Bancontact, EPS, BLIK, iDEAL, Przelewy24, and Klarna are Shopware redirect payme
 
 ### Callbacks
 
-| Callback             | When it runs                                                                                                                                                                                                                                 |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `onClick`            | Wallet buttons, before the provider session starts. A synchronous `false` or a throw leaves the session closed.                                                                                                                              |
-| `onBeforeSubmit`     | Card fields, from `submit()`, before the provider order is created. Returning `false`, throwing, or leaving the fields incomplete stops submission and does not call `onError`.                                                              |
-| `onValidationChange` | Card fields, when number, expiry, or CVV validity changes. Each field reports `isValid`, `isEmpty`, and `isPotentiallyValid`. `isComplete` covers all three.                                                                                 |
-| `onApprove`          | After the shopper approves the provider order. The result carries `providerOrderId` (the PayPal order id), `paymentResult`, and `contextToken` when the Store API session changed. The Shopware order is still unplaced for a cart checkout. |
-| `onCancel`           | The shopper closes the session without approving.                                                                                                                                                                                            |
-| `onError`            | A failure inside a session that already started. Failures while `init()` or a render method is still setting up reject that promise instead. See [Errors](#errors).                                                                          |
+| Callback              | When it runs                                                                                                                                                                      |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `onClick`             | Wallet buttons, before the provider session starts. A synchronous `false` or a throw leaves the session closed.                                                                   |
+| `onBeforeSubmit`      | Card fields, from `submit()`, before the provider order is created. Returning `false`, throwing, or leaving the fields incomplete stops submission and does not call `onError`. |
+| `onValidationChange`  | Card fields, when number, expiry, or CVV validity changes. Each field reports `isValid`, `isEmpty`, and `isPotentiallyValid`. `isComplete` covers all three.                      |
+| `onApprove`           | After the shopper approves the provider order. The result carries `providerOrderId` (the PayPal order id), `paymentResult`, and `contextToken` when the Store API session changed. The Shopware order is still unplaced for a cart checkout. |
+| `onCancel`            | The shopper closes the session without approving.                                                                                                                                 |
+| `onError`             | A failure inside a session that already started. Failures while `init()` or a render method is still setting up reject that promise instead. See [Errors](#errors).              |
 
 `messages()` has no payment callbacks. The call only renders the promotional amount, and `update({ amount })` refreshes it. Locations are `product-details`, `cart`, `mini-cart`, `login`, and `footer`.
 
