@@ -21,6 +21,7 @@
     "@shopware/design-tokens": "workspace:*",
     "@shopware/helpers": "canary",
     "defu": "6.1.7",
+    "entities": "8.0.0",
     "html-react-parser": "6.1.9",
     "js-cookie": "3.0.8",
     "next": "16.4.5",

@@ -24,6 +24,7 @@ export function isInternalUrl(url: string): boolean {
     !url.startsWith("//") &&
     !url.startsWith("#") &&
     !url.startsWith("mailto:") &&
-    !url.startsWith("tel:")
+    !url.startsWith("tel:") &&
+    !url.startsWith("sms:")
   );
 }
