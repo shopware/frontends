@@ -27,6 +27,13 @@ export class ProductPage {
     this.reviewTab = page.getByTestId("product-reviews-tab");
   }
 
+  async open(productId: string) {
+    await this.page.goto(`/detail/${productId}`);
+    await this.page
+      .getByTestId("product-quantity")
+      .waitFor({ state: "visible" });
+  }
+
   async addToCart() {
     await expect(async () => {
       await this.addToCartButton.waitFor();

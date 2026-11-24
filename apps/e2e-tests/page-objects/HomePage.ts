@@ -54,36 +54,6 @@ export class HomePage {
     await this.openFirstProductPage();
   }
 
-  /** Which products have variants is sales channel content, so walk until one does. */
-  async openVariantsCartPage() {
-    await this.openFirstCategoryPage();
-
-    const productLinks = this.page.getByTestId("product-box-product-name-link");
-    await productLinks.first().waitFor({ state: "visible" });
-    const hrefs = (await productLinks.evaluateAll((links) =>
-      links.map((link) => link.getAttribute("href")),
-    )) as (string | null)[];
-
-    const tried: string[] = [];
-    for (const href of hrefs.filter((entry): entry is string => !!entry)) {
-      tried.push(href);
-      await this.page.goto(href);
-      await this.page
-        .getByTestId("product-quantity")
-        .waitFor({ state: "visible" });
-      const hasVariants = await this.page
-        .getByTestId("product-variant")
-        .first()
-        .isVisible()
-        .catch(() => false);
-      if (hasVariants) return;
-    }
-
-    throw new Error(
-      `No product on the first category listing has variants. Tried: ${tried.join(", ")}.`,
-    );
-  }
-
   async openCategoryPage() {
     await this.openFirstCategoryPage();
   }
@@ -162,14 +132,6 @@ export class HomePage {
       await signUpLink.click({ timeout: 5000 });
       await form.waitFor({ state: "visible", timeout: 5000 });
     }).toPass({ intervals: [500, 1000, 2000], timeout: 45000 });
-  }
-
-  /** Taken from the catalogue: a hardcoded phrase ties the suite to one channel. */
-  async firstProductSearchTerm() {
-    const link = this.page.getByTestId("product-box-product-name-link").first();
-    await link.waitFor({ state: "attached" });
-    const name = (await link.textContent()) ?? "";
-    return name.trim().split(/\s+/)[0] as string;
   }
 
   async typeSearchPhrase(phrase: string) {

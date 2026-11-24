@@ -5,6 +5,7 @@
   "description": "",
   "scripts": {
     "test:e2e": "playwright test --grep @frontends",
+    "test:e2e:ui": "playwright test --ui --grep @frontends",
     "test:examples": "playwright test -c examples.config.ts checkCodeExamples.spec.ts",
     "lint": "oxlint . && oxfmt --check .",
     "lint:fix": "oxlint --fix . && oxfmt --write .",

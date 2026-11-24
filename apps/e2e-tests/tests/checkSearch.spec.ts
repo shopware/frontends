@@ -1,4 +1,5 @@
 import { expect, test } from "../fixtures";
+import { productSearchTerm } from "../utils/store-api";
 
 test.describe("Check search page", { tag: "@frontends" }, () => {
   test.beforeEach(async ({ homePage }) => {
@@ -9,8 +10,9 @@ test.describe("Check search page", { tag: "@frontends" }, () => {
     page,
     homePage,
     searchResultPage,
+    storeApi,
   }) => {
-    await homePage.typeSearchPhrase(await homePage.firstProductSearchTerm());
+    await homePage.typeSearchPhrase(await productSearchTerm(page, storeApi));
     await searchResultPage.selectRandomManufacturerCheckbox();
 
     await expect(page).toHaveURL(/.*manufacturer.*/);
@@ -23,8 +25,9 @@ test.describe("Check search page", { tag: "@frontends" }, () => {
     page,
     homePage,
     searchResultPage,
+    storeApi,
   }) => {
-    await homePage.typeSearchPhrase(await homePage.firstProductSearchTerm());
+    await homePage.typeSearchPhrase(await productSearchTerm(page, storeApi));
     await searchResultPage.selectRandomSelectionCheckbox();
 
     await expect(page).toHaveURL(/.*properties.*/);
@@ -32,8 +35,13 @@ test.describe("Check search page", { tag: "@frontends" }, () => {
     await expect(page.getByTestId("product-box-img").first()).toBeVisible();
   });
 
-  test("Check sorting", async ({ page, homePage, searchResultPage }) => {
-    await homePage.typeSearchPhrase(await homePage.firstProductSearchTerm());
+  test("Check sorting", async ({
+    page,
+    homePage,
+    searchResultPage,
+    storeApi,
+  }) => {
+    await homePage.typeSearchPhrase(await productSearchTerm(page, storeApi));
     await searchResultPage.selectSortingPriceAsc();
     await expect(page).toHaveURL(/.*order=price-asc.*/);
     await expect(page.getByTestId("loading")).toHaveCount(0);
@@ -45,8 +53,9 @@ test.describe("Check search page", { tag: "@frontends" }, () => {
     page,
     homePage,
     searchResultPage,
+    storeApi,
   }) => {
-    await homePage.typeSearchPhrase(await homePage.firstProductSearchTerm());
+    await homePage.typeSearchPhrase(await productSearchTerm(page, storeApi));
     await searchResultPage.selectLimitOneProductPerPage();
     await expect(page).toHaveURL(/.*limit.*/);
     await expect(page).toHaveURL(/.*p=1.*/);
