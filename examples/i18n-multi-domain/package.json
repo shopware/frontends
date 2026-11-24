@@ -10,8 +10,8 @@
     "typecheck": "nuxt prepare && nuxi typecheck"
   },
   "dependencies": {
-    "nuxt": "4.6.4",
-    "vue": "3.5.45"
+    "nuxt": "4.7.0",
+    "vue": "3.5.46"
   },
   "devDependencies": {
     "@nuxtjs/i18n": "10.6.0",

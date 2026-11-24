@@ -19,9 +19,9 @@
     "@shopware/api-client": "canary",
     "@shopware/api-gen": "canary",
     "@types/node": "22.13.14",
-    "nuxt": "4.6.4",
+    "nuxt": "4.7.0",
     "typescript": "5.9.3",
-    "vue": "3.5.45",
+    "vue": "3.5.46",
     "vue-tsc": "3.3.14",
     "oxfmt": "0.78.0",
     "oxlint": "1.93.0"
