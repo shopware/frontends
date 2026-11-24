@@ -1,4 +1,4 @@
-import { readdirSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 
 import { describe, expect, it } from "vitest";
 
@@ -39,6 +39,22 @@ describe("webMcpTools", () => {
   });
 });
 
+const i18n = new URL("../../../i18n/", import.meta.url);
+
+/** The starter's languages other than English, from its i18n folders. */
+const languages = readdirSync(i18n, { withFileTypes: true })
+  .map((entry) => (entry.isDirectory() ? entry.name : ""))
+  .filter((name) => /^[a-z]{2}-[A-Z]{2}$/.test(name))
+  .filter((name) => !name.startsWith("en"));
+
+/** Steps the shop has its own button for: the i18n file and key. */
+const shopWords = {
+  add_to_cart: ["product", "addToCart"],
+  get_cart: ["product", "viewCart"],
+  go_to_checkout: ["cart", "proceedToCheckout"],
+  search_products: ["search", "placeholder"],
+} as const;
+
 describe("webMcpLabels", () => {
   it("uses the English tool titles by default", () => {
     const labels = webMcpLabels("en-GB");
@@ -49,13 +65,6 @@ describe("webMcpLabels", () => {
   });
 
   it("has every tool title in each language the shop ships", () => {
-    const languages = readdirSync(
-      new URL("../../../../vue-starter-template/i18n/", import.meta.url),
-      { withFileTypes: true },
-    )
-      .map((entry) => (entry.isDirectory() ? entry.name : ""))
-      .filter((name) => /^[a-z]{2}-[A-Z]{2}$/.test(name))
-      .filter((name) => !name.startsWith("en"));
     expect(languages).toEqual(expect.arrayContaining(["de-DE", "pl-PL"]));
     for (const language of languages) {
       const labels = webMcpLabels(language);
@@ -66,5 +75,17 @@ describe("webMcpLabels", () => {
       }
     }
     expect(webMcpLabels("DE").add_to_cart).toBe("Zum Warenkorb hinzufügen");
+  });
+
+  it("uses the shop's own words where the shop has a button for the step", () => {
+    for (const language of languages) {
+      const labels = webMcpLabels(language);
+      for (const [tool, [file, key]] of Object.entries(shopWords)) {
+        const words = JSON.parse(
+          readFileSync(new URL(`${language}/${file}.json`, i18n), "utf8"),
+        );
+        expect(labels[tool as keyof typeof shopWords]).toBe(words[file][key]);
+      }
+    }
   });
 });

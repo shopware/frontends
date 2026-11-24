@@ -132,39 +132,7 @@ Customize UnoCSS configuration in `uno.config.ts` to add Lumora-specific styles.
 
 ## Agent Tools (WebMCP)
 
-Lumora registers shop tools for AI agents in the browser with [WebMCP](https://webmachinelearning.github.io/webmcp/), a proposed web API that Chrome tests behind a flag. An agent can search, open a category, read a product, change the cart and open checkout. Searches and categories open on the page, and cart changes show in the cart. A small status line names every step, also the ones that change nothing on the page. No tool places an order. The shopper does that on the checkout page, and the cart and checkout pages have no tools.
-
-| Tool               | What it does                                       |
-| ------------------ | -------------------------------------------------- |
-| `search_products`  | Searches product names and shows the results       |
-| `browse_category`  | Opens a category, with an optional price range     |
-| `get_product`      | Reads one product, or the one on screen            |
-| `add_to_cart`      | Adds a product and shows the usual cart message    |
-| `get_cart`         | Reads the cart                                     |
-| `update_cart_item` | Changes a quantity, 0 removes the item             |
-| `go_to_checkout`   | Opens checkout, where the shopper places the order |
-
-To try it:
-
-1. In Chrome 153 or newer, enable `chrome://flags/#enable-webmcp-testing` and restart Chrome.
-2. Run `pnpm dev` and open the shop.
-3. In DevTools, open **Application > WebMCP** to list the tools and run them.
-4. To shop by chat, use an agent extension such as [webmcp-extension](https://github.com/GoogleChromeLabs/webmcp-extension) or the [Model Context Tool Inspector](https://chromewebstore.google.com/detail/model-context-tool-inspec/gbpdfapgefenggkahomfgkhfehlcenpd). webmcp-extension needs Chrome 155 or newer, and its model server also uses port 3000, so start and build it with `PORT=4000`. Coding agents can use the [Chrome DevTools MCP server](https://github.com/ChromeDevTools/chrome-devtools-mcp) with `--categoryExperimentalWebmcp --chromeArg=--enable-features=WebMCP`.
-
-How it works:
-
-- `app/plugins/webMcpTools.client.ts` registers the tools when the app starts. An agent sees them before the page hydrates, and a call made that early waits for the page.
-- `app/utils/webmcp/tools.ts` is the list an agent sees: names, titles, descriptions and inputs. Titles come in the page language. `search_products`, `browse_category` and `get_cart` also declare the shape of their answer (`outputSchema`, Chrome 159 and newer). Error answers match it too.
-- `app/utils/webmcp/handlers.ts` holds what each tool does. `app/components/WebMcpTools.client.vue` passes it the shop's composables and shows the status line. `app/layouts/default.vue` adds the component to the starter's default layout. `app/utils/webmcp/answers.ts` builds the answers and reads the agent's input. Cart tools wait up to 10 seconds for the page's first cart read. A tool never moves a shopper who opened another page after the agent made the call.
-- `app/utils/webmcp/register.ts` runs the calls one at a time and answers each one within 30 seconds. When a call is cancelled, runs out of time, or the shopper goes on to checkout, it stops before its next change to the cart or the page. A call that hangs holds up the calls after it for at most 60 seconds.
-
-To add a tool, describe it in the list, add its German and Polish titles, and write its handler in `handlers.ts`. The typecheck fails when they do not match. A handler must check `stop` before it changes the cart or the page. `pnpm test` runs the unit tests next to each file in `app/utils/webmcp/`.
-
-A problem comes back as `{ "error": "..." }`, because the browser hides thrown errors from the agent. Most errors also say what to do next. Lists and error texts are cut so that an answer stays under 1,500 characters, as Chrome advises, and a product list gives the full count in `total`. A search or category call reads the list for the agent, and the page reads it again. Browsers without WebMCP never run the tool code. Nuxt only prefetches it, about 6 KB, when the browser is idle. If that download fails, the shop works without the tools.
-
-To offer the tools without a browser flag, register your shop's address for Chrome's [WebMCP origin trial](https://developer.chrome.com/origintrials/#/register_trial/4163014905550602241) and set the token as `NUXT_PUBLIC_WEBMCP_ORIGIN_TRIAL`. `server/plugins/webmcpOriginTrial.ts` puts it into every page. The trial covers Chrome 149 to 162 on desktop.
-
-Checked with Chrome 157, 158 and 159 and the WebMCP draft of 13 November 2026.
+Lumora inherits the WebMCP agent tools from `vue-starter-template`. They are off by default. Set `NUXT_PUBLIC_WEBMCP_ENABLED=true` to offer them. The [starter README](../vue-starter-template/README.md#agent-tools-webmcp) lists the tools and explains how to try them.
 
 ## Next Steps
 

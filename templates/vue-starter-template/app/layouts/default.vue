@@ -48,6 +48,14 @@ const { data: footerData } = useAsyncData("mainFooterNavigation", () => {
   return loadFooterNavigationElements({ depth: 1 });
 });
 provide("swNavigation-footer-navigation", footerData);
+
+// The tools plugin lists the WebMCP tools for this layout only. It serves them
+// only with NUXT_PUBLIC_WEBMCP_ENABLED=true in a browser with WebMCP.
+const { $serveWebMcpTools } = useNuxtApp();
+const withTools = ref(false);
+onMounted(() => {
+  withTools.value = Boolean($serveWebMcpTools);
+});
 </script>
 <template>
   <DevOnly>
@@ -74,6 +82,8 @@ provide("swNavigation-footer-navigation", footerData);
     </header>
     <main class="flex-1" :aria-label="$t('layout.ariaLabels.mainContent')">
       <LayoutNotifications />
+      <!-- Agent tools on every default-layout page. Cart and checkout use their own layout. -->
+      <LazyWebMcpTools v-if="withTools" />
       <slot />
     </main>
     <LayoutFooter />

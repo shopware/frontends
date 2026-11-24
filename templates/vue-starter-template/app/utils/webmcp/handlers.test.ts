@@ -2,11 +2,12 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { computed, effectScope, ref } from "vue";
 import type { EffectScope } from "vue";
 import { createMemoryHistory, createRouter } from "vue-router";
-import type { RouteLocationRaw } from "vue-router";
+import type { RouteLocationRaw, Router } from "vue-router";
 
 import type { Schemas } from "#shopware";
 
 import { LISTING_INCLUDES } from "./answers";
+import { trackNavigations } from "./guards";
 import { createWebMcpHandlers } from "./handlers";
 import type { WebMcpPage } from "./handlers";
 
@@ -55,6 +56,18 @@ const now = () => performance.now();
 /** Lets the clock move on, so a navigation comes after the call. */
 const later = () => new Promise((resolve) => setTimeout(resolve, 2));
 
+/** Node has no DOMParser. This one returns fixed text, no HTML is parsed. */
+function stubDomParser() {
+  vi.stubGlobal(
+    "DOMParser",
+    class {
+      parseFromString() {
+        return { body: { textContent: " Hand  made. " } };
+      }
+    },
+  );
+}
+
 const scopes: EffectScope[] = [];
 afterEach(() => {
   for (const scope of scopes.splice(0)) scope.stop();
@@ -62,12 +75,21 @@ afterEach(() => {
 });
 
 /** A page with a real router and a cart kept in memory. */
-async function shop(stored?: Schemas["Cart"]) {
+/**
+ * `beforeTools` runs between app start and the tools' setup. The tracker then
+ * starts with the app, like the plugin starts it.
+ */
+async function shop(
+  stored?: Schemas["Cart"],
+  { beforeTools }: { beforeTools?: (router: Router) => Promise<void> } = {},
+) {
   const router = createRouter({
     history: createMemoryHistory(),
     routes: [{ path: "/:path(.*)*", component: {} }],
   });
   await router.push("/");
+  const navigations = beforeTools ? trackNavigations(router) : undefined;
+  if (beforeTools) await beforeTools(router);
   const cart = ref(stored);
   const keep = (next: Schemas["Cart"]) => {
     cart.value = next;
@@ -108,6 +130,7 @@ async function shop(stored?: Schemas["Cart"]) {
     router,
     navigate: (to: RouteLocationRaw) => router.push(to),
     nextPage: async () => {},
+    navigations,
   };
   const scope = effectScope();
   scopes.push(scope);
@@ -175,7 +198,7 @@ describe("add_to_cart", () => {
     expect(page.cart.addProduct).not.toHaveBeenCalled();
   });
 
-  it("shows nothing more when the call stops during the write", async () => {
+  it("shows nothing more and reads the cart again when the call stops during the write", async () => {
     const { page, keep, handlers } = await shop(cartOf([]));
     const controller = new AbortController();
     page.cart.addProduct.mockImplementationOnce(async () => {
@@ -189,10 +212,35 @@ describe("add_to_cart", () => {
     expect(answer.items).toHaveLength(1);
     expect(page.notifications.pushWarning).not.toHaveBeenCalled();
     expect(page.notifications.pushSuccess).not.toHaveBeenCalled();
+    expect(page.cart.refreshCart).toHaveBeenCalled();
   });
 });
 
 describe("update_cart_item", () => {
+  it("fills the stock message with the name and quantity the shop sends", async () => {
+    const { page, keep, handlers } = await shop(cartOf([line()]));
+    page.i18n.t = (key: string, params?: Record<string, unknown>) =>
+      `${key}: ${params?.name} x ${params?.quantity}`;
+    // The shape Shopware sends, also the fields the generated type leaves out.
+    const stock = {
+      messageKey: "product-stock-reached",
+      message: "The product Wooden iPlug is only available 100 times",
+      name: "Wooden iPlug",
+      quantity: 100,
+      parameters: { name: "Wooden iPlug", quantity: 100 },
+    };
+    page.cart.changeProductQuantity.mockImplementationOnce(async () =>
+      keep(cartOf([line(100)], { "product-stock-reached-1": stock })),
+    );
+    const answer = await handlers.update_cart_item(
+      { productId: ID, quantity: 500 },
+      running(),
+    );
+    const message = "errors.product-stock-reached: Wooden iPlug x 100";
+    expect(answer.warnings).toEqual([message]);
+    expect(page.notifications.pushWarning).toHaveBeenCalledWith(message);
+  });
+
   it("changes the quantity, and 0 removes the item", async () => {
     const { page, handlers } = await shop(cartOf([line(2)]));
     await handlers.update_cart_item({ productId: ID, quantity: 3 }, running());
@@ -303,6 +351,24 @@ describe("search_products and browse_category", () => {
     expect(router.currentRoute.value.path).toBe("/wooden-iplug");
   });
 
+  it("do not move a shopper who opened a page before the tools were set up", async () => {
+    const madeAt = now();
+    const { page, router, handlers } = await shop(undefined, {
+      beforeTools: async (router) => {
+        await later();
+        await router.push("/wooden-iplug");
+      },
+    });
+    page.apiClient.invoke.mockResolvedValueOnce({ data: LISTING });
+    const answer = await handlers.search_products(
+      { query: "iplug" },
+      running(),
+      madeAt,
+    );
+    expect(answer.hint).toContain("not on screen");
+    expect(router.currentRoute.value.path).toBe("/wooden-iplug");
+  });
+
   it("do not count a list that an earlier call opened as the shopper's page", async () => {
     const { page, router, handlers } = await shop();
     page.apiClient.invoke.mockResolvedValue({ data: LISTING });
@@ -311,6 +377,24 @@ describe("search_products and browse_category", () => {
     await handlers.search_products({ query: "iplug" }, running(), now());
     await handlers.browse_category({ category: "candles" }, running(), madeAt);
     expect(router.currentRoute.value.path).toBe("/navigation/c1");
+  });
+
+  it("answer an unknown category with the menu names", async () => {
+    const { handlers } = await shop();
+    expect(
+      await handlers.browse_category({ category: "Sale" }, running(), now()),
+    ).toEqual({
+      error: "The shop menu has no category with this name.",
+      categories: ["Candles"],
+    });
+  });
+
+  it("say so when the shop menu did not load", async () => {
+    const { page, handlers } = await shop();
+    page.navigation.navigationElements.value = [];
+    await expect(
+      handlers.browse_category({ category: "Candles" }, running(), now()),
+    ).rejects.toThrow("did not load");
   });
 
   it("open a menu category by its name", async () => {
@@ -326,15 +410,34 @@ describe("search_products and browse_category", () => {
 });
 
 describe("reads stop with the call", () => {
-  it("get_product passes the stop signal to the product read", async () => {
-    vi.stubGlobal(
-      "DOMParser",
-      class {
-        parseFromString() {
-          return { body: { textContent: " Hand  made. " } };
-        }
-      },
+  it("get_product without productId reads the product on screen, also under a locale", async () => {
+    stubDomParser();
+    const { page, router, handlers } = await shop();
+    page.i18n.locale.value = "de-DE";
+    await router.push("/de-DE/wooden-iplug");
+    page.resolvePath.mockResolvedValueOnce({
+      routeName: "frontend.detail.page",
+      foreignKey: ID,
+    } as never);
+    page.invokeRead.mockResolvedValueOnce({ data: { product: PRODUCT } });
+    await handlers.get_product({}, running());
+    expect(page.resolvePath).toHaveBeenCalledWith("/wooden-iplug");
+    expect(page.invokeRead).toHaveBeenCalledWith(
+      "readProductDetail post /product/{productId}",
+      expect.objectContaining({ pathParams: { productId: ID } }),
     );
+  });
+
+  it("get_product without productId asks for one away from a product page", async () => {
+    const { page, handlers } = await shop();
+    await expect(handlers.get_product({}, running())).rejects.toThrow(
+      "Pass a productId",
+    );
+    expect(page.invokeRead).not.toHaveBeenCalled();
+  });
+
+  it("get_product passes the stop signal to the product read", async () => {
+    stubDomParser();
     const { page, handlers } = await shop();
     page.invokeRead.mockResolvedValueOnce({ data: { product: PRODUCT } });
     const signal = running();

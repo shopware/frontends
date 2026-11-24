@@ -85,7 +85,7 @@ const cart = {
   anyOf: [{ required: ["items"] }, { required: ["error"] }],
 };
 
-/** The tools an agent sees. `WebMcpTools.client.vue` holds what each one does. */
+/** The tools an agent sees. `handlers.ts` holds what each one does. */
 export const webMcpTools = [
   {
     name: "search_products",

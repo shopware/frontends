@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { createWebMcpHandlers } from "~/utils/webmcp/handlers";
-import type { WebMcpToolHandler } from "~/utils/webmcp/register";
-import { webMcpLabels } from "~/utils/webmcp/tools";
-import type { WebMcpToolName } from "~/utils/webmcp/tools";
+import { createWebMcpHandlers } from "../utils/webmcp/handlers";
+import type { WebMcpToolHandler } from "../utils/webmcp/register";
+import { webMcpLabels } from "../utils/webmcp/tools";
+import type { WebMcpToolName } from "../utils/webmcp/tools";
 
 const nuxtApp = useNuxtApp();
 const i18n = useI18n();
@@ -33,6 +33,7 @@ const { handlers, dispose } = createWebMcpHandlers({
   router: useRouter(),
   navigate: navigateTo,
   nextPage,
+  navigations: nuxtApp.$webMcpNavigations,
 });
 
 // The shopper sees every step, also the ones that change nothing on the page.

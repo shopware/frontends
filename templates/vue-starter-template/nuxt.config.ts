@@ -64,6 +64,10 @@ export default defineNuxtConfig({
     public: {
       // Public URL of the storefront. /sitemap.xml builds its links from it.
       siteUrl: "",
+      // WebMCP agent tools, off by default: NUXT_PUBLIC_WEBMCP_ENABLED=true.
+      webmcpEnabled: false,
+      // Chrome origin trial token for WebMCP: NUXT_PUBLIC_WEBMCP_ORIGIN_TRIAL.
+      webmcpOriginTrial: "",
       shopware: {
         endpoint: "https://demo-frontends.shopware.store/store-api/",
         accessToken: "SWSCNWDGMUWZM0TLVUU0YKLQVW",

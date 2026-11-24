@@ -22,6 +22,7 @@ import {
   shorten,
 } from "./answers";
 import { trackNavigations, unlessStopped, whenSet } from "./guards";
+import type { NavigationTracker } from "./guards";
 import type { WebMcpToolHandler } from "./register";
 import type { WebMcpToolName } from "./tools";
 
@@ -58,6 +59,8 @@ export type WebMcpPage = {
   navigate: (to: RouteLocationRaw) => unknown;
   /** Resolves when the next page has rendered. */
   nextPage: () => Promise<void>;
+  /** The plugin starts it with the app, so a click during page load counts. */
+  navigations?: NavigationTracker;
 };
 
 /** The tool handlers. Call `dispose` when the page goes away. */
@@ -118,7 +121,7 @@ export function createWebMcpHandlers(page: WebMcpPage) {
   }
 
   // So a call never moves a shopper who opened another page after the call was made.
-  const navigations = trackNavigations(router);
+  const navigations = page.navigations ?? trackNavigations(router);
 
   // The warnings come from the write's own answer. The shared error list is
   // emptied after it, so the shopper's next click does not show them again.
@@ -129,6 +132,9 @@ export function createWebMcpHandlers(page: WebMcpPage) {
   ) {
     const result = await write();
     consumeCartErrors();
+    // A late answer can be older than a cart that a later call already changed.
+    // The next call waits for the re-read, so the re-read cannot land after it.
+    if (stop.aborted) await refreshCart().catch(() => {});
     const warnings = cartWarnings(result).map((error) => {
       const key = `errors.${error.messageKey}`;
       return i18n.te(key) ? i18n.t(key, { ...error }) : error.message;
@@ -164,7 +170,7 @@ export function createWebMcpHandlers(page: WebMcpPage) {
         target.path === router.currentRoute.value.path
           ? undefined
           : page.nextPage();
-      await navigations.own(() => page.navigate(to));
+      await navigations.own(to, () => page.navigate(to));
       shown = router.currentRoute.value.fullPath === target.fullPath;
       if (shown) await rendered;
     }
@@ -341,10 +347,14 @@ export function createWebMcpHandlers(page: WebMcpPage) {
           "The shopper opened another page meanwhile, so checkout was not opened.",
         );
       }
-      await navigations.own(() => page.navigate(localePath("/checkout")));
-      return { url: localePath("/checkout") };
+      const checkout = localePath("/checkout");
+      await navigations.own(checkout, () => page.navigate(checkout));
+      return { url: checkout };
     },
   } satisfies Record<WebMcpToolName, WebMcpToolHandler>;
 
-  return { handlers, dispose: navigations.stop };
+  return {
+    handlers,
+    dispose: page.navigations ? () => {} : navigations.stop,
+  };
 }

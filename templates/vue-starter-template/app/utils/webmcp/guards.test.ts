@@ -69,16 +69,19 @@ describe("unlessStopped", () => {
 });
 
 describe("trackNavigations", () => {
-  function fakeRouter() {
+  function fakeRouter(loaded = Promise.resolve()) {
     const guards = new Set<NavigationGuard>();
     return {
       beforeEach(guard: NavigationGuard) {
         guards.add(guard);
         return () => guards.delete(guard);
       },
-      navigate() {
+      resolve: (to: unknown) => ({ fullPath: String(to) }) as never,
+      isReady: () => loaded,
+      navigate(fullPath: string, from = "/") {
+        type Guard = (to: object, from: object) => unknown;
         for (const guard of guards) {
-          void (guard as () => unknown)();
+          void (guard as Guard)({ fullPath }, { fullPath: from });
         }
       },
       guards,
@@ -94,7 +97,7 @@ describe("trackNavigations", () => {
     expect(movedOn()).toBe(false);
 
     await later();
-    router.navigate();
+    router.navigate("/wooden-iplug");
     expect(movedOn()).toBe(true);
     expect(since(performance.now())()).toBe(false);
   });
@@ -104,7 +107,54 @@ describe("trackNavigations", () => {
     const { own, since } = trackNavigations(router);
     const movedOn = since(performance.now());
     await later();
-    await own(() => router.navigate());
+    await own("/search", () => router.navigate("/search"));
+    expect(movedOn()).toBe(false);
+  });
+
+  it("counts a shopper's click while the tools' own page loads", async () => {
+    // The click can come after the tools' guard, before it, or cancel the
+    // tools' navigation so that its guard never runs.
+    for (const clicks of [
+      ["/search", "/wooden-iplug"],
+      ["/wooden-iplug", "/search"],
+      ["/wooden-iplug"],
+    ]) {
+      const router = fakeRouter();
+      const { own, since } = trackNavigations(router);
+      const movedOn = since(performance.now());
+      await later();
+      await own("/search", () => {
+        for (const path of clicks) router.navigate(path);
+      });
+      expect(movedOn()).toBe(true);
+    }
+  });
+
+  it("does not count the page load's own first navigation", async () => {
+    let load = () => {};
+    const router = fakeRouter(
+      new Promise<void>((resolve) => {
+        load = resolve;
+      }),
+    );
+    const { since } = trackNavigations(router);
+    const movedOn = since(performance.now());
+    await later();
+    router.navigate("/wooden-iplug");
+    expect(movedOn()).toBe(false);
+
+    load();
+    await later();
+    router.navigate("/search");
+    expect(movedOn()).toBe(true);
+  });
+
+  it("does not count a navigation to the page the shopper is on", async () => {
+    const router = fakeRouter();
+    const { since } = trackNavigations(router);
+    const movedOn = since(performance.now());
+    await later();
+    router.navigate("/candles?order=name-asc", "/candles?order=name-asc");
     expect(movedOn()).toBe(false);
   });
 

@@ -30,6 +30,7 @@ const TOOL_NAMES = [
 const ANSWER_BUDGET = 1500;
 
 // WebMCP is a Chrome origin trial. The feature flag turns it on for the test.
+// The shop must run with NUXT_PUBLIC_WEBMCP_ENABLED=true, or it offers no tools.
 test.use({ launchOptions: { args: ["--enable-features=WebMCP"] } });
 
 /**

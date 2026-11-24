@@ -1,6 +1,6 @@
 import { toValue, watch } from "vue";
 import type { MaybeRefOrGetter } from "vue";
-import type { Router } from "vue-router";
+import type { RouteLocationRaw, Router } from "vue-router";
 
 /** Resolves when `source` first has a value, or after `timeout` ms. */
 export function whenSet(source: MaybeRefOrGetter<unknown>, timeout: number) {
@@ -32,26 +32,43 @@ export function unlessStopped<T>(stop: AbortSignal, promise: Promise<T>) {
 }
 
 /**
- * Remembers when the shopper last started a navigation. The tools wrap
- * their own navigations in `own()`, so those do not count.
+ * Remembers when the shopper last started a navigation. The tools open pages
+ * through `own()`: only the navigation to that page does not count, so a
+ * shopper's click while it loads still does.
  */
-export function trackNavigations(router: Pick<Router, "beforeEach">) {
+export function trackNavigations(
+  router: Pick<Router, "beforeEach" | "resolve" | "isReady">,
+) {
   let last = -Infinity;
-  let own = 0;
-  const stop = router.beforeEach(() => {
-    if (!own) last = performance.now();
+  let ownTarget: string | undefined;
+  // The page load's own first navigation is not the shopper's.
+  let ready = false;
+  const setReady = () => {
+    ready = true;
+  };
+  router.isReady().then(setReady, setReady);
+  const stop = router.beforeEach((to, from) => {
+    // The app also navigates to the page it is on, for example right after start.
+    if (!ready || to.fullPath === from.fullPath) return;
+    if (ownTarget !== undefined && to.fullPath === ownTarget) {
+      ownTarget = undefined;
+      return;
+    }
+    last = performance.now();
   });
   return {
     /** A check that says whether the shopper navigated after `time`. */
     since: (time: number) => () => last > time,
-    async own<T>(navigate: () => T) {
-      own++;
+    async own<T>(to: RouteLocationRaw, navigate: () => T) {
+      ownTarget = router.resolve(to).fullPath;
       try {
         return await navigate();
       } finally {
-        own--;
+        ownTarget = undefined;
       }
     },
     stop,
   };
 }
+
+export type NavigationTracker = ReturnType<typeof trackNavigations>;

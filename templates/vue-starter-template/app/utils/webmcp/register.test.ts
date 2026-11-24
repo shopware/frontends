@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { effectScope, nextTick, ref } from "vue";
 import type { EffectScope } from "vue";
 
-import { registerWebMcpTools } from "./register";
+import { registerWebMcpTools, toolsActive } from "./register";
 import type { WebMcpToolHandler } from "./register";
 
 type Execute = (
@@ -335,5 +335,17 @@ describe("registerWebMcpTools", () => {
     failure = apiError(400, "x".repeat(2000));
     const long = (await call("read")) as { error: string };
     expect(long.error).toHaveLength(300);
+  });
+});
+
+describe("toolsActive", () => {
+  it("offers the tools on default-layout pages", () => {
+    expect(toolsActive(undefined, undefined)).toBe(true);
+    expect(toolsActive("default", null)).toBe(true);
+  });
+
+  it("offers no tools on cart and checkout, or on an error page", () => {
+    expect(toolsActive("checkout", undefined)).toBe(false);
+    expect(toolsActive("default", { statusCode: 404 })).toBe(false);
   });
 });

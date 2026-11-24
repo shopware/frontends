@@ -24,6 +24,7 @@
     "lint": "oxlint . && oxfmt --check .",
     "lint:fix": "oxlint --fix . && oxfmt --write . && pnpm run typecheck",
     "typecheck": "nuxt prepare && nuxi typecheck",
+    "test": "nuxt prepare && vitest run",
     "generate-types": "shopware-api-gen generate --apiType=store"
   },
   "dependencies": {
@@ -58,6 +59,8 @@
     "oxlint": "1.93.0",
     "typescript": "5.9.3",
     "vite": "8.3.8",
+    "vitest": "5.1.0",
+    "vue-router": "5.5.1",
     "vue-tsc": "3.3.14"
   },
   "overrides": {

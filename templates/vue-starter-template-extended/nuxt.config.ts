@@ -6,8 +6,6 @@ export default defineNuxtConfig({
   ...(isStackBlitz ? { devtools: { enabled: false } } : {}),
   runtimeConfig: {
     public: {
-      // Chrome origin trial token for WebMCP: NUXT_PUBLIC_WEBMCP_ORIGIN_TRIAL.
-      webmcpOriginTrial: "",
       shopware: {
         endpoint: "https://demo-frontends.shopware.store/store-api/",
         accessToken: "SWSCT0RWATU1RG9RT200M29XNA",

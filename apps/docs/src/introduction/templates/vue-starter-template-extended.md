@@ -271,6 +271,10 @@ export default defineNuxtConfig({
 
 <!-- /automd -->
 
+## Agent Tools (WebMCP)
+
+Lumora inherits the WebMCP agent tools from the [Vue Starter Template](./vue-starter-template.md#agent-tools-webmcp). They are off by default. Set `NUXT_PUBLIC_WEBMCP_ENABLED=true` to turn them on.
+
 ## Production Deployment
 
 The extended template can be deployed like any Nuxt application:

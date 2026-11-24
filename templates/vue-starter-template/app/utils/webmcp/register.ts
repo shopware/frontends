@@ -174,6 +174,14 @@ export function registerWebMcpTools(
 
 export type ServeWebMcpTools = ReturnType<typeof registerWebMcpTools>;
 
+/**
+ * Only the default layout renders `<WebMcpTools />`, which serves the tools.
+ * Cart and checkout use their own layout, and an error page has none.
+ */
+export function toolsActive(layout: unknown, error: unknown) {
+  return !error && (layout ?? "default") === "default";
+}
+
 /** Resolves with STOPPED when the signal fires before the promise settles. */
 function unless<T>(signal: AbortSignal, promise: Promise<T>) {
   const stopped = new Promise<typeof STOPPED>((resolve) => {
