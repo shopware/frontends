@@ -28,11 +28,11 @@ export function CmsElementProductDescriptionReviews({
   style,
 }: CmsComponentProps<CmsElementProductDescriptionReviewsContent>) {
   const product = content.data?.product ?? ctx.product;
+  const reviewsEnabled = content.data?.reviews != null;
   const reviews = content.data?.reviews?.elements ?? [];
   const description = sanitizeHtml(
     getTranslatedProperty(product, "description"),
   );
-  const isLoggedIn = ctx.isLoggedIn;
   const translations = withTranslationDefaults(
     ctx.translations,
     translationDefaults,
@@ -48,8 +48,14 @@ export function CmsElementProductDescriptionReviews({
     >
       <CmsElementProductDescriptionReviewsTabs
         productId={product?.id}
-        reviewCount={reviews.length}
-        isLoggedIn={isLoggedIn}
+        reviewsProductId={
+          reviewsEnabled && product
+            ? (product.parentId ?? product.id)
+            : undefined
+        }
+        initialReviewCount={reviews.length}
+        isLoggedIn={ctx.isLoggedIn}
+        locale={ctx.locale}
         translations={{
           product: translations.product,
           errors: translations.errors,
@@ -61,7 +67,13 @@ export function CmsElementProductDescriptionReviews({
           />
         }
         reviews={
-          product ? <SwProductReviews reviews={reviews} ctx={ctx} /> : null
+          product ? (
+            <SwProductReviews
+              reviews={reviews}
+              locale={ctx.locale}
+              translations={ctx.translations}
+            />
+          ) : null
         }
         categories={
           product?.categories ? (

@@ -1,0 +1,27 @@
+{
+  "cart": {
+    "promotionCode": {
+      "label": "Promo-Code",
+      "apply": "Einlösen",
+      "added": "Gutscheincode erfolgreich hinzugefügt. Warenkorb aktualisiert.",
+      "alreadyApplied": "Dieser Promo-Code ist bereits in Ihrem Warenkorb.",
+      "notApplied": "Der Promo-Code konnte nicht eingelöst werden.",
+      "removed": "Promo-Code entfernt. Warenkorb aktualisiert."
+    },
+    "lineItemRemoved": "„{name}“ wurde aus Ihrem Warenkorb entfernt.",
+    "summary": {
+      "taxIncluded": "inkl. {rate} % MwSt.",
+      "taxExcluded": "zzgl. {rate} % MwSt.",
+      "shippingEstimate": "Die Versandkosten sind für eine Lieferung nach {country} berechnet. Die endgültigen Kosten sehen Sie an der Kasse."
+    }
+  },
+  "errors": {
+    "promotion-not-eligible-not-logged-in": "Bitte melden Sie sich an, um diesen Gutschein einzulösen.",
+    "promotion-not-eligible-specific-products": "Dieser Gutschein ist nur für bestimmte Artikel gültig, die sich aktuell nicht in Ihrem Warenkorb befinden.",
+    "promotion-not-eligible-already-redeemed": "Der Gutscheincode \"{name}\" wurde bereits eingelöst.",
+    "promotion-not-eligible-already-added": "Die Rabattaktion zum Gutscheincode \"{name}\" wurde bereits zum Warenkorb hinzugefügt. Eine Rabattaktion kann pro Bestellung nur einmal angewendet werden.",
+    "promotion-discount-zero-value": "Die Rabattaktion \"{name}\" wurde eingelöst, reduziert den Preis Ihres Warenkorbs jedoch nicht.",
+    "promotion-discount-deleted": "Rabatt \"{name}\" wurde aus dem Warenkorb gelöscht.",
+    "promotion-discount-unknown-condition": "Der Rabatt \"{name}\" wurde entfernt, da eine seiner Voraussetzungen nicht mehr erfüllt ist."
+  }
+}

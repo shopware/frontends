@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
+import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
 import { LoginForm } from "./LoginForm";
@@ -70,6 +71,30 @@ describe("LoginForm", () => {
     expect(submit).toContain('aria-busy="false"');
     expect(submit).not.toMatch(DISABLED_ATTRIBUTE);
     expect(submit).not.toContain("aria-disabled=");
+  });
+
+  it("links to the password recovery between the password and the submit button", async () => {
+    const html = await renderToHtml(<LoginForm />);
+
+    const link = elementWithTestId(html, "login-forgot-password-link");
+    expect(link).toMatch(/^<a /);
+    expect(link).toContain('href="/account/recover"');
+    expect(html).toContain(">Forgot your password?</a>");
+    const password = html.indexOf('data-testid="login-password-input"');
+    const forgot = html.indexOf('data-testid="login-forgot-password-link"');
+    const submit = html.indexOf('data-testid="login-submit-button"');
+    expect(password).toBeGreaterThan(-1);
+    expect(forgot).toBeGreaterThan(password);
+    expect(submit).toBeGreaterThan(forgot);
+  });
+
+  it("links to the prefixed recovery page in Polish", async () => {
+    const html = await renderToHtml(withI18n(<LoginForm />, "pl-PL"));
+
+    expect(elementWithTestId(html, "login-forgot-password-link")).toContain(
+      'href="/pl-PL/account/recover"',
+    );
+    expect(html).toContain(">Nie pamiętasz hasła?</a>");
   });
 
   it("shows no errors before any interaction", async () => {

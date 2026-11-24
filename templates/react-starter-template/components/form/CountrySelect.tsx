@@ -5,20 +5,14 @@ import type { ChangeEvent, FocusEvent, KeyboardEvent, MouseEvent } from "react";
 
 import { cx } from "@/cms/client";
 import { CheckmarkIcon, ChevronDownIcon, CloseIcon } from "@/components/icons";
+import { useContentLang } from "@/i18n/ContentLanguageProvider";
+import { useTranslations } from "@/i18n/I18nProvider";
 import type { CountryOption } from "@/platform/shopware/reads/countryOptions";
 
 import { FieldLabel } from "./FieldLabel";
 
-const t = {
-  "form.clearCountry": "Clear country selection",
-  "form.toggleCountryList": "Toggle country list",
-  "form.noCountryResults": "No countries found",
-  "form.countrySearchError": "Countries could not be loaded",
-};
-
 const FLAG_CDN = "https://flagcdn.com";
 const ISO_PATTERN = /^[A-Z]{2}$/;
-const TEST_ID = "country-select";
 
 export type CountrySelectProps = {
   id?: string;
@@ -31,6 +25,7 @@ export type CountrySelectProps = {
   error?: string;
   loadError?: boolean;
   required?: boolean;
+  testId?: string;
   className?: string;
 };
 
@@ -93,8 +88,11 @@ export function CountrySelect({
   error,
   loadError = false,
   required = false,
+  testId = "country-select",
   className,
 }: CountrySelectProps) {
+  const t = useTranslations();
+  const contentLang = useContentLang();
   const rootRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -106,7 +104,7 @@ export function CountrySelect({
   const selected = countries.find((country) => country.id === value) ?? null;
   const filtered = filterCountries(countries, searchTerm);
   const showList = isOpen && !singleCountry && !loadError;
-  const fieldError = loadError ? t["form.countrySearchError"] : error;
+  const fieldError = loadError ? t("form.countrySearchError") : error;
   const listboxId = `${id}-listbox`;
   const errorId = `${id}-error`;
   const activeDescendant =
@@ -264,7 +262,7 @@ export function CountrySelect({
             className="w-full min-w-0 bg-transparent text-sm text-surface-on-surface-disabled outline-hidden"
             value={singleCountry.name}
             autoComplete="country-name"
-            data-testid={TEST_ID}
+            data-testid={testId}
             aria-invalid={fieldError ? true : undefined}
             aria-describedby={fieldError ? errorId : undefined}
             disabled
@@ -302,7 +300,7 @@ export function CountrySelect({
           value={isOpen ? searchTerm : (selected?.name ?? "")}
           placeholder={placeholder}
           autoComplete="country-name"
-          data-testid={TEST_ID}
+          data-testid={testId}
           required={required}
           aria-autocomplete="list"
           aria-expanded={showList}
@@ -320,8 +318,8 @@ export function CountrySelect({
           <button
             type="button"
             className="-my-0.5 flex size-6 flex-none items-center justify-center rounded-sm text-surface-on-surface-variant outline-hidden transition-colors hover:bg-surface-surface-container hover:text-surface-on-surface focus-visible:ring-2 focus-visible:ring-outline-outline-focus"
-            aria-label={t["form.clearCountry"]}
-            data-testid={`${TEST_ID}-clear`}
+            aria-label={t("form.clearCountry")}
+            data-testid={`${testId}-clear`}
             onMouseDown={preventFocusSteal}
             onClick={() => selectCountry(null)}
           >
@@ -332,10 +330,10 @@ export function CountrySelect({
             type="button"
             tabIndex={-1}
             className="-my-0.5 flex size-6 flex-none items-center justify-center text-surface-on-surface-variant"
-            aria-label={t["form.toggleCountryList"]}
+            aria-label={t("form.toggleCountryList")}
             aria-expanded={showList}
             aria-controls={showList ? listboxId : undefined}
-            data-testid={`${TEST_ID}-toggle`}
+            data-testid={`${testId}-toggle`}
             onMouseDown={preventFocusSteal}
             onClick={toggleList}
           >
@@ -362,7 +360,7 @@ export function CountrySelect({
               aria-hidden="true"
               className="px-4 py-3 text-sm text-surface-on-surface-variant"
             >
-              {t["form.noCountryResults"]}
+              {t("form.noCountryResults")}
             </div>
           ) : (
             filtered.map((country, index) => {
@@ -387,7 +385,7 @@ export function CountrySelect({
                   onClick={() => handleOptionClick(country)}
                 >
                   <Flag iso={country.iso} />
-                  <span className="min-w-0 flex-1 truncate">
+                  <span className="min-w-0 flex-1 truncate" lang={contentLang}>
                     {country.name}
                   </span>
                   {isSelected ? (
@@ -401,7 +399,7 @@ export function CountrySelect({
       ) : null}
 
       <span role="status" className="sr-only">
-        {showList && filtered.length === 0 ? t["form.noCountryResults"] : ""}
+        {showList && filtered.length === 0 ? t("form.noCountryResults") : ""}
       </span>
       {errorElement}
     </div>

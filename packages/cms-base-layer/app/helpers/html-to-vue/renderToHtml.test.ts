@@ -1,5 +1,7 @@
+import { decodeHTML } from "entities";
 import { describe, expect, it } from "vitest";
-import { h } from "vue";
+import { defineComponent, h } from "vue";
+import { renderToString } from "vue/server-renderer";
 
 import { renderHtml } from "./renderToHtml";
 
@@ -67,5 +69,68 @@ describe("renderHtml", () => {
 
     expect(Array.isArray(vnode.children)).toBe(true);
     expect((vnode.children as { type: string }[])[0]?.type).toBe("h2");
+  });
+
+  describe("SSR escaping", () => {
+    // Mirrors CmsElementText.vue: text nodes are entity-decoded before Vue
+    // renders them, attributes are decoded by getOptionsFromNode.
+    const renderSsr = async (html: string) => {
+      const Component = defineComponent({
+        setup: () => () =>
+          renderHtml(
+            html,
+            {
+              container: { type: "div", class: "cms-element-text" },
+              textTransformer: (text: string) => decodeHTML(text),
+            },
+            h,
+            null,
+            resolveUrl,
+          ),
+      });
+      const markup = await renderToString(h(Component));
+      const container = document.createElement("div");
+      container.innerHTML = markup;
+      return { markup, container };
+    };
+
+    it("renders entity-escaped markup in a text slot as text, not as a script element", async () => {
+      const { markup, container } = await renderSsr(
+        "<p>&lt;script&gt;alert(1)&lt;/script&gt;</p>",
+      );
+
+      expect(markup).toContain("&lt;script&gt;alert(1)&lt;/script&gt;");
+      expect(markup).not.toContain("<script");
+      expect(container.querySelector("script")).toBeNull();
+      expect(container.querySelector("p")?.textContent).toBe(
+        "<script>alert(1)</script>",
+      );
+    });
+
+    it("escapes an ampersand in an href exactly once", async () => {
+      const { markup, container } = await renderSsr(
+        '<p><a href="/x?a=1&amp;b=2">link</a></p>',
+      );
+
+      expect(markup).toContain('href="/x?a=1&amp;b=2"');
+      expect(markup).not.toContain("&amp;amp;");
+      expect(container.querySelector("a")?.getAttribute("href")).toBe(
+        "/x?a=1&b=2",
+      );
+    });
+
+    it.each([
+      "javascript&colon;alert(1)",
+      "java&Tab;script:alert(1)",
+      "java&NewLine;script:alert(1)",
+      "&#106;avascript:alert(1)",
+      "&#x6A;avascript&#x3A;alert(1)",
+    ])("drops an href that decodes to javascript: (%s)", async (href) => {
+      const { container } = await renderSsr(
+        `<p><a href="${href}">link</a></p>`,
+      );
+
+      expect(container.querySelector("a")?.hasAttribute("href")).toBe(false);
+    });
   });
 });

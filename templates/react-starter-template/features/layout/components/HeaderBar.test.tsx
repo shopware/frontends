@@ -1,10 +1,24 @@
 import type { ReactNode } from "react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { NotifyProvider } from "@/components/NotifyContext";
+import {
+  cartView,
+  fakeCart,
+  lineItem,
+} from "@/features/cart/components/cartView.fixture";
+import {
+  HEADER_ACTION_CLASS,
+  HEADER_ACTION_LABEL_CLASS,
+} from "@/features/layout/headerAction";
 import { anonymousSession } from "@/features/session/anonymousSession";
 import { SessionProvider } from "@/features/session/components/SessionProvider";
 import type { StorefrontSession } from "@/features/session/types";
+import {
+  fakeWishlist,
+  wishlistView,
+} from "@/features/wishlist/wishlist.fixture";
+import { withI18n } from "@/test/i18n";
 import { renderToHtml } from "@/test/render";
 
 import { HeaderBar } from "./HeaderBar";
@@ -16,7 +30,22 @@ vi.mock("next/navigation", () => ({
   usePathname: () => "/",
 }));
 
+vi.mock("@/features/cart/useCart", async () => ({
+  useCart: (await import("@/features/cart/components/cartView.fixture"))
+    .useFakeCart,
+}));
+
+vi.mock("@/features/wishlist/useWishlist", async () => ({
+  useWishlist: (await import("@/features/wishlist/wishlist.fixture"))
+    .useFakeWishlist,
+}));
+
 const notify = vi.fn();
+
+beforeEach(() => {
+  fakeCart.set(cartView({ status: "loading" }));
+  fakeWishlist.set(wishlistView({ status: "loading" }));
+});
 
 function render(session?: StorefrontSession, menu: ReactNode = null) {
   const bar = (
@@ -29,10 +58,22 @@ function render(session?: StorefrontSession, menu: ReactNode = null) {
   );
 }
 
+const COUNTER = /\bbg-shell-accent\b(?!-)/g;
+
+function counters(html: string): RegExpMatchArray | null {
+  return html.match(COUNTER);
+}
+
 function buttonWithTestId(html: string, testId: string): string {
   const match = html.match(
     new RegExp(`<button[^>]*data-testid="${testId}"[^>]*>`),
   );
+  expect(match).not.toBeNull();
+  return match?.[0] ?? "";
+}
+
+function linkWithTestId(html: string, testId: string): string {
+  const match = html.match(new RegExp(`<a[^>]*data-testid="${testId}"[^>]*>`));
   expect(match).not.toBeNull();
   return match?.[0] ?? "";
 }
@@ -52,14 +93,100 @@ describe("HeaderBar", () => {
     expect(account).not.toContain("aria-expanded");
     expect(account).not.toContain("aria-controls");
 
-    const wishlist = buttonWithTestId(html, "header-wishlist-button");
+    const wishlist = linkWithTestId(html, "header-wishlist-button");
     expect(wishlist).toContain('aria-label="Wishlist"');
+    expect(wishlist).toContain('href="/wishlist"');
 
     const cart = buttonWithTestId(html, "header-mini-cart-button");
     expect(cart).toContain('aria-label="Cart"');
+    expect(cart).not.toContain("aria-expanded");
+    expect(cart).not.toContain("aria-controls");
+    expect(html).not.toContain("mini-cart-container");
 
     expect(html).toContain('aria-label="Search"');
     expect(html).not.toContain("-counter");
+    expect(counters(html)).toBeNull();
+  });
+
+  it("puts the search icon in a sand pill before the actions and shows the smaller logo", async () => {
+    const html = await render();
+
+    expect(html).toMatch(/<img [^>]*class="h-10 w-auto sm:h-12"/);
+    expect(html).toMatch(
+      /<input [^>]*class="[^"]*rounded-full[^"]*bg-shell-sand[^"]*"/,
+    );
+    expect(html.indexOf('data-testid="header-search-input"')).toBeLessThan(
+      html.indexOf('data-testid="header-account-button"'),
+    );
+  });
+
+  it.each([
+    ["header-account-button", "My Account"],
+    ["header-wishlist-button", "Wishlist"],
+    ["header-mini-cart-button", "Cart"],
+  ])(
+    "shows the label of %s under its icon from lg up, matching its accessible name",
+    async (testId, label) => {
+      const html = await render();
+      const button = html.match(
+        new RegExp(`<(button|a)[^>]*data-testid="${testId}"[^>]*>.*?</\\1>`),
+      )?.[0];
+
+      expect(button).toBeDefined();
+      expect(button).toContain(`aria-label="${label}"`);
+      expect(button).toContain(
+        `<span class="${HEADER_ACTION_LABEL_CLASS}">${label}</span>`,
+      );
+      expect(button).toMatch(
+        new RegExp(
+          `<span class="hidden [^"]*\\blg:block\\b[^"]*">${label}</span>`,
+        ),
+      );
+      expect(button).toMatch(/<svg[^>]*>.*<\/svg>.*<span class="hidden /);
+    },
+  );
+
+  it("shows the Polish labels under the icons under the pl-PL provider", async () => {
+    const html = await renderToHtml(
+      withI18n(
+        <NotifyProvider notify={notify}>
+          <HeaderBar menu={null} />
+        </NotifyProvider>,
+        "pl-PL",
+      ),
+    );
+    const labels = [
+      ...html.matchAll(
+        /<span class="hidden [^"]*\blg:block\b[^"]*">([^<]*)<\/span>/g,
+      ),
+    ].map((match) => match[1]);
+
+    expect(labels).toEqual(["Moje konto", "Lista życzeń", "Koszyk"]);
+  });
+
+  it("renders the Polish labels and the prefixed logo link under the pl-PL provider", async () => {
+    const html = await renderToHtml(
+      withI18n(
+        <NotifyProvider notify={notify}>
+          <HeaderBar menu={null} />
+        </NotifyProvider>,
+        "pl-PL",
+      ),
+    );
+
+    expect(html).toMatch(/<a[^>]*href="\/pl-PL"[^>]*>/);
+    expect(buttonWithTestId(html, "header-account-button")).toContain(
+      'aria-label="Moje konto"',
+    );
+    const wishlist = linkWithTestId(html, "header-wishlist-button");
+    expect(wishlist).toContain('aria-label="Lista życzeń"');
+    expect(wishlist).toContain('href="/pl-PL/wishlist"');
+    expect(buttonWithTestId(html, "header-mini-cart-button")).toContain(
+      'aria-label="Koszyk"',
+    );
+    expect(html).toContain('aria-label="Szukaj"');
+    expect(html).toContain('placeholder="Szukaj produktów"');
+    expect(html).not.toContain("My Account");
   });
 
   it("does not navigate or notify while rendering", async () => {
@@ -67,6 +194,23 @@ describe("HeaderBar", () => {
 
     expect(push).not.toHaveBeenCalled();
     expect(notify).not.toHaveBeenCalled();
+  });
+
+  it("gives every action control the same hit area and ink focus ring", async () => {
+    const html = await render();
+    const buttons = html.match(/<button[^>]*>/g) ?? [];
+    const controls = [
+      ...buttons,
+      linkWithTestId(html, "header-wishlist-button"),
+    ];
+
+    expect(buttons).toHaveLength(3);
+    for (const button of controls) {
+      expect(button).toContain(HEADER_ACTION_CLASS);
+      expect(button).toMatch(/\bp-2\b/);
+      expect(button).toContain("rounded-full");
+      expect(button).toContain("focus-visible:outline-shell-ink");
+    }
   });
 
   it("renders the menu node it is given after the cart button", async () => {
@@ -81,22 +225,30 @@ describe("HeaderBar", () => {
     );
   });
 
-  it("shows the counters and the logged-in flag from the session", async () => {
+  it("shows the wishlist counter from the wishlist and the cart counter from the cart", async () => {
+    fakeCart.set(cartView({ lineItems: [lineItem({ quantity: 2 })] }));
+    fakeWishlist.set(wishlistView({ count: 3 }));
     const html = await render({
       ...anonymousSession,
       status: "ready",
       isLoggedIn: true,
       customerName: "Jane Doe",
-      cartCount: 2,
-      wishlistCount: 3,
     });
 
     const account = buttonWithTestId(html, "header-account-button");
     expect(account).toContain('data-logged-in="true"');
+    expect(counters(html)).toHaveLength(2);
     expect(html).toMatch(
       /data-testid="header-wishlist-counter"[^>]*>3<\/span>/,
     );
     expect(html).toMatch(/data-testid="header-cart-counter"[^>]*>2<\/span>/);
+    expect(linkWithTestId(html, "header-wishlist-button")).toContain(
+      'aria-label="Wishlist, 3 items"',
+    );
+    const cart = buttonWithTestId(html, "header-mini-cart-button");
+    expect(cart).toContain('aria-label="Cart, 2 items"');
+    expect(cart).toContain('aria-expanded="false"');
+    expect(cart).not.toContain("aria-controls");
   });
 
   it("renders a closed account disclosure for a logged-in customer", async () => {
@@ -118,14 +270,35 @@ describe("HeaderBar", () => {
   });
 
   it("hides the wishlist counter for guests", async () => {
+    fakeCart.set(cartView({ lineItems: [lineItem({ quantity: 1 })] }));
+    fakeWishlist.set(wishlistView({ count: 4 }));
     const html = await render({
       ...anonymousSession,
       status: "ready",
-      cartCount: 1,
-      wishlistCount: 4,
     });
 
+    expect(counters(html)).toHaveLength(1);
     expect(html).not.toContain("header-wishlist-counter");
     expect(html).toMatch(/data-testid="header-cart-counter"[^>]*>1<\/span>/);
+  });
+
+  it("shows the count useCart reports, not the number of line items", async () => {
+    fakeCart.set(cartView({ lineItems: [lineItem()], count: 5 }));
+    const html = await render({ ...anonymousSession, status: "ready" });
+
+    expect(counters(html)).toHaveLength(1);
+    expect(html).toMatch(/bg-shell-accent [^>]*>5<\/span>/);
+  });
+
+  it("hides the cart counter while the count is 0", async () => {
+    fakeCart.set(
+      cartView({
+        lineItems: [lineItem({ type: "promotion", good: false })],
+        count: 0,
+      }),
+    );
+    const html = await render({ ...anonymousSession, status: "ready" });
+
+    expect(counters(html)).toBeNull();
   });
 });

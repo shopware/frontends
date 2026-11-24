@@ -1,4 +1,4 @@
-import type { ComponentProps } from "react";
+import type { ComponentProps, ReactNode } from "react";
 
 export type IconProps = Omit<ComponentProps<"svg">, "viewBox" | "children">;
 
@@ -19,6 +19,32 @@ function meteor(viewBox: string, d: string) {
     );
   };
 }
+
+export function outline(paths: ReactNode) {
+  return function OutlineIcon({ className, ...props }: IconProps) {
+    return (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        focusable="false"
+        className={className}
+        {...props}
+      >
+        {paths}
+      </svg>
+    );
+  };
+}
+
+export const ChevronLeftIcon = outline(<path d="M15 6l-6 6 6 6" />);
+
+export const ChevronRightIcon = outline(<path d="M9 6l6 6-6 6" />);
 
 export const ShoppingCartIcon = meteor(
   "0 0 24 22",
@@ -73,4 +99,40 @@ export const ChevronDownIcon = meteor(
 export const CheckmarkIcon = meteor(
   "0 0 16 12",
   "M5.5 9.0858L14.2929 0.29289C14.6834 -0.09763 15.3166 -0.09763 15.7071 0.29289C16.0976 0.68342 16.0976 1.31658 15.7071 1.70711L6.2071 11.2071C5.8166 11.5976 5.1834 11.5976 4.7929 11.2071L0.29289 6.7071C-0.09763 6.3166 -0.09763 5.6834 0.29289 5.2929C0.68342 4.9024 1.31658 4.9024 1.70711 5.2929L5.5 9.0858z",
+);
+
+export function GlobeIcon({ className, ...props }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      focusable="false"
+      className={className}
+      {...props}
+    >
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18" />
+      <path d="M12 3c2.5 2.6 3.75 5.6 3.75 9S14.5 18.4 12 21c-2.5-2.6-3.75-5.6-3.75-9S9.5 5.6 12 3z" />
+    </svg>
+  );
+}
+
+export const CurrencyIcon = outline(
+  <>
+    <circle cx="12" cy="12" r="5" />
+    <path d="M5 5l3.5 3.5M19 5l-3.5 3.5M5 19l3.5-3.5M19 19l-3.5-3.5" />
+  </>,
+);
+
+export const TagIcon = outline(
+  <>
+    <path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z" />
+    <circle cx="7.5" cy="7.5" r="1.5" />
+  </>,
 );

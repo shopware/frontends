@@ -1,0 +1,27 @@
+{
+  "cart": {
+    "promotionCode": {
+      "label": "Kod promocyjny",
+      "apply": "Zastosuj",
+      "added": "Kod promocyjny został dodany. Koszyk został zaktualizowany.",
+      "alreadyApplied": "Ten kod promocyjny został już zastosowany.",
+      "notApplied": "Nie udało się zastosować kodu promocyjnego.",
+      "removed": "Kod promocyjny został usunięty. Koszyk został zaktualizowany."
+    },
+    "lineItemRemoved": "Usunięto „{name}” z koszyka.",
+    "summary": {
+      "taxIncluded": "w tym {rate}% VAT",
+      "taxExcluded": "plus {rate}% VAT",
+      "shippingEstimate": "Koszty wysyłki obliczono dla dostawy do kraju: {country}. Ostateczne koszty zostaną potwierdzone przy kasie."
+    }
+  },
+  "errors": {
+    "promotion-not-eligible-not-logged-in": "Zaloguj się, aby skorzystać z tego kodu promocyjnego.",
+    "promotion-not-eligible-specific-products": "Ten kod promocyjny dotyczy tylko wybranych produktów, których obecnie nie ma w koszyku.",
+    "promotion-not-eligible-already-redeemed": "Kod promocyjny „{name}” został już wykorzystany.",
+    "promotion-not-eligible-already-added": "Promocja dla kodu „{name}” została już dodana do koszyka. Promocję można zastosować tylko raz na zamówienie.",
+    "promotion-discount-zero-value": "Promocja „{name}” została zastosowana, ale nie obniża wartości koszyka.",
+    "promotion-discount-deleted": "Rabat „{name}” został usunięty.",
+    "promotion-discount-unknown-condition": "Rabat „{name}” został usunięty, ponieważ jeden z jego warunków nie jest już spełniony."
+  }
+}

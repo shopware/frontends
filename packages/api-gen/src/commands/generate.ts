@@ -9,7 +9,11 @@ import openapiTS, {
 } from "openapi-typescript";
 // read .env file and load it into process.env
 import "dotenv/config";
-import type { OpenAPI3, SchemaObject } from "openapi-typescript";
+import type {
+  OpenAPI3,
+  SchemaObject,
+  TransformNodeOptions,
+} from "openapi-typescript";
 import c from "picocolors";
 import ts from "typescript";
 
@@ -170,77 +174,7 @@ export async function generate(args: {
             type GenericRecord = never | null | string | string[] | number | { [key: string]: GenericRecord };
             ${customFieldsTypes}
             `,
-        transform(schemaObject, metadata) {
-          if (!schemaObject) {
-            throw new Error(`Schema object is empty at ${metadata.path}`);
-          }
-          /**
-           * Add proper `translated` types for object fields without entity fields like id, createdAt, updatedAt etc.
-           */
-          if (
-            "type" in schemaObject &&
-            "properties" in schemaObject &&
-            schemaObject.type === "object" &&
-            !!schemaObject?.properties?.translated
-          ) {
-            const notAllowedKeys = [
-              "id",
-              "createdAt",
-              "updatedAt",
-              "translated",
-              "apiAlias",
-            ];
-            const stringFields = Object.keys(schemaObject.properties).filter(
-              (key) => {
-                if (notAllowedKeys.includes(key)) return false;
-                const property = schemaObject.properties?.[key];
-                return (
-                  !!property && "type" in property && property.type === "string"
-                );
-              },
-            );
-            const stringProperties = stringFields
-              .filter((fieldKey) => !notAllowedKeys.includes(fieldKey))
-              .reduce(
-                (acc, key) => {
-                  acc[key] = {
-                    type: "string",
-                  };
-                  return acc;
-                },
-                {} as Record<string, { type: "string" }>,
-              );
-            if (Object.keys(stringProperties).length === 0) {
-              const { translated: _, ...propertiesWithoutTranslated } =
-                schemaObject.properties;
-              schemaObject.properties = propertiesWithoutTranslated;
-            } else {
-              schemaObject.required ??= [];
-              schemaObject.required.push("translated");
-              schemaObject.properties.translated = extendedDefu(
-                {
-                  additionalProperties: false,
-                },
-                schemaObject.properties.translated,
-                {
-                  type: "object",
-                  properties: stringProperties,
-                  required: stringFields,
-                },
-              ) as SchemaObject;
-            }
-            return transformSchemaObjectWithComposition(schemaObject, {
-              ...metadata,
-              ctx: {
-                ...metadata.ctx,
-                transform: runTransformations,
-              },
-            });
-          }
-
-          // run standard transform
-          return runTransformations(schemaObject, metadata);
-        },
+        transform: transformSchema,
       });
 
       schema = astToString(astSchema);
@@ -349,6 +283,73 @@ export async function generate(args: {
     );
     process.exit(1);
   }
+}
+
+export function transformSchema(
+  schemaObject: SchemaObject,
+  metadata: TransformNodeOptions,
+) {
+  if (!schemaObject) {
+    throw new Error(`Schema object is empty at ${metadata.path}`);
+  }
+  /**
+   * Add proper `translated` types for object fields without entity fields like id, createdAt, updatedAt etc.
+   */
+  if (
+    "type" in schemaObject &&
+    "properties" in schemaObject &&
+    schemaObject.type === "object" &&
+    !!schemaObject?.properties?.translated
+  ) {
+    const notAllowedKeys = [
+      "id",
+      "createdAt",
+      "updatedAt",
+      "translated",
+      "apiAlias",
+    ];
+    const stringProperties: Record<string, SchemaObject> = {};
+    for (const [key, property] of Object.entries(schemaObject.properties)) {
+      if (
+        !notAllowedKeys.includes(key) &&
+        "type" in property &&
+        isStringSchema(property)
+      ) {
+        // a nullable string keeps its `null` in `translated`
+        stringProperties[key] = { type: property.type } as SchemaObject;
+      }
+    }
+    const stringFields = Object.keys(stringProperties);
+    if (stringFields.length === 0) {
+      const { translated: _, ...propertiesWithoutTranslated } =
+        schemaObject.properties;
+      schemaObject.properties = propertiesWithoutTranslated;
+    } else {
+      schemaObject.required ??= [];
+      schemaObject.required.push("translated");
+      schemaObject.properties.translated = extendedDefu(
+        {
+          additionalProperties: false,
+        },
+        schemaObject.properties.translated,
+        {
+          type: "object",
+          properties: stringProperties,
+          required: stringFields,
+        },
+      ) as SchemaObject;
+    }
+    return transformSchemaObjectWithComposition(schemaObject, {
+      ...metadata,
+      ctx: {
+        ...metadata.ctx,
+        transform: runTransformations,
+      },
+    });
+  }
+
+  // run standard transform
+  return runTransformations(schemaObject, metadata);
 }
 
 export function runTransformations(
@@ -552,9 +553,13 @@ function isNullableSchema(schemaObject: SchemaObject) {
  * dropped from the result, and neither does `format: "binary"`, which becomes `Blob`.
  */
 function isOpenStringBranch(schemaObject: SchemaObject) {
-  if (schemaObject.format === "binary") {
-    return false;
-  }
+  return schemaObject.format !== "binary" && isStringSchema(schemaObject);
+}
+
+/**
+ * `string`, or a type array of only `string` and `null`.
+ */
+function isStringSchema(schemaObject: SchemaObject) {
   if (!Array.isArray(schemaObject.type)) {
     return schemaObject.type === "string";
   }

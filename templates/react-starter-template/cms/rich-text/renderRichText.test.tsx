@@ -16,6 +16,15 @@ function render(html: string, urlPrefix = "") {
 }
 
 describe("renderRichText", () => {
+  it.each(["mailto:info@example.com", "tel:+49123", "sms:+49123"])(
+    "renders %s as a plain link, not next/link",
+    (href) => {
+      const html = render(`<a href="${href}">Contact</a>`);
+      expect(html).toContain(`href="${href}"`);
+      expect(html).not.toContain('data-link="internal"');
+    },
+  );
+
   it("removes scripts and event handlers", () => {
     const html = render(
       '<p onclick="alert(1)">Hi<script>alert(1)</script></p><img src="x" onerror="alert(1)">',

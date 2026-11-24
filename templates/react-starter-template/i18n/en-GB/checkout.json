@@ -1,0 +1,52 @@
+{
+  "checkout": {
+    "title": "Checkout",
+    "summary": "Summary",
+    "subtotal": "Subtotal",
+    "shippingCosts": "Shipping",
+    "total": "Total",
+    "placeOrderButton": "Confirm and place order",
+    "placingOrder": "Placing order…",
+    "customerAddress": {
+      "firstNamePlaceholder": "Enter first name",
+      "firstNameLabel": "First name",
+      "lastNamePlaceholder": "Enter last name",
+      "lastNameLabel": "Last name",
+      "streetPlaceholder": "Enter street address",
+      "streetLabel": "Street address",
+      "zipcodePlaceholder": "Enter ZIP code",
+      "zipcodeLabel": "Zip Code",
+      "cityPlaceholder": "Enter city name",
+      "cityLabel": "City",
+      "countryPlaceholder": "Select country",
+      "countryLabel": "Country"
+    },
+    "customerBaseInfo": {
+      "emailPlaceholder": "Enter email address",
+      "emailLabel": "Email address",
+      "passwordPlaceholder": "Enter password",
+      "passwordLabel": "Password",
+      "createAccountToggleLabel": "Create customer account",
+      "continueAsGuestToggleLabel": "Continue as guest"
+    },
+    "success": {
+      "title": "Thank you for your order",
+      "header": "We have received your order #{0} and will process it as soon as possible.",
+      "items": "Items ordered",
+      "deliveryAndPayment": "Delivery and payment",
+      "continueShopping": "Continue shopping",
+      "viewInAccount": "View in my account",
+      "goToPayment": "Go to payment",
+      "loadError": "We could not load your order. Your session may have expired.",
+      "paymentProcessLabel": "Finish payment process.",
+      "paymentProcessInfo": "You will be redirected to the payment gateway in 5 seconds."
+    },
+    "shippingAddressLabel": "Shipping address",
+    "paymentMethodLabel": "Payment method",
+    "billingAddressLabel": "Billing address",
+    "shippingMethodLabel": "Shipping method",
+    "takesUpTo": "Takes up to",
+    "shippingPriceLabel": "Shipping",
+    "totalLabel": "Total"
+  }
+}

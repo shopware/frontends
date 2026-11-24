@@ -2,19 +2,29 @@ import { ApiClientError } from "@shopware/api-client";
 import type { ApiError } from "@shopware/api-client";
 
 import type { ApiClient, Schemas } from "#shopware";
+import type { Translate } from "@/i18n/translate";
+import { resolveApiErrorMessages } from "@/platform/shopware/apiErrors";
+import type { ApiErrorContext } from "@/platform/shopware/apiErrors";
 
-import { resolveApiErrorMessages } from "./apiErrors";
-import type { ApiErrorContext } from "./apiErrors";
 import type { SessionActions } from "./components/SessionActionsContext";
+import { READ_TIMEOUT_MS } from "./readTimeout";
+import {
+  classifyRegistrationConfirmError,
+  isGuestCustomer,
+  logRegistrationConfirmFailure,
+} from "./registrationConfirm";
 import type { SessionActionResult } from "./types";
 
 export type SessionNotification = { type: "error"; message: string };
 
+export type SessionRefreshOptions = { keepLastGood?: boolean };
+
 export type SessionActionDeps = {
   client: Pick<ApiClient, "invoke">;
-  refreshSession: () => Promise<void>;
+  refreshSession: (options?: SessionRefreshOptions) => Promise<void>;
   getStorefrontUrl: () => Promise<string>;
   notify: (notification: SessionNotification) => void;
+  t: Translate;
 };
 
 const CUSTOMER_NOT_LOGGED_IN = "FRAMEWORK__ROUTING_CUSTOMER_NOT_LOGGED_IN";
@@ -33,12 +43,13 @@ export function createSessionActions({
   refreshSession,
   getStorefrontUrl,
   notify,
-}: SessionActionDeps): Omit<SessionActions, "retrySession"> {
+  t,
+}: SessionActionDeps): Omit<SessionActions, "retrySession" | "refreshSession"> {
   function fail(
     error: unknown,
     context?: ApiErrorContext,
   ): SessionActionResult {
-    const messages = [...new Set(resolveApiErrorMessages(error, context))];
+    const messages = [...new Set(resolveApiErrorMessages(error, t, context))];
     return { ok: false, message: messages[0], messages };
   }
 
@@ -50,9 +61,11 @@ export function createSessionActions({
     return result;
   }
 
-  async function refreshAfterMutation(): Promise<void> {
+  async function refreshAfterMutation(
+    options?: SessionRefreshOptions,
+  ): Promise<void> {
     try {
-      await refreshSession();
+      await refreshSession(options);
     } catch (error) {
       console.error("[Session] refreshing the session failed", error);
     }
@@ -93,6 +106,23 @@ export function createSessionActions({
       return { ok: Boolean(customer.active || doubleOptIn), doubleOptIn };
     },
 
+    async confirmRegistration({ em, hash }) {
+      let customer: unknown;
+      try {
+        const { data } = await client.invoke(
+          "registerConfirm post /account/register-confirm",
+          { body: { em, hash } },
+        );
+        customer = data;
+      } catch (error) {
+        const status = classifyRegistrationConfirmError(error);
+        if (status === "failed") logRegistrationConfirmFailure(error);
+        return { status };
+      }
+      await refreshAfterMutation();
+      return { status: "confirmed", guest: isGuestCustomer(customer) };
+    },
+
     async logout() {
       try {
         await client.invoke("logoutCustomer post /account/logout");
@@ -100,6 +130,19 @@ export function createSessionActions({
         if (!isAlreadyLoggedOut(error)) return failWithToast(error);
       }
       await refreshAfterMutation();
+      return { ok: true };
+    },
+
+    async setCurrency(currencyId) {
+      try {
+        await client.invoke("updateContext patch /context", {
+          body: { currencyId },
+          fetchOptions: { timeout: READ_TIMEOUT_MS },
+        });
+      } catch (error) {
+        return failWithToast(error);
+      }
+      await refreshAfterMutation({ keepLastGood: true });
       return { ok: true };
     },
   };

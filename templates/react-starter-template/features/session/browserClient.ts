@@ -5,12 +5,15 @@ import type { ApiClient, operations } from "#shopware";
 import { parsePublicShopwareConfig } from "@/platform/shopware/publicConfig";
 import type { PublicShopwareConfig } from "@/platform/shopware/publicConfig";
 
+import {
+  CONTEXT_TOKEN_COOKIE,
+  CONTEXT_TOKEN_LIFETIME_DAYS,
+  contextTokenCookieAttributes,
+} from "./contextTokenCookie";
 import { READ_TIMEOUT_MS } from "./readTimeout";
 
-export const CONTEXT_TOKEN_COOKIE = "sw-context-token";
+export { CONTEXT_TOKEN_COOKIE } from "./contextTokenCookie";
 export const PUBLIC_CONFIG_PATH = "/api/shopware/config";
-
-const CONTEXT_TOKEN_LIFETIME_DAYS = 365;
 
 let publicConfig: Promise<PublicShopwareConfig> | null = null;
 
@@ -47,13 +50,12 @@ export function createBrowserClient(config: PublicShopwareConfig): ApiClient {
     baseURL: config.publicEndpoint,
     accessToken: config.accessToken,
     contextToken: Cookies.get(CONTEXT_TOKEN_COOKIE),
+    defaultHeaders: config.headers,
   });
   client.hook("onContextChanged", (contextToken) => {
     Cookies.set(CONTEXT_TOKEN_COOKIE, contextToken, {
       expires: CONTEXT_TOKEN_LIFETIME_DAYS,
-      path: "/",
-      sameSite: "lax",
-      secure: window.location.protocol === "https:",
+      ...contextTokenCookieAttributes(window.location.protocol === "https:"),
     });
   });
   return client;

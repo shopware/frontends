@@ -1,0 +1,10 @@
+{
+  "product": {
+    "variantConfigurator": {
+      "hint": "Wybranie opcji wczytuje pasujący wariant.",
+      "loading": "Wczytywanie wybranego wariantu…",
+      "unavailable": "Ta kombinacja jest niedostępna. Przywrócono poprzedni wybór.",
+      "failed": "Nie udało się wczytać wybranego wariantu. Spróbuj ponownie."
+    }
+  }
+}
