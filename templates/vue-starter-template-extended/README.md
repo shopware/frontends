@@ -130,6 +130,10 @@ lumora-demo-store/
 
 Customize UnoCSS configuration in `uno.config.ts` to add Lumora-specific styles.
 
+## Agent Tools (WebMCP)
+
+Lumora inherits the WebMCP agent tools from `vue-starter-template`. They are off by default. Set `NUXT_PUBLIC_WEBMCP_ENABLED=true` to offer them. The [starter README](../vue-starter-template/README.md#agent-tools-webmcp) lists the tools and explains how to try them.
+
 ## Next Steps
 
 Optional enhancements:

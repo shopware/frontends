@@ -225,6 +225,14 @@ The Vue Starter Template can be extended using [Nuxt layers](https://nuxt.com/do
 
 <PageRef page="./vue-starter-template-extended.html" title="Vue Starter Template Extended" sub="See an example of extending this template using Nuxt layers" />
 
+## Agent Tools (WebMCP)
+
+The starter can offer shop tools to AI agents in the browser through [WebMCP](https://webmachinelearning.github.io/webmcp/), a proposed web API that Chrome tests behind a flag. An agent can search, open a category, read a product, change the cart and open checkout. It cannot place the order.
+
+The tools are off by default. Set `NUXT_PUBLIC_WEBMCP_ENABLED=true` to turn them on. The default layout serves them, so cart and checkout pages, which use their own layout, have no tools.
+
+The [template README](https://github.com/shopware/frontends/blob/main/templates/vue-starter-template/README.md#agent-tools-webmcp) explains each tool and how to try them.
+
 ## What's Next?
 
 <PageRef page="../../frontends-recipes/context/navigation.html" title="Build your navigation" sub="Learn how to implement the main navigation for your store" />
