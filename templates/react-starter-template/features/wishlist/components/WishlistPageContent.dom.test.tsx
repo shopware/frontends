@@ -269,6 +269,52 @@ describe("WishlistPageContent", () => {
     expect(queryAll(container, PRODUCT_BOX)).toHaveLength(0);
   });
 
+  it("clears the whole wishlist and ends on the empty state", async () => {
+    fakeWishlist.set(wishlistView({ remove, productIds: ["a", "b"] }));
+    const { container, shopware } = await setup(signedIn);
+    await vi.waitFor(() =>
+      expect(queryAll(container, PRODUCT_BOX)).toHaveLength(2),
+    );
+
+    await interact(() =>
+      query<HTMLButtonElement>(
+        container,
+        '[data-testid="clear-wishlist-button"]',
+      ).click(),
+    );
+    await vi.waitFor(() => expect(queryAll(container, EMPTY)).toHaveLength(1));
+
+    expect(remove.mock.calls).toEqual([["a"], ["b"]]);
+    expect(reads(shopware)).toHaveLength(2);
+    expect(notify).not.toHaveBeenCalled();
+  });
+
+  it("reports a failed clear and reads the wishlist again", async () => {
+    fakeWishlist.set(wishlistView({ remove, productIds: ["a", "b"] }));
+    remove.mockImplementationOnce(async () => ({
+      ok: false,
+      inWishlist: true,
+      message: "Nope",
+    }));
+    const { container, shopware } = await setup(signedIn);
+    await vi.waitFor(() =>
+      expect(queryAll(container, PRODUCT_BOX)).toHaveLength(2),
+    );
+
+    await interact(() =>
+      query<HTMLButtonElement>(
+        container,
+        '[data-testid="clear-wishlist-button"]',
+      ).click(),
+    );
+    await vi.waitFor(() => expect(reads(shopware)).toHaveLength(2));
+
+    expect(notify).toHaveBeenCalledWith({ type: "error", message: "Nope" });
+    await vi.waitFor(() =>
+      expect(queryAll(container, PRODUCT_BOX)).toHaveLength(1),
+    );
+  });
+
   it("keeps the product and reports a failed removal", async () => {
     remove.mockResolvedValue({
       ok: false,

@@ -27,6 +27,7 @@ import type {
 export type ResetPasswordFormProps = {
   hash: string;
   minLength?: number;
+  focusOnMount?: boolean;
   onLinkRejected(problem: RecoveryLinkProblem): void;
 };
 
@@ -35,6 +36,7 @@ const ACCOUNT_PATH = "/account";
 export function ResetPasswordForm({
   hash,
   minLength = RESET_PASSWORD_MIN_LENGTH,
+  focusOnMount = false,
   onLinkRejected,
 }: ResetPasswordFormProps) {
   const router = useRouter();
@@ -62,6 +64,10 @@ export function ResetPasswordForm({
 
   const busy = pending || navigating || done;
   const errors = validateResetPassword(values, t, minLength);
+
+  useEffect(() => {
+    if (focusOnMount) formRef.current?.querySelector("input")?.focus();
+  }, [focusOnMount]);
 
   useEffect(() => {
     mounted.current = true;

@@ -1,6 +1,6 @@
 import { expect, type Locator, type Page } from "@playwright/test";
 
-import { LISTING_TIMEOUT, listingRequested } from "../utils/listing";
+import { LISTING_TIMEOUT } from "../utils/listing";
 
 // Filter codes, matched against the panel's data-testid rather than its button
 // text, which is localised. Anything not in here is a property group.
@@ -18,9 +18,14 @@ export abstract class ListingPage {
   readonly page: Page;
   readonly manufacturerFilter: Locator;
   readonly limitSelect: Locator;
+  /** Its data-* attributes echo the listing response, not the URL. */
+  readonly results: Locator;
 
   constructor(page: Page) {
     this.page = page;
+    this.results = page
+      .getByTestId("listing-results")
+      .filter({ visible: true });
     this.manufacturerFilter = page
       .getByTestId("listing-filter-manufacturer")
       .filter({ visible: true });
@@ -66,6 +71,7 @@ export abstract class ListingPage {
       .locator(
         `[data-testid="listing-pagination-page-button"][data-page="${number}"]`,
       )
+      .filter({ visible: true })
       .click();
     await this.page.waitForURL(new RegExp(`p=${number}`));
     await this.rendered();
@@ -90,16 +96,19 @@ export abstract class ListingPage {
     await panel.getByRole("button").first().click();
     await option.waitFor({ state: "attached" });
 
-    // Armed first: the request leaves as soon as the box is ticked.
-    const listed = listingRequested(this.page, filterKey);
     await option.check({ force: true });
-    try {
-      await listed;
-    } catch {
-      throw new Error(
-        `The ${filterKey} filter produced no successful listing request carrying it within ${LISTING_TIMEOUT}ms.`,
-      );
-    }
+
+    await this.page.waitForURL((url) => !!url.searchParams.get(filterKey), {
+      timeout: LISTING_TIMEOUT,
+    });
+    const requested =
+      new URL(this.page.url()).searchParams.get(filterKey) ?? "";
+    await expect(
+      this.results,
+      `The listing response did not apply the ${filterKey} filter from the URL.`,
+    ).toHaveAttribute(`data-${filterKey}`, requested, {
+      timeout: LISTING_TIMEOUT,
+    });
 
     await this.rendered();
   }
@@ -133,20 +142,20 @@ export abstract class ListingPage {
   }
 
   protected async sortBy(sortKey: string) {
-    await this.page.getByTestId("listing-sort-button").click();
-    const entry = this.page.locator(
-      `[data-testid="listing-sort-option"][data-sort-key="${sortKey}"]`,
-    );
-
-    const listed = listingRequested(this.page);
-    await entry.click();
-    try {
-      await listed;
-    } catch {
-      throw new Error(
-        `Sorting by "${sortKey}" sent no successful listing request within ${LISTING_TIMEOUT}ms.`,
+    const button = this.page.getByTestId("listing-sort-button");
+    await button.click();
+    // Scoped to the visible button: the closed menu's options are hidden.
+    const entry = button
+      .locator("..")
+      .locator(
+        `[data-testid="listing-sort-option"][data-sort-key="${sortKey}"]`,
       );
-    }
+
+    await entry.click();
+    await expect(
+      this.results,
+      `The listing response is not sorted by "${sortKey}".`,
+    ).toHaveAttribute("data-sorting", sortKey, { timeout: LISTING_TIMEOUT });
     await this.rendered();
     await expect(entry).toHaveAttribute("data-selected", "true");
     await expect(entry).toHaveAttribute("aria-checked", "true");

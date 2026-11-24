@@ -82,6 +82,7 @@ describe("SwProductCardWishlistButton", () => {
 
     expect(notify).not.toHaveBeenCalled();
     expect(button.getAttribute("aria-label")).toBe("Add to wishlist");
+    expect(button.dataset.inWishlist).toBe("false");
     expect(button.hasAttribute("aria-disabled")).toBe(false);
   });
 
@@ -105,6 +106,7 @@ describe("SwProductCardWishlistButton", () => {
 
     expect(button.hasAttribute("aria-disabled")).toBe(false);
     expect(button.getAttribute("aria-label")).toBe("Remove from wishlist");
+    expect(button.dataset.inWishlist).toBe("true");
     expect(notify).toHaveBeenCalledWith({
       type: "success",
       message: "Oak Chair has been added to wishlist.",

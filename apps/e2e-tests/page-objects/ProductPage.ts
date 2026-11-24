@@ -77,6 +77,8 @@ export class ProductPage {
 
   async addVariantToCart() {
     const urlBefore = this.page.url();
+    const productBefore =
+      await this.addToCartButton.getAttribute("data-product-id");
     const isSelected = await this.variant.evaluateAll((options) =>
       options.map((option) => option.getAttribute("data-selected") === "true"),
     );
@@ -104,6 +106,12 @@ export class ProductPage {
     await expect(
       this.page.getByTestId("loading").filter({ visible: true }),
     ).toHaveCount(0);
+    // The URL changes before the variant renders; opening the mini cart in
+    // between lets the late route change close it again.
+    await expect(this.addToCartButton).not.toHaveAttribute(
+      "data-product-id",
+      productBefore ?? "",
+    );
 
     // The id the add-to-cart button will actually submit.
     const variantId =
@@ -121,9 +129,11 @@ export class ProductPage {
     // Identity, not just presence: navigating to a variant URL while adding the
     // original product would otherwise pass.
     await expect(
-      this.page.locator(
-        `[data-testid="checkout-product-tile-item"][data-product-id="${variantId}"]`,
-      ),
+      this.page
+        .locator(
+          `[data-testid="checkout-product-tile-item"][data-product-id="${variantId}"]`,
+        )
+        .filter({ visible: true }),
     ).toHaveCount(1);
 
     await this.productRemove.click();

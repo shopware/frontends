@@ -31,6 +31,8 @@ export function CmsElementProductListing({
         current={current}
         placeholderColor={ctx.config.imagePlaceholder.color}
         isProductSearch={ctx.isProductSearch}
+        sorting={listing?.sorting}
+        currentFilters={listing?.currentFilters}
         translations={ctx.translations}
       >
         {elements.map((product) => (

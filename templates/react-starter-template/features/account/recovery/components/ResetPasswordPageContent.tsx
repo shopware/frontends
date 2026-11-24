@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { CustomerUnavailable } from "@/features/account/profile/components/CustomerUnavailable";
 import { useTranslations } from "@/i18n/I18nProvider";
@@ -21,6 +21,7 @@ export function ResetPasswordPageContent({
   const { state, retry, reject } = useRecoveryHash();
   const messageRef = useRef<HTMLParagraphElement>(null);
   const focusMessage = useRef(false);
+  const [retried, setRetried] = useState(false);
 
   const rejectLink = useCallback(
     (problem: RecoveryLinkProblem) => {
@@ -31,6 +32,7 @@ export function ResetPasswordPageContent({
   );
 
   const retryCheck = useCallback(async () => {
+    setRetried(true);
     retry();
   }, [retry]);
 
@@ -56,6 +58,7 @@ export function ResetPasswordPageContent({
         <ResetPasswordForm
           hash={state.hash}
           minLength={minLength}
+          focusOnMount={retried}
           onLinkRejected={rejectLink}
         />
       );

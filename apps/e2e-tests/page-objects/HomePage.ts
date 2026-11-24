@@ -167,6 +167,7 @@ export class HomePage {
 
     // A toggle: clicking a product already wishlisted would remove it.
     const toggles = this.page.getByTestId("product-box-toggle-wishlist-button");
+    await toggles.first().waitFor();
     const states = await toggles.evaluateAll((controls) =>
       controls.map((control) => control.getAttribute("data-in-wishlist")),
     );

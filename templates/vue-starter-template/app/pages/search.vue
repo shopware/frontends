@@ -11,8 +11,10 @@ const route = useRoute();
 const router = useRouter();
 
 const {
+  getCurrentFilters,
   getCurrentListing,
   getCurrentPage,
+  getCurrentSortingOrder,
   getElements: products,
   getTotalPagesCount,
   loading,
@@ -141,6 +143,12 @@ const changePage = async (page: number) => {
           <div
             v-if="!loading"
             ref="productListElement"
+            data-testid="listing-results"
+            :data-sorting="getCurrentSortingOrder ?? ''"
+            :data-manufacturer="
+              getCurrentFilters?.manufacturer?.join('|') ?? ''
+            "
+            :data-properties="getCurrentFilters?.properties?.join('|') ?? ''"
             class="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 auto-rows-fr gap-x-4 sm:gap-x-6 lg:gap-x-8 gap-y-8 sm:gap-y-12 lg:gap-y-16"
           >
             <SwProductCard

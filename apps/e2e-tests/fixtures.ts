@@ -56,6 +56,15 @@ export const test = base.extend<{
   myAccountPage: MyAccountPage;
   wishlistPage: WishlistPage;
 }>({
+  // Next.js keeps up to three soft-navigated pages mounted but hidden, so a
+  // test id would match their copies too. Only what the user sees counts.
+  page: async ({ page }, use) => {
+    const getByTestId = page.getByTestId.bind(page);
+    page.getByTestId = (testId) =>
+      getByTestId(testId).filter({ visible: true });
+    await use(page);
+  },
+
   retryCooldown: [
     // oxlint-disable-next-line no-empty-pattern
     async ({}, use, testInfo) => {

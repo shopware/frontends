@@ -110,6 +110,8 @@ export async function SearchResults({
                   current={current}
                   placeholderColor={ctx.config.imagePlaceholder.color}
                   isProductSearch
+                  sorting={listing.sorting}
+                  currentFilters={listing.currentFilters}
                   translations={ctx.translations}
                 >
                   {elements.map((product) => (

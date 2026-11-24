@@ -22,11 +22,11 @@ No account has to exist on that storefront. Tests that sign in to an existing ac
 pnpm run test:e2e
 ```
 
-`test:e2e` is `playwright test --grep @frontends` and takes its target from `BASE_E2E_URL`. The specs take catalogue data from the backend instead of hardcoding it, but they select on `vue-starter-template`'s `data-testid` attributes. They run against the starter and templates that extend it, such as `vue-starter-template-extended`. The deprecated `vue-demo-store` renders different test ids and is not covered.
+`test:e2e` is `playwright test --grep @frontends` and takes its target from `BASE_E2E_URL`. The specs take catalogue data from the backend instead of hardcoding it, but they select on `vue-starter-template`'s `data-testid` attributes. They run against the starter, templates that extend it, such as `vue-starter-template-extended`, and `react-starter-template`, which keeps the same test ids. Next.js keeps up to three soft-navigated pages mounted but hidden, so the `page` fixture in `fixtures.ts` makes `page.getByTestId` match visible elements only; a raw `[data-testid=…]` locator needs `.filter({ visible: true })` itself. The deprecated `vue-demo-store` renders different test ids and is not covered.
 
 CI runs them against `vue-starter-template` nightly and on manual dispatch, not on pull requests. See [.github/workflows/e2e-starter-template.yml](../../.github/workflows/e2e-starter-template.yml).
 
-The run passes against the starter. Nothing is gated on it, since it does not run on pull requests; a failing run notifies Slack through `failed-job-check.yml`. Two scenarios stay skipped for features the starter does not have: a clear-wishlist action ([#2679](https://github.com/shopware/frontends/issues/2679)) and product reviews ([#2680](https://github.com/shopware/frontends/issues/2680)).
+The run passes against the starter. Nothing is gated on it, since it does not run on pull requests; a failing run notifies Slack through `failed-job-check.yml`. Company registration skips itself when the shop turns off account type selection.
 
 To reproduce the CI run locally:
 
