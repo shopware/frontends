@@ -28,6 +28,7 @@
     "vue-starter-template": "workspace:*"
   },
   "devDependencies": {
+    "@nuxt/devtools": "4.2.0",
     "@shopware/api-gen": "canary",
     "@unocss/core": "66.13.0",
     "typescript": "5.9.3",

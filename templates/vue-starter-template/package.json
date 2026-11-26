@@ -52,6 +52,7 @@
     "vue": "3.5.46"
   },
   "devDependencies": {
+    "@nuxt/devtools": "4.2.0",
     "@shopware/api-gen": "canary",
     "@vue/compiler-sfc": "3.5.46",
     "oxfmt": "0.78.0",
