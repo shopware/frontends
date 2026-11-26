@@ -17,8 +17,10 @@ const NAVIGATION_PLACEHOLDER_PATTERN =
   /^[a-zA-Z0-9-]+\/(navigation\/[a-zA-Z0-9]+(?:[?#][\s\S]*)?)$/;
 
 export function resolveCmsUrl(url: string, urlPrefix: string): string {
+  // A real navigation link is short; skip the rewrite instead of throwing, so
+  // one overlong CMS link cannot take down the whole page render.
   if (url.length > MAX_URL_LENGTH) {
-    throw new Error("URL Input too long");
+    return url;
   }
   const match = NAVIGATION_PLACEHOLDER_PATTERN.exec(url);
   if (match?.[1]) {

@@ -56,6 +56,23 @@ describe("renderRichText", () => {
     expect(html.match(/data-link="internal"/g)).toHaveLength(2);
   });
 
+  it("leaves external links containing /navigation/ untouched", () => {
+    const html = render(
+      '<a href="https://example.com/foo/navigation/abc">External</a>',
+      "de-DE",
+    );
+    expect(html).toContain('href="https://example.com/foo/navigation/abc"');
+    expect(html).not.toContain("/de-DE/");
+    expect(html).not.toContain('data-link="internal"');
+  });
+
+  it("does not turn a crafted relative link into a javascript: URL", () => {
+    const href = "x/javascript://%0aalert(1)/a/navigation/b";
+    const html = render(`<a href="${href}">Crafted</a>`, "de-DE");
+    expect(html).toContain(`href="${href}"`);
+    expect(html).not.toContain('href="javascript:');
+  });
+
   it("converts font color to an inline style and lazy-loads images", () => {
     const html = render(
       '<font color="#ce0000">Red</font><img src="https://cdn/x.jpg" alt="x">',

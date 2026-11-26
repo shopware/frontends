@@ -52,7 +52,8 @@ describe("resolveCmsUrl", () => {
     expect(resolved.toLowerCase()).not.toMatch(/^\s*javascript:/);
   });
 
-  it("throws on overlong input", () => {
-    expect(() => resolveCmsUrl("a".repeat(2084), "")).toThrow();
+  it("returns overlong input unchanged instead of throwing", () => {
+    const url = `${PLACEHOLDER}/navigation/abc#${"a".repeat(2084)}`;
+    expect(resolveCmsUrl(url, "de")).toBe(url);
   });
 });
