@@ -155,8 +155,13 @@ export default defineEventHandler(async () => {
     { body: { limit: 1 } },
   );
 
+  // The client asks for plain JSON, so the response carries `total`. Even
+  // without an exact total count it counts the returned product, so it is
+  // above 0 whenever a product exists.
+  const total = "total" in data ? (data.total ?? 0) : 0;
+
   // Return only what the browser needs, never the credentials or the token.
-  return { found: Boolean(data) };
+  return { found: total > 0 };
 });
 ```
 
