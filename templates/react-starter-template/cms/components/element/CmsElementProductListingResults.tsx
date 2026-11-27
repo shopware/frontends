@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
+import type { Schemas } from "#shopware";
+
 import { useListingNavigation } from "../../listing/useListingNavigation";
 import { withTranslationDefaults } from "../../translations";
 import type { CmsTranslations } from "../../translations";
@@ -16,6 +18,8 @@ export type CmsElementProductListingResultsProps = {
   current: number;
   placeholderColor: string;
   isProductSearch?: boolean;
+  sorting?: string | null;
+  currentFilters?: Schemas["ProductListingResult"]["currentFilters"];
   translations?: CmsTranslations;
   children: ReactNode;
 };
@@ -36,6 +40,8 @@ export function CmsElementProductListingResults({
   current,
   placeholderColor,
   isProductSearch = false,
+  sorting,
+  currentFilters,
   translations,
   children,
 }: CmsElementProductListingResultsProps) {
@@ -96,7 +102,14 @@ export function CmsElementProductListingResults({
           {t.listing.noProducts}
         </div>
       )}
-      <div ref={productListElement} className={GRID_CLASS}>
+      <div
+        ref={productListElement}
+        data-testid="listing-results"
+        data-sorting={sorting ?? ""}
+        data-manufacturer={currentFilters?.manufacturer?.join("|") ?? ""}
+        data-properties={currentFilters?.properties?.join("|") ?? ""}
+        className={GRID_CLASS}
+      >
         {children}
       </div>
       <SwProductListingPagination

@@ -326,6 +326,7 @@ describe("ResetPasswordPageContent in the browser", () => {
     await interact(() => retry?.click());
 
     await vi.waitFor(() => expect(query(container, RESET_FORM)).toBeTruthy());
+    expect(document.activeElement?.id).toBe("newPassword");
     expect(shopware.calls(CHECK_HASH).map(({ params }) => params)).toEqual([
       { body: { hash: VALID_HASH }, fetchOptions: { timeout: 10_000 } },
       { body: { hash: VALID_HASH }, fetchOptions: { timeout: 10_000 } },

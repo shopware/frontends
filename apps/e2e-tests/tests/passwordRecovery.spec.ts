@@ -6,6 +6,7 @@ const CHECK_ROUTE = "**/store-api/account/customer-recovery-is-expired";
 const CONFIRM_ROUTE = "**/store-api/account/recovery-password-confirm";
 const HASH = "0123456789abcdef0123456789abcdef";
 const NEW_PASSWORD = "new-password-123";
+const UNKNOWN_HASH = "f".repeat(32);
 
 // The real body. Shopware sends the ArrayStruct flat, not under data[0].
 const linkCheck = (isExpired: boolean) => ({
@@ -68,7 +69,7 @@ test.describe("Password recovery", { tag: "@frontends" }, () => {
     );
   }
 
-  test("Reset page sends the link hash and rejects an invalid one", async ({
+  test("Reset page sends the link hash and rejects an unknown one", async ({
     page,
   }) => {
     const check = page.waitForRequest(
@@ -78,11 +79,13 @@ test.describe("Password recovery", { tag: "@frontends" }, () => {
           .url()
           .includes("/store-api/account/customer-recovery-is-expired"),
     );
-    await recoveryPage.visitResetPage("not-a-valid-hash");
+    // Well-formed, so it reaches the backend: a malformed one may be rejected
+    // before any request.
+    await recoveryPage.visitResetPage(UNKNOWN_HASH);
 
     const request = await check;
-    expect(request.postDataJSON()).toEqual({ hash: "not-a-valid-hash" });
-    expect((await request.response())?.status()).toBe(400);
+    expect(request.postDataJSON()).toEqual({ hash: UNKNOWN_HASH });
+    expect((await request.response())?.status()).toBe(404);
     await expect(recoveryPage.resetExpiredMessage).toBeVisible();
     await expect(recoveryPage.resetForm).toHaveCount(0);
   });

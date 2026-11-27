@@ -120,6 +120,26 @@ describe("CmsElementProductListing", () => {
     expect(html).toContain('<span class="sr-only">Page </span>3</button>');
   });
 
+  it("exposes the applied sorting and filters of the response on the results grid", async () => {
+    const html = await renderToHtml(
+      <CmsElementProductListing
+        content={content(undefined)}
+        ctx={createCmsContext({
+          registry,
+          listing: listing({
+            sorting: "price-asc",
+            currentFilters: { manufacturer: ["m-1", "m-2"], properties: [] },
+          }),
+        })}
+      />,
+    );
+
+    expect(html).toContain('data-testid="listing-results"');
+    expect(html).toContain('data-sorting="price-asc"');
+    expect(html).toContain('data-manufacturer="m-1|m-2"');
+    expect(html).toContain('data-properties=""');
+  });
+
   it("falls back to the listing of the slot and shows the empty message", async () => {
     const html = await renderToHtml(
       <CmsElementProductListing

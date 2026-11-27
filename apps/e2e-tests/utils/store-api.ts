@@ -141,3 +141,79 @@ export async function registerCustomer(
   }
   return customer as Customer;
 }
+
+type Product = {
+  id: string;
+  name?: string | null;
+  translated?: { name?: string | null };
+};
+
+async function findProduct(
+  page: Page,
+  storeApi: { value?: StoreApi },
+  filter: Record<string, unknown>[],
+) {
+  await expect
+    .poll(() => storeApi.value, {
+      message: "The storefront sent no store-api request with an access key.",
+      timeout: 30_000,
+    })
+    .toBeTruthy();
+  const { endpoint, accessKey } = requireStoreApi(storeApi);
+
+  let product: Product | undefined;
+  await expect(async () => {
+    const response = await page.request.post(`${endpoint}/product`, {
+      headers: { "sw-access-key": accessKey },
+      timeout: STORE_API_TIMEOUT,
+      data: {
+        limit: 1,
+        filter: [
+          { type: "equals", field: "available", value: true },
+          ...filter,
+        ],
+      },
+    });
+    expect(
+      response.ok(),
+      `Product lookup failed with ${response.status()}: ${(await response.text()).slice(0, 200)}`,
+    ).toBe(true);
+    product = ((await response.json()) as { elements?: Product[] })
+      .elements?.[0];
+  }).toPass({ intervals: [1_000, 2_000, 5_000], timeout: 30_000 });
+
+  if (!product) {
+    throw new Error(
+      `No available product in this sales channel matches ${JSON.stringify(filter)}.`,
+    );
+  }
+  return product;
+}
+
+export async function productSearchTerm(
+  page: Page,
+  storeApi: { value?: StoreApi },
+) {
+  const product = await findProduct(page, storeApi, [
+    { type: "equals", field: "parentId", value: null },
+  ]);
+  const name = (product.translated?.name || product.name || "").trim();
+  if (!name) {
+    throw new Error(`Product ${product.id} has no name to search for.`);
+  }
+  return name.split(/\s+/).find((word) => word.length >= 3) ?? name;
+}
+
+export async function variantProductId(
+  page: Page,
+  storeApi: { value?: StoreApi },
+) {
+  const product = await findProduct(page, storeApi, [
+    {
+      type: "not",
+      queries: [{ type: "equals", field: "parentId", value: null }],
+    },
+    { type: "range", field: "parent.childCount", parameters: { gte: 2 } },
+  ]);
+  return product.id;
+}

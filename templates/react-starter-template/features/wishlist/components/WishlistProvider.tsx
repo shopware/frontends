@@ -33,6 +33,7 @@ export const unavailableWishlistStore: WishlistStore = {
   },
   add: async () => notWired("add"),
   remove: async () => notWired("remove"),
+  clear: async () => notWired("clear"),
 };
 
 const WishlistStoreContext = createContext<WishlistStore>(

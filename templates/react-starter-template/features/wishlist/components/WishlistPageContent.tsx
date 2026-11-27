@@ -1,10 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useId, useRef } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { Ref } from "react";
 
 import type { Schemas } from "#shopware";
-import { cx } from "@/cms/client";
+import { BaseButton, cx, useCmsActions } from "@/cms/client";
 import { LocaleLink } from "@/components/LocaleLink";
 import { AccountPageHeader } from "@/features/account/components/AccountPageHeader";
 import { PageSizeSelector } from "@/features/paging/components/PageSizeSelector";
@@ -21,6 +21,7 @@ import { useSession } from "@/features/session/components/SessionProvider";
 import { useLocalePath, useTranslations } from "@/i18n/I18nProvider";
 import { hasApiErrorCode } from "@/platform/shopware/apiErrors";
 
+import { useWishlist } from "../useWishlist";
 import { CUSTOMER_NOT_LOGGED_IN, readWishlistPage } from "../wishlistApi";
 import {
   WishlistProductTile,
@@ -146,6 +147,28 @@ function WishlistProducts() {
   const focusHeadingAfterRead = useRef(false);
   const { status, data, limit, totalPages } = list;
   const loading = status === "loading";
+  const { clear } = useWishlist();
+  const { notify } = useCmsActions();
+  const [clearing, setClearing] = useState(false);
+
+  async function clearWishlist() {
+    if (clearing) return;
+    setClearing(true);
+    try {
+      const result = await clear();
+      if (!result.ok) {
+        notify({
+          type: "error",
+          message: result.message ?? t("messages.error"),
+        });
+        if (result.loggedOut) void refreshSession();
+      }
+      focusHeadingAfterRead.current = true;
+      void list.retry();
+    } finally {
+      setClearing(false);
+    }
+  }
 
   useEffect(() => {
     if (status !== "ready" || !focusHeadingAfterRead.current) return;
@@ -189,6 +212,17 @@ function WishlistProducts() {
   return (
     <>
       <WishlistHeader headingRef={headingRef} />
+      <BaseButton
+        variant="outline"
+        className="mb-6"
+        data-testid="clear-wishlist-button"
+        loading={clearing}
+        onClick={() => {
+          void clearWishlist();
+        }}
+      >
+        {t("wishlist.clearWishlist")}
+      </BaseButton>
       <div
         ref={listRef}
         className={cx(

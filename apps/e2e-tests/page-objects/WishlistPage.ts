@@ -25,6 +25,7 @@ export class WishlistPage {
       .locator(
         '[data-testid="wishlist-product-box"], [data-testid="wishlist-empty-container"]',
       )
+      .filter({ visible: true })
       .first()
       .waitFor({ state: "visible" });
   }
