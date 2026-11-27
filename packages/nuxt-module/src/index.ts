@@ -14,7 +14,7 @@ import {
 } from "@nuxt/kit";
 import { defu } from "defu";
 
-import { isConfigDeprecated } from "./utils";
+import { isConfigDeprecated, stripSecretConfigKeys } from "./utils";
 const MODULE_ID = "@shopware/nuxt3";
 
 export default defineNuxtModule<ShopwareNuxtOptions>({
@@ -30,10 +30,23 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
       nuxt.options.runtimeConfig.shopware || {},
       options || {},
     );
-    nuxt.options.runtimeConfig.public.shopware = defu(
-      nuxt.options.runtimeConfig.public.shopware || {},
-      options || {},
-    );
+    // Public runtime config is serialized into the page payload, so anything
+    // secret-like (Admin API credentials, passwords...) is dropped from it. It
+    // stays in the private `runtimeConfig.shopware` above.
+    const { config: publicShopwareConfig, strippedPaths } =
+      stripSecretConfigKeys(
+        defu(nuxt.options.runtimeConfig.public.shopware || {}, options || {}),
+        "shopware",
+      );
+    nuxt.options.runtimeConfig.public.shopware = publicShopwareConfig;
+    for (const path of strippedPaths) {
+      logger.warn(
+        `Removed "${path}" from public runtime config: it looks like a secret and public config is sent to every visitor's browser. ` +
+          `Keep secrets such as Admin API credentials out of the \`shopware\` module options and \`runtimeConfig.public\`. ` +
+          `Declare them in private \`runtimeConfig\`, set them with NUXT_* environment variables, and read them only in \`server/\` routes. ` +
+          `See https://developer.shopware.com/frontends/best-practices/deployment.html#credentials-and-secrets`,
+      );
+    }
     const resolvedPublicShopwareConfig = nuxt.options.runtimeConfig.public
       .shopware as ShopwareNuxtOptions;
     const resolvedPrivateShopwareConfig = nuxt.options.runtimeConfig
