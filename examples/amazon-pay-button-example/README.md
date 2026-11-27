@@ -86,14 +86,29 @@ export default defineNuxtConfig({
       endpoint:
         "Shopware 6 Admin API endpoint (e.g https://demo-frontends.shopware.store/api)",
       credentials: {
-        // credentials for the Shopware 6 Admin API (the same generated in **Backend** chapter above)
-        client_id: "SWIABTJARFASQLD5SGS0BVVOZG",
-        client_secret: "QUhPMHlPbF2Cvxnc2eG5XN1NCRDhBRU55TEhWV05qQm50MEowTXU",
+        // Shopware 6 Admin API credentials (the ones generated in the **Backend** chapter above).
+        // Leave them empty here and set them through environment variables, see below.
+        client_id: "",
+        client_secret: "",
       },
     },
   },
 });
 ```
+
+3. Provide the Admin API credentials through environment variables
+
+   The Admin API `client_id` and `client_secret` give full Admin API access to your shop. Never commit them and never put them in `runtimeConfig.public` or the `shopware` module options. The module keeps the whole `amazonPay` config in private runtime config, and only the server routes under `src/runtime/server` read the credentials.
+
+   Copy `playground/.env.example` to `playground/.env` and fill in:
+
+   ```
+   NUXT_AMAZON_PAY_SHOPWARE_ADMIN_API_ENDPOINT=https://your-shop.example/api
+   NUXT_AMAZON_PAY_SHOPWARE_ADMIN_API_CREDENTIALS_CLIENT_ID=<access key ID>
+   NUXT_AMAZON_PAY_SHOPWARE_ADMIN_API_CREDENTIALS_CLIENT_SECRET=<secret access key>
+   ```
+
+   In production, set the same variables in your hosting provider's environment settings. See [Credentials and secrets](https://developer.shopware.com/frontends/best-practices/deployment.html#credentials-and-secrets).
 
 ## Use Amazon Pay component
 

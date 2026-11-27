@@ -60,7 +60,12 @@ export default defineNuxtModule<AmazonPayModuleOptions>({
   async setup(options, nuxt) {
     const moduleOptions = options;
 
-    nuxt.options.runtimeConfig.amazonPay = defu({}, moduleOptions);
+    // Merge with runtimeConfig.amazonPay so values set there (and their NUXT_*
+    // environment overrides) are kept.
+    nuxt.options.runtimeConfig.amazonPay = defu(
+      nuxt.options.runtimeConfig.amazonPay || {},
+      moduleOptions,
+    );
     // copy options to public runtimeConfig
     nuxt.options.runtimeConfig.public.amazonPay = defu(
       {},
