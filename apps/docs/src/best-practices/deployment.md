@@ -164,7 +164,7 @@ export default defineEventHandler(async () => {
 
 ### Safety net in `@shopware/nuxt-module`
 
-The `@shopware/nuxt-module` removes secret-like keys from `runtimeConfig.public.shopware`, at any depth and case-insensitively. It matches names containing `clientId`, `secret`, `password`, `privateKey`, `apiKey`, `accessKeyId` or `authorization`, names starting with `adminApi`, token names such as `adminToken`, `apiToken` or `refreshToken`, and `username` under a credentials-like key. It logs a warning with the path of every removed key, never its value. The removed keys are moved to private `runtimeConfig.shopware`, where values you already set there win. `accessToken`, `endpoint`, `devStorefrontUrl` and the other options the module reads in the browser stay public.
+The `@shopware/nuxt-module` removes secret-like keys from `runtimeConfig.public.shopware`, at any depth and case-insensitively. It matches names containing `clientId`, `secret`, `password`, `privateKey`, `apiKey`, `accessKeyId` or `authorization`, names starting with `adminApi`, token names such as `adminToken`, `apiToken`, `refreshToken` or `adminAccessToken` (only `accessToken` and `shopwareAccessToken` are exempt), and `username` under a credentials-like key. It logs a warning with the path of every removed key, never its value. The removed keys are moved to private `runtimeConfig.shopware`, where values you already set there win. Secret-like keys inside arrays are only dropped from public config, not moved. `accessToken`, `endpoint`, `devStorefrontUrl` and the other options the module reads in the browser stay public.
 
 This is a safety net, not a place to keep secrets:
 
