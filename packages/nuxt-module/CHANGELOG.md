@@ -1,5 +1,13 @@
 # @shopware/nuxt-module
 
+## 1.6.2
+
+### Patch Changes
+
+- [#2910](https://github.com/shopware/frontends/pull/2910) [`eba9100`](https://github.com/shopware/frontends/commit/eba91008eff20118b67268f20ab5c2fa6359d86d) Thanks [@mkucmus](https://github.com/mkucmus)! - Update `@nuxt/kit` to 4.7.0, in line with the Nuxt 4.7.0 bump that fixes GHSA-jxc9-w3j6-pwp2, GHSA-vrh2-cfcx-c3fg and GHSA-h5xj-x893-p5f7. `@shopware/nuxt-module` now declares `@nuxt/devtools-kit` as a dependency. Nuxt 4.7 no longer ships it transitively. `@shopware/cms-base-layer` now depends on `vue` 3.5.46, the version Nuxt 4.7 requires. Align your project's `vue` pin to 3.5.46, or upgrade to Nuxt 4.7. `@shopware/composables` is built and tested against the same versions.
+- Updated dependencies [[`48fbb6f`](https://github.com/shopware/frontends/commit/48fbb6f03b1829ae3291323490f00410d4e32466), [`eba9100`](https://github.com/shopware/frontends/commit/eba91008eff20118b67268f20ab5c2fa6359d86d)]:
+  - @shopware/composables@1.15.1
+
 ## 1.6.1
 
 ### Patch Changes

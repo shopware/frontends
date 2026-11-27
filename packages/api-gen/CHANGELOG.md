@@ -1,5 +1,13 @@
 # @shopware/api-gen
 
+## 1.6.1
+
+### Patch Changes
+
+- [#2891](https://github.com/shopware/frontends/pull/2891) [`3bcbaba`](https://github.com/shopware/frontends/commit/3bcbaba14dfd3d0f28b9c73ed0e1d6186626e1b1) Thanks [@patzick](https://github.com/patzick)! - Declare `dotenv` as a runtime dependency. It was imported (`dotenv/config`) but not declared, so the build inlined whatever version pnpm happened to hoist from other packages; it is now an external dependency pinned to `18.0.10`, like the package's other runtime dependencies.
+
+- [#2907](https://github.com/shopware/frontends/pull/2907) [`a9960b8`](https://github.com/shopware/frontends/commit/a9960b825ecc3c520cef5664f2d573fedb42ce13) Thanks [@mkucmus](https://github.com/mkucmus)! - Keep nullable string fields in generated `translated` types. A property typed `["string", "null"]` now becomes `null | string` in `translated` instead of being left out, so a schema that marks `Media.alt` nullable no longer drops `alt` from `Media["translated"]`. With the current Store API schema this also adds `uneceCode` to `Unit["translated"]`.
+
 ## 1.6.0
 
 ### Minor Changes

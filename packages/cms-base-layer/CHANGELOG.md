@@ -1,5 +1,27 @@
 # @shopware/cms-base-layer
 
+## 4.1.2
+
+### Patch Changes
+
+- [#2900](https://github.com/shopware/frontends/pull/2900) [`48fbb6f`](https://github.com/shopware/frontends/commit/48fbb6f03b1829ae3291323490f00410d4e32466) Thanks [@patzick](https://github.com/patzick)! - Build and test against the `vue` (`3.5.45`) and `@vueuse/core` (`15.0.0`) versions the package declares. The workspace overrides still pinned `vue` to `3.5.44` and `@vueuse/*` to `14.4.0`, so the released code was verified against older versions than the ones it ships with.
+
+  If your project type-checks with TypeScript 5.9 and `skipLibCheck: false`, `@vueuse/core` 15 types fail on the missing global `Temporal` (TypeScript adds it in the `ESNext` lib from 6.0), so upgrade to TypeScript 6 or add the `Temporal` types, e.g. `temporal-polyfill/global` in `compilerOptions.types`.
+
+- [#2904](https://github.com/shopware/frontends/pull/2904) [`8adc6ff`](https://github.com/shopware/frontends/commit/8adc6ffb5b9a8112ce4c1708ee338ca0d8150137) Thanks [@patzick](https://github.com/patzick)! - Escape attribute values in CMS text exactly once, and sanitize the HTML element and the customer group registration introduction.
+
+  - `CmsElementText`: attribute values are now entity-decoded before rendering, so Vue escapes them once. `href="/x?a=1&amp;b=2"` no longer renders as `&amp;amp;`. After decoding, URL attributes (`href`, `src`, `action`, `formaction`, `poster`, `cite`, `background`, `xlink:href`) with a `javascript:`, `vbscript:` or `data:` scheme are dropped. This also catches schemes hidden behind entities or tab and newline characters (`javascript&colon;`, `java&Tab;script:`). The one exception is a raster `data:image/…` in `src`.
+  - **`CmsElementHtml` and the registration introduction on `FrontendAccountCustomerGroupRegistrationPage` are now sanitized** on both SSR and the client. They use a new shared `sanitizeHtml` helper built on the default `xss` whitelist. Merchant HTML in the HTML element changes in these ways:
+    - Tags outside the whitelist are removed and their text content is kept. `script` and `style` are removed together with their content. Removed tags include `iframe` (video and map embeds), `link`, `form`, `input`, `button`, `select`, `option`, `textarea`, `label`, `svg`, `object`, `embed` and `source`.
+    - Attributes outside each tag's whitelist are removed. This includes `class`, `id`, `style`, `role`, every `data-*` and `aria-*` attribute and every `on*` event handler. On links only `href`, `title` and `target` remain, so `rel` is removed too. On images only `src`, `alt`, `title`, `width`, `height` and `loading` remain.
+    - `href` and `src` go through the same URL check as `CmsElementText`. Relative URLs such as `kontakt` or `?page=2`, and schemes such as `sms:`, are kept. `javascript:`, `vbscript:` and `data:` URLs are removed, including entity-encoded ones.
+
+    If you need embeds or custom markup in the HTML element, override `CmsElementHtml` in your project.
+
+- [#2910](https://github.com/shopware/frontends/pull/2910) [`eba9100`](https://github.com/shopware/frontends/commit/eba91008eff20118b67268f20ab5c2fa6359d86d) Thanks [@mkucmus](https://github.com/mkucmus)! - Update `@nuxt/kit` to 4.7.0, in line with the Nuxt 4.7.0 bump that fixes GHSA-jxc9-w3j6-pwp2, GHSA-vrh2-cfcx-c3fg and GHSA-h5xj-x893-p5f7. `@shopware/nuxt-module` now declares `@nuxt/devtools-kit` as a dependency. Nuxt 4.7 no longer ships it transitively. `@shopware/cms-base-layer` now depends on `vue` 3.5.46, the version Nuxt 4.7 requires. Align your project's `vue` pin to 3.5.46, or upgrade to Nuxt 4.7. `@shopware/composables` is built and tested against the same versions.
+- Updated dependencies [[`48fbb6f`](https://github.com/shopware/frontends/commit/48fbb6f03b1829ae3291323490f00410d4e32466), [`eba9100`](https://github.com/shopware/frontends/commit/eba91008eff20118b67268f20ab5c2fa6359d86d)]:
+  - @shopware/composables@1.15.1
+
 ## 4.1.1
 
 ### Patch Changes
