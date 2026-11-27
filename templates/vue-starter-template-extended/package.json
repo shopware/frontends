@@ -23,11 +23,12 @@
   },
   "dependencies": {
     "@shopware/api-client": "canary",
-    "nuxt": "4.6.4",
-    "vue": "3.5.45",
+    "nuxt": "4.7.0",
+    "vue": "3.5.46",
     "vue-starter-template": "workspace:*"
   },
   "devDependencies": {
+    "@nuxt/devtools": "4.2.0",
     "@shopware/api-gen": "canary",
     "@unocss/core": "66.13.0",
     "typescript": "5.9.3",
