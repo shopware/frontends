@@ -270,7 +270,11 @@ describe("WishlistPageContent", () => {
   });
 
   it("clears the whole wishlist and ends on the empty state", async () => {
-    fakeWishlist.set(wishlistView({ remove, productIds: ["a", "b"] }));
+    const clear = vi.fn(async () => {
+      backend.products = [];
+      return { ok: true, inWishlist: false };
+    });
+    fakeWishlist.set(wishlistView({ clear }));
     const { container, shopware } = await setup(signedIn);
     await vi.waitFor(() =>
       expect(queryAll(container, PRODUCT_BOX)).toHaveLength(2),
@@ -284,18 +288,17 @@ describe("WishlistPageContent", () => {
     );
     await vi.waitFor(() => expect(queryAll(container, EMPTY)).toHaveLength(1));
 
-    expect(remove.mock.calls).toEqual([["a"], ["b"]]);
+    expect(clear).toHaveBeenCalledOnce();
     expect(reads(shopware)).toHaveLength(2);
     expect(notify).not.toHaveBeenCalled();
   });
 
   it("reports a failed clear and reads the wishlist again", async () => {
-    fakeWishlist.set(wishlistView({ remove, productIds: ["a", "b"] }));
-    remove.mockImplementationOnce(async () => ({
-      ok: false,
-      inWishlist: true,
-      message: "Nope",
-    }));
+    const clear = vi.fn(async () => {
+      backend.products = backend.products.slice(1);
+      return { ok: false, inWishlist: true, message: "Nope" };
+    });
+    fakeWishlist.set(wishlistView({ clear }));
     const { container, shopware } = await setup(signedIn);
     await vi.waitFor(() =>
       expect(queryAll(container, PRODUCT_BOX)).toHaveLength(2),

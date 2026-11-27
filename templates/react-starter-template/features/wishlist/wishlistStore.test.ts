@@ -454,3 +454,98 @@ describe("createWishlistStore writes", () => {
     });
   });
 });
+
+describe("createWishlistStore clear", () => {
+  function backendWith(ids: string[], limit = 2) {
+    const backend = { ids };
+    const answer: Answer = (operation, params) => {
+      if (operation === READ) {
+        return idsResponse(backend.ids.slice(0, limit), backend.ids.length);
+      }
+      const { productId } = (params as { pathParams: { productId: string } })
+        .pathParams;
+      backend.ids = backend.ids.filter((id) => id !== productId);
+      return { success: true };
+    };
+    return { backend, answer };
+  }
+
+  it("removes products beyond the ids one read returns", async () => {
+    const { backend, answer } = backendWith(["a", "b", "c", "d", "e"]);
+    const { store, invocations } = setup(answer);
+    store.syncSession(signedIn());
+
+    await expect(store.clear()).resolves.toEqual({
+      ok: true,
+      inWishlist: false,
+    });
+
+    expect(backend.ids).toEqual([]);
+    expect(
+      invocations.filter(({ operation }) => operation === DELETE),
+    ).toHaveLength(5);
+    expect(store.getSnapshot()).toEqual({
+      status: "ready",
+      productIds: [],
+      count: 0,
+    });
+  });
+
+  it("waits for the first read instead of clearing nothing", async () => {
+    const pending = deferred<unknown>();
+    const { backend, answer } = backendWith(["a", "b"]);
+    let first = true;
+    const { store } = setup((operation, params) => {
+      if (operation === READ && first) {
+        first = false;
+        return pending.promise;
+      }
+      return answer(operation, params);
+    });
+    store.syncSession(signedIn());
+
+    const clearing = store.clear();
+    pending.resolve(idsResponse(["a", "b"]));
+
+    await expect(clearing).resolves.toEqual({ ok: true, inWishlist: false });
+    expect(backend.ids).toEqual([]);
+  });
+
+  it("reports an error when the ids cannot be read", async () => {
+    const { store, invocations } = setup((operation) => {
+      if (operation === READ) throw new Error("offline");
+      return { success: true };
+    });
+    store.syncSession(signedIn());
+
+    await expect(store.clear()).resolves.toEqual({
+      ok: false,
+      inWishlist: true,
+      message: en("messages.error"),
+    });
+    expect(operations(invocations)).not.toContain(DELETE);
+  });
+
+  it("stops at a refused removal and returns its message", async () => {
+    const { store } = setup((operation) => {
+      if (operation === READ) return idsResponse(["a"]);
+      throw apiClientError(
+        [
+          {
+            code: "CHECKOUT__WISHLIST_IS_NOT_ACTIVATED",
+            status: "403",
+            detail: "Off",
+          },
+        ],
+        403,
+      );
+    });
+    store.syncSession(signedIn());
+
+    await expect(store.clear()).resolves.toEqual({
+      ok: false,
+      inWishlist: true,
+      message: "Off",
+    });
+  });
+});

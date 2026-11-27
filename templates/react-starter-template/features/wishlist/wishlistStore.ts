@@ -36,6 +36,7 @@ export type WishlistStore = {
   refresh(): Promise<void>;
   add(productId: string): Promise<WishlistActionResult>;
   remove(productId: string): Promise<WishlistActionResult>;
+  clear(): Promise<WishlistActionResult>;
 };
 
 export const loadingWishlist: WishlistState = {
@@ -168,6 +169,26 @@ export function createWishlistStore(
     });
   }
 
+  async function clear(): Promise<WishlistActionResult> {
+    const removed = new Set<string>();
+    for (;;) {
+      if (snapshot.status !== "ready" || snapshot.count > 0) await refresh();
+      if (snapshot.status !== "ready") {
+        return {
+          ok: false,
+          inWishlist: true,
+          message: translate("messages.error"),
+        };
+      }
+      const batch = snapshot.productIds.filter((id) => !removed.has(id));
+      if (batch.length === 0) return { ok: true, inWishlist: false };
+      const results = await Promise.all(batch.map((id) => write(id, false)));
+      const failed = results.find((result) => !result.ok);
+      if (failed) return failed;
+      for (const id of batch) removed.add(id);
+    }
+  }
+
   return {
     getSnapshot: () => snapshot,
     subscribe(listener) {
@@ -194,5 +215,6 @@ export function createWishlistStore(
     refresh,
     add: (productId) => write(productId, true),
     remove: (productId) => write(productId, false),
+    clear,
   };
 }

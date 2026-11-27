@@ -7,7 +7,7 @@ import { loadingWishlist } from "./wishlistStore";
 import type { WishlistState, WishlistStore } from "./wishlistStore";
 
 export type UseWishlistResult = WishlistState &
-  Pick<WishlistStore, "add" | "remove" | "refresh"> & {
+  Pick<WishlistStore, "add" | "remove" | "clear" | "refresh"> & {
     has(productId: string): boolean;
   };
 
@@ -29,6 +29,7 @@ export function useWishlist(): UseWishlistResult {
       has: (productId: string) => ids.has(productId),
       add: store.add,
       remove: store.remove,
+      clear: store.clear,
       refresh: store.refresh,
     };
   }, [state, store]);

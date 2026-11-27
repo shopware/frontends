@@ -13,6 +13,7 @@ export function wishlistView(
     has: (productId) => productIds.includes(productId),
     add: async () => ({ ok: true, inWishlist: true }),
     remove: async () => ({ ok: true, inWishlist: false }),
+    clear: async () => ({ ok: true, inWishlist: false }),
     refresh: async () => {},
     ...overrides,
   };

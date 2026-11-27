@@ -147,7 +147,7 @@ function WishlistProducts() {
   const focusHeadingAfterRead = useRef(false);
   const { status, data, limit, totalPages } = list;
   const loading = status === "loading";
-  const { productIds, remove } = useWishlist();
+  const { clear } = useWishlist();
   const { notify } = useCmsActions();
   const [clearing, setClearing] = useState(false);
 
@@ -155,14 +155,13 @@ function WishlistProducts() {
     if (clearing) return;
     setClearing(true);
     try {
-      const results = await Promise.all(productIds.map((id) => remove(id)));
-      const failed = results.find((result) => !result.ok);
-      if (failed) {
+      const result = await clear();
+      if (!result.ok) {
         notify({
           type: "error",
-          message: failed.message ?? t("messages.error"),
+          message: result.message ?? t("messages.error"),
         });
-        if (failed.loggedOut) void refreshSession();
+        if (result.loggedOut) void refreshSession();
       }
       focusHeadingAfterRead.current = true;
       void list.retry();
