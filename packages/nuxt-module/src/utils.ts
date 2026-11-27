@@ -97,8 +97,11 @@ export function isSecretConfigKey(key: string, parentKey?: string): boolean {
     normalized.includes("authorization") ||
     normalized.startsWith("adminapi") ||
     // adminToken, apiToken, bearerToken, authToken, refreshToken...
-    // but not the public sales channel accessToken
-    (normalized.endsWith("token") && !normalized.endsWith("accesstoken"))
+    // but not the public sales channel access key (adminAccessToken and
+    // integrationAccessToken are secret)
+    (normalized.endsWith("token") &&
+      normalized !== "accesstoken" &&
+      normalized !== "shopwareaccesstoken")
   ) {
     return true;
   }

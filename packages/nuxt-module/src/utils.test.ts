@@ -26,6 +26,8 @@ describe("isSecretConfigKey", () => {
     "authToken",
     "auth_token",
     "refreshToken",
+    "adminAccessToken",
+    "integrationAccessToken",
     "apiKey",
     "x-api-key",
     "authorization",
