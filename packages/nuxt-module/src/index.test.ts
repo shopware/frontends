@@ -35,11 +35,8 @@ vi.mock("@nuxt/devtools-kit", () => ({
   addCustomTab: addCustomTabMock,
 }));
 
-vi.mock("defu", () => ({
-  defu: (...args: unknown[]) => Object.assign({}, ...args),
-}));
-
-vi.mock("./utils", () => ({
+vi.mock("./utils", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("./utils")>()),
   isConfigDeprecated: isConfigDeprecatedMock,
 }));
 
@@ -208,5 +205,159 @@ describe("@shopware/nuxt-module", () => {
     expect(loggerMock.warn).not.toHaveBeenCalledWith(
       expect.stringContaining("apiClientConfig"),
     );
+  });
+
+  describe("secret-like keys", () => {
+    const SECRET = "super-secret-value-123";
+
+    it("strips top-level and nested secrets from public runtime config", async () => {
+      existsSyncMock.mockReturnValue(false);
+      const setup = await getModuleSetup();
+      const nuxt = createNuxtMock("/tmp/test-project");
+
+      await setup(
+        {
+          clientId: "SWIA-ID",
+          clientSecret: SECRET,
+          credentials: { client_id: "SWIA-ID", client_secret: SECRET },
+        },
+        nuxt,
+      );
+
+      const publicConfig = nuxt.options.runtimeConfig.public.shopware;
+      expect(publicConfig).not.toHaveProperty("clientId");
+      expect(publicConfig).not.toHaveProperty("clientSecret");
+      expect(publicConfig).toHaveProperty("credentials", {});
+      expect(JSON.stringify(publicConfig)).not.toContain(SECRET);
+    });
+
+    it("strips secrets set directly in runtimeConfig.public.shopware", async () => {
+      existsSyncMock.mockReturnValue(false);
+      const setup = await getModuleSetup();
+      const nuxt = createNuxtMock("/tmp/test-project");
+      Object.assign(nuxt.options.runtimeConfig.public.shopware, {
+        adminApiSecret: SECRET,
+      });
+
+      await setup({}, nuxt);
+
+      expect(nuxt.options.runtimeConfig.public.shopware).not.toHaveProperty(
+        "adminApiSecret",
+      );
+      expect(nuxt.options.runtimeConfig.shopware).toHaveProperty(
+        "adminApiSecret",
+        SECRET,
+      );
+    });
+
+    it("moves nested public secrets to private config without overriding private values", async () => {
+      existsSyncMock.mockReturnValue(false);
+      const setup = await getModuleSetup();
+      const nuxt = createNuxtMock("/tmp/test-project");
+      nuxt.options.runtimeConfig.shopware = {
+        credentials: { client_secret: "private-wins" },
+      };
+      Object.assign(nuxt.options.runtimeConfig.public.shopware, {
+        credentials: { client_id: "SWIA-ID", client_secret: SECRET },
+      });
+
+      await setup({}, nuxt);
+
+      expect(nuxt.options.runtimeConfig.shopware).toMatchObject({
+        credentials: { client_id: "SWIA-ID", client_secret: "private-wins" },
+      });
+      expect(nuxt.options.runtimeConfig.public.shopware).toHaveProperty(
+        "credentials",
+        {},
+      );
+    });
+
+    it("keeps secrets from module options in private runtime config", async () => {
+      existsSyncMock.mockReturnValue(false);
+      const setup = await getModuleSetup();
+      const nuxt = createNuxtMock("/tmp/test-project");
+
+      await setup(
+        { clientSecret: SECRET, credentials: { client_secret: SECRET } },
+        nuxt,
+      );
+
+      expect(nuxt.options.runtimeConfig.shopware).toMatchObject({
+        clientSecret: SECRET,
+        credentials: { client_secret: SECRET },
+      });
+    });
+
+    it("keeps accessToken, endpoint and devStorefrontUrl public", async () => {
+      existsSyncMock.mockReturnValue(false);
+      const setup = await getModuleSetup();
+      const nuxt = createNuxtMock("/tmp/test-project");
+
+      await setup(
+        {
+          clientSecret: SECRET,
+          devStorefrontUrl: "http://localhost:3000",
+        },
+        nuxt,
+      );
+
+      expect(nuxt.options.runtimeConfig.public.shopware).toEqual({
+        endpoint: "https://test.shopware.store/store-api/",
+        accessToken: "test-token",
+        devStorefrontUrl: "http://localhost:3000",
+      });
+    });
+
+    it("warns once per stripped key with its path but never its value", async () => {
+      existsSyncMock.mockReturnValue(false);
+      const setup = await getModuleSetup();
+
+      await setup(
+        { clientSecret: SECRET, credentials: { client_secret: SECRET } },
+        createNuxtMock("/tmp/test-project"),
+      );
+
+      const secretWarnings = loggerMock.warn.mock.calls
+        .map(([message]) => String(message))
+        .filter((message) => message.includes("public runtime config"));
+      expect(secretWarnings).toHaveLength(2);
+      expect(secretWarnings[0]).toContain('"shopware.clientSecret"');
+      expect(secretWarnings[1]).toContain(
+        '"shopware.credentials.client_secret"',
+      );
+      for (const message of secretWarnings) {
+        expect(message).toContain("NUXT_");
+        expect(message).toContain("server/");
+        expect(message).not.toContain(SECRET);
+      }
+    });
+
+    it("says where the stripped value went", async () => {
+      existsSyncMock.mockReturnValue(false);
+      const setup = await getModuleSetup();
+
+      await setup(
+        { clientSecret: SECRET, hosts: [{ password: SECRET }] },
+        createNuxtMock("/tmp/test-project"),
+      );
+
+      const messages = loggerMock.warn.mock.calls.map(([m]) => String(m));
+      const moved = messages.find((m) => m.includes('"shopware.clientSecret"'));
+      const dropped = messages.find((m) =>
+        m.includes('"shopware.hosts[0].password"'),
+      );
+      expect(moved).toContain("It stays in private `runtimeConfig.shopware`.");
+      expect(dropped).toContain("inside an array, so it was dropped");
+      expect(dropped).not.toContain("It stays in private");
+    });
+
+    it("does not warn when there are no secrets", async () => {
+      existsSyncMock.mockReturnValue(false);
+      const setup = await getModuleSetup();
+
+      await setup({}, createNuxtMock("/tmp/test-project"));
+
+      expect(loggerMock.warn).not.toHaveBeenCalled();
+    });
   });
 });

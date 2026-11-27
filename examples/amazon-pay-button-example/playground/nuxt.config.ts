@@ -26,9 +26,14 @@ export default defineNuxtConfig({
         endpoint:
           "Shopware 6 Admin API endpoint (e.g https://demo-frontends.shopware.store/api)",
         credentials: {
-          // credentials for the Shopware 6 Admin API
-          client_id: "SWIABTJARFASQLD5SGS0BVVOZG",
-          client_secret: "QUhPMHlPbF2Cvxnc2eG5XN1NCRDhBRU55TEhWV05qQm50MEowTXU",
+          // Shopware 6 Admin API integration credentials. Never commit them:
+          // leave these empty and set them through environment variables
+          // (see .env.example). They stay in private runtimeConfig and are
+          // read only by the server routes.
+          // NUXT_AMAZON_PAY_SHOPWARE_ADMIN_API_CREDENTIALS_CLIENT_ID
+          client_id: "",
+          // NUXT_AMAZON_PAY_SHOPWARE_ADMIN_API_CREDENTIALS_CLIENT_SECRET
+          client_secret: "",
         },
       },
     },

@@ -14,7 +14,7 @@ import {
 } from "@nuxt/kit";
 import { defu } from "defu";
 
-import { isConfigDeprecated } from "./utils";
+import { isConfigDeprecated, stripSecretConfigKeys } from "./utils";
 const MODULE_ID = "@shopware/nuxt3";
 
 export default defineNuxtModule<ShopwareNuxtOptions>({
@@ -30,10 +30,38 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
       nuxt.options.runtimeConfig.shopware || {},
       options || {},
     );
-    nuxt.options.runtimeConfig.public.shopware = defu(
-      nuxt.options.runtimeConfig.public.shopware || {},
-      options || {},
+    // Public runtime config is serialized into the page payload, so anything
+    // secret-like (Admin API credentials, passwords...) is removed from it and
+    // moved to the private `runtimeConfig.shopware`, where values already set
+    // there win. This runs at build time only: NUXT_PUBLIC_* env vars applied
+    // at runtime are not filtered.
+    const {
+      config: publicShopwareConfig,
+      stripped,
+      strippedPaths,
+    } = stripSecretConfigKeys(
+      defu(nuxt.options.runtimeConfig.public.shopware || {}, options || {}),
+      "shopware",
     );
+    nuxt.options.runtimeConfig.public.shopware = publicShopwareConfig;
+    if (strippedPaths.length) {
+      nuxt.options.runtimeConfig.shopware = defu(
+        nuxt.options.runtimeConfig.shopware,
+        stripped,
+      );
+    }
+    for (const path of strippedPaths) {
+      logger.warn(
+        `Removed "${path}" from public runtime config: it looks like a secret and public config is sent to every visitor's browser. ` +
+          // Secrets inside arrays are dropped; everything else is moved.
+          (path.includes("[")
+            ? "It sits inside an array, so it was dropped and is not available in private `runtimeConfig.shopware` either. "
+            : "It stays in private `runtimeConfig.shopware`. ") +
+          `Keep secrets such as Admin API credentials out of the \`shopware\` module options and \`runtimeConfig.public\`. ` +
+          `Declare them in private \`runtimeConfig\`, set them with NUXT_* environment variables, and read them only in \`server/\` routes. ` +
+          `See https://developer.shopware.com/frontends/best-practices/deployment.html#credentials-and-secrets`,
+      );
+    }
     const resolvedPublicShopwareConfig = nuxt.options.runtimeConfig.public
       .shopware as ShopwareNuxtOptions;
     const resolvedPrivateShopwareConfig = nuxt.options.runtimeConfig
