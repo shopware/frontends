@@ -164,9 +164,14 @@ export default defineEventHandler(async () => {
 
 ### Safety net in `@shopware/nuxt-module`
 
-The `@shopware/nuxt-module` removes secret-like keys from `runtimeConfig.public.shopware`, at any depth and case-insensitively. It matches names such as `client_id`, `clientSecret`, `password`, `privateKey`, `adminApi*` and anything containing `secret`. It logs a warning with the path of every removed key, never its value. The keys stay in private `runtimeConfig.shopware`. `accessToken`, `endpoint` and `devStorefrontUrl` stay public.
+The `@shopware/nuxt-module` removes secret-like keys from `runtimeConfig.public.shopware`, at any depth and case-insensitively. It matches names containing `clientId`, `secret`, `password`, `privateKey`, `apiKey`, `accessKeyId` or `authorization`, names starting with `adminApi`, token names such as `adminToken`, `apiToken` or `refreshToken`, and `username` under a credentials-like key. It logs a warning with the path of every removed key, never its value. The removed keys are moved to private `runtimeConfig.shopware`, where values you already set there win. `accessToken`, `endpoint`, `devStorefrontUrl` and the other options the module reads in the browser stay public.
 
-This is a safety net, not a place to keep secrets. It covers only the `shopware` key, not the rest of `runtimeConfig.public` or your own code. If you see the warning, move the key out of the `shopware` options as described above.
+This is a safety net, not a place to keep secrets:
+
+- It runs once, at build time. Values applied at runtime are not filtered: a `NUXT_PUBLIC_SHOPWARE_*` environment variable, including one that holds a JSON object, goes into the payload as is. Never set a secret through a `NUXT_PUBLIC_*` variable.
+- It covers only `runtimeConfig.public.shopware` as the module sees it during setup. Other modules that write to `public.shopware` later, the rest of `runtimeConfig.public`, and your own code are not checked.
+
+If you see the warning, move the key out of the `shopware` options as described above.
 
 ### Check a deployed site
 
