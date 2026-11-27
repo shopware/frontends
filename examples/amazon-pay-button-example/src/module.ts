@@ -66,15 +66,16 @@ export default defineNuxtModule<AmazonPayModuleOptions>({
       nuxt.options.runtimeConfig.amazonPay || {},
       moduleOptions,
     );
-    // copy options to public runtimeConfig
-    nuxt.options.runtimeConfig.public.amazonPay = defu(
-      {},
-      {
-        merchantId: moduleOptions.merchantId,
-        sandbox: moduleOptions.sandbox,
-        webCheckoutDetails: moduleOptions.webCheckoutDetails,
-      },
-    );
+    // Expose only what the client needs. The merged private config also holds
+    // shopwareAdminApi, privateKeyPath and other server-only values, which
+    // must never be copied here.
+    const { merchantId, sandbox, webCheckoutDetails } =
+      nuxt.options.runtimeConfig.amazonPay;
+    nuxt.options.runtimeConfig.public.amazonPay = {
+      merchantId,
+      sandbox,
+      webCheckoutDetails,
+    };
 
     const resolver = createResolver(import.meta.url);
 
