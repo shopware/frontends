@@ -1,5 +1,5 @@
-import { expect, test } from "../fixtures";
-import { productSearchTerm } from "../utils/store-api";
+import { expect, test } from "../../fixtures";
+import { productSearchTerm } from "../../utils/store-api";
 
 test.describe("Check search page", { tag: "@frontends" }, () => {
   test.beforeEach(async ({ homePage }) => {

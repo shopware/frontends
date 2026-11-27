@@ -1,4 +1,4 @@
-import { expect, test } from "../fixtures";
+import { expect, test } from "../../fixtures";
 
 // Registers a customer before it can change anything, which the 60s default
 // does not leave room for.

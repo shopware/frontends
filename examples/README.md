@@ -37,4 +37,4 @@ To keep every example consistent in terms of using it by the users there are few
 For E2E purposes:
 
 - Wrap the presentation layer (an entrypoint template) in a DOM element with a `test-wrapper` test-id attribute, like in this [PR](https://github.com/shopware/frontends/pull/679/files#diff-12260e5806d489206db5e938f4e1027c4ac4362d4f7f6e3a8957cf3017e9a88cR158)
-- Update [IGNORE_CHECK_EXAMPLES](https://github.com/shopware/frontends/blob/main/apps/e2e-tests/tests/checkCodeExamples.spec.ts#L7) with the name of your directory if an example cannot be run as a project (not a nuxt/vite project, or temporary buggy)
+- Update [IGNORE_CHECK_EXAMPLES](https://github.com/shopware/frontends/blob/main/apps/e2e-tests/tooling/checkCodeExamples.spec.ts#L7) with the name of your directory if an example cannot be run as a project (not a nuxt/vite project, or temporary buggy)

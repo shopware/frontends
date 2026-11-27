@@ -1,4 +1,4 @@
-import { expect, test } from "../fixtures";
+import { expect, test } from "../../fixtures";
 
 test.describe.parallel(
   "Add product to wishlist / Remove from wishlist",

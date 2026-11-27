@@ -1,4 +1,4 @@
-import { expect, test } from "../fixtures";
+import { expect, test } from "../../fixtures";
 
 // Registering a fresh customer costs ~15s of the budget.
 test.setTimeout(90000);

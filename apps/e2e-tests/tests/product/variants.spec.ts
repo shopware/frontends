@@ -1,5 +1,5 @@
-import { test } from "../fixtures";
-import { variantProductId } from "../utils/store-api";
+import { test } from "../../fixtures";
+import { variantProductId } from "../../utils/store-api";
 
 test.describe.parallel("Check product variants", { tag: "@frontends" }, () => {
   test.beforeEach(async ({ homePage }) => {

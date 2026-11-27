@@ -1,4 +1,4 @@
-import { expect, test } from "../fixtures";
+import { expect, test } from "../../fixtures";
 
 test.describe("Check for seo-url requests", { tag: "@frontends" }, () => {
   test.beforeEach(async ({ homePage }) => {

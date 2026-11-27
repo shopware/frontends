@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 
-import { expect, test } from "../fixtures";
+import { expect, test } from "../../fixtures";
 
 test.describe(
   "Should not have any automatically detectable accessibility issues",
