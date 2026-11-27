@@ -332,6 +332,25 @@ describe("@shopware/nuxt-module", () => {
       }
     });
 
+    it("says where the stripped value went", async () => {
+      existsSyncMock.mockReturnValue(false);
+      const setup = await getModuleSetup();
+
+      await setup(
+        { clientSecret: SECRET, hosts: [{ password: SECRET }] },
+        createNuxtMock("/tmp/test-project"),
+      );
+
+      const messages = loggerMock.warn.mock.calls.map(([m]) => String(m));
+      const moved = messages.find((m) => m.includes('"shopware.clientSecret"'));
+      const dropped = messages.find((m) =>
+        m.includes('"shopware.hosts[0].password"'),
+      );
+      expect(moved).toContain("It stays in private `runtimeConfig.shopware`.");
+      expect(dropped).toContain("inside an array, so it was dropped");
+      expect(dropped).not.toContain("It stays in private");
+    });
+
     it("does not warn when there are no secrets", async () => {
       existsSyncMock.mockReturnValue(false);
       const setup = await getModuleSetup();

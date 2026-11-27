@@ -52,7 +52,11 @@ export default defineNuxtModule<ShopwareNuxtOptions>({
     }
     for (const path of strippedPaths) {
       logger.warn(
-        `Removed "${path}" from public runtime config: it looks like a secret and public config is sent to every visitor's browser. It stays in private \`runtimeConfig.shopware\`. ` +
+        `Removed "${path}" from public runtime config: it looks like a secret and public config is sent to every visitor's browser. ` +
+          // Secrets inside arrays are dropped; everything else is moved.
+          (path.includes("[")
+            ? "It sits inside an array, so it was dropped and is not available in private `runtimeConfig.shopware` either. "
+            : "It stays in private `runtimeConfig.shopware`. ") +
           `Keep secrets such as Admin API credentials out of the \`shopware\` module options and \`runtimeConfig.public\`. ` +
           `Declare them in private \`runtimeConfig\`, set them with NUXT_* environment variables, and read them only in \`server/\` routes. ` +
           `See https://developer.shopware.com/frontends/best-practices/deployment.html#credentials-and-secrets`,
