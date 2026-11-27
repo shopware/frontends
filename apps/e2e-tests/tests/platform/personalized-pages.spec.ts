@@ -1,4 +1,4 @@
-import { expect, test } from "../fixtures";
+import { expect, test } from "../../fixtures";
 
 // Route rules match raw paths and know nothing about i18n. A personalized page
 // without its rule under a locale prefix is server-rendered and cached under

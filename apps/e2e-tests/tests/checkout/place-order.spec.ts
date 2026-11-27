@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 
-import { expect, test } from "../fixtures";
-import { uniqueEmail, uniquePassword } from "../utils/data-helpers";
+import { expect, test } from "../../fixtures";
+import { uniqueEmail, uniquePassword } from "../../utils/data-helpers";
 
 // A full purchase, and ProductPage.addToCart alone budgets 60s for its retries.
 test.setTimeout(90000);

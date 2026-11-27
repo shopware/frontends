@@ -1,4 +1,4 @@
-import { expect, MOCKED_STORE_API, test } from "../fixtures";
+import { expect, MOCKED_STORE_API, test } from "../../fixtures";
 
 test.describe("Error page", { tag: "@frontends" }, () => {
   test("Unknown URL renders the 404 page", async ({ page }) => {

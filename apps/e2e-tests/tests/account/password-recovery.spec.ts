@@ -1,6 +1,6 @@
-import { expect, MOCKED_STORE_API, test } from "../fixtures";
-import { LoginForm } from "../page-objects/LoginPage";
-import { PasswordRecoveryPage } from "../page-objects/PasswordRecoveryPage";
+import { expect, MOCKED_STORE_API, test } from "../../fixtures";
+import { LoginForm } from "../../page-objects/LoginPage";
+import { PasswordRecoveryPage } from "../../page-objects/PasswordRecoveryPage";
 
 const CHECK_ROUTE = "**/store-api/account/customer-recovery-is-expired";
 const CONFIRM_ROUTE = "**/store-api/account/recovery-password-confirm";

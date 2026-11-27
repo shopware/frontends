@@ -1,9 +1,9 @@
 import { faker } from "@faker-js/faker";
 import type { APIRequestContext } from "@playwright/test";
 
-import { expect, test } from "../fixtures";
-import { uniqueEmail } from "../utils/data-helpers";
-import type { StoreApi } from "../utils/store-api";
+import { expect, test } from "../../fixtures";
+import { uniqueEmail } from "../../utils/data-helpers";
+import type { StoreApi } from "../../utils/store-api";
 
 async function shopTurnsOffAccountTypeSelection(
   request: APIRequestContext,

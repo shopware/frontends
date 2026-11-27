@@ -16,6 +16,30 @@ Copy `.env.template` to `.env` and fill in the values. `BASE_E2E_URL` points at 
 
 No account has to exist on that storefront. Tests that sign in to an existing account take the `customer` fixture from `fixtures.ts`, which registers a fresh one through the Store API. The other signed-in tests register through the storefront's own form. Either way, the sales channel must not require double opt-in for registration.
 
+## Layout
+
+Specs are grouped by shop area, one folder per area under `tests/`:
+
+| Folder          | Covers                                          |
+| --------------- | ----------------------------------------------- |
+| `navigation`    | error pages, client-side routing                |
+| `catalog`       | category listing, search                        |
+| `product`       | variants, reviews                               |
+| `cart`          | adding to the cart                              |
+| `checkout`      | placing orders                                  |
+| `account`       | registration, login, password recovery, profile |
+| `wishlist`      | adding to and clearing the wishlist             |
+| `platform`      | sitemap, personalized pages                     |
+| `accessibility` | axe checks per page                             |
+
+A new spec goes into the folder of the area it tests, named `<behaviour>.spec.ts`. Run one area with a path filter:
+
+```sh
+pnpm run test:e2e tests/checkout
+```
+
+`tooling/` holds the StackBlitz and code-example checks. They run through `examples.config.ts`, not `test:e2e`.
+
 ## Run tests
 
 ```sh

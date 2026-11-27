@@ -1,4 +1,4 @@
-import { expect, test } from "../fixtures";
+import { expect, test } from "../../fixtures";
 
 test.describe("Add review", { tag: "@frontends" }, () => {
   test.beforeEach(async ({ homePage, registrationPage }) => {

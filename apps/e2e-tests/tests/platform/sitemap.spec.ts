@@ -2,7 +2,7 @@ import { gunzipSync } from "node:zlib";
 
 import type { APIRequestContext, APIResponse } from "@playwright/test";
 
-import { expect, test } from "../fixtures";
+import { expect, test } from "../../fixtures";
 
 /**
  * Both routes read the file list from the Store API, which the shared demo
