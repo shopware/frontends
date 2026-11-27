@@ -42,6 +42,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@nuxt/devtools-kit": "4.2.0",
     "@nuxt/kit": "4.7.0",
     "@shopware/composables": "workspace:*",
     "@shopware/helpers": "workspace:*",
