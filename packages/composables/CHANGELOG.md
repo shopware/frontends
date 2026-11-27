@@ -1,5 +1,15 @@
 # @shopware/composables
 
+## 1.15.1
+
+### Patch Changes
+
+- [#2900](https://github.com/shopware/frontends/pull/2900) [`48fbb6f`](https://github.com/shopware/frontends/commit/48fbb6f03b1829ae3291323490f00410d4e32466) Thanks [@patzick](https://github.com/patzick)! - Build and test against the `vue` (`3.5.45`) and `@vueuse/core` (`15.0.0`) versions the package declares. The workspace overrides still pinned `vue` to `3.5.44` and `@vueuse/*` to `14.4.0`, so the released code was verified against older versions than the ones it ships with.
+
+  If your project type-checks with TypeScript 5.9 and `skipLibCheck: false`, `@vueuse/core` 15 types fail on the missing global `Temporal` (TypeScript adds it in the `ESNext` lib from 6.0), so upgrade to TypeScript 6 or add the `Temporal` types, e.g. `temporal-polyfill/global` in `compilerOptions.types`.
+
+- [#2910](https://github.com/shopware/frontends/pull/2910) [`eba9100`](https://github.com/shopware/frontends/commit/eba91008eff20118b67268f20ab5c2fa6359d86d) Thanks [@mkucmus](https://github.com/mkucmus)! - Update `@nuxt/kit` to 4.7.0, in line with the Nuxt 4.7.0 bump that fixes GHSA-jxc9-w3j6-pwp2, GHSA-vrh2-cfcx-c3fg and GHSA-h5xj-x893-p5f7. `@shopware/nuxt-module` now declares `@nuxt/devtools-kit` as a dependency. Nuxt 4.7 no longer ships it transitively. `@shopware/cms-base-layer` now depends on `vue` 3.5.46, the version Nuxt 4.7 requires. Align your project's `vue` pin to 3.5.46, or upgrade to Nuxt 4.7. `@shopware/composables` is built and tested against the same versions.
+
 ## 1.15.0
 
 ### Minor Changes
