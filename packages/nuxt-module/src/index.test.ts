@@ -35,10 +35,6 @@ vi.mock("@nuxt/devtools-kit", () => ({
   addCustomTab: addCustomTabMock,
 }));
 
-vi.mock("defu", () => ({
-  defu: (...args: unknown[]) => Object.assign({}, ...args),
-}));
-
 vi.mock("./utils", async (importOriginal) => ({
   ...(await importOriginal<typeof import("./utils")>()),
   isConfigDeprecated: isConfigDeprecatedMock,
@@ -247,6 +243,32 @@ describe("@shopware/nuxt-module", () => {
 
       expect(nuxt.options.runtimeConfig.public.shopware).not.toHaveProperty(
         "adminApiSecret",
+      );
+      expect(nuxt.options.runtimeConfig.shopware).toHaveProperty(
+        "adminApiSecret",
+        SECRET,
+      );
+    });
+
+    it("moves nested public secrets to private config without overriding private values", async () => {
+      existsSyncMock.mockReturnValue(false);
+      const setup = await getModuleSetup();
+      const nuxt = createNuxtMock("/tmp/test-project");
+      nuxt.options.runtimeConfig.shopware = {
+        credentials: { client_secret: "private-wins" },
+      };
+      Object.assign(nuxt.options.runtimeConfig.public.shopware, {
+        credentials: { client_id: "SWIA-ID", client_secret: SECRET },
+      });
+
+      await setup({}, nuxt);
+
+      expect(nuxt.options.runtimeConfig.shopware).toMatchObject({
+        credentials: { client_id: "SWIA-ID", client_secret: "private-wins" },
+      });
+      expect(nuxt.options.runtimeConfig.public.shopware).toHaveProperty(
+        "credentials",
+        {},
       );
     });
 
