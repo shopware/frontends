@@ -81,6 +81,110 @@ Moreover, besides the frameworks or libraries that you can work with using Nitro
 
 Nitro provides also really great examples for other well known platforms (full static, or those serving SSR) and the list you can find [here](https://nitro.unjs.io/deploy).
 
+## Credentials and secrets
+
+A Shopware Frontends app talks to two Shopware APIs, and their credentials are handled in opposite ways.
+
+- **The sales channel access key** (`accessToken`, the Store API key) is public by design. The browser sends it with every Store API request, so it belongs in the `shopware` module options or `runtimeConfig.public.shopware`.
+- **Admin API integration credentials** (`client_id` / `client_secret`, also called access key ID and secret access key) must never reach the browser. Anyone who holds them gets Admin API access to your shop with the rights of that integration: they can read customer and order data, change prices and products, or create admin users. The same goes for any other server secret, such as payment provider keys or passwords.
+
+### Where secrets belong
+
+Everything under `runtimeConfig.public`, and everything under the `shopware` module key, is serialized into the page payload and sent to every visitor. Keep secrets out of both. Instead:
+
+1. Declare them with empty values in the private part of `runtimeConfig`.
+2. Set the real values through `NUXT_*` environment variables in your hosting provider's settings, or a local `.env` file that is not committed. Nuxt maps `runtimeConfig.adminApiClientSecret` to `NUXT_ADMIN_API_CLIENT_SECRET`.
+3. Read them only in Nitro `server/` routes, and return only the data the browser needs.
+
+Never put secrets in client code (components, composables, plugins), in `runtimeConfig.public`, under the `shopware` module key, or in any committed file.
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/deployment/credentials-and-secrets.ts" code lang="ts" no-name -->
+
+```ts
+import { defineNuxtConfig } from "nuxt/config";
+
+export default defineNuxtConfig({
+  runtimeConfig: {
+    // Private: available only on the server, never sent to the browser.
+    // Leave the values empty and set them at runtime through
+    // NUXT_ADMIN_API_ENDPOINT, NUXT_ADMIN_API_CLIENT_ID and
+    // NUXT_ADMIN_API_CLIENT_SECRET.
+    adminApiEndpoint: "",
+    adminApiClientId: "",
+    adminApiClientSecret: "",
+    public: {
+      // Public: serialized into every page. Nothing secret goes here.
+    },
+  },
+  shopware: {
+    endpoint: "https://demo-frontends.shopware.store/store-api/",
+    // The sales channel access key is public by design.
+    accessToken: "SWSCBHFSNTVMAWNZDNFKSHLAYW",
+  },
+});
+```
+
+<!-- /automd -->
+
+A server route that uses the Admin API:
+
+<!-- automd:file src="examples/docs-code-examples/src/generated/best-practices/deployment/credentials-and-secrets-2.ts" code lang="ts" no-name -->
+
+```ts
+// server/api/has-products.get.ts
+import { createAdminAPIClient } from "@shopware/api-client";
+import { defineEventHandler } from "h3";
+
+import { useRuntimeConfig } from "#imports";
+
+export default defineEventHandler(async () => {
+  // Private runtime config is only readable on the server.
+  const config = useRuntimeConfig();
+
+  const adminApiClient = createAdminAPIClient({
+    baseURL: String(config.adminApiEndpoint),
+    credentials: {
+      grant_type: "client_credentials",
+      client_id: String(config.adminApiClientId),
+      client_secret: String(config.adminApiClientSecret),
+    },
+  });
+
+  const { data } = await adminApiClient.invoke(
+    "searchProduct post /search/product",
+    { body: { limit: 1 } },
+  );
+
+  // Return only what the browser needs, never the credentials or the token.
+  return { found: Boolean(data) };
+});
+```
+
+<!-- /automd -->
+
+### Safety net in `@shopware/nuxt-module`
+
+The `@shopware/nuxt-module` removes secret-like keys from `runtimeConfig.public.shopware`, at any depth and case-insensitively. It matches names such as `client_id`, `clientSecret`, `password`, `privateKey`, `adminApi*` and anything containing `secret`. It logs a warning with the path of every removed key, never its value. The keys stay in private `runtimeConfig.shopware`. `accessToken`, `endpoint` and `devStorefrontUrl` stay public.
+
+This is a safety net, not a place to keep secrets. It covers only the `shopware` key, not the rest of `runtimeConfig.public` or your own code. If you see the warning, move the key out of the `shopware` options as described above.
+
+### Check a deployed site
+
+Open your storefront in a private window and check what a visitor receives:
+
+- View the page source and search the `__NUXT__` / `__NUXT_DATA__` payload for `client_secret`, `clientSecret`, `secret` and the value of your integration's secret access key.
+- In the browser developer tools, open the Network tab, reload, and search all JS bundles for the same strings.
+
+Neither search should find anything. Repeat the check after changing `runtimeConfig` or adding a module.
+
+### After a leak
+
+If an Admin API secret has been in a public payload, a JS bundle or a public repository, treat it as compromised. Removing it from the code is not enough:
+
+1. In the Shopware Administration, go to **Settings > System > Integrations**, delete the leaked integration and create a new one with only the rights it needs.
+2. Store the new credentials as private environment variables and redeploy.
+3. Check orders, customers, products, prices and admin users for changes you did not make.
+
 ## Good Practices
 
 Here are the collected rules that may be followed to avoid most common issues during the deployment.
