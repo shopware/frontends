@@ -146,8 +146,8 @@ written there:
   `BASE_E2E_URL` and checks results, never which template serves it. Specs
   sit in `tests/<shop area>/`. `@writes-*` marks register, sign-in and order
   tests; `--grep-invert "@writes-"` is the demo-safe run. `@ff:<flag>` skips a
-  test when `e2e.config.ts` turns that shop feature off. CI:
-  `e2e-starter-template.yml`, nightly and on manual dispatch; nothing is gated.
+  test when `e2e.config.ts` turns that shop feature off. CI: nightly, ungated
+  `e2e-starter-template.yml`; dispatch `-f base_url=<url>` to test any URL.
 - The `@accessibility` specs share those page objects and run the same way:
 
 ```bash

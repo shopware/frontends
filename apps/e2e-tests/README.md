@@ -92,7 +92,15 @@ pnpm run test:e2e
 
 CI runs them against `vue-starter-template` nightly and on manual dispatch, not on pull requests. See [.github/workflows/e2e-starter-template.yml](../../.github/workflows/e2e-starter-template.yml).
 
-The run passes against the starter. Nothing is gated on it, since it does not run on pull requests; a failing run notifies Slack through `failed-job-check.yml`. Company registration skips itself when the shop turns off account type selection.
+The run passes against the starter. Nothing is gated on it, since it does not run on pull requests; a failing run on `main` notifies Slack through `failed-job-check.yml`. Company registration skips itself when the shop turns off account type selection.
+
+To run the suite in CI against a deployed storefront instead, such as a pull request's Vercel preview, dispatch the workflow with `base_url`. Find the preview URL with the `gh api` recipe under [Check a pull request](#check-a-pull-request).
+
+```sh
+gh workflow run e2e-starter-template.yml --ref <branch> -f base_url=<url>
+```
+
+With `base_url` the workflow skips building and starting the starter. Add `-f grep_invert=@writes-` when the storefront talks to a backend you do not own, such as the public demo. A dispatch from a branch other than `main` does not notify Slack when it fails.
 
 To reproduce the CI run locally:
 
