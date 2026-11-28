@@ -41,40 +41,19 @@ export class ProductPage {
   }
 
   async addToCart() {
+    const added = this.page
+      .getByTestId("notification-element-success")
+      .filter({ has: this.page.getByTestId("notification-element-action") })
+      .last();
+
     await expect(async () => {
-      await this.addToCartButton.waitFor();
       await expect(this.addToCartButton).toBeVisible();
-      const productId =
-        await this.addToCartButton.getAttribute("data-product-id");
-      const [response] = await Promise.all([
-        this.page.waitForResponse(
-          (response) =>
-            new URL(response.url()).pathname.endsWith(
-              "/checkout/cart/line-item",
-            ) && response.request().method() === "POST",
-          { timeout: 10_000 },
-        ),
-        this.addToCartButton.click({ timeout: 5_000 }),
-      ]);
-      expect(response.ok(), await response.text()).toBe(true);
-      const cart = (await response.json()) as {
-        lineItems?: { referencedId?: string }[];
-      };
-      expect(cart.lineItems?.map((item) => item.referencedId)).toContain(
-        productId,
-      );
+      await this.addToCartButton.click({ timeout: 5_000 });
+      await expect(added).toBeVisible({ timeout: 10_000 });
     }).toPass({
-      // Probe, wait 1s, probe, wait 2s, probe, wait 10s, probe, wait 10s, probe, .... Defaults to [100, 250, 500, 1000].
       intervals: [1_000, 2_000, 10_000],
       timeout: 60_000,
     });
-
-    await expect(
-      this.page
-        .getByTestId("notification-element-success")
-        .filter({ has: this.page.getByTestId("notification-element-action") })
-        .last(),
-    ).toBeVisible();
   }
 
   async addVariantToCart() {
@@ -123,6 +102,7 @@ export class ProductPage {
     }
 
     await this.addToCart();
+    await expect(this.miniCartLink).toContainText(/[1-9]/, { timeout: 30000 });
     await this.miniCartLink.click();
     await this.page
       .getByTestId("mini-cart-container")

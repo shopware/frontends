@@ -178,18 +178,11 @@ export class HomePage {
       throw new Error("Every product on this listing is already wishlisted.");
     }
 
-    // The control only flips once the entry is stored.
-    const stored = this.page.waitForResponse(
-      (response) =>
-        response.url().includes("/customer/wishlist/add") && response.ok(),
-      { timeout: 30000 },
-    );
     await toggles.nth(index).click();
-    await stored;
-
     await expect(toggles.nth(index)).toHaveAttribute(
       "data-in-wishlist",
       "true",
+      { timeout: 30000 },
     );
   }
 

@@ -142,12 +142,12 @@ written there:
 
 - Unit tests (Vitest) live next to their sources as `*.test.ts`. `pnpm run
   coverage` exists only in `packages/composables`.
-- `pnpm run test:e2e` is `playwright test --grep @frontends` against
-  `BASE_E2E_URL`; specs sit in `tests/<shop area>/`. Tests that register, sign
-  in or order are tagged `@writes-*`; `--grep-invert "@writes-"` is the run
-  that is safe against a backend you must not write to, such as the demo.
-  CI: `.github/workflows/e2e-starter-template.yml`, nightly and on manual
-  dispatch, not on pull requests; a failure notifies Slack, nothing is gated.
+- `pnpm run test:e2e` (`playwright test --grep @frontends`): the suite takes
+  only a URL, `BASE_E2E_URL`, and checks results, never which template serves
+  it. Specs sit in `tests/<shop area>/`; register, sign-in and order tests are
+  tagged `@writes-*`, and `--grep-invert "@writes-"` is the run safe against a
+  backend you must not write to, such as the demo. CI: `e2e-starter-template.yml`,
+  nightly and on manual dispatch, not on pull requests; nothing is gated.
 - The `@accessibility` specs share those page objects and run the same way:
 
 ```bash
