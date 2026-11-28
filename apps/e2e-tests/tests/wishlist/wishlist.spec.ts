@@ -13,33 +13,25 @@ test.describe.parallel(
       await registrationPage.createUser();
     });
 
-    test("Add product to wishlist", async ({
-      page,
-      homePage,
-      wishlistPage,
-    }) => {
+    test("Add product to wishlist", async ({ homePage, wishlistPage }) => {
       await homePage.addProductToWishlist();
       await wishlistPage.openWishlist();
-      await expect(page.getByTestId("wishlist-product-box")).toHaveCount(1);
+      await expect(wishlistPage.productBoxes).toHaveCount(1);
     });
 
-    test("Remove product from wishlist", async ({
-      page,
-      homePage,
-      wishlistPage,
-    }) => {
+    test("Remove product from wishlist", async ({ homePage, wishlistPage }) => {
       await homePage.addProductToWishlist();
       await wishlistPage.openWishlist();
-      await expect(page.getByTestId("wishlist-product-box")).toHaveCount(1);
+      await expect(wishlistPage.productBoxes).toHaveCount(1);
       await wishlistPage.removeProductFromWishlist();
-      await expect(page.getByTestId("wishlist-empty-container")).toHaveCount(1);
+      await expect(wishlistPage.emptyContainer).toHaveCount(1);
     });
 
-    test("Clear whole wishlist", async ({ page, homePage, wishlistPage }) => {
+    test("Clear whole wishlist", async ({ homePage, wishlistPage }) => {
       await homePage.addProductToWishlist();
       await wishlistPage.openWishlist();
       await wishlistPage.clearWishlist();
-      await expect(page.getByTestId("wishlist-empty-container")).toHaveCount(1);
+      await expect(wishlistPage.emptyContainer).toHaveCount(1);
     });
   },
 );

@@ -11,6 +11,7 @@ export class ProductPage {
   readonly reviewText: Locator;
   readonly submitReview: Locator;
   readonly reviewTab: Locator;
+  readonly reviewSuccessMessage: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -29,6 +30,7 @@ export class ProductPage {
     this.reviewText = page.getByTestId("review-text-input");
     this.submitReview = page.getByTestId("review-submit-button");
     this.reviewTab = page.getByTestId("product-reviews-tab");
+    this.reviewSuccessMessage = page.getByTestId("review-success-message");
   }
 
   async open(productId: string) {

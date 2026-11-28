@@ -8,6 +8,7 @@ test.describe("Check for seo-url requests", { tag: "@frontends" }, () => {
   test("should not show any seo-url requests during internal navigation", async ({
     page,
     homePage,
+    categoryPage,
   }) => {
     let SeoUrlRequest = false;
     page.on("request", (request) => {
@@ -20,13 +21,10 @@ test.describe("Check for seo-url requests", { tag: "@frontends" }, () => {
     await expect(SeoUrlRequest).toBe(false);
     // Any nav entry will do. Clicked rather than navigated to, because this
     // test is about client-side routing not issuing seo-url requests.
-    await page.getByTestId("header-navigation-link").first().click();
+    await homePage.navigationLinks.first().click();
     // Wait for the destination to render, or the assertion runs before the
     // router has had a chance to request anything and proves nothing.
-    await page
-      .getByTestId("product-box-img")
-      .first()
-      .waitFor({ state: "visible" });
+    await categoryPage.productImages.first().waitFor({ state: "visible" });
     await expect(SeoUrlRequest).toBe(false);
   });
 });

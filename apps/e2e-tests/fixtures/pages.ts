@@ -1,6 +1,7 @@
 import { CartPage } from "../page-objects/CartPage";
 import { CategoryPage } from "../page-objects/CategoryPage";
 import { CheckoutPage } from "../page-objects/CheckoutPage";
+import { ErrorPage } from "../page-objects/ErrorPage";
 import { HomePage } from "../page-objects/HomePage";
 import { LoginForm } from "../page-objects/LoginPage";
 import { MyAccountPage } from "../page-objects/MyAccountPage";
@@ -21,6 +22,7 @@ export const test = base.extend<{
   registrationPage: RegisterForm;
   myAccountPage: MyAccountPage;
   wishlistPage: WishlistPage;
+  errorPage: ErrorPage;
 }>({
   // Next.js keeps up to three soft-navigated pages mounted but hidden, so a
   // test id would match their copies too. Only what the user sees counts.
@@ -60,5 +62,8 @@ export const test = base.extend<{
   },
   wishlistPage: async ({ page }, use) => {
     await use(new WishlistPage(page));
+  },
+  errorPage: async ({ page }, use) => {
+    await use(new ErrorPage(page));
   },
 });

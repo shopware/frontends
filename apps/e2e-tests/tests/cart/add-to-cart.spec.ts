@@ -10,37 +10,28 @@ test.describe.parallel(
       await homePage.visitMainPage();
     });
 
-    test("Add product to cart", async ({
-      page,
-      homePage,
-      productPage,
-      cartPage,
-    }) => {
+    test("Add product to cart", async ({ homePage, productPage, cartPage }) => {
       await homePage.openCartPage();
       await productPage.addToCart();
       await cartPage.openMiniCart();
-      await page.getByTestId("checkout-product-tile-image").waitFor();
-      await expect(
-        page.getByTestId("checkout-product-tile-image"),
-      ).toBeVisible();
+      await cartPage.lineItemImages.waitFor();
+      await expect(cartPage.lineItemImages).toBeVisible();
     });
 
     test(
       "Add product to cart from wishlist",
       { tag: "@writes-customer" },
-      async ({ page, homePage, registrationPage, wishlistPage, cartPage }) => {
+      async ({ homePage, registrationPage, wishlistPage, cartPage }) => {
         // The wishlist is server side, and a fresh customer starts empty.
         await homePage.clickOnSignIn();
         await homePage.openRegistrationPage();
         await registrationPage.createUser();
         await homePage.addProductToWishlist();
         await wishlistPage.openWishlist();
-        await expect(page.getByTestId("wishlist-product-box")).toHaveCount(1);
+        await expect(wishlistPage.productBoxes).toHaveCount(1);
         await wishlistPage.addFirstProductToCart();
         await cartPage.openMiniCart();
-        await expect(
-          page.getByTestId("checkout-product-tile-image"),
-        ).toBeVisible();
+        await expect(cartPage.lineItemImages).toBeVisible();
       },
     );
   },

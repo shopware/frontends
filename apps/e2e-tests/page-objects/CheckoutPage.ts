@@ -25,6 +25,8 @@ export class CheckoutPage {
   readonly dataProtectionCheckbox: Locator;
   readonly createAccountToggle: Locator;
   readonly passwordInput: Locator;
+  readonly shippingMethods: Locator;
+  readonly orderTotal: Locator;
 
   constructor(page: Page, storeApi: { value?: StoreApi }) {
     this.page = page;
@@ -49,6 +51,8 @@ export class CheckoutPage {
       "checkout-create-account-toggle",
     );
     this.passwordInput = page.getByTestId("checkout-pi-password-input");
+    this.shippingMethods = page.getByTestId("checkout-shipping-method");
+    this.orderTotal = page.getByTestId("order-total");
     this.storeApi = storeApi;
   }
 
@@ -76,9 +80,7 @@ export class CheckoutPage {
       timeout: 60000,
       waitUntil: "commit",
     });
-    await this.page
-      .getByTestId("order-total")
-      .waitFor({ state: "visible", timeout: 45000 });
+    await this.orderTotal.waitFor({ state: "visible", timeout: 45000 });
   }
 
   /** Passing a password switches checkout from a guest order to an account. */

@@ -10,6 +10,7 @@ export class HomePage {
   readonly signedIn: Locator;
   readonly myAccountLink: Locator;
   readonly suggestResultLink: Locator;
+  readonly navigationLinks: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -23,6 +24,7 @@ export class HomePage {
     this.suggestResultLink = page.getByTestId(
       "layout-search-result-box-more-link",
     );
+    this.navigationLinks = page.getByTestId("header-navigation-link");
   }
 
   async visitMainPage() {
