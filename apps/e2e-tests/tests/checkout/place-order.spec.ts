@@ -63,71 +63,74 @@ test.describe(
       await expect(checkoutPage.orderTotal).toHaveCount(1);
     });
 
-    test("Create new order and an account", async ({
-      request,
-      storeApi,
-      homePage,
-      productPage,
-      cartPage,
-      checkoutPage,
-    }) => {
-      const email = uniqueEmail();
-      const accountPassword = uniquePassword();
+    test(
+      "Create new order and an account",
+      { tag: "@ff:guestCheckout" },
+      async ({
+        request,
+        storeApi,
+        homePage,
+        productPage,
+        cartPage,
+        checkoutPage,
+      }) => {
+        const email = uniqueEmail();
+        const accountPassword = uniquePassword();
 
-      await homePage.openCartPage();
-      await productPage.addToCart();
-      await cartPage.openMiniCart();
-      await checkoutPage.goToCheckout();
-      await checkoutPage.fillGuestUserData(
-        `e2e ${faker.person.firstName()}`,
-        `e2e ${faker.person.lastName()}`,
-        email,
-        faker.location.street(),
-        faker.location.zipCode(),
-        faker.location.city(),
-        accountPassword,
-      );
-      await checkoutPage.markTerms();
-      await checkoutPage.placeOrder();
-      await expect(checkoutPage.orderTotal).toHaveCount(1);
+        await homePage.openCartPage();
+        await productPage.addToCart();
+        await cartPage.openMiniCart();
+        await checkoutPage.goToCheckout();
+        await checkoutPage.fillGuestUserData(
+          `e2e ${faker.person.firstName()}`,
+          `e2e ${faker.person.lastName()}`,
+          email,
+          faker.location.street(),
+          faker.location.zipCode(),
+          faker.location.city(),
+          accountPassword,
+        );
+        await checkoutPage.markTerms();
+        await checkoutPage.placeOrder();
+        await expect(checkoutPage.orderTotal).toHaveCount(1);
 
-      // A guest cannot sign in, so this proves a real account. Over the API: a
-      // second pass through the UI only adds exposure to slow renders.
-      expect(storeApi.value, "no store-api traffic seen").toBeDefined();
-      const signIn = await request.post(
-        `${storeApi.value?.endpoint}/account/login`,
-        {
-          headers: {
-            "sw-access-key": storeApi.value?.accessKey ?? "",
-            "content-type": "application/json",
+        // A guest cannot sign in, so this proves a real account. Over the API: a
+        // second pass through the UI only adds exposure to slow renders.
+        expect(storeApi.value, "no store-api traffic seen").toBeDefined();
+        const signIn = await request.post(
+          `${storeApi.value?.endpoint}/account/login`,
+          {
+            headers: {
+              "sw-access-key": storeApi.value?.accessKey ?? "",
+              "content-type": "application/json",
+            },
+            data: { username: email, password: accountPassword },
           },
-          data: { username: email, password: accountPassword },
-        },
-      );
-      expect(signIn.status(), await signIn.text()).toBe(200);
-    });
+        );
+        expect(signIn.status(), await signIn.text()).toBe(200);
+      },
+    );
 
-    test("Create new order as a guest user", async ({
-      homePage,
-      productPage,
-      cartPage,
-      checkoutPage,
-    }) => {
-      await homePage.openCartPage();
-      await productPage.addToCart();
-      await cartPage.openMiniCart();
-      await checkoutPage.goToCheckout();
-      await checkoutPage.fillGuestUserData(
-        `e2e ${faker.person.firstName()}`,
-        `e2e ${faker.person.lastName()}`,
-        uniqueEmail(),
-        faker.location.street(),
-        faker.location.zipCode(),
-        faker.location.city(),
-      );
-      await checkoutPage.markTerms();
-      await checkoutPage.placeOrder();
-      await expect(checkoutPage.orderTotal).toHaveCount(1);
-    });
+    test(
+      "Create new order as a guest user",
+      { tag: "@ff:guestCheckout" },
+      async ({ homePage, productPage, cartPage, checkoutPage }) => {
+        await homePage.openCartPage();
+        await productPage.addToCart();
+        await cartPage.openMiniCart();
+        await checkoutPage.goToCheckout();
+        await checkoutPage.fillGuestUserData(
+          `e2e ${faker.person.firstName()}`,
+          `e2e ${faker.person.lastName()}`,
+          uniqueEmail(),
+          faker.location.street(),
+          faker.location.zipCode(),
+          faker.location.city(),
+        );
+        await checkoutPage.markTerms();
+        await checkoutPage.placeOrder();
+        await expect(checkoutPage.orderTotal).toHaveCount(1);
+      },
+    );
   },
 );
