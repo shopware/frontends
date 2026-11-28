@@ -1,6 +1,6 @@
 import { expect, test } from "../../fixtures";
 
-test.describe("Add review", { tag: "@frontends" }, () => {
+test.describe("Add review", { tag: ["@frontends", "@writes-customer"] }, () => {
   test.beforeEach(async ({ homePage, registrationPage }) => {
     await homePage.visitMainPage();
     // A fresh customer: the backend takes one review per customer and product.

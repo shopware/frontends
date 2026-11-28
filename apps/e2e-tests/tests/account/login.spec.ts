@@ -1,6 +1,6 @@
 import { expect, test } from "../../fixtures";
 
-test.describe("Login user", { tag: "@frontends" }, () => {
+test.describe("Login user", { tag: ["@frontends", "@writes-customer"] }, () => {
   test.beforeEach(async ({ homePage }) => {
     await homePage.visitMainPage();
   });
