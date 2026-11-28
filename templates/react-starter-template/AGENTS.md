@@ -641,8 +641,6 @@ Next.js code: 16.4 differs from most training data (Cache Components,
 - Tests: the package resolves its own `next`, so `vi.mock("next/navigation")`
   does not reach package islands; stub them through `vi.mock` of the package
   entries instead.
-- e2e: the listing tests wait for a browser `/store-api/search` response that a
-  server-rendered listing never sends, the same gap as category listings.
 
 ## Variants
 

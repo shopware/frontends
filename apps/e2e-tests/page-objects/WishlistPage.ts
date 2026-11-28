@@ -1,4 +1,4 @@
-import type { Locator, Page } from "@playwright/test";
+import { type Locator, type Page, expect } from "@playwright/test";
 
 export class WishlistPage {
   readonly page: Page;
@@ -34,37 +34,23 @@ export class WishlistPage {
       .waitFor({ state: "visible" });
   }
 
-  /** The tile raises no notification, so the cart request is the signal. */
   async addFirstProductToCart() {
-    const cartUpdated = this.page.waitForResponse(
-      (response) => response.url().includes("/checkout/cart") && response.ok(),
-      { timeout: 30000 },
-    );
     await this.addToCartButton.first().click();
-    await cartUpdated;
+    await expect(
+      this.page.getByTestId("notification-element-success").last(),
+    ).toBeVisible({ timeout: 30000 });
   }
 
   async removeProductFromWishlist() {
-    await Promise.all([
-      this.waitForWishlistDelete(),
-      this.productInWishlistButton.click(),
-    ]);
+    const before = await this.productBoxes.count();
+    await this.productInWishlistButton.click();
+    await expect(this.productBoxes).toHaveCount(before - 1, {
+      timeout: 30000,
+    });
   }
 
   async clearWishlist() {
-    await Promise.all([
-      this.waitForWishlistDelete(),
-      this.clearWishlistButton.click(),
-    ]);
-  }
-
-  private waitForWishlistDelete() {
-    return this.page.waitForResponse(
-      (response) =>
-        response.url().includes("/customer/wishlist/delete/") &&
-        response.request().method() === "DELETE" &&
-        response.ok(),
-      { timeout: 30000 },
-    );
+    await this.clearWishlistButton.click();
+    await expect(this.emptyContainer).toBeVisible({ timeout: 30000 });
   }
 }

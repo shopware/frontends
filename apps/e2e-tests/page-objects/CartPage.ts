@@ -1,4 +1,4 @@
-import type { Locator, Page } from "@playwright/test";
+import { type Locator, type Page, expect } from "@playwright/test";
 
 export class CartPage {
   readonly page: Page;
@@ -14,7 +14,9 @@ export class CartPage {
   }
 
   async openMiniCart() {
-    await this.miniCartButton.waitFor();
+    await expect(this.miniCartButton).toContainText(/[1-9]/, {
+      timeout: 30000,
+    });
     await this.miniCartButton.click();
     await this.miniCartContainer.waitFor({ state: "visible" });
   }

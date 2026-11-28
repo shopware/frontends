@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import type { Locator, Page } from "@playwright/test";
+import { type Locator, type Page, expect } from "@playwright/test";
 
 import { uniqueEmail } from "../utils/data-helpers";
 import {
@@ -103,25 +103,22 @@ export class RegisterForm {
   }
 
   async submitRegistrationForm() {
-    // Without this the form simply stays put on a rejected registration, and
-    // the failure reads as a timeout rather than as the API error it is.
-    const registered = this.page.waitForResponse(
-      (response) => response.url().includes("/account/register"),
-      { timeout: 30000 },
-    );
-    await this.submitButton.click();
-    const response = await registered;
-    if (!response.ok()) {
-      throw new Error(
-        `Registration failed with ${response.status()}: ${await response.text()}`,
-      );
-    }
+    const form = this.page.getByTestId("registration-form");
+    const failure = this.page
+      .getByTestId("registration-form-error")
+      .or(this.page.getByTestId("notification-element-danger"))
+      .first();
 
-    // Registration lands the customer somewhere logged in. Where exactly is
-    // template routing, so wait for the form to go rather than for a URL.
-    await this.page
-      .getByTestId("registration-form")
-      .waitFor({ state: "detached" });
+    await this.submitButton.click();
+    await expect
+      .poll(
+        async () => (await failure.isVisible()) || (await form.count()) === 0,
+        { timeout: 30000 },
+      )
+      .toBe(true);
+    if (await failure.isVisible()) {
+      throw new Error(`Registration failed: ${await failure.textContent()}`);
+    }
   }
 
   async createUser() {

@@ -1,6 +1,6 @@
 # E2E tests
 
-Playwright suite for `vue-starter-template` and the templates built on it.
+Playwright suite for the Shopware Frontends storefronts. It takes one URL and checks what a shopper sees there, so the same specs run against `vue-starter-template`, `react-starter-template` and the templates built on them.
 
 All commands below run from this directory, `apps/e2e-tests`. Playwright resolves its config from there.
 
@@ -73,7 +73,7 @@ pnpm run test:e2e --grep-invert "@writes-" --project=chromium --workers=1
 pnpm run test:e2e
 ```
 
-`test:e2e` is `playwright test --grep @frontends` and takes its target from `BASE_E2E_URL`. The specs take catalogue data from the backend instead of hardcoding it, but they select on `vue-starter-template`'s `data-testid` attributes. They run against the starter, templates that extend it, such as `vue-starter-template-extended`, and `react-starter-template`, which keeps the same test ids. Next.js keeps up to three soft-navigated pages mounted but hidden, so the `page` fixture in `fixtures/pages.ts` makes `page.getByTestId` match visible elements only; a raw `[data-testid=…]` locator needs `.filter({ visible: true })` itself. The deprecated `vue-demo-store` renders different test ids and is not covered.
+`test:e2e` is `playwright test --grep @frontends` and takes its target from `BASE_E2E_URL`. The specs take catalogue data from the backend instead of hardcoding it, and select on `data-testid` attributes: the test ids are a contract both starters keep, so templates that extend them, such as `vue-starter-template-extended`, run too. Next.js keeps up to three soft-navigated pages mounted but hidden, so the `page` fixture in `fixtures/pages.ts` makes `page.getByTestId` match visible elements only; a raw `[data-testid=…]` locator needs `.filter({ visible: true })` itself. The deprecated `vue-demo-store` renders different test ids and is not covered.
 
 CI runs them against `vue-starter-template` nightly and on manual dispatch, not on pull requests. See [.github/workflows/e2e-starter-template.yml](../../.github/workflows/e2e-starter-template.yml).
 
@@ -97,6 +97,27 @@ until curl -sf -o /dev/null http://localhost:3000/; do sleep 2; done
 
 BASE_E2E_URL=http://localhost:3000/ pnpm run test:e2e --project=chromium
 ```
+
+## Run against any storefront
+
+Only `BASE_E2E_URL` changes between storefronts; the command is the same for every one of them:
+
+```sh
+BASE_E2E_URL=http://localhost:3000/ pnpm run test:e2e --project=chromium --workers=1
+```
+
+The suite never knows which template serves the URL. It waits for rendered state, such as the URL, visible content, a notification or a counter, never for the Store API requests a template happens to send from the browser. A listing that Next.js renders on the server sends none, and still passes the same way as one Nuxt fetches on the client. The listing pages expose what they rendered on `data-testid="listing-results"` (`data-sorting`, `data-manufacturer`, `data-properties`), and the listing page objects wait on those.
+
+## Switch the backend
+
+Every template runs against the public demo backend with no configuration. To test against your own Shopware instance, such as a local one at `http://localhost:8000`, start the storefront with its environment variables set instead of editing the template's config. The names differ per framework, and [templates/manifest.json](../../templates/manifest.json) lists them in each template's `env`. For the two starters:
+
+| Template                 | Store API endpoint              | Access token                        | Storefront URL registered in the sales channel |
+| ------------------------ | ------------------------------- | ----------------------------------- | ---------------------------------------------- |
+| `vue-starter-template`   | `NUXT_PUBLIC_SHOPWARE_ENDPOINT` | `NUXT_PUBLIC_SHOPWARE_ACCESS_TOKEN` | `NUXT_PUBLIC_SHOPWARE_DEV_STOREFRONT_URL`      |
+| `react-starter-template` | `SHOPWARE_ENDPOINT`             | `SHOPWARE_ACCESS_TOKEN`             | `SHOPWARE_DEV_STOREFRONT_URL`                  |
+
+Both read them at run time, not at build time, so a built storefront needs no rebuild to switch backends. Only a backend you own may take the `@writes-*` tests.
 
 ## Run the accessibility check
 
