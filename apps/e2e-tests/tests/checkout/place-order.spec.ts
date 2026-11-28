@@ -15,7 +15,6 @@ test.describe(
     });
 
     test("Create new order", async ({
-      page,
       homePage,
       registrationPage,
       productPage,
@@ -40,17 +39,13 @@ test.describe(
       await productPage.addToCart();
       await cartPage.openMiniCart();
       await checkoutPage.goToCheckout();
-      await page
-        .getByTestId("checkout-shipping-method")
-        .first()
-        .waitFor({ state: "visible" });
+      await checkoutPage.shippingMethods.first().waitFor({ state: "visible" });
       await checkoutPage.markTerms();
       await checkoutPage.placeOrder();
-      await expect(page.getByTestId("order-total")).toHaveCount(1);
+      await expect(checkoutPage.orderTotal).toHaveCount(1);
     });
 
     test("Create new order as a signed in customer", async ({
-      page,
       customer,
       homePage,
       productPage,
@@ -65,11 +60,10 @@ test.describe(
       await checkoutPage.goToCheckout();
       await checkoutPage.markTerms();
       await checkoutPage.placeOrder();
-      await expect(page.getByTestId("order-total")).toHaveCount(1);
+      await expect(checkoutPage.orderTotal).toHaveCount(1);
     });
 
     test("Create new order and an account", async ({
-      page,
       request,
       storeApi,
       homePage,
@@ -95,7 +89,7 @@ test.describe(
       );
       await checkoutPage.markTerms();
       await checkoutPage.placeOrder();
-      await expect(page.getByTestId("order-total")).toHaveCount(1);
+      await expect(checkoutPage.orderTotal).toHaveCount(1);
 
       // A guest cannot sign in, so this proves a real account. Over the API: a
       // second pass through the UI only adds exposure to slow renders.
@@ -114,7 +108,6 @@ test.describe(
     });
 
     test("Create new order as a guest user", async ({
-      page,
       homePage,
       productPage,
       cartPage,
@@ -134,7 +127,7 @@ test.describe(
       );
       await checkoutPage.markTerms();
       await checkoutPage.placeOrder();
-      await expect(page.getByTestId("order-total")).toHaveCount(1);
+      await expect(checkoutPage.orderTotal).toHaveCount(1);
     });
   },
 );

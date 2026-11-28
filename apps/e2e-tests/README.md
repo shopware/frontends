@@ -48,6 +48,10 @@ Fixtures live in `fixtures/`, and specs import `test` and `expect` from `fixture
 | `session.ts`     | captured Store API access, the `customer` fixture, banner dismissal |
 | `pages.ts`       | page-object fixtures, the visible-only `page.getByTestId`           |
 
+### Selectors live in page objects
+
+Specs under `tests/` never select by test id. Every `getByTestId` call and `data-testid` selector belongs in a page object under `page-objects/`, and specs use its locators and methods. The test ids are a contract shared by the starter templates, so keeping them in one place keeps a renamed id to a one-line change. `pnpm run lint` fails when either appears under `tests/`.
+
 ## Tags
 
 | Tag                | Marks                                     |

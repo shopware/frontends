@@ -9,10 +9,14 @@ test.describe("Add review", { tag: ["@frontends", "@writes-customer"] }, () => {
     await registrationPage.createUser();
   });
 
-  test("Add product review", async ({ page, homePage, productPage }) => {
+  test("Add product review", async ({
+    homePage,
+    productPage,
+    wishlistPage,
+  }) => {
     await homePage.openCartPage();
-    await page.getByTestId("header-wishlist-button").waitFor();
+    await wishlistPage.wishlistButton.waitFor();
     await productPage.fillReviewForm();
-    await expect(page.getByTestId("review-success-message")).toBeVisible();
+    await expect(productPage.reviewSuccessMessage).toBeVisible();
   });
 });

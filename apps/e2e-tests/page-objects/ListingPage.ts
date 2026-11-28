@@ -18,6 +18,8 @@ export abstract class ListingPage {
   readonly page: Page;
   readonly manufacturerFilter: Locator;
   readonly limitSelect: Locator;
+  readonly loading: Locator;
+  readonly productImages: Locator;
   /** Its data-* attributes echo the listing response, not the URL. */
   readonly results: Locator;
 
@@ -32,6 +34,8 @@ export abstract class ListingPage {
     this.limitSelect = page
       .getByTestId("listing-pagination-limit-select")
       .filter({ visible: true });
+    this.loading = page.getByTestId("loading");
+    this.productImages = page.getByTestId("product-box-img");
   }
 
   async selectRandomManufacturerCheckbox() {

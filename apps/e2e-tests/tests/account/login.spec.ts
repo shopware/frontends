@@ -5,13 +5,9 @@ test.describe("Login user", { tag: ["@frontends", "@writes-customer"] }, () => {
     await homePage.visitMainPage();
   });
 
-  test("Login user", async ({ page, customer, homePage, loginForm }) => {
+  test("Login user", async ({ customer, homePage, loginForm }) => {
     await homePage.clickOnSignIn();
     await loginForm.login(customer.email, customer.password);
-    await expect(
-      page.locator(
-        '[data-testid="header-account-button"][data-logged-in="true"]',
-      ),
-    ).toHaveCount(1, { timeout: 30_000 });
+    await expect(homePage.signedIn).toHaveCount(1, { timeout: 30_000 });
   });
 });

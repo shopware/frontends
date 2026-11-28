@@ -33,11 +33,7 @@ test.describe(
       await homePage.visitMainPage();
     });
 
-    test("Registration new user", async ({
-      page,
-      homePage,
-      registrationPage,
-    }) => {
+    test("Registration new user", async ({ homePage, registrationPage }) => {
       await homePage.clickOnSignIn();
       await homePage.openRegistrationPage();
       await registrationPage.fillCustomerData(
@@ -54,15 +50,10 @@ test.describe(
       await registrationPage.submitRegistrationForm();
       // Registration signs the customer in, so the header account control
       // switches to its logged-in role.
-      await expect(
-        page.locator(
-          '[data-testid="header-account-button"][data-logged-in="true"]',
-        ),
-      ).toBeVisible();
+      await expect(homePage.signedIn).toBeVisible();
     });
 
     test("Registration new user company", async ({
-      page,
       request,
       storeApi,
       homePage,
@@ -94,11 +85,7 @@ test.describe(
       await registrationPage.submitRegistrationForm();
       // Registration signs the customer in, so the header account control
       // switches to its logged-in role.
-      await expect(
-        page.locator(
-          '[data-testid="header-account-button"][data-logged-in="true"]',
-        ),
-      ).toBeVisible();
+      await expect(homePage.signedIn).toBeVisible();
     });
   },
 );

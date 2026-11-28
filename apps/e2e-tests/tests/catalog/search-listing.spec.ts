@@ -16,8 +16,8 @@ test.describe("Check search page", { tag: "@frontends" }, () => {
     await searchResultPage.selectRandomManufacturerCheckbox();
 
     await expect(page).toHaveURL(/.*manufacturer.*/);
-    await expect(page.getByTestId("loading")).toHaveCount(0);
-    await expect(page.getByTestId("product-box-img").first()).toBeVisible();
+    await expect(searchResultPage.loading).toHaveCount(0);
+    await expect(searchResultPage.productImages.first()).toBeVisible();
   });
   // Was skipped for #1012. Passes against vue-starter-template now that the
   // property filter is found by elimination rather than by name.
@@ -31,8 +31,8 @@ test.describe("Check search page", { tag: "@frontends" }, () => {
     await searchResultPage.selectRandomSelectionCheckbox();
 
     await expect(page).toHaveURL(/.*properties.*/);
-    await expect(page.getByTestId("loading")).toHaveCount(0);
-    await expect(page.getByTestId("product-box-img").first()).toBeVisible();
+    await expect(searchResultPage.loading).toHaveCount(0);
+    await expect(searchResultPage.productImages.first()).toBeVisible();
   });
 
   test("Check sorting", async ({
@@ -44,8 +44,8 @@ test.describe("Check search page", { tag: "@frontends" }, () => {
     await homePage.typeSearchPhrase(await productSearchTerm(page, storeApi));
     await searchResultPage.selectSortingPriceAsc();
     await expect(page).toHaveURL(/.*order=price-asc.*/);
-    await expect(page.getByTestId("loading")).toHaveCount(0);
-    await expect(page.getByTestId("product-box-img").first()).toBeVisible();
+    await expect(searchResultPage.loading).toHaveCount(0);
+    await expect(searchResultPage.productImages.first()).toBeVisible();
   });
   // Was skipped for #1678. Passes now that the limit and page changes wait
   // for the listing to re-render.
@@ -59,11 +59,11 @@ test.describe("Check search page", { tag: "@frontends" }, () => {
     await searchResultPage.selectLimitOneProductPerPage();
     await expect(page).toHaveURL(/.*limit.*/);
     await expect(page).toHaveURL(/.*p=1.*/);
-    await expect(page.getByTestId("loading")).toHaveCount(0);
+    await expect(searchResultPage.loading).toHaveCount(0);
     await searchResultPage.goToSecondPage();
     await expect(page).toHaveURL(/.*p=2.*/);
-    await expect(page.getByTestId("loading")).toHaveCount(0);
+    await expect(searchResultPage.loading).toHaveCount(0);
 
-    await expect(page.getByTestId("product-box-img").first()).toBeVisible();
+    await expect(searchResultPage.productImages.first()).toBeVisible();
   });
 });

@@ -7,7 +7,8 @@
     "test:e2e": "playwright test --grep @frontends",
     "test:e2e:ui": "playwright test --ui --grep @frontends",
     "test:examples": "playwright test -c examples.config.ts checkCodeExamples.spec.ts",
-    "lint": "oxlint . && oxfmt --check .",
+    "lint": "oxlint . && oxfmt --check . && pnpm run lint:selectors",
+    "lint:selectors": "if grep -rnE 'getByTestId|data-testid' tests; then echo 'Move these selectors into page-objects/.' >&2; exit 1; fi",
     "lint:fix": "oxlint --fix . && oxfmt --write .",
     "start": "npx http-server"
   },

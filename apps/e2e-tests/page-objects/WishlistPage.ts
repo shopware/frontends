@@ -6,6 +6,8 @@ export class WishlistPage {
   readonly wishlistButton: Locator;
   readonly productInWishlistButton: Locator;
   readonly clearWishlistButton: Locator;
+  readonly productBoxes: Locator;
+  readonly emptyContainer: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -15,6 +17,8 @@ export class WishlistPage {
       .getByTestId("wishlist-product-box-toggle-button")
       .first();
     this.clearWishlistButton = page.getByTestId("clear-wishlist-button");
+    this.productBoxes = page.getByTestId("wishlist-product-box");
+    this.emptyContainer = page.getByTestId("wishlist-empty-container");
   }
 
   async openWishlist() {
