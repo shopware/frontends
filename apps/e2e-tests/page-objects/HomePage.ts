@@ -11,6 +11,7 @@ export class HomePage {
   readonly myAccountLink: Locator;
   readonly suggestResultLink: Locator;
   readonly navigationLinks: Locator;
+  readonly content: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -25,10 +26,18 @@ export class HomePage {
       "layout-search-result-box-more-link",
     );
     this.navigationLinks = page.getByTestId("header-navigation-link");
+    this.content = page.locator("body");
   }
 
   async visitMainPage() {
     await this.page.goto("/");
+  }
+
+  async visit(path: string) {
+    const response = await this.page.goto(path);
+    if (!response) throw new Error(`Opening ${path} returned no response.`);
+    await this.page.waitForLoadState("networkidle");
+    return response;
   }
 
   async clickOnSignIn() {

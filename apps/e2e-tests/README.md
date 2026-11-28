@@ -29,7 +29,7 @@ Specs are grouped by shop area, one folder per area under `tests/`:
 | `checkout`      | placing orders                                  |
 | `account`       | registration, login, password recovery, profile |
 | `wishlist`      | adding to and clearing the wishlist             |
-| `platform`      | sitemap, personalized pages                     |
+| `platform`      | sitemap, personal data isolation                |
 | `accessibility` | axe checks per page                             |
 
 A new spec goes into the folder of the area it tests, named `<behaviour>.spec.ts`. Run one area with a path filter:
@@ -118,6 +118,8 @@ Every template runs against the public demo backend with no configuration. To te
 | `react-starter-template` | `SHOPWARE_ENDPOINT`             | `SHOPWARE_ACCESS_TOKEN`             | `SHOPWARE_DEV_STOREFRONT_URL`                  |
 
 Both read them at run time, not at build time, so a built storefront needs no rebuild to switch backends. Only a backend you own may take the `@writes-*` tests.
+
+The sitemap specs depend on setup outside the suite. The backend must have generated a sitemap for the sales channel (`bin/console sitemap:generate`), which a fresh local backend has not. `react-starter-template` serves no sitemap until `STOREFRONT_URL` is set; `vue-starter-template` builds its links from the request host unless `NUXT_PUBLIC_SITE_URL` is set. Either variable must name the origin of `BASE_E2E_URL`, since the specs expect every listed file on the host they test.
 
 ## Run the accessibility check
 

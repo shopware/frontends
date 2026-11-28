@@ -7,7 +7,12 @@ export type StoreApi = { endpoint: string; accessKey: string };
 
 const STORE_API_TIMEOUT = 10_000;
 
-export type Customer = { email: string; password: string };
+export type Customer = {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+};
 
 type SessionContext = {
   shippingLocation?: {
@@ -107,14 +112,17 @@ export async function registerCustomer(
   let customer: Customer | undefined;
   let registered: { active?: boolean; doubleOptInRegistration?: boolean } = {};
   await expect(async () => {
-    const candidate = { email: uniqueEmail(), password: uniquePassword() };
+    const candidate = {
+      email: uniqueEmail(),
+      password: uniquePassword(),
+      firstName: `e2e ${faker.person.firstName()}`,
+      lastName: `e2e ${faker.person.lastName()}`,
+    };
     const response = await page.request.post(`${endpoint}/account/register`, {
       headers: { "sw-access-key": accessKey },
       timeout: STORE_API_TIMEOUT,
       data: {
         ...candidate,
-        firstName: `e2e ${faker.person.firstName()}`,
-        lastName: `e2e ${faker.person.lastName()}`,
         storefrontUrl,
         acceptedDataProtection: true,
         billingAddress: {
