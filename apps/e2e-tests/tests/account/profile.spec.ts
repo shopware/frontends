@@ -6,7 +6,7 @@ test.setTimeout(90000);
 
 test.describe.parallel(
   "My account functionalities tests",
-  { tag: "@frontends" },
+  { tag: ["@frontends", "@writes-customer"] },
   () => {
     test.beforeEach(async ({ homePage }) => {
       await homePage.visitMainPage();

@@ -25,76 +25,80 @@ async function shopTurnsOffAccountTypeSelection(
   return settings?.loginRegistration?.showAccountTypeSelection === false;
 }
 
-test.describe("Registration new user", { tag: "@frontends" }, () => {
-  test.beforeEach(async ({ homePage }) => {
-    await homePage.visitMainPage();
-  });
+test.describe(
+  "Registration new user",
+  { tag: ["@frontends", "@writes-customer"] },
+  () => {
+    test.beforeEach(async ({ homePage }) => {
+      await homePage.visitMainPage();
+    });
 
-  test("Registration new user", async ({
-    page,
-    homePage,
-    registrationPage,
-  }) => {
-    await homePage.clickOnSignIn();
-    await homePage.openRegistrationPage();
-    await registrationPage.fillCustomerData(
-      `e2e ${faker.person.firstName()}`,
-      `e2e ${faker.person.lastName()}`,
-      uniqueEmail(),
-      faker.internet.password(),
-    );
-    await registrationPage.fillAddressData(
-      faker.location.street(),
-      faker.location.zipCode(),
-      faker.location.city(),
-    );
-    await registrationPage.submitRegistrationForm();
-    // Registration signs the customer in, so the header account control
-    // switches to its logged-in role.
-    await expect(
-      page.locator(
-        '[data-testid="header-account-button"][data-logged-in="true"]',
-      ),
-    ).toBeVisible();
-  });
+    test("Registration new user", async ({
+      page,
+      homePage,
+      registrationPage,
+    }) => {
+      await homePage.clickOnSignIn();
+      await homePage.openRegistrationPage();
+      await registrationPage.fillCustomerData(
+        `e2e ${faker.person.firstName()}`,
+        `e2e ${faker.person.lastName()}`,
+        uniqueEmail(),
+        faker.internet.password(),
+      );
+      await registrationPage.fillAddressData(
+        faker.location.street(),
+        faker.location.zipCode(),
+        faker.location.city(),
+      );
+      await registrationPage.submitRegistrationForm();
+      // Registration signs the customer in, so the header account control
+      // switches to its logged-in role.
+      await expect(
+        page.locator(
+          '[data-testid="header-account-button"][data-logged-in="true"]',
+        ),
+      ).toBeVisible();
+    });
 
-  test("Registration new user company", async ({
-    page,
-    request,
-    storeApi,
-    homePage,
-    registrationPage,
-  }) => {
-    await homePage.clickOnSignIn();
-    await homePage.openRegistrationPage();
-    test.skip(
-      !(await registrationPage.accountType.isVisible()) &&
-        (await shopTurnsOffAccountTypeSelection(request, storeApi)),
-      "The shop turns off showAccountTypeSelection in its login and registration settings, so it offers no company registration",
-    );
-    await expect(registrationPage.accountType).toBeVisible();
-    await registrationPage.fillCompanyData(
-      `e2e ${faker.company.name()}`,
-      "DE123456789",
-    );
-    await registrationPage.fillCustomerData(
-      `e2e ${faker.person.firstName()}`,
-      `e2e ${faker.person.lastName()}`,
-      uniqueEmail(),
-      faker.internet.password(),
-    );
-    await registrationPage.fillAddressData(
-      faker.location.street(),
-      faker.location.zipCode(),
-      faker.location.city(),
-    );
-    await registrationPage.submitRegistrationForm();
-    // Registration signs the customer in, so the header account control
-    // switches to its logged-in role.
-    await expect(
-      page.locator(
-        '[data-testid="header-account-button"][data-logged-in="true"]',
-      ),
-    ).toBeVisible();
-  });
-});
+    test("Registration new user company", async ({
+      page,
+      request,
+      storeApi,
+      homePage,
+      registrationPage,
+    }) => {
+      await homePage.clickOnSignIn();
+      await homePage.openRegistrationPage();
+      test.skip(
+        !(await registrationPage.accountType.isVisible()) &&
+          (await shopTurnsOffAccountTypeSelection(request, storeApi)),
+        "The shop turns off showAccountTypeSelection in its login and registration settings, so it offers no company registration",
+      );
+      await expect(registrationPage.accountType).toBeVisible();
+      await registrationPage.fillCompanyData(
+        `e2e ${faker.company.name()}`,
+        "DE123456789",
+      );
+      await registrationPage.fillCustomerData(
+        `e2e ${faker.person.firstName()}`,
+        `e2e ${faker.person.lastName()}`,
+        uniqueEmail(),
+        faker.internet.password(),
+      );
+      await registrationPage.fillAddressData(
+        faker.location.street(),
+        faker.location.zipCode(),
+        faker.location.city(),
+      );
+      await registrationPage.submitRegistrationForm();
+      // Registration signs the customer in, so the header account control
+      // switches to its logged-in role.
+      await expect(
+        page.locator(
+          '[data-testid="header-account-button"][data-logged-in="true"]',
+        ),
+      ).toBeVisible();
+    });
+  },
+);

@@ -14,7 +14,7 @@ pnpm exec playwright install chromium
 
 Copy `.env.template` to `.env` and fill in the values. `BASE_E2E_URL` points at the storefront you want to test. The file is looked up from the working directory upwards, so a root `.env` works too.
 
-No account has to exist on that storefront. Tests that sign in to an existing account take the `customer` fixture from `fixtures.ts`, which registers a fresh one through the Store API. The other signed-in tests register through the storefront's own form. Either way, the sales channel must not require double opt-in for registration.
+No account has to exist on that storefront. Tests that sign in to an existing account take the `customer` fixture from `fixtures/session.ts`, which registers a fresh one through the Store API. The other signed-in tests register through the storefront's own form. Either way, the sales channel must not require double opt-in for registration.
 
 ## Layout
 
@@ -40,13 +40,36 @@ pnpm run test:e2e tests/checkout
 
 `tooling/` holds the StackBlitz and code-example checks. They run through `examples.config.ts`, not `test:e2e`.
 
+Fixtures live in `fixtures/`, and specs import `test` and `expect` from `fixtures/index.ts`:
+
+| File             | Provides                                                            |
+| ---------------- | ------------------------------------------------------------------- |
+| `diagnostics.ts` | network failure log, retry cool-down                                |
+| `session.ts`     | captured Store API access, the `customer` fixture, banner dismissal |
+| `pages.ts`       | page-object fixtures, the visible-only `page.getByTestId`           |
+
+## Tags
+
+| Tag                | Marks                                     |
+| ------------------ | ----------------------------------------- |
+| `@frontends`       | every spec `test:e2e` runs                |
+| `@accessibility`   | the axe checks                            |
+| `@writes-customer` | tests that register a customer or sign in |
+| `@writes-order`    | tests that place an order                 |
+
+Area is the folder, not a tag. A test that creates data on the backend carries a `@writes-*` tag, so a run against a shared backend you must not write to, such as the public demo, leaves them out:
+
+```sh
+pnpm run test:e2e --grep-invert "@writes-" --project=chromium --workers=1
+```
+
 ## Run tests
 
 ```sh
 pnpm run test:e2e
 ```
 
-`test:e2e` is `playwright test --grep @frontends` and takes its target from `BASE_E2E_URL`. The specs take catalogue data from the backend instead of hardcoding it, but they select on `vue-starter-template`'s `data-testid` attributes. They run against the starter, templates that extend it, such as `vue-starter-template-extended`, and `react-starter-template`, which keeps the same test ids. Next.js keeps up to three soft-navigated pages mounted but hidden, so the `page` fixture in `fixtures.ts` makes `page.getByTestId` match visible elements only; a raw `[data-testid=…]` locator needs `.filter({ visible: true })` itself. The deprecated `vue-demo-store` renders different test ids and is not covered.
+`test:e2e` is `playwright test --grep @frontends` and takes its target from `BASE_E2E_URL`. The specs take catalogue data from the backend instead of hardcoding it, but they select on `vue-starter-template`'s `data-testid` attributes. They run against the starter, templates that extend it, such as `vue-starter-template-extended`, and `react-starter-template`, which keeps the same test ids. Next.js keeps up to three soft-navigated pages mounted but hidden, so the `page` fixture in `fixtures/pages.ts` makes `page.getByTestId` match visible elements only; a raw `[data-testid=…]` locator needs `.filter({ visible: true })` itself. The deprecated `vue-demo-store` renders different test ids and is not covered.
 
 CI runs them against `vue-starter-template` nightly and on manual dispatch, not on pull requests. See [.github/workflows/e2e-starter-template.yml](../../.github/workflows/e2e-starter-template.yml).
 
