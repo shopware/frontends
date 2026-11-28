@@ -1,8 +1,9 @@
 import { appendFileSync, mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 
-import { test as base } from "@playwright/test";
 import type { Request } from "@playwright/test";
+
+import { test as base } from "./features";
 
 export const NETWORK_LOG = "diagnostics/network-failures.jsonl";
 export const ATTEMPT_LOG = "diagnostics/store-api-attempts.log";

@@ -44,6 +44,7 @@ Fixtures live in `fixtures/`, and specs import `test` and `expect` from `fixture
 
 | File             | Provides                                                            |
 | ---------------- | ------------------------------------------------------------------- |
+| `features.ts`    | feature flag skips from `e2e.config.ts`                             |
 | `diagnostics.ts` | network failure log, retry cool-down                                |
 | `session.ts`     | captured Store API access, the `customer` fixture, banner dismissal |
 | `pages.ts`       | page-object fixtures, the visible-only `page.getByTestId`           |
@@ -66,6 +67,20 @@ Area is the folder, not a tag. A test that creates data on the backend carries a
 ```sh
 pnpm run test:e2e --grep-invert "@writes-" --project=chromium --workers=1
 ```
+
+## Feature flags
+
+Some storefront features are optional in Shopware. `e2e.config.ts` says which ones the shop under test has, and every flag defaults to on. The committed file matches the public demo backend.
+
+| Flag                  | Covers                                                                           | Backend needs                                                                                                                                         |
+| --------------------- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `wishlist`            | `tests/wishlist`, adding to the cart from the wishlist                           | `core.cart.wishlistEnabled` on                                                                                                                        |
+| `productReviews`      | writing a product review                                                         | `core.listing.showReview` on                                                                                                                          |
+| `sitemap`             | `sitemap.xml` listing files on the tested host                                   | a generated sitemap (`bin/console sitemap:generate`), and `STOREFRONT_URL` on `react-starter-template`; see [Switch the backend](#switch-the-backend) |
+| `companyRegistration` | registering a company account                                                    | `core.loginRegistration.showAccountTypeSelection` on                                                                                                  |
+| `guestCheckout`       | ordering from the checkout's own customer form, as a guest or with a new account | `core.loginRegistration.doubleOptInGuestOrder` off                                                                                                    |
+
+A test that needs a feature carries an `@ff:<flag>` tag. When the flag is `false`, the test is skipped with the reason `feature <flag> disabled in e2e.config.ts`. A tag naming an unknown flag fails the test, so a typo cannot skip a spec unnoticed. Flags describe the shop, never the framework: one config holds for every template in front of that backend.
 
 ## Run tests
 

@@ -20,7 +20,7 @@ test.describe.parallel(
 
     test(
       "Add product to cart from wishlist",
-      { tag: "@writes-customer" },
+      { tag: ["@writes-customer", "@ff:wishlist"] },
       async ({ homePage, registrationPage, wishlistPage, cartPage }) => {
         // The wishlist is server side, and a fresh customer starts empty.
         await homePage.clickOnSignIn();
