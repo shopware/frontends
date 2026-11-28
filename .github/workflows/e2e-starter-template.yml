@@ -1,8 +1,17 @@
 name: E2E Starter Template
 
-run-name: Playwright e2e suite against vue-starter-template 🚀
+run-name: Playwright e2e suite against ${{ inputs.base_url || 'vue-starter-template' }} 🚀
 on:
   workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Storefront to test, such as a pull request's Vercel preview URL. Empty builds and tests vue-starter-template on localhost:3000."
+        required: false
+        default: ""
+      grep_invert:
+        description: 'Skip tests matching this pattern. Pass "@writes-" against a backend you do not own.'
+        required: false
+        default: ""
   schedule:
     - cron: "0 4 * * *"
 
@@ -15,13 +24,22 @@ concurrency:
 
 jobs:
   run-storefront-e2e:
-    name: E2E against vue-starter-template
+    name: E2E against ${{ inputs.base_url || 'vue-starter-template' }}
     runs-on: ubuntu-latest
     # Above the step timeout below, so a slow run fails on the step.
     timeout-minutes: 45
     env:
-      BASE_E2E_URL: http://localhost:3000/
+      BASE_E2E_URL: ${{ inputs.base_url || 'http://localhost:3000/' }}
     steps:
+      - name: Check the storefront URL
+        if: inputs.base_url
+        run: |
+          re='^https?://[A-Za-z0-9._~:/?#@!$&()*+,;=%-]+$'
+          if [[ ! $BASE_E2E_URL =~ $re ]]; then
+            echo "::error::base_url must be an http(s):// URL"
+            exit 1
+          fi
+
       - name: Check out code
         uses: actions/checkout@v7
 
@@ -42,9 +60,11 @@ jobs:
       # Through turbo: postinstall skips the package build on CI, so the
       # packages the starter links need `^build` first.
       - name: Build the starter template
+        if: ${{ !inputs.base_url }}
         run: pnpm exec turbo run build --filter=vue-starter-template
 
       - name: Start the starter template
+        if: ${{ !inputs.base_url }}
         env:
           # The template default is the demo store domain, which this sales
           # channel rejects. Template bug, tracked in #2585.
@@ -69,6 +89,7 @@ jobs:
       # Only SSR routes are worth warming; /account, /checkout and /wishlist
       # are ssr:false. Status is echoed so a miss is visible.
       - name: Warm the storefront
+        if: ${{ !inputs.base_url }}
         run: |
           for path in / /New-Arrivals/; do
             code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "${BASE_E2E_URL%/}$path" || echo 000)
@@ -81,12 +102,14 @@ jobs:
         # notify. Nothing is gated on it, since this is scheduled only.
         # 13 min for the suite, plus a 30 s cool-down before every retry.
         timeout-minutes: 30
+        env:
+          E2E_GREP_INVERT: ${{ inputs.grep_invert }}
         run: |
           cd apps/e2e-tests
           # pnpm forwards these straight through; `--` would swallow them.
           # One worker: the specs share one rate-limited backend, so parallel
           # workers starve each other. Measured 5 passing at 4 workers vs 8.
-          pnpm run test:e2e --project=chromium --reporter=github,html --workers=1
+          pnpm run test:e2e --project=chromium --reporter=github,html --workers=1 ${E2E_GREP_INVERT:+--grep-invert "$E2E_GREP_INVERT"}
 
       # Nitro logs neither, so without this a backend problem is just a timeout.
       - name: Report network failures
@@ -97,16 +120,27 @@ jobs:
 
       - name: Report result
         if: always()
+        env:
+          E2E_GREP_INVERT: ${{ inputs.grep_invert }}
         run: |
+          {
+            echo "\`test:e2e\` against <$BASE_E2E_URL>: **${{ steps.e2e.outcome }}**"
+            if [ -n "$E2E_GREP_INVERT" ]; then
+              echo
+              echo "Skipped tests matching \`$E2E_GREP_INVERT\`."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
           cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
-          `test:e2e` against vue-starter-template: **${{ steps.e2e.outcome }}**
 
-          Scheduled only, so nothing is gated on this. A failure notifies
-          Slack through failed-job-check.yml. The suite is expected to pass;
-          runs share one demo backend that intermittently drops store-api
-          calls, which retries usually absorb.
+          Nightly and on manual dispatch, so nothing is gated on this. A
+          failure on main notifies Slack through failed-job-check.yml. The
+          suite is expected to pass; runs share one demo backend that
+          intermittently drops store-api calls, which retries usually absorb.
           EOF
 
+      - name: Show the storefront log
+        if: always() && !inputs.base_url
+        run: |
           echo "::group::storefront log"
           tail -n 50 "$RUNNER_TEMP/storefront.log"
           echo "::endgroup::"
